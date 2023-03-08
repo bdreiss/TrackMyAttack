@@ -96,7 +96,7 @@ public class DataModel implements Serializable {
 	}
 
 	public void save(Context context){
-		File saveFile = new File(context.getFilesDir() + SAVE_FILE_NAME);
+		File saveFile = new File(context.getFilesDir() + "/" + SAVE_FILE_NAME);
 
 		if (!saveFile.exists()) {
 			try {
@@ -129,7 +129,7 @@ public class DataModel implements Serializable {
 		Map<String,ArrayList<Datum>> map = null;
 
 		//get save file
-		File saveFile = new File(context.getFilesDir() + SAVE_FILE_NAME);
+		File saveFile = new File(context.getFilesDir() + "/" +  SAVE_FILE_NAME);
 
 		//abort if it does not exist
 		if (!saveFile.exists())
