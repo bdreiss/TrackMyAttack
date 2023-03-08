@@ -49,11 +49,17 @@ public class DataModel implements Serializable {
 	private Map<String,ArrayList<Datum>> habits = new HashMap<>();
 	//ArrayList containing symptoms that might be related to migraine attacks
 	private Map<String,ArrayList<Datum>> symptoms = new HashMap<>();
+	//ArrayList containing potential remedies tried when symptoms showed up
+	private Map<String, ArrayList<Datum>> remedies = new HashMap<>();
 
+	//ArrayList containing all habits
 	private ArrayList<String> habitsList = new ArrayList<>();
+	//ArrayList containing all symptoms
 	private ArrayList<String> symptomsList = new ArrayList<>();
+	//ArrayList containing all remedies
+	private ArrayList<String> remediesList = new ArrayList<>();
 
-	public void addMigraine(Intensity intensity){
+	public void addMigraine(String migraine, Intensity intensity){
 		addEntry(migraines, "Migraine", new Date(),intensity);
 	}
 
@@ -68,6 +74,12 @@ public class DataModel implements Serializable {
 		if (!symptomsList.contains(symptom))
 			symptomsList.add(symptom);
 		addEntry(symptoms, symptom, new Date(),intensity);
+	}
+
+	public void addRemedy(String remedy, Intensity intensity){
+		if (!remediesList.contains(remedy))
+			remediesList.add(remedy);
+		addEntry(remedies, remedy, new Date(),intensity);
 	}
 
 	//abstracts the task of adding entries to the different ArrayLists
@@ -94,6 +106,8 @@ public class DataModel implements Serializable {
 	public ArrayList<String> returnSymptoms(){
 		return symptomsList;
 	}
+
+	public ArrayList<String> returnRemedies(){ return remediesList;}
 
 	public void save(Context context){
 		File saveFile = new File(context.getFilesDir() + "/" + SAVE_FILE_NAME);
@@ -149,7 +163,7 @@ public class DataModel implements Serializable {
 	}
 
 	public static void deleteSaveFile(Context context){
-		new File(context.getFilesDir() + SAVE_FILE_NAME).delete();
+		new File(context.getFilesDir() + "/" + SAVE_FILE_NAME).delete();
 	}
 
 	//printing for testing
@@ -191,6 +205,19 @@ public class DataModel implements Serializable {
 		}
 		System.out.println();
 
+		System.out.println("Remedies");
+		Log.d("LOGXXX", "Remedies");
+
+		for (String s : remedies.keySet()){
+			System.out.println(s);
+			Log.d("LOGXXX", s);
+			for (Datum d: Objects.requireNonNull(remedies.get(s))){
+				Log.d("LOGXXX", d.date + ", " + d.intensity);
+				System.out.print(d.date + ", " + d.intensity);
+			}
+
+		}
+		System.out.println();
 
 	}
 
