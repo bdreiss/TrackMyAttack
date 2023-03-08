@@ -28,9 +28,9 @@ public class DataModel implements Serializable {
 	
 	private class Datum implements Serializable{
 		public Date date;
-		public int intensity;
+		public Intensity intensity;
 
-		public Datum (Date date, int intensity){
+		public Datum (Date date, Intensity intensity){
 			this.date = date;
 			this.intensity = intensity;
 		}
@@ -53,25 +53,25 @@ public class DataModel implements Serializable {
 	private ArrayList<String> habitsList = new ArrayList<>();
 	private ArrayList<String> symptomsList = new ArrayList<>();
 
-	public void addMigraine(int intensity){
+	public void addMigraine(Intensity intensity){
 		addEntry(migraines, "Migraine", new Date(),intensity);
 	}
 
-	public void addHabit(String habit, int intensity){
+	public void addHabit(String habit, Intensity intensity){
 		if (!habitsList.contains(habit))
 			habitsList.add(habit);
 
 		addEntry(habits, habit, new Date(), intensity);
 	}
 
-	public void addSymptom(String symptom, int intensity){
+	public void addSymptom(String symptom, Intensity intensity){
 		if (!symptomsList.contains(symptom))
 			symptomsList.add(symptom);
 		addEntry(symptoms, symptom, new Date(),intensity);
 	}
 
 	//abstracts the task of adding entries to the different ArrayLists
-	private void addEntry(Map<String, ArrayList<Datum>> map, String key, Date date, int intensity){
+	private void addEntry(Map<String, ArrayList<Datum>> map, String key, Date date, Intensity intensity){
 
 		//create entry with key if it doesn't exist
 		if (!map.containsKey(key))
@@ -131,12 +131,9 @@ public class DataModel implements Serializable {
 		//get save file
 		File saveFile = new File(context.getFilesDir() + SAVE_FILE_NAME);
 
-		Log.d("LOGXXX", "HERE");
 		//abort if it does not exist
 		if (!saveFile.exists())
 			return null;
-
-		Log.d("LOGXXX", "HERE2");
 
 		try {
 			FileInputStream fis = new FileInputStream(saveFile);
@@ -169,6 +166,8 @@ public class DataModel implements Serializable {
 		}
 		System.out.println();
 		System.out.println("Habits");
+		Log.d("LOGXXX", "Habits");
+
 		for (String s : habits.keySet()) {
 			System.out.println(s);
 			Log.d("LOGXXX", s);
@@ -179,6 +178,8 @@ public class DataModel implements Serializable {
 		}
 		System.out.println();
 		System.out.println("Symptoms");
+		Log.d("LOGXXX", "Symptoms");
+
 		for (String s : symptoms.keySet()){
 			System.out.println(s);
 			Log.d("LOGXXX", s);
