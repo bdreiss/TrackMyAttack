@@ -2,6 +2,10 @@ package main.java.com.bdreiss.trackmyattack;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import main.java.com.bdreiss.dataAPI.DataModel;
+import main.java.com.bdreiss.dataAPI.Intensity;
+
 import java.util.HashMap;
 import java.util.Date;
 
@@ -24,7 +28,7 @@ class Main{
 	//	frame.setData(new DataModel(20,21));
 //		frame.setVisible(true);
 	
-		DataModel data = new DataModel();
+		DataModel data = new DataModel("Test");
 		
 		for (int i=0;i<10000000;i++)
 			data.addHabit("Test", Intensity.high);

@@ -1,17 +1,14 @@
 package main.java.com.bdreiss.trackmyattack;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+
+import main.java.com.bdreiss.dataAPI.DataModel;
 
 class MainFrame extends JFrame{
 
@@ -19,6 +16,8 @@ class MainFrame extends JFrame{
 	
 	public MainFrame(){
 		super("TrackMyAttack");
+		
+		DataModel model = new DataModel("Test");
 		
 		setLayout(new BorderLayout());
 		

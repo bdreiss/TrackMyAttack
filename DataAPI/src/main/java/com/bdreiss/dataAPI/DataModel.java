@@ -137,7 +137,7 @@ public class DataModel implements Serializable {
 	}
 
 	//load contents of save file
-	public static DataModel load(){
+	public void load(){
 
 		DataModel data = null;
 
@@ -146,7 +146,7 @@ public class DataModel implements Serializable {
 
 		//abort if it does not exist
 		if (!SAVE_FILE.exists())
-			return null;
+			return;
 
 		try {
 			FileInputStream fis = new FileInputStream(SAVE_FILE);
@@ -158,7 +158,13 @@ public class DataModel implements Serializable {
 			e.printStackTrace();
 		}
 
-		return data;
+		this.habits = data.habits;
+		this.habitsList = data.habitsList;
+		this.migraines = data.migraines;
+		this.remedies = data.remedies;
+		this.remediesList = data.remediesList;
+		this.symptoms = data.symptoms;
+		this.symptomsList = data.symptomsList;
 	}
 
 	public static void deleteSaveFile(){
