@@ -6,13 +6,117 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linear_layout_habit"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/linear_layout_symptom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
+
+        <EditText
+            android:id="@+id/edit_text_habit_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/edit_text_habit_intensity"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/button_habit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADD HABIT"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_layout_symptom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_habit"
+        app:layout_constraintBottom_toTopOf="@id/linear_layout_migraine">
+
+
+        <EditText
+            android:id="@+id/edit_text_symptom_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/edit_text_symptom_intensity"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/button_symptom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADD SYMPTOM"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_layout_migraine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_symptom">
+
+
+
+        <EditText
+            android:id="@+id/edit_text_migraine_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/edit_text_migraine_intensity"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/button_migraine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADD MIGRAINE"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_remedy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_migraine">
+
+
+
+        <EditText
+            android:id="@+id/edit_text_remedy_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/edit_text_remedy_intensity"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/button_remedy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADD REMEDY"/>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
