@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import main.java.com.bdreiss.dataAPI.DataModel
 import main.java.com.bdreiss.dataAPI.Intensity
@@ -19,11 +20,12 @@ class MainActivity : AppCompatActivity() {
 
         val data = DataModel(filesDir.absolutePath)
 
-        Log.d("XXX",filesDir.absolutePath)
+
 
         data.load()
+        val textView = findViewById<TextView>(R.id.textView)
 
-        data.print()
+        textView.setText(data.print())
 
         val habitsEditTextText = findViewById<EditText>(R.id.edit_text_habit_text)
         val habitsEditTextIntensity = findViewById<EditText>(R.id.edit_text_habit_intensity)
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             data.addHabit(text, intensity)
             data.save()
 
+            textView.setText(data.print())
             habitsEditTextText.setText("")
             habitsEditTextIntensity.setText("")
         }
@@ -69,6 +72,7 @@ class MainActivity : AppCompatActivity() {
             data.addSymptom(text, intensity)
             data.save()
 
+            textView.setText(data.print())
             symptomsEditTextText.setText("")
             symptomsEditTextIntensity.setText("")
         }
@@ -92,6 +96,7 @@ class MainActivity : AppCompatActivity() {
             data.addMigraine("Migraine", intensity)
             data.save()
 
+            textView.setText(data.print())
             migraineEditTextText.setText("")
             migraineEditTextIntensity.setText("")
         }
@@ -115,6 +120,7 @@ class MainActivity : AppCompatActivity() {
             data.addRemedy(text, intensity)
             data.save()
 
+            textView.setText(data.print())
             remedyEditTextText.setText("")
             remedyEditTextIntensity.setText("")
         }
