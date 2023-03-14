@@ -1,15 +1,30 @@
 package main.java.com.bdreiss.dataAPI;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 public class Main {
 
 	public static void main(String[] args) {
 		
 		DataModel data = new DataModel(".");
 		
-
-		data.addHabit("null", Intensity.high);
+		data.load();
 		
-		data.addHabit("troll", Intensity.high);
+		Date in = new Date();
+		LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(), ZoneId.systemDefault());
+		ldt = ldt.minusDays(1);
+		Date date = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+		
+		
+//		data.addHabit("Test",Intensity.high,date);
+//		data.addHabit("Stress",Intensity.high,date);
+//		data.addSymptom("Blähungen",Intensity.low,date);
+//		data.addSymptom("Depressiver Schub",Intensity.high,date);
+
+		data.print();
 		
 		data.save();
 		
