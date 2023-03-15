@@ -10,136 +10,246 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class DataModel implements Serializable {
 
+	/**
+	 * Class that represents the data model.
+	 * 
+	 * @author Bernd Reiß
+	 */
+
 	private static final long serialVersionUID = 1L;
 
-	//Name of the save file
-	public static final String SAVE_FILE_NAME = "DataModel";
-
 	private static File SAVE_FILE;
-	
-	/*  
-	 * Representation of a single piece of data containing the date and intensity of the habit/symptom.
-	*/
-	
-	private class Datum implements Serializable{
+	private static String SAVE_FILE_NAME = "DataModel";
+
+	/*
+	 * Representation of a single piece of data containing the date and intensity of
+	 * the habit/symptom.
+	 */
+
+	private class Datum implements Serializable {
 		private static final long serialVersionUID = 1L;
 		public Date date;
 		public Intensity intensity;
 
-		public Datum (Date date, Intensity intensity){
+		public Datum(Date date, Intensity intensity) {
 			this.date = date;
 			this.intensity = intensity;
 		}
-		
+
 	}
-	
+
 	/*
-	 *	The following Maps contain all the relevant data. They each contain the title of the
-	 *	habit/symptom as a key and an ArrayList containing all relevant information
-	 * 	as single pieces of data (see Datum).
+	 * The following Maps contain all the relevant data. They each contain the title
+	 * of the habit/symptom as a key and an ArrayList containing all relevant
+	 * information as single pieces of data (see Datum).
 	 */
-	
-	//ArrayList containing all instances of a migraine
-	private Map<String,ArrayList<Datum>> migraines = new HashMap<>();
-	//ArrayList containing habits that might be related to migraine attacks
-	private Map<String,ArrayList<Datum>> habits = new HashMap<>();
-	//ArrayList containing symptoms that might be related to migraine attacks
-	private Map<String,ArrayList<Datum>> symptoms = new HashMap<>();
-	//ArrayList containing potential remedies tried when symptoms showed up
+
+	// ArrayList containing all instances of a migraine
+	private Map<String, ArrayList<Datum>> migraines = new HashMap<>();
+	// ArrayList containing habits that might be related to migraine attacks
+	private Map<String, ArrayList<Datum>> habits = new HashMap<>();
+	// ArrayList containing symptoms that might be related to migraine attacks
+	private Map<String, ArrayList<Datum>> symptoms = new HashMap<>();
+	// ArrayList containing potential remedies tried when symptoms showed up
 	private Map<String, ArrayList<Datum>> remedies = new HashMap<>();
 
-	//ArrayList containing all habits
+	// ArrayList containing all habits
 	private ArrayList<String> habitsList = new ArrayList<>();
-	//ArrayList containing all symptoms
+	// ArrayList containing all symptoms
 	private ArrayList<String> symptomsList = new ArrayList<>();
-	//ArrayList containing all remedies
+	// ArrayList containing all remedies
 	private ArrayList<String> remediesList = new ArrayList<>();
 
-	
+	/**
+	 * Creates an instance of DataModel
+	 * 
+	 * @param savePath an absolute path where the DataModel will be stored
+	 */
 	public DataModel(String savePath) {
 		SAVE_FILE = new File(savePath + "/" + SAVE_FILE_NAME);
 	}
-	
-	public void addMigraine(String migraine, Intensity intensity){
-		addEntry(migraines, "Migraine", new Date(),intensity);
+
+	/**
+	 * Adds a migraine with current time stamp to the data model.
+	 * 
+	 * @param intensity intensity of the attack
+	 */
+	public void addMigraine(Intensity intensity) {
+		addEntry(migraines, "Migraine", new Date(), intensity);
 	}
 
-	public void addMigraine(String migraine, Intensity intensity, Date date){
-		addEntry(migraines, "Migraine", date,intensity);
+	/**
+	 * Adds a migraine with custom time stamp to the data model.
+	 * 
+	 * @param intensity intensity of the attack
+	 * @param date      Date when the attack occurred
+	 */
+	public void addMigraine(Intensity intensity, Date date) {
+		addEntry(migraines, "Migraine", date, intensity);
 	}
 
-	public void addHabit(String habit, Intensity intensity){
+	/**
+	 * Adds a habit with current time stamp to the data model.
+	 * 
+	 * @param habit description of the habit
+	 */
+	public void addHabit(String habit) {
+		if (!habitsList.contains(habit))
+			habitsList.add(habit);
+
+		addEntry(habits, habit, new Date(), Intensity.noIntensity);
+	}
+
+	/**
+	 * Adds a habit with custom time stamp to the data model.
+	 * 
+	 * @param habit description of the habit
+	 * @param date  Date when the attack occurred
+	 */
+	public void addHabit(String habit, Date date) {
+		if (!habitsList.contains(habit))
+			habitsList.add(habit);
+
+		addEntry(habits, habit, date, Intensity.noIntensity);
+	}
+
+	/**
+	 * Adds a habit with current time stamp and intensity to the data model.
+	 * 
+	 * @param habit     description of the habit
+	 * @param intensity intensity of the habit
+	 */
+	public void addHabit(String habit, Intensity intensity) {
 		if (!habitsList.contains(habit))
 			habitsList.add(habit);
 
 		addEntry(habits, habit, new Date(), intensity);
 	}
 
-	public void addHabit(String habit, Intensity intensity, Date date){
+	/**
+	 * Adds a habit with custom timestamp and intensity to the data model
+	 * 
+	 * @param habit description of the habit
+	 * @param intensity intensity of the habit
+	 * @param date Date when the habit occurred
+	 */
+	public void addHabit(String habit, Intensity intensity, Date date) {
 		if (!habitsList.contains(habit))
 			habitsList.add(habit);
 
 		addEntry(habits, habit, date, intensity);
 	}
 
-	public void addSymptom(String symptom, Intensity intensity){
+	/**
+	 * Adds a sympton with current time stamp to the data model.
+	 * 
+	 * @param symptom   description of the symptom
+	 * @param intensity intensity of the symptom
+	 */
+	public void addSymptom(String symptom, Intensity intensity) {
 		if (!symptomsList.contains(symptom))
 			symptomsList.add(symptom);
-		addEntry(symptoms, symptom, new Date(),intensity);
+		addEntry(symptoms, symptom, new Date(), intensity);
 	}
 
-	public void addSymptom(String symptom, Intensity intensity, Date date){
+	/**
+	 * Adds a sympton with custom time stamp to the data model.
+	 * 
+	 * @param symptom   description of the symptom
+	 * @param intensity intensity of the symptom
+	 * @param date      Date when the symptom occurred
+	 */
+	public void addSymptom(String symptom, Intensity intensity, Date date) {
 		if (!symptomsList.contains(symptom))
 			symptomsList.add(symptom);
-		addEntry(symptoms, symptom, date,intensity);
+		addEntry(symptoms, symptom, date, intensity);
 	}
 
-	public void addRemedy(String remedy, Intensity intensity){
+	/**
+	 * Adds remedy with current time stamp to the data model.
+	 * 
+	 * @param remedy description of the remedy
+	 */
+
+	public void addRemedy(String remedy) {
 		if (!remediesList.contains(remedy))
 			remediesList.add(remedy);
-		addEntry(remedies, remedy, new Date(),intensity);
+		addEntry(remedies, remedy, new Date(), Intensity.noIntensity);
 	}
 
-	public void addRemedy(String remedy, Intensity intensity, Date date){
+	/**
+	 * Adds remedy with custom time stamp to the data model.
+	 * 
+	 * @param remedy description of the remedy
+	 * @param date   Date when remedy was applied
+	 */
+	public void addRemedy(String remedy, Date date) {
 		if (!remediesList.contains(remedy))
 			remediesList.add(remedy);
-		addEntry(remedies, remedy, date,intensity);
+		addEntry(remedies, remedy, date, Intensity.noIntensity);
 	}
 
-	//abstracts the task of adding entries to the different ArrayLists
-	private void addEntry(Map<String, ArrayList<Datum>> map, String key, Date date, Intensity intensity){
+	// abstracts the task of adding entries to the different ArrayLists
+	private void addEntry(Map<String, ArrayList<Datum>> map, String key, Date date, Intensity intensity) {
 
-		//create entry with key if it doesn't exist
+		// create entry with key if it doesn't exist
 		if (!map.containsKey(key))
-			map.put(key,new ArrayList<>());
+			map.put(key, new ArrayList<>());
 
-		//add new piece of data to ArrayList in according habit/
+		// add new piece of data to ArrayList in according habit/
 		map.get(key).add(new Datum(date, intensity));
 	}
 
-	public ArrayList<String> returnMigraines(){
+	/**
+	 * Returns migraines as list iterator.
+	 * 
+	 * @return Iterator<String> of size 1 containing "Migraine"
+	 */
+	public Iterator<String> returnMigraines() {
 		ArrayList<String> al = new ArrayList<>();
 		al.add("Migraine");
-		return al;
+		return al.iterator();
 	}
 
-	public ArrayList<String> returnHabits(){
-		return habitsList;
+	/**
+	 * Returns all habits as list iterator.
+	 * 
+	 * @return Iterator<String> containing habits
+	 */
+	public Iterator<String> returnHabits() {
+		return habitsList.iterator();
 	}
 
-	public ArrayList<String> returnSymptoms(){
-		return symptomsList;
+	/**
+	 * Returns all symptoms as list iterator.
+	 * 
+	 * @return Iterator<String> containing symptoms
+	 */
+	public Iterator<String> returnSymptoms() {
+		return symptomsList.iterator();
 	}
 
-	public ArrayList<String> returnRemedies(){ return remediesList;}
+	/**
+	 * Returns all remedies as list iterator.
+	 * 
+	 * @return Iterator<String> containing remedies
+	 */
+	public List<String> returnRemedies() {
+		return remediesList;
+	}
 
-	public void save(){
-		
+	/**
+	 * Saves data in save path provided in constructor.
+	 */
+	public void save() {
+
 		if (!SAVE_FILE.exists()) {
 			try {
 				SAVE_FILE.createNewFile();
@@ -162,12 +272,14 @@ public class DataModel implements Serializable {
 		}
 	}
 
-	//load contents of save file
-	public void load(){
+	/**
+	 * Loads data if file exists in save path provided in constructor.
+	 */
+	public void load() {
 
 		DataModel data = null;
 
-		//abort if it does not exist
+		// abort if it does not exist
 		if (!SAVE_FILE.exists())
 			return;
 
@@ -176,7 +288,7 @@ public class DataModel implements Serializable {
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
 			data = (DataModel) ois.readObject();
-			
+
 			ois.close();
 
 		} catch (IOException | ClassNotFoundException e) {
@@ -192,19 +304,26 @@ public class DataModel implements Serializable {
 		this.symptomsList = data.symptomsList;
 	}
 
-	public static void deleteSaveFile(){
+	/**
+	 * Deletes the file in save path provided in constructor.
+	 */
+	public static void deleteSaveFile() {
 		SAVE_FILE.delete();
 	}
 
-	//printing for testing
-	public String print(){
+	/**
+	 * Prints all data in the terminal.
+	 * 
+	 * @return String containing the contents printed to the terminal
+	 */
+	public String print() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n");
-		for (String s : migraines.keySet()){
+		for (String s : migraines.keySet()) {
 			sb.append(s);
 			sb.append("\n");
 			System.out.println(s);
-			for (Datum d: Objects.requireNonNull(migraines.get(s))) {
+			for (Datum d : Objects.requireNonNull(migraines.get(s))) {
 				sb.append(d.date + ", " + d.intensity);
 				sb.append("\n");
 			}
@@ -212,38 +331,38 @@ public class DataModel implements Serializable {
 		}
 		sb.append("\n");
 		sb.append("Habits");
-		sb.append("\n");		
+		sb.append("\n");
 		for (String s : habits.keySet()) {
 			sb.append(s);
 			sb.append("\n");
-			for (Datum d : Objects.requireNonNull(habits.get(s))){
+			for (Datum d : Objects.requireNonNull(habits.get(s))) {
 				sb.append(d.date + ", " + d.intensity);
 				sb.append("\n");
-		}
+			}
 		}
 
-		sb.append("\n");	
-		sb.append("Symptoms");	
-		sb.append("\n");	
-		
-		for (String s : symptoms.keySet()){
+		sb.append("\n");
+		sb.append("Symptoms");
+		sb.append("\n");
+
+		for (String s : symptoms.keySet()) {
 			sb.append(s);
-			sb.append("\n");	
-		for (Datum d: Objects.requireNonNull(symptoms.get(s))){
+			sb.append("\n");
+			for (Datum d : Objects.requireNonNull(symptoms.get(s))) {
 				sb.append(d.date + ", " + d.intensity);
 				sb.append("\n");
 			}
 
 		}
 
-		sb.append("\n");	
-		sb.append("Remedies");	
-		sb.append("\n");	
-		
-		for (String s : remedies.keySet()){
+		sb.append("\n");
+		sb.append("Remedies");
+		sb.append("\n");
+
+		for (String s : remedies.keySet()) {
 			sb.append(s);
-			sb.append("\n");	
-			for (Datum d: Objects.requireNonNull(remedies.get(s))){
+			sb.append("\n");
+			for (Datum d : Objects.requireNonNull(remedies.get(s))) {
 				sb.append(d.date + ", " + d.intensity);
 				sb.append("\n");
 			}
