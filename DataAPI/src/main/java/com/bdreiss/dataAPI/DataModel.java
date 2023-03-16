@@ -23,11 +23,6 @@ public class DataModel implements Serializable {
 	 * @author Bernd Reiß
 	 */
 
-	private static final long serialVersionUID = 1L;
-
-	private static File SAVE_FILE;
-	private static String SAVE_FILE_NAME = "DataModel";
-
 	/*
 	 * Representation of a single piece of data containing the date and intensity of
 	 * the habit/symptom.
@@ -51,6 +46,11 @@ public class DataModel implements Serializable {
 	 * information as single pieces of data (see Datum).
 	 */
 
+	private static final long serialVersionUID = 1L;
+
+	private File saveFile;
+	private String saveFileName = "DataModel";
+
 	// ArrayList containing all instances of a migraine
 	private Map<String, ArrayList<Datum>> migraines = new HashMap<>();
 	// ArrayList containing habits that might be related to migraine attacks
@@ -67,13 +67,29 @@ public class DataModel implements Serializable {
 	// ArrayList containing all remedies
 	private ArrayList<String> remediesList = new ArrayList<>();
 
+	public File getSaveFile() {
+		return saveFile;
+	}
+
+	public void setSaveFile(File saveFile) {
+		this.saveFile = saveFile;
+	}
+
+	public String getSaveFileName() {
+		return saveFileName;
+	}
+
+	public void setSaveFileName(String saveFileName) {
+		this.saveFileName = saveFileName;
+	}
+
 	/**
 	 * Creates an instance of DataModel
 	 * 
 	 * @param savePath an absolute path where the DataModel will be stored
 	 */
 	public DataModel(String savePath) {
-		SAVE_FILE = new File(savePath + "/" + SAVE_FILE_NAME);
+		saveFile = new File(savePath + "/" + saveFileName);
 	}
 
 	/**
@@ -136,9 +152,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds a habit with custom timestamp and intensity to the data model
 	 * 
-	 * @param habit description of the habit
+	 * @param habit     description of the habit
 	 * @param intensity intensity of the habit
-	 * @param date Date when the habit occurred
+	 * @param date      Date when the habit occurred
 	 */
 	public void addHabit(String habit, Intensity intensity, Date date) {
 		if (!habitsList.contains(habit))
@@ -220,7 +236,7 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Returns all habits as list iterator.
-	 * 
+	 *
 	 * @return Iterator<String> containing habits
 	 */
 	public Iterator<String> returnHabits() {
@@ -229,7 +245,7 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Returns all symptoms as list iterator.
-	 * 
+	 *
 	 * @return Iterator<String> containing symptoms
 	 */
 	public Iterator<String> returnSymptoms() {
@@ -238,7 +254,7 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Returns all remedies as list iterator.
-	 * 
+	 *
 	 * @return Iterator<String> containing remedies
 	 */
 	public List<String> returnRemedies() {
@@ -250,16 +266,16 @@ public class DataModel implements Serializable {
 	 */
 	public void save() {
 
-		if (!SAVE_FILE.exists()) {
+		if (!saveFile.exists()) {
 			try {
-				SAVE_FILE.createNewFile();
+				saveFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
 		try {
-			FileOutputStream fos = new FileOutputStream(SAVE_FILE);
+			FileOutputStream fos = new FileOutputStream(saveFile);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 
 			oos.writeObject(this);
@@ -280,11 +296,11 @@ public class DataModel implements Serializable {
 		DataModel data = null;
 
 		// abort if it does not exist
-		if (!SAVE_FILE.exists())
+		if (!saveFile.exists())
 			return;
 
 		try {
-			FileInputStream fis = new FileInputStream(SAVE_FILE);
+			FileInputStream fis = new FileInputStream(saveFile);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
 			data = (DataModel) ois.readObject();
@@ -307,8 +323,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Deletes the file in save path provided in constructor.
 	 */
-	public static void deleteSaveFile() {
-		SAVE_FILE.delete();
+	public void deleteSaveFile() {
+		saveFile.delete();
 	}
 
 	/**
