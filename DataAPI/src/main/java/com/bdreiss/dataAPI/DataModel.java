@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,31 +19,20 @@ import java.util.Objects;
 public class DataModel implements Serializable {
 
 	/**
-	 * Class that represents the data model.
+	 * Class that represents a data model for keeping track of ailments.
+	 * 
+	 * <p>
+	 * It contains methods to store and retrieve causes, symptoms and remedies
+	 * relating to ailments.
+	 * </p>
 	 * 
 	 * @author Bernd Reiß
 	 */
 
-	/*
-	 * Representation of a single piece of data containing the date and intensity of
-	 * the habit/symptom.
-	 */
-
-	private class Datum implements Serializable {
-		private static final long serialVersionUID = 1L;
-		public Date date;
-		public Intensity intensity;
-
-		public Datum(Date date, Intensity intensity) {
-			this.date = date;
-			this.intensity = intensity;
-		}
-
-	}
 
 	/*
 	 * The following Maps contain all the relevant data. They each contain the title
-	 * of the habit/symptom as a key and an ArrayList containing all relevant
+	 * of the cause/symptom/remedy as a key and an ArrayList containing all relevant
 	 * information as single pieces of data (see Datum).
 	 */
 
@@ -51,17 +41,19 @@ public class DataModel implements Serializable {
 	private File saveFile;
 	private String saveFileName = "DataModel";
 
-	// ArrayList containing all instances of a migraine
-	private Map<String, ArrayList<Datum>> migraines = new HashMap<>();
-	// ArrayList containing habits that might be related to migraine attacks
-	private Map<String, ArrayList<Datum>> habits = new HashMap<>();
-	// ArrayList containing symptoms that might be related to migraine attacks
+	// ArrayList containing ailments
+	private Map<String, ArrayList<Datum>> ailments = new HashMap<>();
+	// ArrayList containing causes that might be related to ailment
+	private Map<String, ArrayList<Datum>> causes = new HashMap<>();
+	// ArrayList containing symptoms that might be related to ailment
 	private Map<String, ArrayList<Datum>> symptoms = new HashMap<>();
 	// ArrayList containing potential remedies tried when symptoms showed up
 	private Map<String, ArrayList<Datum>> remedies = new HashMap<>();
 
-	// ArrayList containing all habits
-	private ArrayList<String> habitsList = new ArrayList<>();
+	// ArrayList containing all ailments
+	private ArrayList<String> ailmentsList = new ArrayList<>();
+	// ArrayList containing all causes
+	private ArrayList<String> causesList = new ArrayList<>();
 	// ArrayList containing all symptoms
 	private ArrayList<String> symptomsList = new ArrayList<>();
 	// ArrayList containing all remedies
@@ -86,161 +78,209 @@ public class DataModel implements Serializable {
 	/**
 	 * Creates an instance of DataModel
 	 * 
-	 * @param savePath an absolute path where the DataModel will be stored
+	 * @param savePath String absolute path where the DataModel will be stored
 	 */
 	public DataModel(String savePath) {
 		saveFile = new File(savePath + "/" + saveFileName);
 	}
 
 	/**
-	 * Adds a migraine with current time stamp to the data model.
+	 * Adds an ailment with current time stamp and intensity to the data model.
 	 * 
-	 * @param intensity intensity of the attack
+	 * @param ailment   String ailment to be added
+	 * @param intensity Intensity of ailment
 	 */
-	public void addMigraine(Intensity intensity) {
-		addEntry(migraines, "Migraine", new Date(), intensity);
+	public void addAilment(String ailment, Intensity intensity) {
+		addEntry(ailments, ailment, intensity, new Date());
 	}
 
 	/**
-	 * Adds a migraine with custom time stamp to the data model.
+	 * Adds an ailment with custom time stamp to the data model.
 	 * 
-	 * @param intensity intensity of the attack
-	 * @param date      Date when the attack occurred
+	 * @param ailment   String ailment to be added
+	 * @param intensity Intensity of ailment
+	 * @param date      Date when ailment occurred
 	 */
-	public void addMigraine(Intensity intensity, Date date) {
-		addEntry(migraines, "Migraine", date, intensity);
+	public void addAilment(String ailment, Intensity intensity, Date date) {
+		addEntry(ailments, ailment, intensity, date);
 	}
 
 	/**
-	 * Adds a habit with current time stamp to the data model.
+	 * Adds a cause with current time stamp to the data model.
 	 * 
-	 * @param habit description of the habit
+	 * @param cause String description of the cause
 	 */
-	public void addHabit(String habit) {
-		if (!habitsList.contains(habit))
-			habitsList.add(habit);
-
-		addEntry(habits, habit, new Date(), Intensity.noIntensity);
+	public void addCause(String cause) {
+		if (!causesList.contains(cause)) {
+			causesList.add(cause);
+			Collections.sort(causesList);
+		}
+		addEntry(causes, cause, Intensity.noIntensity, new Date());
 	}
 
 	/**
-	 * Adds a habit with custom time stamp to the data model.
+	 * Adds a cause with custom time stamp to the data model.
 	 * 
-	 * @param habit description of the habit
+	 * @param cause String description of the cause
 	 * @param date  Date when the attack occurred
 	 */
-	public void addHabit(String habit, Date date) {
-		if (!habitsList.contains(habit))
-			habitsList.add(habit);
+	public void addCause(String cause, Date date) {
+		if (!causesList.contains(cause)) {
+			causesList.add(cause);
+			Collections.sort(causesList);
+		}
 
-		addEntry(habits, habit, date, Intensity.noIntensity);
+		addEntry(causes, cause, Intensity.noIntensity, date);
 	}
 
 	/**
-	 * Adds a habit with current time stamp and intensity to the data model.
+	 * Adds a cause with current time stamp and intensity to the data model.
 	 * 
-	 * @param habit     description of the habit
-	 * @param intensity intensity of the habit
+	 * @param cause     String description of the cause
+	 * @param intensity Intensity of the cause
 	 */
-	public void addHabit(String habit, Intensity intensity) {
-		if (!habitsList.contains(habit))
-			habitsList.add(habit);
+	public void addCause(String cause, Intensity intensity) {
+		if (!causesList.contains(cause)) {
+			causesList.add(cause);
+			Collections.sort(causesList);
+		}
 
-		addEntry(habits, habit, new Date(), intensity);
+		addEntry(causes, cause, intensity, new Date());
 	}
 
 	/**
-	 * Adds a habit with custom timestamp and intensity to the data model
+	 * Adds a cause with custom timestamp and intensity to the data model
 	 * 
-	 * @param habit     description of the habit
-	 * @param intensity intensity of the habit
-	 * @param date      Date when the habit occurred
+	 * @param cause     String description of the cause
+	 * @param intensity Intensity of the cause
+	 * @param date      Date when the cause occurred
 	 */
-	public void addHabit(String habit, Intensity intensity, Date date) {
-		if (!habitsList.contains(habit))
-			habitsList.add(habit);
+	public void addCause(String cause, Intensity intensity, Date date) {
+		if (!causesList.contains(cause)) {
+			causesList.add(cause);
+			Collections.sort(causesList);
+		}
 
-		addEntry(habits, habit, date, intensity);
+		addEntry(causes, cause, intensity, date);
 	}
 
 	/**
 	 * Adds a sympton with current time stamp to the data model.
 	 * 
-	 * @param symptom   description of the symptom
-	 * @param intensity intensity of the symptom
+	 * @param symptom   String description of the symptom
+	 * @param intensity Intensity of the symptom
 	 */
 	public void addSymptom(String symptom, Intensity intensity) {
-		if (!symptomsList.contains(symptom))
+		if (!symptomsList.contains(symptom)) {
 			symptomsList.add(symptom);
-		addEntry(symptoms, symptom, new Date(), intensity);
+			Collections.sort(symptomsList);
+		}
+		addEntry(symptoms, symptom, intensity, new Date());
 	}
 
 	/**
 	 * Adds a sympton with custom time stamp to the data model.
 	 * 
-	 * @param symptom   description of the symptom
-	 * @param intensity intensity of the symptom
+	 * @param symptom   String description of the symptom
+	 * @param intensity Intensity of the symptom
 	 * @param date      Date when the symptom occurred
 	 */
 	public void addSymptom(String symptom, Intensity intensity, Date date) {
-		if (!symptomsList.contains(symptom))
+		if (!symptomsList.contains(symptom)) {
 			symptomsList.add(symptom);
-		addEntry(symptoms, symptom, date, intensity);
+			Collections.sort(symptomsList);
+		}
+		addEntry(symptoms, symptom, intensity, date);
 	}
 
 	/**
 	 * Adds remedy with current time stamp to the data model.
 	 * 
-	 * @param remedy description of the remedy
+	 * @param remedy String description of the remedy
 	 */
 
 	public void addRemedy(String remedy) {
-		if (!remediesList.contains(remedy))
+		if (!remediesList.contains(remedy)) {
 			remediesList.add(remedy);
-		addEntry(remedies, remedy, new Date(), Intensity.noIntensity);
+			Collections.sort(remediesList);
+		}
+		addEntry(remedies, remedy, Intensity.noIntensity, new Date());
 	}
+
 
 	/**
 	 * Adds remedy with custom time stamp to the data model.
 	 * 
-	 * @param remedy description of the remedy
+	 * @param remedy String description of the remedy
 	 * @param date   Date when remedy was applied
 	 */
 	public void addRemedy(String remedy, Date date) {
-		if (!remediesList.contains(remedy))
+		if (!remediesList.contains(remedy)) {
 			remediesList.add(remedy);
-		addEntry(remedies, remedy, date, Intensity.noIntensity);
+			Collections.sort(remediesList);
+		}
+
+		addEntry(remedies, remedy, Intensity.noIntensity, date);
 	}
 
+	/**
+	 * Adds remedy with current time stamp and intensity to the data model.
+	 * 
+	 * @param remedy String description of the remedy
+	 * @param intensity Intensity with which remedy was applied
+	 */
+
+	public void addRemedy(String remedy, Intensity intensity) {
+		if (!remediesList.contains(remedy)) {
+			remediesList.add(remedy);
+			Collections.sort(remediesList);
+		}
+		addEntry(remedies, remedy, intensity, new Date());
+	}
+
+	/**
+	 * Adds remedy with custom time stamp and intensity to the data model.
+	 * 
+	 * @param remedy String description of the remedy
+	 * @param intensity Intensity with which remedy was applied
+	 * @param date Date when remedy was applied
+	 */
+
+	public void addRemedy(String remedy, Intensity intensity, Date date) {
+		if (!remediesList.contains(remedy)) {
+			remediesList.add(remedy);
+			Collections.sort(remediesList);
+		}
+		addEntry(remedies, remedy, intensity, date);
+	}
+	
 	// abstracts the task of adding entries to the different ArrayLists
-	private void addEntry(Map<String, ArrayList<Datum>> map, String key, Date date, Intensity intensity) {
+	private void addEntry(Map<String, ArrayList<Datum>> map, String key, Intensity intensity, Date date) {
 
 		// create entry with key if it doesn't exist
 		if (!map.containsKey(key))
 			map.put(key, new ArrayList<>());
 
-		// add new piece of data to ArrayList in according habit/
+		// add new piece of data to ArrayList in according cause
 		map.get(key).add(new Datum(date, intensity));
 	}
 
 	/**
-	 * Returns migraines as list iterator.
+	 * Returns ailments as list iterator.
 	 * 
-	 * @return Iterator<String> of size 1 containing "Migraine"
+	 * @return Iterator<String> containing ailments
 	 */
-	public Iterator<String> returnMigraines() {
-		ArrayList<String> al = new ArrayList<>();
-		al.add("Migraine");
-		return al.iterator();
+	public Iterator<String> getAilmentsList() {
+		return ailmentsList.iterator();
 	}
 
 	/**
-	 * Returns all habits as list iterator.
+	 * Returns all causes as list iterator.
 	 *
-	 * @return Iterator<String> containing habits
+	 * @return Iterator<String> containing causes
 	 */
-	public Iterator<String> returnHabits() {
-		return habitsList.iterator();
+	public Iterator<String> getCausesList() {
+		return causesList.iterator();
 	}
 
 	/**
@@ -248,7 +288,7 @@ public class DataModel implements Serializable {
 	 *
 	 * @return Iterator<String> containing symptoms
 	 */
-	public Iterator<String> returnSymptoms() {
+	public Iterator<String> getSymptomsList() {
 		return symptomsList.iterator();
 	}
 
@@ -257,8 +297,84 @@ public class DataModel implements Serializable {
 	 *
 	 * @return Iterator<String> containing remedies
 	 */
-	public List<String> returnRemedies() {
-		return remediesList;
+	public Iterator<String> getRemediesList() {
+		return remediesList.iterator();
+	}
+
+	/**
+	 * Returns the size of list of ailments.
+	 * 
+	 * @return size of list of ailments
+	 */
+	public int getAilmentsListSize() {
+		return ailments.size();
+	}
+
+	/**
+	 * Returns the size of list of causes.
+	 * 
+	 * @return size of list of causes
+	 */
+	public int getCausesListSize() {
+		return causesList.size();
+	}
+
+	/**
+	 * Returns the size of list of symptoms.
+	 * 
+	 * @return size of list of symptoms
+	 */
+	public int getSymptomsListSize() {
+		return symptomsList.size();
+	}
+
+	/**
+	 * Returns the size of list of remedies.
+	 * 
+	 * @return size of list of remedies
+	 */
+	public int getRemediesListSize() {
+		return remediesList.size();
+	}
+/**
+ *  Returns all data when ailment occurred (including Date and Intensity) as Iterator<Datum>.
+ * 
+ * @param ailment String describing ailment
+ * @return Iterator<Datum> containing data when and how intense ailment occurred
+ */
+	public Iterator<Datum> getAilmentData(String ailment) {
+		// TODO implement return AilmentData
+		return null;
+	}
+/**
+ * Returns all datas when cause occurred (including Date and Intensity) as Iterator<Datum>.
+ * 
+ * @param cause String describing cause
+ * @return Iterator<Datum> containing data when and how intense cause occurred.
+ */
+	public Iterator<Datum> getCauseData(String cause) {
+		// TODO implement return CauseData
+		return null;
+	}
+/**
+ * Returns all data when symptom occurred (including Date and Intensity) as Iterator<Datum>.
+ * 
+ * @param symptom String describing symptom
+ * @return Iterator<Datum> containing data when and how intense symptom occurred
+ */
+	public Iterator<Datum> getSymptomData(String symptom) {
+		// TODO implement return SymptomtData
+		return null;
+	}
+	/**
+	 * Returns all data when remedy was used (including Date and Intensity) as Iterator<Datum>.
+	 * 
+	 * @param remedy String describing remedy.
+	 * @return Iterator<Datum> containing data when and how intense remedy was used
+	 */
+	public Iterator<Datum> getRemedyData(String remedy) {
+		// TODO implement return RemedyData
+		return null;
 	}
 
 	/**
@@ -311,9 +427,9 @@ public class DataModel implements Serializable {
 			e.printStackTrace();
 		}
 
-		this.habits = data.habits;
-		this.habitsList = data.habitsList;
-		this.migraines = data.migraines;
+		this.causes = data.causes;
+		this.causesList = data.causesList;
+		this.ailments = data.ailments;
 		this.remedies = data.remedies;
 		this.remediesList = data.remediesList;
 		this.symptoms = data.symptoms;
@@ -335,24 +451,24 @@ public class DataModel implements Serializable {
 	public String print() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n");
-		for (String s : migraines.keySet()) {
+		for (String s : ailments.keySet()) {
 			sb.append(s);
 			sb.append("\n");
 			System.out.println(s);
-			for (Datum d : Objects.requireNonNull(migraines.get(s))) {
-				sb.append(d.date + ", " + d.intensity);
+			for (Datum d : Objects.requireNonNull(ailments.get(s))) {
+				sb.append(d.getDate() + ", " + d.getIntensity());
 				sb.append("\n");
 			}
 
 		}
 		sb.append("\n");
-		sb.append("Habits");
+		sb.append("Causes");
 		sb.append("\n");
-		for (String s : habits.keySet()) {
+		for (String s : causes.keySet()) {
 			sb.append(s);
 			sb.append("\n");
-			for (Datum d : Objects.requireNonNull(habits.get(s))) {
-				sb.append(d.date + ", " + d.intensity);
+			for (Datum d : Objects.requireNonNull(causes.get(s))) {
+				sb.append(d.getDate() + ", " + d.getIntensity());
 				sb.append("\n");
 			}
 		}
@@ -365,7 +481,7 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(symptoms.get(s))) {
-				sb.append(d.date + ", " + d.intensity);
+				sb.append(d.getDate() + ", " + d.getIntensity());
 				sb.append("\n");
 			}
 
@@ -379,7 +495,7 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(remedies.get(s))) {
-				sb.append(d.date + ", " + d.intensity);
+				sb.append(d.getDate() + ", " + d.getIntensity());
 				sb.append("\n");
 			}
 
