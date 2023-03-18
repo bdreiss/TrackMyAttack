@@ -89,9 +89,12 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param ailment   String ailment to be added
 	 * @param intensity Intensity of ailment
+	 * @return Date when ailment was added
 	 */
-	public void addAilment(String ailment, Intensity intensity) {
-		addEntry(ailments, ailment, intensity, new Date());
+	public Date addAilment(String ailment, Intensity intensity) {
+		Date date = new Date();
+		addEntry(ailments, ailment, intensity, date);
+		return date;
 	}
 
 	/**
@@ -109,13 +112,16 @@ public class DataModel implements Serializable {
 	 * Adds a cause with current time stamp to the data model.
 	 * 
 	 * @param cause String description of the cause
+	 * @return Date when cause was added
 	 */
-	public void addCause(String cause) {
+	public Date addCause(String cause) {
 		if (!causesList.contains(cause)) {
 			causesList.add(cause);
 			Collections.sort(causesList);
 		}
-		addEntry(causes, cause, Intensity.noIntensity, new Date());
+		Date date = new Date();
+		addEntry(causes, cause, Intensity.noIntensity, date);
+		return date;
 	}
 
 	/**
@@ -138,14 +144,17 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause     String description of the cause
 	 * @param intensity Intensity of the cause
+	 * @return Date when cause was added
 	 */
-	public void addCause(String cause, Intensity intensity) {
+	public Date addCause(String cause, Intensity intensity) {
 		if (!causesList.contains(cause)) {
 			causesList.add(cause);
 			Collections.sort(causesList);
 		}
 
-		addEntry(causes, cause, intensity, new Date());
+		Date date = new Date();
+		addEntry(causes, cause, intensity, date);
+		return date;
 	}
 
 	/**
@@ -169,13 +178,16 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param symptom   String description of the symptom
 	 * @param intensity Intensity of the symptom
+	 * @return Date when symptom was added
 	 */
-	public void addSymptom(String symptom, Intensity intensity) {
+	public Date addSymptom(String symptom, Intensity intensity) {
 		if (!symptomsList.contains(symptom)) {
 			symptomsList.add(symptom);
 			Collections.sort(symptomsList);
 		}
-		addEntry(symptoms, symptom, intensity, new Date());
+		Date date = new Date();
+		addEntry(symptoms, symptom, intensity, date);
+		return date;
 	}
 
 	/**
@@ -197,14 +209,17 @@ public class DataModel implements Serializable {
 	 * Adds remedy with current time stamp to the data model.
 	 * 
 	 * @param remedy String description of the remedy
+	 * @return Date when remedy was added
 	 */
 
-	public void addRemedy(String remedy) {
+	public Date addRemedy(String remedy) {
 		if (!remediesList.contains(remedy)) {
 			remediesList.add(remedy);
 			Collections.sort(remediesList);
 		}
-		addEntry(remedies, remedy, Intensity.noIntensity, new Date());
+		Date date = new Date();
+		addEntry(remedies, remedy, Intensity.noIntensity, date);
+		return date;
 	}
 
 
@@ -228,14 +243,17 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy String description of the remedy
 	 * @param intensity Intensity with which remedy was applied
+	 * @return Date when remedy was added
 	 */
 
-	public void addRemedy(String remedy, Intensity intensity) {
+	public Date addRemedy(String remedy, Intensity intensity) {
 		if (!remediesList.contains(remedy)) {
 			remediesList.add(remedy);
 			Collections.sort(remediesList);
 		}
-		addEntry(remedies, remedy, intensity, new Date());
+		Date date = new Date();
+		addEntry(remedies, remedy, intensity, date);
+		return date;
 	}
 
 	/**
