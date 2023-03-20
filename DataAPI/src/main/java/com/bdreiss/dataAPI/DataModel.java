@@ -361,8 +361,7 @@ public class DataModel implements Serializable {
  * @return Iterator<Datum> containing data when and how intense ailment occurred
  */
 	public Iterator<Datum> getAilmentData(String ailment) {
-		// TODO implement return AilmentData
-		return null;
+		return ailments.get(ailment).iterator();
 	}
 /**
  * Returns all datas when cause occurred (including Date and Intensity) as Iterator<Datum>.
@@ -371,8 +370,7 @@ public class DataModel implements Serializable {
  * @return Iterator<Datum> containing data when and how intense cause occurred.
  */
 	public Iterator<Datum> getCauseData(String cause) {
-		// TODO implement return CauseData
-		return null;
+		return causes.get(cause).iterator();
 	}
 /**
  * Returns all data when symptom occurred (including Date and Intensity) as Iterator<Datum>.
@@ -381,8 +379,7 @@ public class DataModel implements Serializable {
  * @return Iterator<Datum> containing data when and how intense symptom occurred
  */
 	public Iterator<Datum> getSymptomData(String symptom) {
-		// TODO implement return SymptomtData
-		return null;
+		return symptoms.get(symptom).iterator();
 	}
 	/**
 	 * Returns all data when remedy was used (including Date and Intensity) as Iterator<Datum>.
@@ -391,8 +388,7 @@ public class DataModel implements Serializable {
 	 * @return Iterator<Datum> containing data when and how intense remedy was used
 	 */
 	public Iterator<Datum> getRemedyData(String remedy) {
-		// TODO implement return RemedyData
-		return null;
+		return remedies.get(remedy).iterator();
 	}
 
 	/**

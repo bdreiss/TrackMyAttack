@@ -30,24 +30,11 @@ class Main{
 	
 		DataModel data = new DataModel("Test");
 		
-		for (int i=0;i<10000000;i++)
-			data.addHabit("Test", Intensity.high);
-		
+		System.out.println("Test");
 		data.save();
 		
 	}
 	
 }
-
-class Datum implements Serializable{
-	public Date date;
-	public int intensity;
-
-	public Datum (Date date, int intensity){
-		this.date = date;
-		this.intensity = intensity;
-	}
 	
-}
-
 

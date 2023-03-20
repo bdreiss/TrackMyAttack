@@ -9,20 +9,15 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		DataModel data = new DataModel(".");
-		
+		DataModel data = new DataModel("files/");
 		data.load();
-		
+
+		//create instance of Date for yesterday
 		Date in = new Date();
 		LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(), ZoneId.systemDefault());
 		ldt = ldt.minusDays(1);
 		Date date = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
 		
-		
-//		data.addHabit("Test",Intensity.high,date);
-//		data.addHabit("Stress",Intensity.high,date);
-//		data.addSymptom("Blähungen",Intensity.low,date);
-//		data.addSymptom("Depressiver Schub",Intensity.high,date);
 
 		data.print();
 		
@@ -33,7 +28,7 @@ public class Main {
 		for (int i = 0; i < 10000000;i++) {
 			
 			for(int j=0; j < 10; j++) {
-				data.addHabit(String.valueOf(i), Intensity.high);
+				data.addCause(String.valueOf(i), Intensity.high);
 			}
 			
 			if (i%100000==0) {
