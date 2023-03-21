@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -53,7 +54,7 @@ class DataModelTest {
 		String[] ailments = { "Migraine" };
 		Intensity[] intensities = { Intensity.medium };
 		for (int i = 0; i < ailments.length; i++) {
-			Date date = data.addAilment(ailments[i], intensities[i]);
+			LocalDateTime date = data.addAilment(ailments[i], intensities[i]);
 			assert (data.getAilmentsListSize() == 1);
 			Iterator<Datum> it = data.getAilmentData(ailments[i]);
 			
@@ -67,10 +68,10 @@ class DataModelTest {
 	}
 	@Test
 	void addAilmentWithCustomDate() {
-		Date date = new Date();
+		LocalDateTime date = LocalDateTime.now();
 		String[] ailments = { "Migraine" };
 		Intensity[] intensities = { Intensity.medium };
-		Date[] dates = {date};
+		LocalDateTime[] dates = {date};
 		for (int i = 0; i < ailments.length; i++) {
 			data.addAilment(ailments[i],intensities[i],dates[i]);
 			assert (data.getAilmentsListSize() == 1);

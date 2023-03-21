@@ -1,6 +1,7 @@
 package main.java.com.bdreiss.dataAPI;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Datum implements Serializable {
@@ -10,19 +11,19 @@ public class Datum implements Serializable {
 	 */
 
 	private static final long serialVersionUID = 1L;
-	private Date date;
+	private LocalDateTime date;
 	private Intensity intensity;
 
-	public Datum(Date date, Intensity intensity) {
+	public Datum(LocalDateTime date, Intensity intensity) {
 		this.date = date;
 		this.intensity = intensity;
 	}
 
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 

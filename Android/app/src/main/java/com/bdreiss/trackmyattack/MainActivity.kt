@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import main.java.com.bdreiss.dataAPI.DataModel
 import main.java.com.bdreiss.dataAPI.Intensity
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
@@ -20,9 +21,12 @@ class MainActivity : AppCompatActivity() {
 
         val data = DataModel(filesDir.absolutePath)
 
-
-
         data.load()
+
+        File(filesDir.absolutePath + "/Text.txt").printWriter().use{out ->
+            out.println(data.print())
+        }
+
         val textView = findViewById<TextView>(R.id.textView)
 
         textView.setText(data.print())
@@ -44,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            data.addHabit(text, intensity)
+            data.addCause(text, intensity)
             data.save()
 
             textView.setText(data.print())
@@ -93,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            data.addMigraine("Migraine", intensity)
+            data.addAilment("Migraine", intensity)
             data.save()
 
             textView.setText(data.print())

@@ -7,12 +7,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -89,10 +88,10 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param ailment   String ailment to be added
 	 * @param intensity Intensity of ailment
-	 * @return Date when ailment was added
+	 * @return LocalDateTime when ailment was added
 	 */
-	public Date addAilment(String ailment, Intensity intensity) {
-		Date date = new Date();
+	public LocalDateTime addAilment(String ailment, Intensity intensity) {
+		LocalDateTime date = LocalDateTime.now();
 		addEntry(ailments, ailment, intensity, date);
 		return date;
 	}
@@ -102,9 +101,9 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param ailment   String ailment to be added
 	 * @param intensity Intensity of ailment
-	 * @param date      Date when ailment occurred
+	 * @param date      LocalDateTime when ailment occurred
 	 */
-	public void addAilment(String ailment, Intensity intensity, Date date) {
+	public void addAilment(String ailment, Intensity intensity, LocalDateTime date) {
 		addEntry(ailments, ailment, intensity, date);
 	}
 
@@ -112,14 +111,14 @@ public class DataModel implements Serializable {
 	 * Adds a cause with current time stamp to the data model.
 	 * 
 	 * @param cause String description of the cause
-	 * @return Date when cause was added
+	 * @return LocalDateTime when cause was added
 	 */
-	public Date addCause(String cause) {
+	public LocalDateTime addCause(String cause) {
 		if (!causesList.contains(cause)) {
 			causesList.add(cause);
 			Collections.sort(causesList);
 		}
-		Date date = new Date();
+		LocalDateTime date = LocalDateTime.now();
 		addEntry(causes, cause, Intensity.noIntensity, date);
 		return date;
 	}
@@ -128,9 +127,9 @@ public class DataModel implements Serializable {
 	 * Adds a cause with custom time stamp to the data model.
 	 * 
 	 * @param cause String description of the cause
-	 * @param date  Date when the attack occurred
+	 * @param date  LocalDateTime when the attack occurred
 	 */
-	public void addCause(String cause, Date date) {
+	public void addCause(String cause, LocalDateTime date) {
 		if (!causesList.contains(cause)) {
 			causesList.add(cause);
 			Collections.sort(causesList);
@@ -144,15 +143,15 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause     String description of the cause
 	 * @param intensity Intensity of the cause
-	 * @return Date when cause was added
+	 * @return LocalDateTime when cause was added
 	 */
-	public Date addCause(String cause, Intensity intensity) {
+	public LocalDateTime addCause(String cause, Intensity intensity) {
 		if (!causesList.contains(cause)) {
 			causesList.add(cause);
 			Collections.sort(causesList);
 		}
 
-		Date date = new Date();
+		LocalDateTime date = LocalDateTime.now();
 		addEntry(causes, cause, intensity, date);
 		return date;
 	}
@@ -162,9 +161,9 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause     String description of the cause
 	 * @param intensity Intensity of the cause
-	 * @param date      Date when the cause occurred
+	 * @param date      LocalDateTime when the cause occurred
 	 */
-	public void addCause(String cause, Intensity intensity, Date date) {
+	public void addCause(String cause, Intensity intensity, LocalDateTime date) {
 		if (!causesList.contains(cause)) {
 			causesList.add(cause);
 			Collections.sort(causesList);
@@ -178,14 +177,14 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param symptom   String description of the symptom
 	 * @param intensity Intensity of the symptom
-	 * @return Date when symptom was added
+	 * @return LocalDateTime when symptom was added
 	 */
-	public Date addSymptom(String symptom, Intensity intensity) {
+	public LocalDateTime addSymptom(String symptom, Intensity intensity) {
 		if (!symptomsList.contains(symptom)) {
 			symptomsList.add(symptom);
 			Collections.sort(symptomsList);
 		}
-		Date date = new Date();
+		LocalDateTime date = LocalDateTime.now();
 		addEntry(symptoms, symptom, intensity, date);
 		return date;
 	}
@@ -195,9 +194,9 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param symptom   String description of the symptom
 	 * @param intensity Intensity of the symptom
-	 * @param date      Date when the symptom occurred
+	 * @param date      LocalDateTime when the symptom occurred
 	 */
-	public void addSymptom(String symptom, Intensity intensity, Date date) {
+	public void addSymptom(String symptom, Intensity intensity, LocalDateTime date) {
 		if (!symptomsList.contains(symptom)) {
 			symptomsList.add(symptom);
 			Collections.sort(symptomsList);
@@ -209,15 +208,15 @@ public class DataModel implements Serializable {
 	 * Adds remedy with current time stamp to the data model.
 	 * 
 	 * @param remedy String description of the remedy
-	 * @return Date when remedy was added
+	 * @return LocalDateTime when remedy was added
 	 */
 
-	public Date addRemedy(String remedy) {
+	public LocalDateTime addRemedy(String remedy) {
 		if (!remediesList.contains(remedy)) {
 			remediesList.add(remedy);
 			Collections.sort(remediesList);
 		}
-		Date date = new Date();
+		LocalDateTime date = LocalDateTime.now();
 		addEntry(remedies, remedy, Intensity.noIntensity, date);
 		return date;
 	}
@@ -227,9 +226,9 @@ public class DataModel implements Serializable {
 	 * Adds remedy with custom time stamp to the data model.
 	 * 
 	 * @param remedy String description of the remedy
-	 * @param date   Date when remedy was applied
+	 * @param date   LocalDateTime when remedy was applied
 	 */
-	public void addRemedy(String remedy, Date date) {
+	public void addRemedy(String remedy, LocalDateTime date) {
 		if (!remediesList.contains(remedy)) {
 			remediesList.add(remedy);
 			Collections.sort(remediesList);
@@ -243,15 +242,15 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy String description of the remedy
 	 * @param intensity Intensity with which remedy was applied
-	 * @return Date when remedy was added
+	 * @return LocalDateTime when remedy was added
 	 */
 
-	public Date addRemedy(String remedy, Intensity intensity) {
+	public LocalDateTime addRemedy(String remedy, Intensity intensity) {
 		if (!remediesList.contains(remedy)) {
 			remediesList.add(remedy);
 			Collections.sort(remediesList);
 		}
-		Date date = new Date();
+		LocalDateTime date = LocalDateTime.now();
 		addEntry(remedies, remedy, intensity, date);
 		return date;
 	}
@@ -261,10 +260,10 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy String description of the remedy
 	 * @param intensity Intensity with which remedy was applied
-	 * @param date Date when remedy was applied
+	 * @param date LocalDateTime when remedy was applied
 	 */
 
-	public void addRemedy(String remedy, Intensity intensity, Date date) {
+	public void addRemedy(String remedy, Intensity intensity, LocalDateTime date) {
 		if (!remediesList.contains(remedy)) {
 			remediesList.add(remedy);
 			Collections.sort(remediesList);
@@ -273,7 +272,7 @@ public class DataModel implements Serializable {
 	}
 	
 	// abstracts the task of adding entries to the different ArrayLists
-	private void addEntry(Map<String, ArrayList<Datum>> map, String key, Intensity intensity, Date date) {
+	private void addEntry(Map<String, ArrayList<Datum>> map, String key, Intensity intensity, LocalDateTime date) {
 
 		// create entry with key if it doesn't exist
 		if (!map.containsKey(key))
@@ -355,7 +354,7 @@ public class DataModel implements Serializable {
 		return remediesList.size();
 	}
 /**
- *  Returns all data when ailment occurred (including Date and Intensity) as Iterator<Datum>.
+ *  Returns all data when ailment occurred (including LocalDateTime and Intensity) as Iterator<Datum>.
  * 
  * @param ailment String describing ailment
  * @return Iterator<Datum> containing data when and how intense ailment occurred
@@ -364,7 +363,7 @@ public class DataModel implements Serializable {
 		return ailments.get(ailment).iterator();
 	}
 /**
- * Returns all datas when cause occurred (including Date and Intensity) as Iterator<Datum>.
+ * Returns all datas when cause occurred (including LocalDateTime and Intensity) as Iterator<Datum>.
  * 
  * @param cause String describing cause
  * @return Iterator<Datum> containing data when and how intense cause occurred.
@@ -373,7 +372,7 @@ public class DataModel implements Serializable {
 		return causes.get(cause).iterator();
 	}
 /**
- * Returns all data when symptom occurred (including Date and Intensity) as Iterator<Datum>.
+ * Returns all data when symptom occurred (including LocalDateTime and Intensity) as Iterator<Datum>.
  * 
  * @param symptom String describing symptom
  * @return Iterator<Datum> containing data when and how intense symptom occurred
@@ -382,7 +381,7 @@ public class DataModel implements Serializable {
 		return symptoms.get(symptom).iterator();
 	}
 	/**
-	 * Returns all data when remedy was used (including Date and Intensity) as Iterator<Datum>.
+	 * Returns all data when remedy was used (including LocalDateTime and Intensity) as Iterator<Datum>.
 	 * 
 	 * @param remedy String describing remedy.
 	 * @return Iterator<Datum> containing data when and how intense remedy was used
