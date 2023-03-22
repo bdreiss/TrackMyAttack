@@ -19,24 +19,18 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
+/**
+ * Class that represents a data model for keeping track of ailments.
+ * 
+ * <p>
+ * It contains methods to store and retrieve data for causes, symptoms and remedies
+ * relating to ailments. The data model represents dates and intensity (see {@link Intensity}) of these fields in a class named {@link Datum}.
+ * </p>
+ * 
+ * @author Bernd Reiß bd_reiss@gmx.at
+ */
+
 public class DataModel implements Serializable {
-
-	/**
-	 * Class that represents a data model for keeping track of ailments.
-	 * 
-	 * <p>
-	 * It contains methods to store and retrieve causes, symptoms and remedies
-	 * relating to ailments.
-	 * </p>
-	 * 
-	 * @author Bernd Reiß
-	 */
-
-	/*
-	 * The following Maps contain all the relevant data. They each contain the title
-	 * of the cause/symptom/remedy as a key and an ArrayList containing all relevant
-	 * information as single pieces of data (see Datum).
-	 */
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,13 +39,16 @@ public class DataModel implements Serializable {
 	private File saveFile;
 	private String saveFileName = "DataModel";
 
-	// ArrayList containing ailments
+	/*
+	 * The following Maps contain all the relevant data. 
+	 * 
+	 * The first Map contains the description of ailments, causes, symptoms or remedies as keys.
+	 *  -> The value is another Map containing dates as keys. Data is stored for single days.
+	 * 		->The value of this second map is an ArrayList containing the Datum. Here the date is stored also containing time of the day in case this information is needed further on.
+	 */
 	private Map<String, Map<LocalDate, ArrayList<Datum>>> ailments = new TreeMap<>(TREE_COMPARATOR);
-	// ArrayList containing causes that might be related to ailment
 	private Map<String, Map<LocalDate, ArrayList<Datum>>> causes = new TreeMap<>(TREE_COMPARATOR);
-	// ArrayList containing symptoms that might be related to ailment
 	private Map<String, Map<LocalDate, ArrayList<Datum>>> symptoms = new TreeMap<>(TREE_COMPARATOR);
-	// ArrayList containing potential remedies tried when symptoms showed up
 	private Map<String, Map<LocalDate, ArrayList<Datum>>> remedies = new TreeMap<>(TREE_COMPARATOR);
 
 	public File getSaveFile() {
@@ -241,7 +238,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns ailments as list iterator.
 	 * 
-	 * @return Iterator<String> containing ailments
+	 * @return Iterator containing ailments as String
 	 */
 	public Iterator<String> getAilments() {
 		return ailments.keySet().iterator();
@@ -250,7 +247,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns all causes as list iterator.
 	 *
-	 * @return Iterator<String> containing causes
+	 * @return Iterator containing causes as String
 	 */
 	public Iterator<String> getCauses() {
 		return causes.keySet().iterator();
@@ -259,7 +256,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns all symptoms as list iterator.
 	 *
-	 * @return Iterator<String> containing symptoms
+	 * @return Iterator containing symptoms as String
 	 */
 	public Iterator<String> getSymptoms() {
 		return symptoms.keySet().iterator();
@@ -268,7 +265,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns all remedies as list iterator.
 	 *
-	 * @return Iterator<String> containing remedies
+	 * @return Iterator containing remedies as String
 	 */
 	public Iterator<String> getRemedies() {
 		return remedies.keySet().iterator();
@@ -312,10 +309,11 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Returns all data when ailment occurred (including LocalDateTime and
-	 * Intensity) as Iterator<Datum>.
+	 * Intensity) as Iterator.
 	 * 
 	 * @param ailment String describing ailment
-	 * @return Iterator<Datum> containing data when and how intense ailment occurred
+	 * @param date Day for which data should be retrieved
+	 * @return Iterator containing data when and how intense ailment occurred as Datum
 	 */
 	public Iterator<Datum> getAilmentData(String ailment, LocalDate date) {
 		return ailments.get(ailment).get(date).iterator();
@@ -323,10 +321,11 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Returns all datas when cause occurred (including LocalDateTime and Intensity)
-	 * as Iterator<Datum>.
+	 * as Iterator.
 	 * 
 	 * @param cause String describing cause
-	 * @return Iterator<Datum> containing data when and how intense cause occurred.
+	 * @param date Day for which data should be retrieved
+	 * @return Iterator containing data when and how intense cause occurred as Datum
 	 */
 	public Iterator<Datum> getCauseData(String cause, LocalDate date) {
 		return causes.get(cause).get(date).iterator();
@@ -334,10 +333,11 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Returns all data when symptom occurred (including LocalDateTime and
-	 * Intensity) as Iterator<Datum>.
+	 * Intensity) as Iterator.
 	 * 
 	 * @param symptom String describing symptom
-	 * @return Iterator<Datum> containing data when and how intense symptom occurred
+	 * @param date Day for which data should be retrieved
+	 * @return Iterator containing data when and how intense symptom occurred as Datum
 	 */
 	public Iterator<Datum> getSymptomData(String symptom, LocalDate date) {
 		return symptoms.get(symptom).get(date).iterator();
@@ -345,10 +345,11 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Returns all data when remedy was used (including LocalDateTime and Intensity)
-	 * as Iterator<Datum>.
+	 * as Iterator.
 	 * 
 	 * @param remedy String describing remedy.
-	 * @return Iterator<Datum> containing data when and how intense remedy was used
+	 * @param date Day for which data should be retrieved	 
+	 * @return Iterator containing data when and how intense remedy was used as Datum
 	 */
 	public Iterator<Datum> getRemedyData(String remedy, LocalDate date) {
 		return remedies.get(remedy).get(date).iterator();

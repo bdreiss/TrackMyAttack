@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+/**
+ * Representation of a single piece of data containing the date and intensity of
+ * the cause/symptom/remedy.
+ */
 public class Datum implements Serializable {
-	/**
-	 * Representation of a single piece of data containing the date and intensity of
-	 * the cause/symptom.
-	 */
 
 	private static final long serialVersionUID = 1L;
 	private LocalDateTime date;
