@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class Main {
 
@@ -19,14 +20,18 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 
 		DataModel data = new DataModel(PATH);
-		data.load();
 
-		data.save();
-
+//		data.print();
+//		
+//		data.save();
+//
 		processTextFile(data,PATH + "Text.txt");
-		
+//		
+//		data.save();
 		data.print();
+//
 		data.save();
+		
 	}
 
 	private static void processTextFile(DataModel data, String file) throws FileNotFoundException {
@@ -36,7 +41,7 @@ public class Main {
 		while (scanner.hasNextLine() && check) {
 
 			String line = scanner.nextLine();
-			if (line.equals("Habits"))
+			if (line.equals("Causes"))
 				check = false;
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
@@ -102,18 +107,20 @@ public class Main {
 
 		String[] splitDate = splitLine[0].split(" ");
 
-		Month month = Month.MARCH;
-		int year = 2023;
-		int day = Integer.parseInt(splitDate[2]);
+//		Month month = Month.MARCH;
+//		int year = 2023;
+//		int day = Integer.parseInt(splitDate[2]);
+//
+//		String[] splitTime = splitDate[3].split(":");
+//
+//		int hour = Integer.parseInt(splitTime[0]);
+//		int minute = Integer.parseInt(splitTime[1]);
+//		int second = Integer.parseInt(splitTime[2]);
+//
+//		LocalDateTime date = LocalDateTime.of(year, month, day, hour, minute, second);
 
-		String[] splitTime = splitDate[3].split(":");
-
-		int hour = Integer.parseInt(splitTime[0]);
-		int minute = Integer.parseInt(splitTime[1]);
-		int second = Integer.parseInt(splitTime[2]);
-
-		LocalDateTime date = LocalDateTime.of(year, month, day, hour, minute, second);
-
+		LocalDateTime date = LocalDateTime.parse(splitLine[0]);
+		
 		Intensity intensity = Intensity.noIntensity;
 
 		switch (splitLine[1].trim()) {

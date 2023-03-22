@@ -55,8 +55,8 @@ class DataModelTest {
 		Intensity[] intensities = { Intensity.medium };
 		for (int i = 0; i < ailments.length; i++) {
 			LocalDateTime date = data.addAilment(ailments[i], intensities[i]);
-			assert (data.getAilmentsListSize() == 1);
-			Iterator<Datum> it = data.getAilmentData(ailments[i]);
+			assert (data.getAilmentsSize() == 1);
+			Iterator<Datum> it = data.getAilmentData(ailments[i], LocalDate.now());
 			
 			Datum datum = it.next();
 			assert(datum.getDate()==date);
@@ -74,8 +74,8 @@ class DataModelTest {
 		LocalDateTime[] dates = {date};
 		for (int i = 0; i < ailments.length; i++) {
 			data.addAilment(ailments[i],intensities[i],dates[i]);
-			assert (data.getAilmentsListSize() == 1);
-			Iterator<Datum> it = data.getAilmentData(ailments[i]);
+			assert (data.getAilmentsSize() == 1);
+			Iterator<Datum> it = data.getAilmentData(ailments[i],dates[i].toLocalDate());
 			
 			Datum datum = it.next();
 			assert(datum.getDate()==dates[i]);
