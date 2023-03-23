@@ -25,12 +25,10 @@ public class Main {
 //		
 //		data.save();
 //
-		processTextFile(data,PATH + "Text.txt");
+//		processTextFile(data,PATH + "Text.txt");
 //		
 //		data.save();
 		data.print();
-//
-		data.save();
 		
 	}
 

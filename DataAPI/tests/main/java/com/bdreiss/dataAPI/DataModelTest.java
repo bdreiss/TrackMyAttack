@@ -48,40 +48,85 @@ class DataModelTest {
 		data.deleteSaveFile();
 	}
 
-	//tests whether ailments are added correctly and can be retrieved
+	// tests whether ailments are added correctly and can be retrieved
 	@Test
 	void addAndGetAilment() {
+		//ailments to be added
 		String[] ailments = { "Migraine" };
-		Intensity[] intensities = { Intensity.medium };
-		for (int i = 0; i < ailments.length; i++) {
-			LocalDateTime date = data.addAilment(ailments[i], intensities[i]);
-			assert (data.getAilmentsSize() == 1);
-			Iterator<Datum> it = data.getAilmentData(ailments[i], LocalDate.now());
-			
-			Datum datum = it.next();
-			assert(datum.getDate()==date);
-			assert(datum.getIntensity() == intensities[i]);
-
-		}
-	
+		//intensities of ailments above
+		Intensity[][] intensities = { { Intensity.medium } };
 		
+		//loop through ailments
+		for (int i = 0; i < ailments.length; i++) {
+			
+			//Store LocalDateTime for entries to check later
+			ArrayList<LocalDateTime> datesAdded = new ArrayList<>();
+			
+			//add them
+			for (int j = 0; j < intensities[i].length; j++)
+				datesAdded.add(data.addAilment(ailments[i], intensities[i][j]));
+
+			//assert the size of ailments added is right
+			assert (data.getAilmentsSize() == i + 1);
+
+			//get iterator for ailment for today
+			Iterator<Datum> it = data.getAilmentData(ailments[i], LocalDate.now());
+
+			//iterate over data for today and assert date and intensity are correct 
+			int j = 0;
+			while (it.hasNext()) {
+				Datum datum = it.next();
+				assert (datum.getDate().equals(datesAdded.get(j)));
+				assert (datum.getIntensity() == intensities[i][j]);
+				j++;
+			}
+		}
+
 	}
+
+	// tests whether ailments with custom dates are added correctly and can be retrieved
 	@Test
 	void addAilmentWithCustomDate() {
-		LocalDateTime date = LocalDateTime.now();
+		//get today as LocalDateTime for generating new dates
+		LocalDateTime today = LocalDateTime.now();
+		//ailments to be added
 		String[] ailments = { "Migraine" };
-		Intensity[] intensities = { Intensity.medium };
-		LocalDateTime[] dates = {date};
+		//intensities of ailments above
+		Intensity[][] intensities = { { Intensity.medium } };
+		//custom dates to for intensities -> they have to be chronological so the assertions at the end don't get scrambled up
+		LocalDateTime[][] dates = { { today.minusDays(1) } };
+		//days for which keys are produced in the second Map in DataModel
+		ArrayList<LocalDate> daysForWhichKeyIsAddedInMap = new ArrayList<>();
+		
+		//loop through ailments		
 		for (int i = 0; i < ailments.length; i++) {
-			data.addAilment(ailments[i],intensities[i],dates[i]);
-			assert (data.getAilmentsSize() == 1);
-			Iterator<Datum> it = data.getAilmentData(ailments[i],dates[i].toLocalDate());
+			//add intensities with custom date for ailment
+			for (int j = 0; j < intensities[i].length; j++) {
+				data.addAilment(ailments[i], intensities[i][j], dates[i][j]);
+				//store new day for keys
+				if (!daysForWhichKeyIsAddedInMap.contains(dates[i][j].toLocalDate()))
+					daysForWhichKeyIsAddedInMap.add(dates[i][j].toLocalDate());
+			}
 			
-			Datum datum = it.next();
-			assert(datum.getDate()==dates[i]);
-			assert(datum.getIntensity() == intensities[i]);
+			//assert ailments size is correct
+			assert (data.getAilmentsSize() == i + 1);
 
+			//for all days for which data has been added: fetch data, iterate over it and assert date and intensity are correct
+			int j = 0;
+			for (LocalDate day : daysForWhichKeyIsAddedInMap) {
+				//get Iterator
+				Iterator<Datum> it = data.getAilmentData(ailments[i], day);
+
+				//iterate over data;
+				while (it.hasNext()) {
+					Datum datum = it.next();
+					assert (datum.getDate().equals(dates[i][j]));
+					assert (datum.getIntensity().equals(intensities[i][j]));
+					j++;
+				}
+			}
 		}
+
 	}
 
 	@Test
