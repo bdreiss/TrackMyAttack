@@ -10,21 +10,20 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
  * Class that represents a data model for keeping track of ailments.
  * 
  * <p>
- * It contains methods to store and retrieve data for causes, symptoms and remedies
- * relating to ailments. The data model represents dates and intensity (see {@link Intensity}) of these fields in a class named {@link Datum}.
+ * It contains methods to store and retrieve data for causes, symptoms and
+ * remedies relating to ailments. The data model represents dates and intensity
+ * (see {@link Intensity}) of these fields in a class named {@link Datum}.
  * </p>
  * 
  * @author Bernd Reiß bd_reiss@gmx.at
@@ -40,16 +39,17 @@ public class DataModel implements Serializable {
 	private String saveFileName = "DataModel";
 
 	/*
-	 * The following Maps contain all the relevant data. 
+	 * The following Maps contain all the relevant data.
 	 * 
-	 * The first Map contains the description of ailments, causes, symptoms or remedies as keys.
-	 *  -> The value is another Map containing dates as keys. Data is stored for single days.
-	 * 		->The value of this second map is an ArrayList containing the Datum. Here the date is stored also containing time of the day in case this information is needed further on.
+	 * The Map contains the description of ailments, causes, symptoms or remedies as
+	 * keys. -> The value is a List containing dates and intensity as Datum. The
+	 * List is guaranteed to be ordered, since the dates are inserted accordingly.
+	 *
 	 */
-	private Map<String, Map<LocalDate, ArrayList<Datum>>> ailments = new TreeMap<>(TREE_COMPARATOR);
-	private Map<String, Map<LocalDate, ArrayList<Datum>>> causes = new TreeMap<>(TREE_COMPARATOR);
-	private Map<String, Map<LocalDate, ArrayList<Datum>>> symptoms = new TreeMap<>(TREE_COMPARATOR);
-	private Map<String, Map<LocalDate, ArrayList<Datum>>> remedies = new TreeMap<>(TREE_COMPARATOR);
+	private Map<String, List<Datum>> ailments = new TreeMap<>(TREE_COMPARATOR);
+	private Map<String, List<Datum>> causes = new TreeMap<>(TREE_COMPARATOR);
+	private Map<String, List<Datum>> symptoms = new TreeMap<>(TREE_COMPARATOR);
+	private Map<String, List<Datum>> remedies = new TreeMap<>(TREE_COMPARATOR);
 
 	public File getSaveFile() {
 		return saveFile;
@@ -220,19 +220,29 @@ public class DataModel implements Serializable {
 	}
 
 	// abstracts the task of adding entries to the different ArrayLists
-	private void addEntry(Map<String, Map<LocalDate, ArrayList<Datum>>> map, String key, Intensity intensity,
-			LocalDateTime date) {
+	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) {
 
 		// create entry with key if it doesn't exist
 		if (!map.containsKey(key))
-			map.put(key, new TreeMap<LocalDate, ArrayList<Datum>>());
+			map.put(key, new ArrayList<Datum>());
 
-		//create entry with key for date if it doesn't exist
-		if (!map.get(key).containsKey(date.toLocalDate()))
-			map.get(key).put(date.toLocalDate(), new ArrayList<Datum>());
-		
-		// add new piece of data to ArrayList in according cause
-		map.get(key).get(date.toLocalDate()).add(new Datum(date, intensity));
+		List<Datum> list = map.get(key);
+
+		// add new Datum to end of list
+		list.add(new Datum(date, intensity));
+
+		// as long as the date is smaller than the date before, swap it with the
+		// previous item
+		// stop when dates are smaller than date to be added or when beginning of list
+		// is reached
+		// this means that the lists are always ordered
+		int i = list.size() - 1;
+		while (i > 0 && list.get(i).getDate().compareTo(list.get(i - 1).getDate()) < 0) {
+			Datum temp = list.get(i);
+			list.set(i, list.get(i - 1));
+			list.set(i - 1, temp);
+			i--;
+		}
 	}
 
 	/**
@@ -309,50 +319,100 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Returns all data when ailment occurred (including LocalDateTime and
-	 * Intensity) as Iterator.
+	 * Intensity) as Iterator for date.
 	 * 
 	 * @param ailment String describing ailment
-	 * @param date Day for which data should be retrieved
-	 * @return Iterator containing data when and how intense ailment occurred as Datum
+	 * @param date    Day for which data should be retrieved
+	 * @return Iterator containing data when and how intense ailment occurred as
+	 *         Datum
 	 */
 	public Iterator<Datum> getAilmentData(String ailment, LocalDate date) {
-		return ailments.get(ailment).get(date).iterator();
+		return new DayIterator(ailments.get(ailment), date);
 	}
 
 	/**
-	 * Returns all datas when cause occurred (including LocalDateTime and Intensity)
-	 * as Iterator.
+	 * Returns data when ailment occurred (including LocalDateTime and Intensity) as
+	 * Iterator for all dates.
+	 * 
+	 * @param ailment String describing ailment
+	 * @return Iterator containing data when and how intense ailment occurred as
+	 *         Datum
+	 */
+	public Iterator<Datum> getAilmentData(String ailment) {
+		return ailments.get(ailment).iterator();
+	}
+
+	/**
+	 * Returns all data when cause occurred (including LocalDateTime and Intensity)
+	 * as Iterator for date.
 	 * 
 	 * @param cause String describing cause
-	 * @param date Day for which data should be retrieved
+	 * @param date  Day for which data should be retrieved
 	 * @return Iterator containing data when and how intense cause occurred as Datum
 	 */
 	public Iterator<Datum> getCauseData(String cause, LocalDate date) {
-		return causes.get(cause).get(date).iterator();
+		return new DayIterator(causes.get(cause), date);
+	}
+
+	/**
+	 * Returns data when cause occurred (including LocalDateTime and Intensity) as
+	 * Iterator for all dates.
+	 * 
+	 * @param cause String describing cause
+	 * @return Iterator containing data when and how intense cause occurred as Datum
+	 */
+	public Iterator<Datum> getCauseData(String cause) {
+		return causes.get(cause).iterator();
 	}
 
 	/**
 	 * Returns all data when symptom occurred (including LocalDateTime and
-	 * Intensity) as Iterator.
+	 * Intensity) as Iterator for date.
 	 * 
 	 * @param symptom String describing symptom
-	 * @param date Day for which data should be retrieved
-	 * @return Iterator containing data when and how intense symptom occurred as Datum
+	 * @param date    Day for which data should be retrieved
+	 * @return Iterator containing data when and how intense symptom occurred as
+	 *         Datum
 	 */
 	public Iterator<Datum> getSymptomData(String symptom, LocalDate date) {
-		return symptoms.get(symptom).get(date).iterator();
+		return new DayIterator(symptoms.get(symptom), date);
+	}
+
+	/**
+	 * Returns data when symptom occurred (including LocalDateTime and Intensity) as
+	 * Iterator for all dates.
+	 * 
+	 * @param symptom String describing symptom
+	 * @return Iterator containing data when and how intense symptom occurred as
+	 *         Datum
+	 */
+	public Iterator<Datum> getSymptomData(String symptom) {
+		return symptoms.get(symptom).iterator();
 	}
 
 	/**
 	 * Returns all data when remedy was used (including LocalDateTime and Intensity)
-	 * as Iterator.
+	 * as Iterator for date.
 	 * 
 	 * @param remedy String describing remedy.
-	 * @param date Day for which data should be retrieved	 
-	 * @return Iterator containing data when and how intense remedy was used as Datum
+	 * @param date   Day for which data should be retrieved
+	 * @return Iterator containing data when and how intense remedy was used as
+	 *         Datum
 	 */
 	public Iterator<Datum> getRemedyData(String remedy, LocalDate date) {
-		return remedies.get(remedy).get(date).iterator();
+		return new DayIterator(remedies.get(remedy), date);
+	}
+
+	/**
+	 * Returns data when remedy was used (including LocalDateTime and Intensity) as
+	 * Iterator for all dates.
+	 * 
+	 * @param remedy String describing remedy.
+	 * @return Iterator containing data when and how intense remedy was used as
+	 *         Datum
+	 */
+	public Iterator<Datum> getRemedyData(String remedy) {
+		return remedies.get(remedy).iterator();
 	}
 
 	/**
@@ -418,6 +478,54 @@ public class DataModel implements Serializable {
 		saveFile.delete();
 	}
 
+	// Iterator that iterates over all data in a List<Datum> for one date
+	private class DayIterator implements Iterator<Datum> {
+
+		private int index;
+		private List<Datum> list;
+		private LocalDate date;
+
+		public DayIterator(List<Datum> list, LocalDate date) {
+			this.list = list;
+			this.date = date;
+			index = getStartingIndex(list, 0, list.size() - 1, date);
+		}
+
+		// returns the starting index by finding the lowest entry for the given date
+		// using binary search
+		private int getStartingIndex(List<Datum> list, int b, int e, LocalDate date) {
+			if (b > e)
+				return list.size() - 1;
+			int mid = (b + e) / 2;
+
+			int minIndex = list.size() - 1;
+
+			if (list.get(mid).getDate().toLocalDate().equals(date))
+				minIndex = mid;
+
+			if (list.get(mid).getDate().toLocalDate().compareTo(date) >= 0)
+				return Math.min(minIndex, getStartingIndex(list, b, mid - 1, date));
+			else
+				return getStartingIndex(list, mid + 1, e, date);
+		}
+
+		// if did not reach end of list and date is still in range return true
+		@Override
+		public boolean hasNext() {
+			if (index == list.size())
+				return false;
+			if (list.get(index).getDate().toLocalDate().compareTo(date) > 0)
+				return false;
+			return true;
+		}
+
+		@Override
+		public Datum next() {
+			return list.get(index++);
+		}
+
+	}
+
 	/**
 	 * Prints all data in the terminal.
 	 * 
@@ -430,25 +538,21 @@ public class DataModel implements Serializable {
 			sb.append("\n");
 			sb.append(s);
 			sb.append("\n");
-			for (LocalDate date : ailments.get(s).keySet()) {
-				for (Datum d : Objects.requireNonNull(ailments.get(s).get(date))) {
-					sb.append(d.getDate() + ", " + d.getIntensity());
-					sb.append("\n");
-				}
+			for (Datum d : Objects.requireNonNull(ailments.get(s))) {
+				sb.append(d.getDate() + ", " + d.getIntensity());
+				sb.append("\n");
 			}
 		}
-		
+
 		sb.append(header("Causes"));
 
 		for (String s : causes.keySet()) {
 			sb.append("\n");
 			sb.append(s);
 			sb.append("\n");
-			for (LocalDate date : causes.get(s).keySet()) {
-				for (Datum d : Objects.requireNonNull(causes.get(s).get(date))) {
-					sb.append(d.getDate() + ", " + d.getIntensity());
-					sb.append("\n");
-				}
+			for (Datum d : Objects.requireNonNull(causes.get(s))) {
+				sb.append(d.getDate() + ", " + d.getIntensity());
+				sb.append("\n");
 			}
 		}
 
@@ -458,11 +562,9 @@ public class DataModel implements Serializable {
 			sb.append("\n");
 			sb.append(s);
 			sb.append("\n");
-			for (LocalDate date : symptoms.get(s).keySet()) {
-				for (Datum d : Objects.requireNonNull(symptoms.get(s).get(date))) {
-					sb.append(d.getDate() + ", " + d.getIntensity());
-					sb.append("\n");
-				}
+			for (Datum d : Objects.requireNonNull(symptoms.get(s))) {
+				sb.append(d.getDate() + ", " + d.getIntensity());
+				sb.append("\n");
 			}
 
 		}
@@ -473,11 +575,9 @@ public class DataModel implements Serializable {
 			sb.append("\n");
 			sb.append(s);
 			sb.append("\n");
-			for (LocalDate date : remedies.get(s).keySet()) {
-				for (Datum d : Objects.requireNonNull(remedies.get(s).get(date))) {
-					sb.append(d.getDate() + ", " + d.getIntensity());
-					sb.append("\n");
-				}
+			for (Datum d : Objects.requireNonNull(remedies.get(s))) {
+				sb.append(d.getDate() + ", " + d.getIntensity());
+				sb.append("\n");
 			}
 
 		}
@@ -486,6 +586,7 @@ public class DataModel implements Serializable {
 		return sb.toString();
 
 	}
+
 	private String header(String title) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n----------------------------------------------------\n");
@@ -494,6 +595,6 @@ public class DataModel implements Serializable {
 		sb.append("----------------------------------------------------\n");
 		return sb.toString();
 
-	
 	}
+
 }

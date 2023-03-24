@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -21,13 +22,42 @@ public class Main {
 
 		DataModel data = new DataModel(PATH);
 
+//		data.addCause("Test",Intensity.low);
+//		data.addCause("Test",Intensity.medium);
+//		data.addCause("Test",Intensity.high);
+//
+//		LocalDateTime today = LocalDateTime.now();
+//		data.addCause("Test",Intensity.low, today.minusDays(1));
+//		today = LocalDateTime.now();
+//		
+//		data.addCause("Test",Intensity.medium, today.minusDays(1));
+//		today = LocalDateTime.now();
+//		data.addCause("Test",Intensity.high,today.minusDays(1));
+//
+//		data.addCause("Test",Intensity.low, today.minusDays(2));
+//		today = LocalDateTime.now();
+//		data.addCause("Test",Intensity.medium, today.minusDays(2));
+//		today = LocalDateTime.now();
+//		data.addCause("Test",Intensity.high,today.minusDays(2));
+//
+//
+//		
+//		
+//		Iterator<Datum> it = data.getCauseData("Test", today.minusDays(0).toLocalDate());
+//		
+//		while (it.hasNext()) {
+//			Datum datum = it.next();
+//			System.out.println(datum.getDate() + " " +  datum.getIntensity());
+//		}
+//		
+		
 //		data.print();
 //		
 //		data.save();
 //
-//		processTextFile(data,PATH + "Text.txt");
+		processTextFile(data,PATH + "Text.txt");
 //		
-//		data.save();
+		data.save();
 		data.print();
 		
 	}

@@ -85,6 +85,7 @@ class DataModelTest {
 	}
 
 	// tests whether ailments with custom dates are added correctly and can be retrieved
+	//TODO add test cases where the dates are not ordered to test whether they are returned in order
 	@Test
 	void addAilmentWithCustomDate() {
 		//get today as LocalDateTime for generating new dates
