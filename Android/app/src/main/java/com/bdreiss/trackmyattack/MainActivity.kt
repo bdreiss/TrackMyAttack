@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         migraineButton.setOnClickListener {
             val intensityText = migraineEditTextIntensity.text.toString()
 
-            var intensity = Intensity.low
+            var intensity = Intensity.noIntensity
             if (intensityText.isNotEmpty()) {
                 when(intensityText.toInt()){
                     0 -> intensity = Intensity.low

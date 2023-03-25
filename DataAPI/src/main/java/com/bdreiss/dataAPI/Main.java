@@ -56,10 +56,23 @@ public class Main {
 //		data.save();
 //
 		processTextFile(data,PATH + "Text.txt");
-//		
-		data.save();
+////		
+//		data.save();
 		data.print();
-		
+//		LocalDateTime[] dates = {
+//				LocalDateTime.now().minusDays(2),
+//				LocalDateTime.now().minusDays(2),
+//				LocalDateTime.now().minusDays(2),
+//				LocalDateTime.now().minusDays(1),
+//				LocalDateTime.now().minusDays(1),
+//				LocalDateTime.now().minusDays(1),
+//				LocalDateTime.now().minusDays(0),
+//				LocalDateTime.now().minusDays(0),
+//				LocalDateTime.now().minusDays(0)
+//								};
+//		
+//		for (LocalDateTime d : dates)
+//			System.out.println(d);
 	}
 
 	private static void processTextFile(DataModel data, String file) throws FileNotFoundException {
