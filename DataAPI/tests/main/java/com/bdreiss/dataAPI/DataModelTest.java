@@ -45,6 +45,7 @@ class DataModelTest {
 								};
 		return dates;
 	}
+
 	
 	@BeforeEach
 	void prepare() {
@@ -72,27 +73,33 @@ class DataModelTest {
 		data.deleteSaveFile();
 	}
 
-	// tests whether ailments are added correctly and can be retrieved
-	@Test
-	void addAndGetAilment() {
-		//ailments to be added
-		String[] ailments = getTestStrings();
+	private void add(Add addInterface) {
+		//TODO implement add
+	}
 	
-		//loop through ailments
-		for (int i = 0; i < ailments.length; i++) {
+	private void addWithCustomDate(AddWithCustomDate addInterface) {
+		//TODO implemen addWIthCustomDate
+	}
+	
+	private void addWithIntensity(AddWithIntensity addInterface) {
+		//Strings to be added
+		String[] strings = getTestStrings();
+	
+		//loop through strings
+		for (int i = 0; i < strings.length; i++) {
 			
 			//Store LocalDateTime for entries to check later
 			ArrayList<LocalDateTime> datesAdded = new ArrayList<>();
 			
 			//for every Intensity add one test
-			for (int j = 0; j < Intensity.values().length; j++)
-				datesAdded.add(data.addAilment(ailments[i], Intensity.values()[j]));
-
-			//assert the size of ailments added is right
-			assert (data.getAilmentsSize() == i + 1);
+			for (int j = 0; j < Intensity.values().length; j++) {
+				datesAdded.add(addInterface.add(strings[i], Intensity.values()[j]));
+			}
+			//assert the size of strings added is right
+			assert (addInterface.getSize() == i + 1);
 			
-			//get iterator for ailment for today
-			Iterator<Datum> it = data.getAilmentData(ailments[i], LocalDate.now());
+			//get iterator for today
+			Iterator<Datum> it = addInterface.getData(strings[i], LocalDate.now());
 
 			//iterate over data for today and assert date and intensity are correct 
 			int j = 0;
@@ -107,40 +114,39 @@ class DataModelTest {
 			assert(j == datesAdded.size());
 		}
 
+		
 	}
-
-	// tests whether ailments with custom dates are added correctly and can be retrieved
-	//TODO add test cases where the dates are not ordered to test whether they are returned in order
-	@Test
-	void addAilmentWithCustomDate() {
-		//ailments to be added
-		String[] ailments = getTestStrings();
+	
+	//abstracts away the task of adding with custom date by providing an interface with the relevant methods
+	private void addWithIntensityAndCustomDate(AddWithIntensityAndCustomDate addInterface) {
+		//strings to be added
+		String[] testStrings = getTestStrings();
 		//
 		LocalDateTime[] testCases = getTestDates();
 		
 		//custom dates to for intensities
-		LocalDateTime[][] testDates = new LocalDateTime[ailments.length][testCases.length];
+		LocalDateTime[][] testDates = new LocalDateTime[testStrings.length][testCases.length];
 		
-		//set test dates for all ailments
-		for (int i = 0; i < ailments.length;i++)
+		//set test dates
+		for (int i = 0; i < testStrings.length;i++)
 				testDates[i] = testCases;
 
 		//expected results after adding dates to data model (should be ordered chronologically)
-		LocalDateTime[][] expectedResults = new LocalDateTime[ailments.length][testCases.length];
+		LocalDateTime[][] expectedResults = new LocalDateTime[testStrings.length][testCases.length];
 
 		//add expected dates in chronological order
 		Arrays.sort(testCases);
-		for (int i = 0; i < ailments.length;i++) {
+		for (int i = 0; i < testStrings.length;i++) {
 				expectedResults[i] = testCases;
 		}
-		//loop through ailments		
-		for (int i = 0; i < ailments.length; i++) {
-			//add ailment with custom date and loop through intensities
+		//loop through strings		
+		for (int i = 0; i < testStrings.length; i++) {
+			//add string with custom date and loop through intensities
 			for (int j = 0; j < testDates[i].length; j++) 
-				data.addAilment(ailments[i], Intensity.values()[j%Intensity.values().length], testDates[i][j]);
+				addInterface.add(testStrings[i], Intensity.values()[j%Intensity.values().length], testDates[i][j]);
 			
-			//assert ailments size is correct
-			assert (data.getAilmentsSize() == i + 1);
+			//assert size is correct
+			assert (addInterface.getSize() == i + 1);
 
 			//current date for asserts
 			LocalDate currentDate = null;
@@ -154,7 +160,7 @@ class DataModelTest {
 				currentDate = expectedResults[i][j].toLocalDate();
 				
 				//get iterator for day
-				Iterator<Datum> it = data.getAilmentData(ailments[i], currentDate);
+				Iterator<Datum> it = addInterface.getData(testStrings[i], currentDate);
 
 				//iterate over data;
 				while (it.hasNext()) {
@@ -169,8 +175,56 @@ class DataModelTest {
 			//assert processed data length equals test cases
 			assert(j == testDates[i].length);
 		}
+	}
+	
+	// tests whether ailments are added correctly and can be retrieved
+	@Test
+	void addAilment() {
+		addWithIntensity(new AddWithIntensity() {
+
+			@Override
+			public LocalDateTime add(String s, Intensity i) {
+				return data.addAilment(s, i);
+			}
+
+			@Override
+			public int getSize() {
+				return data.getAilmentsSize();
+			}
+
+			@Override
+			public Iterator<Datum> getData(String s, LocalDate d) {
+				return data.getAilmentData(s, d);
+			}
+			
+		});
+	}
+
+	// tests whether ailments with custom dates are added correctly and can be retrieved
+	//TODO add test cases where the dates are not ordered to test whether they are returned in order
+	@Test
+	void addAilmentWithCustomDate() {
+		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
+			
+			@Override
+			public void add(String s, Intensity i, LocalDateTime d) {
+				data.addAilment(s, i, d);
+			}
+
+			@Override
+			public int getSize() {
+				return data.getAilmentsSize();
+			}
+
+			@Override
+			public Iterator<Datum> getData(String s, LocalDate d) {
+				return data.getAilmentData(s, d);
+			}
+		});
 
 	}
+
+
 
 	@Test
 	void addCause() {
