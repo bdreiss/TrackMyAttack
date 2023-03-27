@@ -12,11 +12,9 @@ public class Datum implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private LocalDateTime date;
-	private Intensity intensity;
 
-	public Datum(LocalDateTime date, Intensity intensity) {
+	public Datum(LocalDateTime date) {
 		this.date = date;
-		this.intensity = intensity;
 	}
 
 	public LocalDateTime getDate() {
@@ -27,12 +25,5 @@ public class Datum implements Serializable {
 		this.date = date;
 	}
 
-	public Intensity getIntensity() {
-		return intensity;
-	}
-
-	public void setIntensity(Intensity intensity) {
-		this.intensity = intensity;
-	}
 
 }

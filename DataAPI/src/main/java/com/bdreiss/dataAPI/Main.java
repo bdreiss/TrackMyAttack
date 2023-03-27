@@ -50,14 +50,14 @@ public class Main {
 //			System.out.println(datum.getDate() + " " +  datum.getIntensity());
 //		}
 //		
-		
+
 //		data.print();
 //		
 //		data.save();
 //
-		processTextFile(data,PATH + "Text.txt");
+		processTextFile(data, PATH + "Text.txt");
 ////		
-//		data.save();
+		data.save();
 		data.print();
 //		LocalDateTime[] dates = {
 //				LocalDateTime.now().minusDays(2),
@@ -86,7 +86,8 @@ public class Main {
 				check = false;
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
-				data.addAilment("Migraine", datum.getIntensity(), datum.getDate());
+				if (datum instanceof DatumWithIntensity)
+					data.addAilment("Migraine", ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
 			}
 		}
 		check = true;
@@ -94,8 +95,6 @@ public class Main {
 
 		while (scanner.hasNextLine() && check) {
 
-
-			
 			String line = scanner.nextLine();
 
 			if (line.equals("Symptoms"))
@@ -103,7 +102,10 @@ public class Main {
 
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
-				data.addCause(cause, datum.getIntensity(), datum.getDate());
+				if (datum instanceof DatumWithIntensity)
+					data.addCause(cause, ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
+				else
+					data.addCause(cause, datum.getDate());
 			} else
 				cause = line;
 		}
@@ -113,14 +115,14 @@ public class Main {
 
 		while (scanner.hasNextLine() && check) {
 
-
 			String line = scanner.nextLine();
 			if (line.equals("Remedies"))
 				check = false;
 
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
-				data.addSymptom(symptom, datum.getIntensity(), datum.getDate());
+				if (datum instanceof DatumWithIntensity)
+					data.addSymptom(symptom, ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
 			} else
 				symptom = line;
 		}
@@ -129,16 +131,17 @@ public class Main {
 
 		while (scanner.hasNextLine()) {
 
-
 			String line = scanner.nextLine();
 
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
-				data.addRemedy(remedy, datum.getIntensity(), datum.getDate());
+				if (datum instanceof DatumWithIntensity)
+					data.addRemedy(remedy, ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
+				else
+					data.addRemedy(remedy, datum.getDate());
 			} else
 				remedy = line;
 		}
-		
 
 		scanner.close();
 	}
@@ -161,27 +164,35 @@ public class Main {
 //		LocalDateTime date = LocalDateTime.of(year, month, day, hour, minute, second);
 
 		LocalDateTime date = LocalDateTime.parse(splitLine[0]);
-		
-		Intensity intensity = Intensity.noIntensity;
 
-		switch (splitLine[1].trim()) {
 
-		case "low":
-			intensity = Intensity.low;
-			break;
-		case "medium":
-			intensity = Intensity.medium;
-			break;
-		case "high":
-			intensity = Intensity.high;
-			break;
+		if (splitLine.length > 1) {
+			Intensity intensity = null;
 
-		default:
-			intensity = Intensity.noIntensity;
+			switch (splitLine[1].trim()) {
 
+			case "low":
+				intensity = Intensity.low;
+				break;
+			case "medium":
+				intensity = Intensity.medium;
+				break;
+			case "high":
+				intensity = Intensity.high;
+				break;
+
+			default:
+				intensity = null;
+			}
+
+			if (intensity == null)
+				return new Datum(date);
+						
+			return new DatumWithIntensity(date, intensity);
 		}
+		
+		return new Datum(date);
 
-		return new Datum(date, intensity);
 	}
 
 }

@@ -108,7 +108,7 @@ public class DataModel implements Serializable {
 	 */
 	public LocalDateTime addCause(String cause) {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(causes, cause, Intensity.noIntensity, date);
+		addEntry(causes, cause, date);
 		return date;
 	}
 
@@ -119,7 +119,7 @@ public class DataModel implements Serializable {
 	 * @param date  LocalDateTime when the attack occurred
 	 */
 	public void addCause(String cause, LocalDateTime date) {
-		addEntry(causes, cause, Intensity.noIntensity, date);
+		addEntry(causes, cause, date);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class DataModel implements Serializable {
 
 	public LocalDateTime addRemedy(String remedy) {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(remedies, remedy, Intensity.noIntensity, date);
+		addEntry(remedies, remedy, date);
 		return date;
 	}
 
@@ -190,7 +190,7 @@ public class DataModel implements Serializable {
 	 * @param date   LocalDateTime when remedy was applied
 	 */
 	public void addRemedy(String remedy, LocalDateTime date) {
-		addEntry(remedies, remedy, Intensity.noIntensity, date);
+		addEntry(remedies, remedy, date);
 	}
 
 	/**
@@ -220,6 +220,32 @@ public class DataModel implements Serializable {
 	}
 
 	// abstracts the task of adding entries to the different ArrayLists
+	private void addEntry(Map<String, List<Datum>> map, String key, LocalDateTime date) {
+
+		// create entry with key if it doesn't exist
+		if (!map.containsKey(key))
+			map.put(key, new ArrayList<Datum>());
+
+		List<Datum> list = map.get(key);
+
+		// add new Datum to end of list
+		list.add(new Datum(date));
+
+		// as long as the date is smaller than the date before, swap it with the
+		// previous item
+		// stop when dates are smaller than date to be added or when beginning of list
+		// is reached
+		// this means that the lists are always ordered
+		int i = list.size() - 1;
+		while (i > 0 && list.get(i).getDate().compareTo(list.get(i - 1).getDate()) < 0) {
+			Datum temp = list.get(i);
+			list.set(i, list.get(i - 1));
+			list.set(i - 1, temp);
+			i--;
+		}
+	}
+
+	// abstracts the task of adding entries with Intensity to the different ArrayLists
 	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) {
 
 		// create entry with key if it doesn't exist
@@ -229,7 +255,7 @@ public class DataModel implements Serializable {
 		List<Datum> list = map.get(key);
 
 		// add new Datum to end of list
-		list.add(new Datum(date, intensity));
+		list.add(new DatumWithIntensity(date, intensity));
 
 		// as long as the date is smaller than the date before, swap it with the
 		// previous item
@@ -539,7 +565,9 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(ailments.get(s))) {
-				sb.append(d.getDate() + ", " + d.getIntensity());
+				sb.append(d.getDate());
+				if (d instanceof DatumWithIntensity)
+					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				sb.append("\n");
 			}
 		}
@@ -551,7 +579,9 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(causes.get(s))) {
-				sb.append(d.getDate() + ", " + d.getIntensity());
+				sb.append(d.getDate());
+				if (d instanceof DatumWithIntensity)
+					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				sb.append("\n");
 			}
 		}
@@ -563,7 +593,9 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(symptoms.get(s))) {
-				sb.append(d.getDate() + ", " + d.getIntensity());
+				sb.append(d.getDate());
+				if (d instanceof DatumWithIntensity)
+					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				sb.append("\n");
 			}
 
@@ -576,7 +608,9 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(remedies.get(s))) {
-				sb.append(d.getDate() + ", " + d.getIntensity());
+				sb.append(d.getDate());
+				if (d instanceof DatumWithIntensity)
+					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				sb.append("\n");
 			}
 

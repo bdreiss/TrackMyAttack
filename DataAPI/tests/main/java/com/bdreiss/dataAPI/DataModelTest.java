@@ -104,7 +104,7 @@ class DataModelTest {
 			//iterate over data for today and assert date and intensity are correct 
 			int j = 0;
 			while (it.hasNext()) {
-				Datum datum = it.next();
+				DatumWithIntensity datum = (DatumWithIntensity) it.next();
 				assert (datum.getDate().equals(datesAdded.get(j)));
 				assert (datum.getIntensity() == Intensity.values()[j]);
 				j++;
@@ -164,7 +164,7 @@ class DataModelTest {
 
 				//iterate over data;
 				while (it.hasNext()) {
-					Datum datum = it.next();
+					DatumWithIntensity datum = (DatumWithIntensity) it.next();
 					assert (datum.getDate().equals(expectedResults[i][j]));
 					assert (datum.getIntensity().equals(Intensity.values()[j%Intensity.values().length]));
 					j++;

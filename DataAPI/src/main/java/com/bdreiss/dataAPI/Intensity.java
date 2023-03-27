@@ -11,7 +11,7 @@ public enum Intensity {
 	/**
 	 * Choose if intensity is not important
 	 */
-    noIntensity, 
+    //noIntensity, 
     /**
      * Choose if intensity is low
      */
