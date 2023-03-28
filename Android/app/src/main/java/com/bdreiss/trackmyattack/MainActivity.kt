@@ -39,12 +39,12 @@ class MainActivity : AppCompatActivity() {
             val text = habitsEditTextText.text.toString()
             val intensityText = habitsEditTextIntensity.text.toString()
 
-            var intensity = Intensity.noIntensity
+            var intensity = Intensity.NO_INTENSITY
             if (intensityText.isNotEmpty()) {
                 when(intensityText.toInt()){
-                    0 -> intensity = Intensity.low
-                    1 -> intensity = Intensity.medium
-                    2 -> intensity = Intensity.high
+                    0 -> intensity = Intensity.LOW
+                    1 -> intensity = Intensity.MEDIUM
+                    2 -> intensity = Intensity.HIGH
                 }
             }
 
@@ -64,12 +64,12 @@ class MainActivity : AppCompatActivity() {
             val text = symptomsEditTextText.text.toString()
             val intensityText = symptomsEditTextIntensity.text.toString()
 
-            var intensity = Intensity.noIntensity
+            var intensity = Intensity.NO_INTENSITY
             if (intensityText.isNotEmpty()) {
                 when(intensityText.toInt()){
-                    0 -> intensity = Intensity.low
-                    1 -> intensity = Intensity.medium
-                    2 -> intensity = Intensity.high
+                    0 -> intensity = Intensity.LOW
+                    1 -> intensity = Intensity.MEDIUM
+                    2 -> intensity = Intensity.HIGH
                 }
             }
 
@@ -88,12 +88,12 @@ class MainActivity : AppCompatActivity() {
         migraineButton.setOnClickListener {
             val intensityText = migraineEditTextIntensity.text.toString()
 
-            var intensity = Intensity.noIntensity
+            var intensity = Intensity.NO_INTENSITY
             if (intensityText.isNotEmpty()) {
                 when(intensityText.toInt()){
-                    0 -> intensity = Intensity.low
-                    1 -> intensity = Intensity.medium
-                    2 -> intensity = Intensity.high
+                    0 -> intensity = Intensity.LOW
+                    1 -> intensity = Intensity.MEDIUM
+                    2 -> intensity = Intensity.HIGH
                 }
             }
 
@@ -112,12 +112,12 @@ class MainActivity : AppCompatActivity() {
             val text = remedyEditTextText.text.toString()
             val intensityText = remedyEditTextIntensity.text.toString()
 
-            var intensity = Intensity.low
+            var intensity = Intensity.LOW
             if (intensityText.isNotEmpty()) {
                 when(intensityText.toInt()){
-                    0 -> intensity = Intensity.low
-                    1 -> intensity = Intensity.medium
-                    2 -> intensity = Intensity.high
+                    0 -> intensity = Intensity.LOW
+                    1 -> intensity = Intensity.MEDIUM
+                    2 -> intensity = Intensity.HIGH
                 }
             }
 

@@ -2,7 +2,6 @@ package main.java.com.bdreiss.dataAPI;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Representation of a single piece of data containing the date and intensity of

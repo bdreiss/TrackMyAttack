@@ -1,18 +1,9 @@
 package main.java.com.bdreiss.dataAPI;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Iterator;
-import java.util.Locale;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Main {
 
@@ -88,6 +79,7 @@ public class Main {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
 					data.addAilment("Migraine", ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
+				else data.addAilment("Migraine", Intensity.NO_INTENSITY,datum.getDate());
 			}
 		}
 		check = true;
@@ -107,7 +99,7 @@ public class Main {
 				else
 					data.addCause(cause, datum.getDate());
 			} else
-				cause = line;
+				cause = line.trim();
 		}
 
 		check = true;
@@ -124,7 +116,7 @@ public class Main {
 				if (datum instanceof DatumWithIntensity)
 					data.addSymptom(symptom, ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
 			} else
-				symptom = line;
+				symptom = line.trim();
 		}
 
 		String remedy = "";
@@ -140,7 +132,7 @@ public class Main {
 				else
 					data.addRemedy(remedy, datum.getDate());
 			} else
-				remedy = line;
+				remedy = line.trim();
 		}
 
 		scanner.close();
@@ -148,20 +140,6 @@ public class Main {
 
 	static Datum getDatum(String line) {
 		String[] splitLine = line.split(",");
-
-		String[] splitDate = splitLine[0].split(" ");
-
-//		Month month = Month.MARCH;
-//		int year = 2023;
-//		int day = Integer.parseInt(splitDate[2]);
-//
-//		String[] splitTime = splitDate[3].split(":");
-//
-//		int hour = Integer.parseInt(splitTime[0]);
-//		int minute = Integer.parseInt(splitTime[1]);
-//		int second = Integer.parseInt(splitTime[2]);
-//
-//		LocalDateTime date = LocalDateTime.of(year, month, day, hour, minute, second);
 
 		LocalDateTime date = LocalDateTime.parse(splitLine[0]);
 
@@ -171,14 +149,14 @@ public class Main {
 
 			switch (splitLine[1].trim()) {
 
-			case "low":
-				intensity = Intensity.low;
+			case "low intensity":
+				intensity = Intensity.LOW;
 				break;
-			case "medium":
-				intensity = Intensity.medium;
+			case "medium intensity":
+				intensity = Intensity.MEDIUM;
 				break;
-			case "high":
-				intensity = Intensity.high;
+			case "high intensity":
+				intensity = Intensity.HIGH;
 				break;
 
 			default:

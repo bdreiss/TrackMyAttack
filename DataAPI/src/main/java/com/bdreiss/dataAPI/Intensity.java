@@ -11,19 +11,28 @@ public enum Intensity {
 	/**
 	 * Choose if intensity is not important
 	 */
-    //noIntensity, 
+    NO_INTENSITY("No intensity"), 
     /**
      * Choose if intensity is low
      */
-      low, 
+      LOW("low intensity"), 
       /**
        * Choose if intensity is medium
        */
-      medium, 
+      MEDIUM("medium intensity"), 
       /**
        * Choose if intensity is high
        */
-      high;
-     
+      HIGH("high intensity");
+    
+	private String description;
+	private Intensity(String description) {
+		this.description = description;
+	}
 
+	@Override
+	public String toString() {
+		return description;
+	}
+	
 }
