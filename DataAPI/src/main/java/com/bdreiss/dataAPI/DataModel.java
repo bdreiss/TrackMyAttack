@@ -245,7 +245,8 @@ public class DataModel implements Serializable {
 		}
 	}
 
-	// abstracts the task of adding entries with Intensity to the different ArrayLists
+	// abstracts the task of adding entries with Intensity to the different
+	// ArrayLists
 	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) {
 
 		// create entry with key if it doesn't exist
@@ -568,6 +569,8 @@ public class DataModel implements Serializable {
 				sb.append(d.getDate());
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
+				else
+					sb.append(",");
 				sb.append("\n");
 			}
 		}
@@ -582,6 +585,8 @@ public class DataModel implements Serializable {
 				sb.append(d.getDate());
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
+				else
+					sb.append(",");
 				sb.append("\n");
 			}
 		}
@@ -596,6 +601,8 @@ public class DataModel implements Serializable {
 				sb.append(d.getDate());
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
+				else
+					sb.append(",");
 				sb.append("\n");
 			}
 
@@ -611,6 +618,8 @@ public class DataModel implements Serializable {
 				sb.append(d.getDate());
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
+				else
+					sb.append(",");
 				sb.append("\n");
 			}
 
@@ -630,5 +639,5 @@ public class DataModel implements Serializable {
 		return sb.toString();
 
 	}
-	
+
 }

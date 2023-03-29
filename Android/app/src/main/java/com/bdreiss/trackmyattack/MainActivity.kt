@@ -46,9 +46,13 @@ class MainActivity : AppCompatActivity() {
                     1 -> intensity = Intensity.MEDIUM
                     2 -> intensity = Intensity.HIGH
                 }
+                data.addCause(text, intensity)
+
+            } else{
+                data.addCause(text)
             }
 
-            data.addCause(text, intensity)
+
             data.save()
 
             textView.setText(data.print())
@@ -71,9 +75,11 @@ class MainActivity : AppCompatActivity() {
                     1 -> intensity = Intensity.MEDIUM
                     2 -> intensity = Intensity.HIGH
                 }
+
             }
 
             data.addSymptom(text, intensity)
+
             data.save()
 
             textView.setText(data.print())

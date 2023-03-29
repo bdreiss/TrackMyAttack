@@ -13,57 +13,13 @@ public class Main {
 
 		DataModel data = new DataModel(PATH);
 
-//		data.addCause("Test",Intensity.low);
-//		data.addCause("Test",Intensity.medium);
-//		data.addCause("Test",Intensity.high);
-//
-//		LocalDateTime today = LocalDateTime.now();
-//		data.addCause("Test",Intensity.low, today.minusDays(1));
-//		today = LocalDateTime.now();
-//		
-//		data.addCause("Test",Intensity.medium, today.minusDays(1));
-//		today = LocalDateTime.now();
-//		data.addCause("Test",Intensity.high,today.minusDays(1));
-//
-//		data.addCause("Test",Intensity.low, today.minusDays(2));
-//		today = LocalDateTime.now();
-//		data.addCause("Test",Intensity.medium, today.minusDays(2));
-//		today = LocalDateTime.now();
-//		data.addCause("Test",Intensity.high,today.minusDays(2));
-//
-//
-//		
-//		
-//		Iterator<Datum> it = data.getCauseData("Test", today.minusDays(0).toLocalDate());
-//		
-//		while (it.hasNext()) {
-//			Datum datum = it.next();
-//			System.out.println(datum.getDate() + " " +  datum.getIntensity());
-//		}
-//		
 
-//		data.print();
-//		
-//		data.save();
-//
+
 		processTextFile(data, PATH + "Text.txt");
 ////		
 		data.save();
 		data.print();
-//		LocalDateTime[] dates = {
-//				LocalDateTime.now().minusDays(2),
-//				LocalDateTime.now().minusDays(2),
-//				LocalDateTime.now().minusDays(2),
-//				LocalDateTime.now().minusDays(1),
-//				LocalDateTime.now().minusDays(1),
-//				LocalDateTime.now().minusDays(1),
-//				LocalDateTime.now().minusDays(0),
-//				LocalDateTime.now().minusDays(0),
-//				LocalDateTime.now().minusDays(0)
-//								};
 //		
-//		for (LocalDateTime d : dates)
-//			System.out.println(d);
 	}
 
 	private static void processTextFile(DataModel data, String file) throws FileNotFoundException {

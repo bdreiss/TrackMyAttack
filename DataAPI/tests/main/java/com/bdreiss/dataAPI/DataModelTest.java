@@ -74,11 +74,95 @@ class DataModelTest {
 	}
 
 	private void add(Add addInterface) {
-		//TODO implement add
+
+		//Strings to be added
+				String[] strings = getTestStrings();
+			
+				//loop through strings
+				for (int i = 0; i < strings.length; i++) {
+					
+					//Store LocalDateTime for entries to check later
+					ArrayList<LocalDateTime> datesAdded = new ArrayList<>();
+					
+					//for every Intensity add one test
+					for (int j = 0; j < strings.length; j++) {
+						datesAdded.add(addInterface.add(strings[i]));
+					}
+					//assert the size of strings added is right
+					assert (addInterface.getSize() == i + 1);
+					
+					//get iterator for today
+					Iterator<Datum> it = addInterface.getData(strings[i], LocalDate.now());
+
+					//iterate over data for today and assert date and intensity are correct 
+					int j = 0;
+					while (it.hasNext()) {
+						Datum datum = it.next();
+						assert (datum.getDate().equals(datesAdded.get(j)));
+						j++;
+					}
+					
+					//assert the dataset is complete
+					assert(j == datesAdded.size());
+				}
 	}
 	
 	private void addWithCustomDate(AddWithCustomDate addInterface) {
-		//TODO implemen addWIthCustomDate
+		//strings to be added
+				String[] testStrings = getTestStrings();
+				//
+				LocalDateTime[] testCases = getTestDates();
+				
+				//custom dates to for intensities
+				LocalDateTime[][] testDates = new LocalDateTime[testStrings.length][testCases.length];
+				
+				//set test dates
+				for (int i = 0; i < testStrings.length;i++)
+						testDates[i] = testCases;
+
+				//expected results after adding dates to data model (should be ordered chronologically)
+				LocalDateTime[][] expectedResults = new LocalDateTime[testStrings.length][testCases.length];
+
+				//add expected dates in chronological order
+				Arrays.sort(testCases);
+				for (int i = 0; i < testStrings.length;i++) {
+						expectedResults[i] = testCases;
+				}
+				//loop through strings		
+				for (int i = 0; i < testStrings.length; i++) {
+					//add string with custom date and loop through intensities
+					for (int j = 0; j < testDates[i].length; j++) 
+						addInterface.add(testStrings[i], testDates[i][j]);
+					
+					//assert size is correct
+					assert (addInterface.getSize() == i + 1);
+
+					//current date for asserts
+					LocalDate currentDate = null;
+
+					//for all days for which data has been added: fetch data, iterate over it and assert date and intensity are correct
+					int j = 0;
+					
+					while (j < expectedResults[i].length) {
+						
+						//set currentDate to new day
+						currentDate = expectedResults[i][j].toLocalDate();
+						
+						//get iterator for day
+						Iterator<Datum> it = addInterface.getData(testStrings[i], currentDate);
+
+						//iterate over data;
+						while (it.hasNext()) {
+							Datum datum = it.next();
+							assert (datum.getDate().equals(expectedResults[i][j]));
+							j++;
+						}
+						
+					}
+					
+					//assert processed data length equals test cases
+					assert(j == testDates[i].length);
+				}
 	}
 	
 	private void addWithIntensity(AddWithIntensity addInterface) {
@@ -201,7 +285,6 @@ class DataModelTest {
 	}
 
 	// tests whether ailments with custom dates are added correctly and can be retrieved
-	//TODO add test cases where the dates are not ordered to test whether they are returned in order
 	@Test
 	void addAilmentWithCustomDate() {
 		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
@@ -225,25 +308,92 @@ class DataModelTest {
 	}
 
 
-
+	// tests whether causes are added correctly and can be retrieved
 	@Test
 	void addCause() {
-
+		add(new Add() {
+			
+			@Override
+			public int getSize() {
+				return data.getCausesSize();
+			}
+			
+			@Override
+			public Iterator<Datum> getData(String s, LocalDate d) {
+				return data.getCauseData(s, d);
+			}
+			
+			@Override
+			public LocalDateTime add(String s) {
+				return data.addCause(s);
+			}
+		});
 	}
 
+	// tests whether causes with custom dates are added correctly and can be retrieved
 	@Test
 	void addCauseWithCustomDate() {
-
+		addWithCustomDate(new AddWithCustomDate() {
+			
+			@Override
+			public int getSize() {
+				return data.getCausesSize();
+			}
+			
+			@Override
+			public Iterator<Datum> getData(String s, LocalDate d) {
+				return data.getCauseData(s, d);
+			}
+			
+			@Override
+			public void add(String s, LocalDateTime d) {
+				data.addCause(s, d);
+			}
+		});
 	}
 
+	// tests whether causes with intensity are added correctly and can be retrieved
 	@Test
 	void addCauseWithIntensity() {
-
+		addWithIntensity(new AddWithIntensity() {
+			
+			@Override
+			public int getSize() {
+				return data.getCausesSize();
+			}
+			
+			@Override
+			public Iterator<Datum> getData(String s, LocalDate d) {
+				return data.getCauseData(s, d);
+			}
+			
+			@Override
+			public LocalDateTime add(String s, Intensity i) {
+				return data.addCause(s, i);
+			}
+		});
 	}
 
+	// tests whether causes with custom dates and intensity are added correctly and can be retrieved
 	@Test
 	void addCauseWithIntensityAndCustomDate() {
-
+		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
+			
+			@Override
+			public int getSize() {
+				return data.getCausesSize();
+			}
+			
+			@Override
+			public Iterator<Datum> getData(String s, LocalDate d) {
+				return data.getCauseData(s, d);
+			}
+			
+			@Override
+			public void add(String s, Intensity i, LocalDateTime d) {
+				data.addCause(s, i, d);
+			}
+		});
 	}
 
 	@Test
