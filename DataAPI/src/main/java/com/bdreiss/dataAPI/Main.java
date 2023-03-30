@@ -14,12 +14,10 @@ public class Main {
 		DataModel data = new DataModel(PATH);
 
 
-
-		processTextFile(data, PATH + "Text.txt");
-////		
-		data.save();
+//
+//		processTextFile(data, PATH + "Text.txt");
+//		data.save();
 		data.print();
-//		
 	}
 
 	private static void processTextFile(DataModel data, String file) throws FileNotFoundException {

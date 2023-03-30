@@ -9,7 +9,7 @@ package main.java.com.bdreiss.dataAPI;
 
 public enum Intensity {
 	/**
-	 * Choose if intensity is not important
+	 * Serves as a kind of null
 	 */
     NO_INTENSITY("No intensity"), 
     /**
