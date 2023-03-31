@@ -1,6 +1,5 @@
 package main.java.com.bdreiss.dataAPI;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -8,13 +7,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +21,7 @@ class DataModelTest {
 
 	//strings to be tested when adding data
 	private String[] getTestStrings() {
-		String[] strings = { "Migraine", "Test", "" };
+		String[] strings = { "Migraine", "Test", "", "Apple", "Something","something2" };
 		return strings;
 	}
 
@@ -533,23 +528,102 @@ class DataModelTest {
 		});
 	}
 
+	//tests whether added ailments are returned in correct order
 	@Test
 	void getAilmentsList() {
 
+		String[] testStrings = getTestStrings();
+		
+		String[] expectedResults = testStrings.clone();
+		Arrays.sort(expectedResults,String.CASE_INSENSITIVE_ORDER);
+		
+		//add test data
+		for (String s: testStrings)
+			data.addAilment(s, null);
+		
+		//keep count of items
+		int i = 0;
+		
+		//iterate over ailments
+		for (Iterator<String> it = data.getAilments(); it.hasNext();i++) {
+			assert(it.next().equals(expectedResults[i]));
+		}
+		
+		//assert iterations equal test sample size
+		assert(i==testStrings.length);
+		
 	}
 
+	// tests whether added causes are returned in correct order
 	@Test
 	void getCausesList() {
-
+		String[] testStrings = getTestStrings();
+		
+		String[] expectedResults = testStrings.clone();
+		Arrays.sort(expectedResults,String.CASE_INSENSITIVE_ORDER);
+		
+		//add test data
+		for (String s: testStrings)
+			data.addCause(s);
+		
+		//keep count of items
+		int i = 0;
+		
+		//iterate over causes
+		for (Iterator<String> it = data.getCauses(); it.hasNext();i++) {
+			assert(it.next().equals(expectedResults[i]));
+		}
+		
+		//assert iterations equal test sample size
+		assert(i==testStrings.length);
 	}
 
+	//tests whether added symptoms are returned in correct order
 	@Test
 	void getSymptomsList() {
-
+		String[] testStrings = getTestStrings();
+		
+		String[] expectedResults = testStrings.clone();
+		Arrays.sort(expectedResults,String.CASE_INSENSITIVE_ORDER);
+		
+		//add test data
+		for (String s: testStrings)
+			data.addSymptom(s, null);
+		
+		//keep count of items
+		int i = 0;
+		
+		//iterate over symptoms
+		for (Iterator<String> it = data.getSymptoms(); it.hasNext();i++) {
+			assert(it.next().equals(expectedResults[i]));
+		}
+		
+		//assert iterations equal test sample size
+		assert(i==testStrings.length);
 	}
 
+	//tests whether added remedies are returned in correct order
 	@Test
 	void getRemediesList() {
+		String[] testStrings = getTestStrings();
+		
+		String[] expectedResults = testStrings.clone();
+		Arrays.sort(expectedResults,String.CASE_INSENSITIVE_ORDER);
+		
+		//add test data
+		for (String s: testStrings)
+			data.addRemedy(s);
+		
+		//keep count of items
+		int i = 0;
+		
+		//iterate over remedies
+		for (Iterator<String> it = data.getRemedies(); it.hasNext();i++) {
+			assert(it.next().equals(expectedResults[i]));
+		}
+		
+		//assert iterations equal test sample size
+		assert(i==testStrings.length);
 
 	}
 
