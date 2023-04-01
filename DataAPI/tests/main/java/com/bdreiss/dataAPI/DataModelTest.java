@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
@@ -647,23 +646,59 @@ class DataModelTest {
 
 	}
 
+	//test if size of ailments is returned correctly
 	@Test
 	void getAilmentsListSize() {
-
+		String[] testStrings = getTestStrings();
+				
+		//add test data
+		for (String s: testStrings)
+			data.addAilment(s,null);
+		
+		//assert returned value equals size of testStrings
+		assert(data.getAilmentsSize()==testStrings.length);
+		
 	}
 
+	//test if size of causes is returned correctly
 	@Test
 	void getCausesListSize() {
+		String[] testStrings = getTestStrings();
+		
+		//add test data
+		for (String s: testStrings)
+			data.addCause(s);
+		
+		//assert returned value equals size of testStrings
+		assert(data.getCausesSize()==testStrings.length);
 
 	}
-
+	
+	//test if size of symptoms is returned correctly
 	@Test
 	void getSymptomsListSize() {
+		String[] testStrings = getTestStrings();
+		
+		//add test data
+		for (String s: testStrings)
+			data.addSymptom(s,null);
+		
+		//assert returned value equals size of testStrings
+		assert(data.getSymptomsSize()==testStrings.length);
 
 	}
 
+	//test if size of remedies is returned correctly
 	@Test
 	void getRemediesListSize() {
+		String[] testStrings = getTestStrings();
+		
+		//add test data
+		for (String s: testStrings)
+			data.addRemedy(s);
+		
+		//assert returned value equals size of testStrings
+		assert(data.getRemediesSize()==testStrings.length);
 
 	}
 
