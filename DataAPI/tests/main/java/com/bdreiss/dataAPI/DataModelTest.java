@@ -64,23 +64,23 @@ class DataModelTest {
 	private void add(Add addInterface) {
 
 		// Strings to be added
-		String[] strings = getTestStrings();
+		String[] testStrings = getTestStrings();
 
 		// loop through strings
-		for (int i = 0; i < strings.length; i++) {
+		for (int i = 0; i < testStrings.length; i++) {
 
 			// Store LocalDateTime for entries to check later
 			ArrayList<LocalDateTime> datesAdded = new ArrayList<>();
 
 			// for every Intensity add one test
-			for (int j = 0; j < strings.length; j++) {
-				datesAdded.add(addInterface.add(strings[i]));
+			for (int j = 0; j < testStrings.length; j++) {
+				datesAdded.add(addInterface.add(testStrings[i]));
 			}
 			// assert the size of strings added is right
 			assert (addInterface.getSize() == i + 1);
 
 			// get iterator for today
-			Iterator<Datum> it = addInterface.getData(strings[i], LocalDate.now());
+			Iterator<Datum> it = addInterface.getData(testStrings[i], LocalDate.now());
 
 			// iterate over data for today and assert date and intensity are correct
 			int j = 0;
@@ -92,6 +92,19 @@ class DataModelTest {
 
 			// assert the dataset is complete
 			assert (j == datesAdded.size());
+
+			//get data for all dates and iterate over it
+			it = addInterface.getAllData(testStrings[i]);
+			int k = 0;
+			
+			while (it.hasNext()) {
+				assert(it.next().getDate().equals(datesAdded.get(k)));
+				k++;
+			}
+
+			// assert the dataset is complete
+			assert (k == datesAdded.size());
+		
 		}
 	}
 
@@ -152,28 +165,40 @@ class DataModelTest {
 
 			// assert processed data length equals test cases
 			assert (j == testDates[i].length);
+
+			//get data for all dates and iterate over it
+			Iterator<Datum> it = addInterface.getAllData(testStrings[i]);
+			int k=0;
+			
+			while (it.hasNext()) {
+				assert(it.next().getDate().equals(expectedResults[i][k]));
+				k++;
+			}
+
+			// assert the dataset is complete
+			assert (k == expectedResults[i].length);
 		}
 	}
 
 	private void addWithIntensity(AddWithIntensity addInterface) {
 		// Strings to be added
-		String[] strings = getTestStrings();
+		String[] testStrings = getTestStrings();
 
 		// loop through strings
-		for (int i = 0; i < strings.length; i++) {
+		for (int i = 0; i < testStrings.length; i++) {
 
 			// Store LocalDateTime for entries to check later
 			ArrayList<LocalDateTime> datesAdded = new ArrayList<>();
 
 			// for every Intensity add one test
 			for (int j = 0; j < Intensity.values().length; j++) {
-				datesAdded.add(addInterface.add(strings[i], Intensity.values()[j]));
+				datesAdded.add(addInterface.add(testStrings[i], Intensity.values()[j]));
 			}
 			// assert the size of strings added is right
 			assert (addInterface.getSize() == i + 1);
 
 			// get iterator for today
-			Iterator<Datum> it = addInterface.getData(strings[i], LocalDate.now());
+			Iterator<Datum> it = addInterface.getData(testStrings[i], LocalDate.now());
 
 			// iterate over data for today and assert date and intensity are correct
 			int j = 0;
@@ -186,6 +211,18 @@ class DataModelTest {
 
 			// assert the dataset is complete
 			assert (j == datesAdded.size());
+			
+			//get data for all dates and iterate over it
+			it = addInterface.getAllData(testStrings[i]);
+			int k = 0;
+			
+			while (it.hasNext()) {
+				assert(it.next().getDate().equals(datesAdded.get(k)));
+				k++;
+			}
+
+			// assert the dataset is complete
+			assert (k == datesAdded.size());
 		}
 
 	}
@@ -250,6 +287,19 @@ class DataModelTest {
 
 			// assert processed data length equals test cases
 			assert (j == testDates[i].length);
+			
+			//get data for all dates and iterate over it
+			Iterator<Datum> it = addInterface.getAllData(testStrings[i]);
+			int k = 0;
+			
+			while (it.hasNext()) {
+				assert(it.next().getDate().equals(expectedResults[i][k]));
+				k++;
+			}
+
+			// assert the dataset is complete
+			assert (k == expectedResults[i].length);
+			
 		}
 	}
 
@@ -271,6 +321,11 @@ class DataModelTest {
 			@Override
 			public Iterator<Datum> getData(String s, LocalDate d) {
 				return data.getAilmentData(s, d);
+			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getAilmentData(s);
 			}
 
 		});
@@ -296,6 +351,11 @@ class DataModelTest {
 			public Iterator<Datum> getData(String s, LocalDate d) {
 				return data.getAilmentData(s, d);
 			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getAilmentData(s);
+			}
 		});
 
 	}
@@ -318,6 +378,11 @@ class DataModelTest {
 			@Override
 			public LocalDateTime add(String s) {
 				return data.addCause(s);
+			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getCauseData(s);
 			}
 		});
 	}
@@ -342,6 +407,11 @@ class DataModelTest {
 			public void add(String s, LocalDateTime d) {
 				data.addCause(s, d);
 			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getCauseData(s);
+			}
 		});
 	}
 
@@ -363,6 +433,11 @@ class DataModelTest {
 			@Override
 			public LocalDateTime add(String s, Intensity i) {
 				return data.addCause(s, i);
+			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getCauseData(s);
 			}
 		});
 	}
@@ -387,6 +462,11 @@ class DataModelTest {
 			public void add(String s, Intensity i, LocalDateTime d) {
 				data.addCause(s, i, d);
 			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getCauseData(s);
+			}
 		});
 	}
 
@@ -408,6 +488,11 @@ class DataModelTest {
 			@Override
 			public LocalDateTime add(String s, Intensity i) {
 				return data.addSymptom(s, i);
+			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getSymptomData(s);
 			}
 		});
 	}
@@ -432,6 +517,11 @@ class DataModelTest {
 			public void add(String s, Intensity i, LocalDateTime d) {
 				data.addSymptom(s, i, d);
 			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getSymptomData(s);
+			}
 		});
 	}
 
@@ -453,6 +543,11 @@ class DataModelTest {
 			@Override
 			public Iterator<Datum> getData(String s, LocalDate d) {
 				return data.getRemedyData(s, d);
+			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getRemedyData(s);
 			}
 
 		});
@@ -478,6 +573,11 @@ class DataModelTest {
 			public void add(String s, LocalDateTime d) {
 				data.addRemedy(s, d);
 			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getRemedyData(s);
+			}
 		});
 	}
 
@@ -501,6 +601,11 @@ class DataModelTest {
 			public LocalDateTime add(String s, Intensity i) {
 				return data.addRemedy(s, i);
 			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getRemedyData(s);
+			}
 		});
 	}
 
@@ -523,6 +628,11 @@ class DataModelTest {
 			@Override
 			public void add(String s, Intensity i, LocalDateTime d) {
 				data.addRemedy(s, i, d);
+			}
+
+			@Override
+			public Iterator<Datum> getAllData(String s) {
+				return data.getRemedyData(s);
 			}
 		});
 	}
@@ -623,26 +733,6 @@ class DataModelTest {
 		
 		//assert iterations equal test sample size
 		assert(i==testStrings.length);
-
-	}
-
-	@Test
-	void getAilmentData() {
-
-	}
-
-	@Test
-	void getCausesData() {
-
-	}
-
-	@Test
-	void getSymptomData() {
-
-	}
-
-	@Test
-	void getRemedyData() {
 
 	}
 

@@ -11,4 +11,5 @@ public interface Add {
 	LocalDateTime add(String s);
 	int getSize();
 	Iterator<Datum> getData(String s, LocalDate d);
+	Iterator<Datum> getAllData(String s);
 }

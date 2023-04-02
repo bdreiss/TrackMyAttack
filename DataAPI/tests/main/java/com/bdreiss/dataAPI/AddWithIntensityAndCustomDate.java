@@ -10,4 +10,5 @@ public interface AddWithIntensityAndCustomDate {
 	void add(String s, Intensity i, LocalDateTime d);
 	int getSize();
 	Iterator<Datum> getData(String s, LocalDate d);
+	Iterator<Datum> getAllData(String s);
 }
