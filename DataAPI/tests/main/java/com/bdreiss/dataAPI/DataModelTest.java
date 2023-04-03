@@ -1,6 +1,5 @@
 package main.java.com.bdreiss.dataAPI;
 
-
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,13 +17,13 @@ class DataModelTest {
 
 	DataModel data;
 
-	//strings to be tested when adding data
+	// strings to be tested when adding data
 	private String[] getTestStrings() {
-		String[] strings = { "Migraine", "Test", "", "Apple", "Something","something2" };
+		String[] strings = { "Migraine", "Test", "", "Apple", "Something", "something2" };
 		return strings;
 	}
 
-	//dates to be tested when adding data with custom dates
+	// dates to be tested when adding data with custom dates
 	private LocalDateTime[] getTestDates() {
 		// get today as LocalDateTime for generating new dates
 
@@ -93,18 +92,18 @@ class DataModelTest {
 			// assert the dataset is complete
 			assert (j == datesAdded.size());
 
-			//get data for all dates and iterate over it
+			// get data for all dates and iterate over it
 			it = addInterface.getAllData(testStrings[i]);
 			int k = 0;
-			
+
 			while (it.hasNext()) {
-				assert(it.next().getDate().equals(datesAdded.get(k)));
+				assert (it.next().getDate().equals(datesAdded.get(k)));
 				k++;
 			}
 
 			// assert the dataset is complete
 			assert (k == datesAdded.size());
-		
+
 		}
 	}
 
@@ -166,12 +165,12 @@ class DataModelTest {
 			// assert processed data length equals test cases
 			assert (j == testDates[i].length);
 
-			//get data for all dates and iterate over it
+			// get data for all dates and iterate over it
 			Iterator<Datum> it = addInterface.getAllData(testStrings[i]);
-			int k=0;
-			
+			int k = 0;
+
 			while (it.hasNext()) {
-				assert(it.next().getDate().equals(expectedResults[i][k]));
+				assert (it.next().getDate().equals(expectedResults[i][k]));
 				k++;
 			}
 
@@ -211,13 +210,13 @@ class DataModelTest {
 
 			// assert the dataset is complete
 			assert (j == datesAdded.size());
-			
-			//get data for all dates and iterate over it
+
+			// get data for all dates and iterate over it
 			it = addInterface.getAllData(testStrings[i]);
 			int k = 0;
-			
+
 			while (it.hasNext()) {
-				assert(it.next().getDate().equals(datesAdded.get(k)));
+				assert (it.next().getDate().equals(datesAdded.get(k)));
 				k++;
 			}
 
@@ -287,19 +286,19 @@ class DataModelTest {
 
 			// assert processed data length equals test cases
 			assert (j == testDates[i].length);
-			
-			//get data for all dates and iterate over it
+
+			// get data for all dates and iterate over it
 			Iterator<Datum> it = addInterface.getAllData(testStrings[i]);
 			int k = 0;
-			
+
 			while (it.hasNext()) {
-				assert(it.next().getDate().equals(expectedResults[i][k]));
+				assert (it.next().getDate().equals(expectedResults[i][k]));
 				k++;
 			}
 
 			// assert the dataset is complete
 			assert (k == expectedResults[i].length);
-			
+
 		}
 	}
 
@@ -637,169 +636,294 @@ class DataModelTest {
 		});
 	}
 
-	//tests whether added ailments are returned in correct order
+	// tests whether added ailments are returned in correct order
 	@Test
 	void getAilmentsList() {
 
 		String[] testStrings = getTestStrings();
-		
+
 		String[] expectedResults = testStrings.clone();
-		Arrays.sort(expectedResults,String.CASE_INSENSITIVE_ORDER);
-		
-		//add test data
-		for (String s: testStrings)
+		Arrays.sort(expectedResults, String.CASE_INSENSITIVE_ORDER);
+
+		// add test data
+		for (String s : testStrings)
 			data.addAilment(s, null);
-		
-		//keep count of items
+
+		// keep count of items
 		int i = 0;
-		
-		//iterate over ailments
-		for (Iterator<String> it = data.getAilments(); it.hasNext();i++) {
-			assert(it.next().equals(expectedResults[i]));
+
+		// iterate over ailments
+		for (Iterator<String> it = data.getAilments(); it.hasNext(); i++) {
+			assert (it.next().equals(expectedResults[i]));
 		}
-		
-		//assert iterations equal test sample size
-		assert(i==testStrings.length);
-		
+
+		// assert iterations equal test sample size
+		assert (i == testStrings.length);
+
 	}
 
 	// tests whether added causes are returned in correct order
 	@Test
 	void getCausesList() {
 		String[] testStrings = getTestStrings();
-		
+
 		String[] expectedResults = testStrings.clone();
-		Arrays.sort(expectedResults,String.CASE_INSENSITIVE_ORDER);
-		
-		//add test data
-		for (String s: testStrings)
+		Arrays.sort(expectedResults, String.CASE_INSENSITIVE_ORDER);
+
+		// add test data
+		for (String s : testStrings)
 			data.addCause(s);
-		
-		//keep count of items
+
+		// keep count of items
 		int i = 0;
-		
-		//iterate over causes
-		for (Iterator<String> it = data.getCauses(); it.hasNext();i++) {
-			assert(it.next().equals(expectedResults[i]));
+
+		// iterate over causes
+		for (Iterator<String> it = data.getCauses(); it.hasNext(); i++) {
+			assert (it.next().equals(expectedResults[i]));
 		}
-		
-		//assert iterations equal test sample size
-		assert(i==testStrings.length);
+
+		// assert iterations equal test sample size
+		assert (i == testStrings.length);
 	}
 
-	//tests whether added symptoms are returned in correct order
+	// tests whether added symptoms are returned in correct order
 	@Test
 	void getSymptomsList() {
 		String[] testStrings = getTestStrings();
-		
+
 		String[] expectedResults = testStrings.clone();
-		Arrays.sort(expectedResults,String.CASE_INSENSITIVE_ORDER);
-		
-		//add test data
-		for (String s: testStrings)
+		Arrays.sort(expectedResults, String.CASE_INSENSITIVE_ORDER);
+
+		// add test data
+		for (String s : testStrings)
 			data.addSymptom(s, null);
-		
-		//keep count of items
+
+		// keep count of items
 		int i = 0;
-		
-		//iterate over symptoms
-		for (Iterator<String> it = data.getSymptoms(); it.hasNext();i++) {
-			assert(it.next().equals(expectedResults[i]));
+
+		// iterate over symptoms
+		for (Iterator<String> it = data.getSymptoms(); it.hasNext(); i++) {
+			assert (it.next().equals(expectedResults[i]));
 		}
-		
-		//assert iterations equal test sample size
-		assert(i==testStrings.length);
+
+		// assert iterations equal test sample size
+		assert (i == testStrings.length);
 	}
 
-	//tests whether added remedies are returned in correct order
+	// tests whether added remedies are returned in correct order
 	@Test
 	void getRemediesList() {
 		String[] testStrings = getTestStrings();
-		
+
 		String[] expectedResults = testStrings.clone();
-		Arrays.sort(expectedResults,String.CASE_INSENSITIVE_ORDER);
-		
-		//add test data
-		for (String s: testStrings)
+		Arrays.sort(expectedResults, String.CASE_INSENSITIVE_ORDER);
+
+		// add test data
+		for (String s : testStrings)
 			data.addRemedy(s);
-		
-		//keep count of items
+
+		// keep count of items
 		int i = 0;
-		
-		//iterate over remedies
-		for (Iterator<String> it = data.getRemedies(); it.hasNext();i++) {
-			assert(it.next().equals(expectedResults[i]));
+
+		// iterate over remedies
+		for (Iterator<String> it = data.getRemedies(); it.hasNext(); i++) {
+			assert (it.next().equals(expectedResults[i]));
 		}
-		
-		//assert iterations equal test sample size
-		assert(i==testStrings.length);
+
+		// assert iterations equal test sample size
+		assert (i == testStrings.length);
 
 	}
 
-	//test if size of ailments is returned correctly
+	// test if size of ailments is returned correctly
 	@Test
 	void getAilmentsListSize() {
 		String[] testStrings = getTestStrings();
-				
-		//add test data
-		for (String s: testStrings)
-			data.addAilment(s,null);
-		
-		//assert returned value equals size of testStrings
-		assert(data.getAilmentsSize()==testStrings.length);
-		
+
+		// add test data
+		for (String s : testStrings)
+			data.addAilment(s, null);
+
+		// assert returned value equals size of testStrings
+		assert (data.getAilmentsSize() == testStrings.length);
+
 	}
 
-	//test if size of causes is returned correctly
+	// test if size of causes is returned correctly
 	@Test
 	void getCausesListSize() {
 		String[] testStrings = getTestStrings();
-		
-		//add test data
-		for (String s: testStrings)
+
+		// add test data
+		for (String s : testStrings)
 			data.addCause(s);
-		
-		//assert returned value equals size of testStrings
-		assert(data.getCausesSize()==testStrings.length);
+
+		// assert returned value equals size of testStrings
+		assert (data.getCausesSize() == testStrings.length);
 
 	}
-	
-	//test if size of symptoms is returned correctly
+
+	// test if size of symptoms is returned correctly
 	@Test
 	void getSymptomsListSize() {
 		String[] testStrings = getTestStrings();
-		
-		//add test data
-		for (String s: testStrings)
-			data.addSymptom(s,null);
-		
-		//assert returned value equals size of testStrings
-		assert(data.getSymptomsSize()==testStrings.length);
+
+		// add test data
+		for (String s : testStrings)
+			data.addSymptom(s, null);
+
+		// assert returned value equals size of testStrings
+		assert (data.getSymptomsSize() == testStrings.length);
 
 	}
 
-	//test if size of remedies is returned correctly
+	// test if size of remedies is returned correctly
 	@Test
 	void getRemediesListSize() {
 		String[] testStrings = getTestStrings();
-		
-		//add test data
-		for (String s: testStrings)
+
+		// add test data
+		for (String s : testStrings)
 			data.addRemedy(s);
+
+		// assert returned value equals size of testStrings
+		assert (data.getRemediesSize() == testStrings.length);
+
+	}
+
+	@Test
+	void removeEntry(String[] tests, Remove removeInterface) {
+
+		LocalDateTime now = LocalDateTime.now();
 		
-		//assert returned value equals size of testStrings
-		assert(data.getRemediesSize()==testStrings.length);
-
-	}
-
-	@Test
-	void save() {
-
-	}
-
-	@Test
-	void load() {
-
+		LocalDateTime[] dates = {
+				now.minusDays(2), 
+				now.minusDays(2).minusHours(1),
+				now.minusDays(2).minusHours(2),
+				now.minusDays(1), 
+				now.minusDays(1).minusHours(1),
+				now.minusDays(1).minusHours(2),
+				now, 
+				now.minusHours(1),
+				now.minusHours(2),
+				now.minusDays(1).minusHours(1),
+		};
+		
+		LocalDateTime[] datesToBeRemoved = {
+				null,
+				now.minusHours(3),
+				now,
+				now.minusDays(1),
+				now.minusHours(2),
+				now.minusDays(2),
+				now.minusDays(1).minusHours(2),
+				now.minusHours(1),
+				now.minusDays(2).minusHours(1),
+				now.minusDays(2).minusHours(2)
+		};
+		
+		LocalDateTime[][] expectedResults = {{
+			now.minusDays(2), 
+			now.minusDays(2).minusHours(1),
+			now.minusDays(2).minusHours(2),
+			now.minusDays(1), 
+			now.minusDays(1).minusHours(1),
+			now.minusDays(1).minusHours(2),
+			now,
+			now.minusHours(1),
+			now.minusHours(2)
+		},
+		{
+			now.minusDays(2), 
+			now.minusDays(2).minusHours(1),
+			now.minusDays(2).minusHours(2),
+			now.minusDays(1), 
+			now.minusDays(1).minusHours(1),
+			now.minusDays(1).minusHours(2),
+			now,
+			now.minusHours(1),
+			now.minusHours(2)
+		},
+		{
+			now.minusDays(2), 
+			now.minusDays(2).minusHours(1),
+			now.minusDays(2).minusHours(2),
+			now.minusDays(1), 
+			now.minusDays(1).minusHours(1),
+			now.minusDays(1).minusHours(2),
+			now.minusHours(1),
+			now.minusHours(2)
+		},
+		{
+			now.minusDays(2), 
+			now.minusDays(2).minusHours(1),
+			now.minusDays(2).minusHours(2),
+			now.minusDays(1).minusHours(1),
+			now.minusDays(1).minusHours(2),
+			now.minusHours(1),
+			now.minusHours(2)
+		},
+		{
+			now.minusDays(2), 
+			now.minusDays(2).minusHours(1),
+			now.minusDays(2).minusHours(2),
+			now.minusDays(1).minusHours(1),
+			now.minusDays(1).minusHours(2),
+			now.minusHours(1)
+		},
+		{
+			now.minusDays(2).minusHours(1),
+			now.minusDays(2).minusHours(2),
+			now.minusDays(1).minusHours(1),
+			now.minusDays(1).minusHours(2),
+			now.minusHours(1)
+		},
+		{
+			now.minusDays(2).minusHours(1),
+			now.minusDays(2).minusHours(2),
+			now.minusDays(1).minusHours(1),
+			now.minusHours(1)
+		},
+		{
+			now.minusDays(2).minusHours(1),
+			now.minusDays(2).minusHours(2),
+			now.minusDays(1).minusHours(1)
+		},
+		{
+			now.minusDays(2).minusHours(2),
+			now.minusDays(1).minusHours(1)
+		},
+		{
+			now.minusDays(2).minusHours(2)
+		},
+		{
+		}
+		};
+		
+		for (String s: tests) {
+			for (LocalDateTime d: dates) {
+				removeInterface.add(s, d);
+			}
+		}
+		
+		for (String s: tests) {
+			for (int i=0;i<datesToBeRemoved.length;i++) {
+				removeInterface.remove(s, datesToBeRemoved[i]);
+				Iterator<Datum> it = removeInterface.getData(s);
+				
+				int j=0;
+				
+				while (it.hasNext()) {
+					assert(it.next().getDate().equals(expectedResults[i][j]));
+					j++;
+				}
+				
+				assert(j==expectedResults[i].length);
+			}
+			
+			
+			
+		}
 	}
 
 }
