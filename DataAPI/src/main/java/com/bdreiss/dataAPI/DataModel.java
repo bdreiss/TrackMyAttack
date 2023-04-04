@@ -237,12 +237,71 @@ public class DataModel implements Serializable {
 		// is reached
 		// this means that the lists are always ordered
 		int i = list.size() - 1;
-		while (i > 0 && list.get(i).getDate().compareTo(list.get(i - 1).getDate()) < 0) {
+		while (i > 0 && list.get(i).getDate().compareTo(list.get(i - 1).getDate()) <= 0) {
 			Datum temp = list.get(i);
 			list.set(i, list.get(i - 1));
 			list.set(i - 1, temp);
 			i--;
 		}
+	}
+
+	/**
+	 * Removes an entry in ailments.
+	 * 
+	 * @param ailment Ailment for which entry is to be removed.
+	 * @param date Date of entry which is to be removed.
+	 */
+	public void removeAilment(String ailment, LocalDateTime date) {
+		removeEntry(ailments,ailment,date);
+	}
+
+	/**
+	 * Removes an entry in causes.
+	 * 
+	 * @param cause Cause for which entry is to be removed.
+	 * @param date Date of entry which is to be removed.
+	 */
+	public void removeCause(String cause, LocalDateTime date) {
+		removeEntry(causes,cause,date);
+	}
+	
+	/**
+	 * Removes an entry in symptoms.
+	 * 
+	 * @param symptom Symptom for which entry is to be removed.
+	 * @param date Date of entry which is to be removed.
+	 */
+	public void removeSymptom(String symptom, LocalDateTime date) {
+		removeEntry(symptoms,symptom,date);
+	}
+	
+	/**
+	 * Removes an entry in remedies.
+	 * 
+	 * @param remedy Remedy for which entry is to be removed.
+	 * @param date Date of entry which is to be removed.
+	 */
+	public void removeRemedy(String remedy, LocalDateTime date) {
+		removeEntry(remedies,remedy,date);
+	}
+	
+	// abstracts the task of removing entries from the different ArrayLists
+	private void removeEntry(Map<String, List<Datum>> map, String key, LocalDateTime date) {
+
+		// return if key doesn't exist
+		if (!map.containsKey(key))
+			return;
+		
+		List<Datum> list = map.get(key);
+
+		//iterate over list and remove enty if it matches date
+		for (int i = 0; i < list.size();i++) {
+			if (list.get(i).getDate().equals(date)) {
+				list.remove(i);
+				break;
+			}
+		}
+			
 	}
 
 	// abstracts the task of adding entries with Intensity to the different
