@@ -793,144 +793,65 @@ class DataModelTest {
 
 	void removeEntry(String[] tests, Remove removeInterface) {
 
-
 		LocalDateTime now = LocalDateTime.now();
-		
-		LocalDateTime[] dates = {
-				now.minusDays(2), 
-				now.minusDays(2).minusHours(1),
-				now.minusDays(2).minusHours(2),
-				now.minusDays(1), 
-				now.minusDays(1).minusHours(1),
-				now.minusDays(1).minusHours(2),
-				now, 
-				now.minusHours(1),
-				now.minusHours(2)
-		};
-		
-		LocalDateTime[] datesToBeRemoved = {
-				null,
-				now.minusHours(3),
-				now,
-				now.minusDays(1),
-				now.minusHours(2),
-				now.minusDays(2),
-				now.minusDays(1).minusHours(2),
-				now.minusHours(1),
-				now.minusDays(2).minusHours(1),
-				now.minusDays(2).minusHours(2)
-		};
-		
-		LocalDateTime[][] expectedResults = {{
-			now.minusDays(2).minusHours(2),
-			now.minusDays(2).minusHours(1),
-			now.minusDays(2), 
-			now.minusDays(1).minusHours(2),
-			now.minusDays(1).minusHours(1),
-			now.minusDays(1), 
-			now.minusHours(2),
-			now.minusHours(1),
-			now
-		},
-		{
-			now.minusDays(2).minusHours(2),
-			now.minusDays(2).minusHours(1),
-			now.minusDays(2), 
-			now.minusDays(1).minusHours(2),
-			now.minusDays(1).minusHours(1),
-			now.minusDays(1), 
-			now.minusHours(2),
-			now.minusHours(1),
-			now
-		},
-		{
-			now.minusDays(2).minusHours(2),
-			now.minusDays(2).minusHours(1),
-			now.minusDays(2), 
-			now.minusDays(1).minusHours(2),
-			now.minusDays(1).minusHours(1),
-			now.minusDays(1), 
-			now.minusHours(2),
-			now.minusHours(1)
-		},
-		{
-			now.minusDays(2).minusHours(2),
-			now.minusDays(2).minusHours(1),
-			now.minusDays(2), 
-			now.minusDays(1).minusHours(2),
-			now.minusDays(1).minusHours(1),
-			now.minusHours(2),
-			now.minusHours(1)
-		},
-		{
-			now.minusDays(2).minusHours(2),
-			now.minusDays(2).minusHours(1),
-			now.minusDays(2), 
-			now.minusDays(1).minusHours(2),
-			now.minusDays(1).minusHours(1),
-			now.minusHours(1)
-		},
-		{
-			now.minusDays(2).minusHours(2),
-			now.minusDays(2).minusHours(1),
-			now.minusDays(1).minusHours(2),
-			now.minusDays(1).minusHours(1),
-			now.minusHours(1)
-		},
-		{
-			now.minusDays(2).minusHours(2),
-			now.minusDays(2).minusHours(1),
-			now.minusDays(1).minusHours(1),
-			now.minusHours(1)
-		},
-		{
-			now.minusDays(2).minusHours(2),
-			now.minusDays(2).minusHours(1),
-			now.minusDays(1).minusHours(1)
-		},
-		{
-			now.minusDays(2).minusHours(2),
-			now.minusDays(1).minusHours(1)
-		},
-		{
-			now.minusDays(1).minusHours(1)
-		},
-		{
-		}
-		};
 
-		for (String s: tests) {
-			for (LocalDateTime d: dates) {
+		LocalDateTime[] dates = { now.minusDays(2), now.minusDays(2).minusHours(1), now.minusDays(2).minusHours(2),
+				now.minusDays(1), now.minusDays(1).minusHours(1), now.minusDays(1).minusHours(2), now,
+				now.minusHours(1), now.minusHours(2) };
+
+		LocalDateTime[] datesToBeRemoved = { null, now.minusHours(3), now, now.minusDays(1), now.minusHours(2),
+				now.minusDays(2), now.minusDays(1).minusHours(2), now.minusHours(1), now.minusDays(2).minusHours(1),
+				now.minusDays(2).minusHours(2) };
+
+		LocalDateTime[][] expectedResults = {
+				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(2),
+						now.minusDays(1).minusHours(2), now.minusDays(1).minusHours(1), now.minusDays(1),
+						now.minusHours(2), now.minusHours(1), now },
+				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(2),
+						now.minusDays(1).minusHours(2), now.minusDays(1).minusHours(1), now.minusDays(1),
+						now.minusHours(2), now.minusHours(1), now },
+				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(2),
+						now.minusDays(1).minusHours(2), now.minusDays(1).minusHours(1), now.minusDays(1),
+						now.minusHours(2), now.minusHours(1) },
+				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(2),
+						now.minusDays(1).minusHours(2), now.minusDays(1).minusHours(1), now.minusHours(2),
+						now.minusHours(1) },
+				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(2),
+						now.minusDays(1).minusHours(2), now.minusDays(1).minusHours(1), now.minusHours(1) },
+				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(1).minusHours(2),
+						now.minusDays(1).minusHours(1), now.minusHours(1) },
+				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(1).minusHours(1),
+						now.minusHours(1) },
+				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(1).minusHours(1) },
+				{ now.minusDays(2).minusHours(2), now.minusDays(1).minusHours(1) }, { now.minusDays(1).minusHours(1) },
+				{} };
+
+		for (String s : tests) {
+			for (LocalDateTime d : dates) {
 				removeInterface.add(s, d);
 			}
 		}
-		
-		for (String s: tests) {
-			for (int i=0;i<datesToBeRemoved.length;i++) {
 
-				Iterator<Datum> it1 = data.getAilmentData(s);
+		for (String s : tests) {
+			for (int i = 0; i < datesToBeRemoved.length; i++) {
 
 				removeInterface.remove(s, datesToBeRemoved[i]);
 				Iterator<Datum> it = removeInterface.getData(s);
 
-				it1 = data.getAilmentData(s);
-				int j=0;
-				
-				
+				int j = 0;
+
 				while (it.hasNext()) {
-					assert(it.next().getDate().equals(expectedResults[i][j]));
+					assert (it.next().getDate().equals(expectedResults[i][j]));
 					j++;
 				}
-				
-				assert(j==expectedResults[i].length);
+
+				assert (j == expectedResults[i].length);
 
 			}
-			
-			
-			
+
 		}
 	}
-	
+
 	@Test
 	public void removeAilment() {
 		String[] testStrings = getTestStrings();
@@ -950,7 +871,73 @@ class DataModelTest {
 			public Iterator<Datum> getData(String s) {
 				return data.getAilmentData(s);
 			}
-			
+
+		});
+	}
+
+	@Test
+	public void removeCause() {
+		String[] testStrings = getTestStrings();
+		removeEntry(testStrings, new Remove() {
+
+			@Override
+			public void remove(String s, LocalDateTime d) {
+				data.removeCause(s, d);
+			}
+
+			@Override
+			public Iterator<Datum> getData(String s) {
+				return data.getCauseData(s);
+			}
+
+			@Override
+			public void add(String s, LocalDateTime d) {
+				data.addCause(s, d);
+			}
+		});
+	}
+
+	@Test
+	public void removeSymptom() {
+		String[] testStrings = getTestStrings();
+		removeEntry(testStrings, new Remove() {
+
+			@Override
+			public void remove(String s, LocalDateTime d) {
+				data.removeSymptom(s, d);
+			}
+
+			@Override
+			public Iterator<Datum> getData(String s) {
+				return data.getSymptomData(s);
+			}
+
+			@Override
+			public void add(String s, LocalDateTime d) {
+				data.addSymptom(s,Intensity.NO_INTENSITY, d);
+			}
+		});
+	}
+	
+	@Test
+	public void removeRemedy() {
+		String[] testStrings = getTestStrings();
+		removeEntry(testStrings, new Remove() {
+
+			@Override
+			public void remove(String s, LocalDateTime d) {
+				data.removeRemedy(s, d);
+			}
+
+			@Override
+			public Iterator<Datum> getData(String s) {
+				return data.getRemedyData(s);
+			}
+
+			@Override
+			public void add(String s, LocalDateTime d) {
+				data.addRemedy(s, d);
+			}
 		});
 	}
 
