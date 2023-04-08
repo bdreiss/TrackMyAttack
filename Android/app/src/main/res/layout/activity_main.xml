@@ -31,7 +31,7 @@
             android:id="@+id/button_habit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ADD HABIT" />
+            android:text="ADD CAUSE" />
 
     </LinearLayout>
 

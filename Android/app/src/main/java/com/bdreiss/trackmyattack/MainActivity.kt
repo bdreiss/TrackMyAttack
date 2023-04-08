@@ -3,9 +3,9 @@ package com.bdreiss.trackmyattack
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import main.java.com.bdreiss.dataAPI.DataModel
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         val textView = findViewById<TextView>(R.id.textView)
 
-        textView.setText(data.print())
+        textView.text = data.print()
 
         val habitsEditTextText = findViewById<EditText>(R.id.edit_text_habit_text)
         val habitsEditTextIntensity = findViewById<EditText>(R.id.edit_text_habit_intensity)
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     1 -> intensity = Intensity.MEDIUM
                     2 -> intensity = Intensity.HIGH
                 }
-                data.addCause(text, intensity)
+                data.addCause(text.trim(), intensity)
 
             } else{
                 data.addCause(text)
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
             data.save()
 
-            textView.setText(data.print())
+            textView.text = data.print()
             habitsEditTextText.setText("")
             habitsEditTextIntensity.setText("")
         }
@@ -78,11 +78,11 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-            data.addSymptom(text, intensity)
+            data.addSymptom(text.trim(), intensity)
 
             data.save()
 
-            textView.setText(data.print())
+            textView.text = data.print()
             symptomsEditTextText.setText("")
             symptomsEditTextIntensity.setText("")
         }
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
             data.addAilment("Migraine", intensity)
             data.save()
 
-            textView.setText(data.print())
+            textView.text = data.print()
             migraineEditTextText.setText("")
             migraineEditTextIntensity.setText("")
         }
@@ -127,14 +127,47 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            data.addRemedy(text, intensity)
+            data.addRemedy(text.trim(), intensity)
             data.save()
 
-            textView.setText(data.print())
+            textView.text = data.print()
             remedyEditTextText.setText("")
             remedyEditTextIntensity.setText("")
         }
 
+
+        causesLayout(data)
+
+
     }
 
+    private fun causesLayout(data:DataModel){
+        setContentView(R.layout.causes)
+        val causesLinearLayout = findViewById<LinearLayout>(R.id.linear_layout_causes)
+        val iterator = data.causes
+
+        while (iterator.hasNext()){
+            val cause = iterator.next()
+
+            val causeButton = Button(this)
+
+            causeButton.text = cause
+            causeButton.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            causesLinearLayout.addView(causeButton)
+
+
+        }
+        val button = Button(this)
+
+        button.text = "+"
+        button.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        causesLinearLayout.addView(button)
+
+    }
 }

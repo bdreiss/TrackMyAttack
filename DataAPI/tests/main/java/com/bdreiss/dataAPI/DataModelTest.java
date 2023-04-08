@@ -914,11 +914,11 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, LocalDateTime d) {
-				data.addSymptom(s,Intensity.NO_INTENSITY, d);
+				data.addSymptom(s, Intensity.NO_INTENSITY, d);
 			}
 		});
 	}
-	
+
 	@Test
 	public void removeRemedy() {
 		String[] testStrings = getTestStrings();
@@ -940,6 +940,5 @@ class DataModelTest {
 			}
 		});
 	}
-
 
 }
