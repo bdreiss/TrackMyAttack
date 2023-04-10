@@ -9,6 +9,6 @@ import java.util.Iterator;
 public interface AddWithIntensityAndCustomDate {
 	void add(String s, Intensity i, LocalDateTime d);
 	int getSize();
-	Iterator<Datum> getData(String s, LocalDate d);
-	Iterator<Datum> getAllData(String s);
+	Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException;
+	Iterator<Datum> getAllData(String s) throws EntryNotFoundException;
 }

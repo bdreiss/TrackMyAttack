@@ -10,6 +10,6 @@ public interface AddWithCustomDate {
 	
 	void add(String s, LocalDateTime d);
 	int getSize();
-	Iterator<Datum> getData(String s, LocalDate d);
-	Iterator<Datum> getAllData(String s);
+	Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException;
+	Iterator<Datum> getAllData(String s) throws EntryNotFoundException;
 }

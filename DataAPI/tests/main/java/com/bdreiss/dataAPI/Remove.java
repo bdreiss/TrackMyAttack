@@ -7,5 +7,5 @@ public interface Remove {
 
 	void remove(String s, LocalDateTime d);
 	void add(String s, LocalDateTime d);
-	Iterator<Datum> getData(String s);
+	Iterator<Datum> getData(String s) throws EntryNotFoundException;
 }

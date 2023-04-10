@@ -9,15 +9,16 @@ public class Main {
 
 	final static String PATH = "files/";
 
-	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
+	public static void main(String[] args) throws FileNotFoundException, InterruptedException, EntryNotFoundException {
 
 		DataModel data = new DataModel(PATH);
 
+		data.getAilmentData("TEST");
 
-//
+		//
 //		processTextFile(data, PATH + "Text.txt");
 //		data.save();
-		data.print();
+//		data.print();
 	}
 
 	private static void processTextFile(DataModel data, String file) throws FileNotFoundException {

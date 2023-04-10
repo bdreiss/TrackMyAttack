@@ -301,9 +301,14 @@ public class DataModel implements Serializable {
 				break;
 			}
 		}
+		
+		if (list.size()==0)
+			map.remove(key);
 			
 	}
 
+	//TODO edit entry
+	
 	// abstracts the task of adding entries with Intensity to the different
 	// ArrayLists
 	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) {
@@ -411,8 +416,13 @@ public class DataModel implements Serializable {
 	 * @param date    Day for which data should be retrieved
 	 * @return Iterator containing data when and how intense ailment occurred as
 	 *         Datum
+	 * @throws EntryNotFoundException 
 	 */
-	public Iterator<Datum> getAilmentData(String ailment, LocalDate date) {
+	public Iterator<Datum> getAilmentData(String ailment, LocalDate date) throws EntryNotFoundException {
+		
+		if (ailments.get(ailment) == null)
+			throw new EntryNotFoundException();
+		
 		return new DayIterator(ailments.get(ailment), date);
 	}
 
@@ -423,8 +433,13 @@ public class DataModel implements Serializable {
 	 * @param ailment String describing ailment
 	 * @return Iterator containing data when and how intense ailment occurred as
 	 *         Datum
+	 * @throws EntryNotFoundException 
 	 */
-	public Iterator<Datum> getAilmentData(String ailment) {
+	public Iterator<Datum> getAilmentData(String ailment) throws EntryNotFoundException {
+
+		if (ailments.get(ailment) == null)
+			throw new EntryNotFoundException();
+
 		return ailments.get(ailment).iterator();
 	}
 
@@ -435,8 +450,12 @@ public class DataModel implements Serializable {
 	 * @param cause String describing cause
 	 * @param date  Day for which data should be retrieved
 	 * @return Iterator containing data when and how intense cause occurred as Datum
+	 * @throws EntryNotFoundException 
 	 */
-	public Iterator<Datum> getCauseData(String cause, LocalDate date) {
+	public Iterator<Datum> getCauseData(String cause, LocalDate date) throws EntryNotFoundException {
+		if (causes.get(cause) == null)
+			throw new EntryNotFoundException();
+
 		return new DayIterator(causes.get(cause), date);
 	}
 
@@ -446,8 +465,12 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause String describing cause
 	 * @return Iterator containing data when and how intense cause occurred as Datum
+	 * @throws EntryNotFoundException 
 	 */
-	public Iterator<Datum> getCauseData(String cause) {
+	public Iterator<Datum> getCauseData(String cause) throws EntryNotFoundException {
+		if (causes.get(cause) == null)
+			throw new EntryNotFoundException();
+
 		return causes.get(cause).iterator();
 	}
 
@@ -459,8 +482,12 @@ public class DataModel implements Serializable {
 	 * @param date    Day for which data should be retrieved
 	 * @return Iterator containing data when and how intense symptom occurred as
 	 *         Datum
+	 * @throws EntryNotFoundException 
 	 */
-	public Iterator<Datum> getSymptomData(String symptom, LocalDate date) {
+	public Iterator<Datum> getSymptomData(String symptom, LocalDate date) throws EntryNotFoundException {
+		if (symptoms.get(symptom) == null)
+			throw new EntryNotFoundException();
+
 		return new DayIterator(symptoms.get(symptom), date);
 	}
 
@@ -471,8 +498,12 @@ public class DataModel implements Serializable {
 	 * @param symptom String describing symptom
 	 * @return Iterator containing data when and how intense symptom occurred as
 	 *         Datum
+	 * @throws EntryNotFoundException 
 	 */
-	public Iterator<Datum> getSymptomData(String symptom) {
+	public Iterator<Datum> getSymptomData(String symptom) throws EntryNotFoundException {
+		if (symptoms.get(symptom) == null)
+			throw new EntryNotFoundException();
+
 		return symptoms.get(symptom).iterator();
 	}
 
@@ -484,8 +515,12 @@ public class DataModel implements Serializable {
 	 * @param date   Day for which data should be retrieved
 	 * @return Iterator containing data when and how intense remedy was used as
 	 *         Datum
+	 * @throws EntryNotFoundException 
 	 */
-	public Iterator<Datum> getRemedyData(String remedy, LocalDate date) {
+	public Iterator<Datum> getRemedyData(String remedy, LocalDate date) throws EntryNotFoundException {
+		if (remedies.get(remedy) == null)
+			throw new EntryNotFoundException();
+
 		return new DayIterator(remedies.get(remedy), date);
 	}
 
@@ -496,8 +531,12 @@ public class DataModel implements Serializable {
 	 * @param remedy String describing remedy.
 	 * @return Iterator containing data when and how intense remedy was used as
 	 *         Datum
+	 * @throws EntryNotFoundException 
 	 */
-	public Iterator<Datum> getRemedyData(String remedy) {
+	public Iterator<Datum> getRemedyData(String remedy) throws EntryNotFoundException {
+		if (remedies.get(remedy) == null)
+			throw new EntryNotFoundException();
+
 		return remedies.get(remedy).iterator();
 	}
 

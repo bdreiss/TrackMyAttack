@@ -60,7 +60,7 @@ class DataModelTest {
 		data.deleteSaveFile();
 	}
 
-	private void add(Add addInterface) {
+	private void add(Add addInterface) throws EntryNotFoundException {
 
 		// Strings to be added
 		String[] testStrings = getTestStrings();
@@ -107,7 +107,7 @@ class DataModelTest {
 		}
 	}
 
-	private void addWithCustomDate(AddWithCustomDate addInterface) {
+	private void addWithCustomDate(AddWithCustomDate addInterface) throws EntryNotFoundException {
 		// strings to be added
 		String[] testStrings = getTestStrings();
 		//
@@ -179,7 +179,7 @@ class DataModelTest {
 		}
 	}
 
-	private void addWithIntensity(AddWithIntensity addInterface) {
+	private void addWithIntensity(AddWithIntensity addInterface) throws EntryNotFoundException {
 		// Strings to be added
 		String[] testStrings = getTestStrings();
 
@@ -228,7 +228,7 @@ class DataModelTest {
 
 	// abstracts away the task of adding with custom date by providing an interface
 	// with the relevant methods
-	private void addWithIntensityAndCustomDate(AddWithIntensityAndCustomDate addInterface) {
+	private void addWithIntensityAndCustomDate(AddWithIntensityAndCustomDate addInterface) throws EntryNotFoundException {
 		// strings to be added
 		String[] testStrings = getTestStrings();
 		//
@@ -304,7 +304,7 @@ class DataModelTest {
 
 	// tests whether ailments are added correctly and can be retrieved
 	@Test
-	void addAilment() {
+	void addAilment() throws EntryNotFoundException {
 		addWithIntensity(new AddWithIntensity() {
 
 			@Override
@@ -318,12 +318,12 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getAilmentData(s, d);
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getAilmentData(s);
 			}
 
@@ -333,7 +333,7 @@ class DataModelTest {
 	// tests whether ailments with custom dates are added correctly and can be
 	// retrieved
 	@Test
-	void addAilmentWithCustomDate() {
+	void addAilmentWithCustomDate() throws EntryNotFoundException {
 		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
 
 			@Override
@@ -347,12 +347,12 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getAilmentData(s, d);
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getAilmentData(s);
 			}
 		});
@@ -361,7 +361,7 @@ class DataModelTest {
 
 	// tests whether causes are added correctly and can be retrieved
 	@Test
-	void addCause() {
+	void addCause() throws EntryNotFoundException {
 		add(new Add() {
 
 			@Override
@@ -370,7 +370,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getCauseData(s, d);
 			}
 
@@ -380,7 +380,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getCauseData(s);
 			}
 		});
@@ -389,7 +389,7 @@ class DataModelTest {
 	// tests whether causes with custom dates are added correctly and can be
 	// retrieved
 	@Test
-	void addCauseWithCustomDate() {
+	void addCauseWithCustomDate() throws EntryNotFoundException {
 		addWithCustomDate(new AddWithCustomDate() {
 
 			@Override
@@ -398,7 +398,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getCauseData(s, d);
 			}
 
@@ -408,7 +408,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getCauseData(s);
 			}
 		});
@@ -416,7 +416,7 @@ class DataModelTest {
 
 	// tests whether causes with intensity are added correctly and can be retrieved
 	@Test
-	void addCauseWithIntensity() {
+	void addCauseWithIntensity() throws EntryNotFoundException {
 		addWithIntensity(new AddWithIntensity() {
 
 			@Override
@@ -425,7 +425,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getCauseData(s, d);
 			}
 
@@ -435,7 +435,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getCauseData(s);
 			}
 		});
@@ -444,7 +444,7 @@ class DataModelTest {
 	// tests whether causes with custom dates and intensity are added correctly and
 	// can be retrieved
 	@Test
-	void addCauseWithIntensityAndCustomDate() {
+	void addCauseWithIntensityAndCustomDate() throws EntryNotFoundException {
 		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
 
 			@Override
@@ -453,7 +453,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getCauseData(s, d);
 			}
 
@@ -463,7 +463,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getCauseData(s);
 			}
 		});
@@ -471,7 +471,7 @@ class DataModelTest {
 
 	// tests whether symptoms are added correctly and can be retrieved
 	@Test
-	void addSymptom() {
+	void addSymptom() throws EntryNotFoundException {
 		addWithIntensity(new AddWithIntensity() {
 
 			@Override
@@ -480,7 +480,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getSymptomData(s, d);
 			}
 
@@ -490,7 +490,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getSymptomData(s);
 			}
 		});
@@ -499,7 +499,7 @@ class DataModelTest {
 	// tests whether symptoms with custom dates are added correctly and can be
 	// retrieved
 	@Test
-	void addSymptomWithCustomDate() {
+	void addSymptomWithCustomDate() throws EntryNotFoundException {
 		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
 
 			@Override
@@ -508,7 +508,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getSymptomData(s, d);
 			}
 
@@ -518,7 +518,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getSymptomData(s);
 			}
 		});
@@ -526,7 +526,7 @@ class DataModelTest {
 
 	// tests whether remedies are added correctly and can be retrieved
 	@Test
-	void addRemedy() {
+	void addRemedy() throws EntryNotFoundException {
 		add(new Add() {
 
 			@Override
@@ -540,12 +540,12 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getRemedyData(s, d);
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getRemedyData(s);
 			}
 
@@ -555,7 +555,7 @@ class DataModelTest {
 	// tests whether remedies with custom date are added correctly and can be
 	// retrieved
 	@Test
-	void addRemedyWithCustomDate() {
+	void addRemedyWithCustomDate() throws EntryNotFoundException {
 		addWithCustomDate(new AddWithCustomDate() {
 
 			@Override
@@ -564,7 +564,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getRemedyData(s, d);
 			}
 
@@ -574,7 +574,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getRemedyData(s);
 			}
 		});
@@ -583,7 +583,7 @@ class DataModelTest {
 	// tests whether remedies with intensity are added correctly and can be
 	// retrieved
 	@Test
-	void addRemedyWithIntensity() {
+	void addRemedyWithIntensity() throws EntryNotFoundException {
 		addWithIntensity(new AddWithIntensity() {
 
 			@Override
@@ -592,7 +592,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getRemedyData(s, d);
 			}
 
@@ -602,7 +602,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getRemedyData(s);
 			}
 		});
@@ -611,7 +611,7 @@ class DataModelTest {
 	// tests whether remedies with intensity and custom date are added correctly and
 	// can be retrieved
 	@Test
-	void addRemedyWithIntensityAndCustomDate() {
+	void addRemedyWithIntensityAndCustomDate() throws EntryNotFoundException {
 		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
 
 			@Override
@@ -620,7 +620,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
 				return data.getRemedyData(s, d);
 			}
 
@@ -630,7 +630,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getAllData(String s) {
+			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getRemedyData(s);
 			}
 		});
@@ -791,7 +791,7 @@ class DataModelTest {
 
 	}
 
-	void removeEntry(String[] tests, Remove removeInterface) {
+	void removeEntry(String[] tests, Remove removeInterface) throws EntryNotFoundException {
 
 		LocalDateTime now = LocalDateTime.now();
 
@@ -801,7 +801,7 @@ class DataModelTest {
 
 		LocalDateTime[] datesToBeRemoved = { null, now.minusHours(3), now, now.minusDays(1), now.minusHours(2),
 				now.minusDays(2), now.minusDays(1).minusHours(2), now.minusHours(1), now.minusDays(2).minusHours(1),
-				now.minusDays(2).minusHours(2) };
+				now.minusDays(2).minusHours(2)};
 
 		LocalDateTime[][] expectedResults = {
 				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(2),
@@ -824,7 +824,7 @@ class DataModelTest {
 						now.minusHours(1) },
 				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(1).minusHours(1) },
 				{ now.minusDays(2).minusHours(2), now.minusDays(1).minusHours(1) }, { now.minusDays(1).minusHours(1) },
-				{} };
+				 };
 
 		for (String s : tests) {
 			for (LocalDateTime d : dates) {
@@ -846,14 +846,21 @@ class DataModelTest {
 				}
 
 				assert (j == expectedResults[i].length);
-
 			}
-
+			
+			//remove last entry and assert that key has been removed from map
+			removeInterface.remove(s, now.minusDays(1).minusHours(1));
+			try {
+				removeInterface.getData(s);
+				assert(false);
+			} catch (EntryNotFoundException e) {
+				assert(true);
+			}
 		}
 	}
 
 	@Test
-	public void removeAilment() {
+	public void removeAilment() throws EntryNotFoundException {
 		String[] testStrings = getTestStrings();
 		removeEntry(testStrings, new Remove() {
 
@@ -868,7 +875,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s) {
+			public Iterator<Datum> getData(String s) throws EntryNotFoundException {
 				return data.getAilmentData(s);
 			}
 
@@ -876,7 +883,7 @@ class DataModelTest {
 	}
 
 	@Test
-	public void removeCause() {
+	public void removeCause() throws EntryNotFoundException {
 		String[] testStrings = getTestStrings();
 		removeEntry(testStrings, new Remove() {
 
@@ -886,7 +893,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s) {
+			public Iterator<Datum> getData(String s) throws EntryNotFoundException {
 				return data.getCauseData(s);
 			}
 
@@ -898,7 +905,7 @@ class DataModelTest {
 	}
 
 	@Test
-	public void removeSymptom() {
+	public void removeSymptom() throws EntryNotFoundException {
 		String[] testStrings = getTestStrings();
 		removeEntry(testStrings, new Remove() {
 
@@ -908,7 +915,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s) {
+			public Iterator<Datum> getData(String s) throws EntryNotFoundException {
 				return data.getSymptomData(s);
 			}
 
@@ -920,7 +927,7 @@ class DataModelTest {
 	}
 
 	@Test
-	public void removeRemedy() {
+	public void removeRemedy() throws EntryNotFoundException {
 		String[] testStrings = getTestStrings();
 		removeEntry(testStrings, new Remove() {
 
@@ -930,7 +937,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s) {
+			public Iterator<Datum> getData(String s) throws EntryNotFoundException {
 				return data.getRemedyData(s);
 			}
 
