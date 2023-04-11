@@ -1,14 +1,14 @@
 package com.bdreiss.trackmyattack
 
+import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import main.java.com.bdreiss.dataAPI.DataModel
+import main.java.com.bdreiss.dataAPI.DatumWithIntensity
 import main.java.com.bdreiss.dataAPI.Intensity
 import java.io.File
 
@@ -16,6 +16,11 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        activityMain()
+    }
+
+    private fun activityMain(){
         setContentView(R.layout.activity_main)
         //DataModel.deleteSaveFile(this)
 
@@ -135,9 +140,9 @@ class MainActivity : AppCompatActivity() {
             remedyEditTextIntensity.setText("")
         }
 
-
-        causesLayout(data)
-
+        findViewById<Button>(R.id.button_causes_view).setOnClickListener {
+            causesLayout(data)
+        }
 
     }
 
@@ -156,8 +161,21 @@ class MainActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
+
+
             causesLinearLayout.addView(causeButton)
 
+            causeButton.setOnClickListener{
+                if (data.getCauseData(cause).next() is DatumWithIntensity)
+                    chooseIntensity(this){
+                            chosenEnumValue ->
+                        data.addCause(cause, chosenEnumValue)
+                        data.save()
+                    }
+                else
+                    data.addCause(cause)
+                data.save()
+            }
 
         }
         val button = Button(this)
@@ -169,5 +187,30 @@ class MainActivity : AppCompatActivity() {
         )
         causesLinearLayout.addView(button)
 
+        val buttonBack = Button(this)
+
+        buttonBack.text = "BACK"
+        buttonBack.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        causesLinearLayout.addView(buttonBack)
+
+        buttonBack.setOnClickListener{
+            activityMain()
+        }
+    }
+    private fun chooseIntensity(context: Context, onEnumSelected: (Intensity) -> Unit) {
+        val customEnumValues = Intensity.values().copyOfRange(1,Intensity.values().size)
+        val customEnumNames = customEnumValues.map { it.name }.toTypedArray()
+
+        AlertDialog.Builder(context)
+            .setTitle("Choose Intensity")
+            .setItems(customEnumNames) { _, which ->
+                onEnumSelected(customEnumValues[which])
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+            .show()
     }
 }

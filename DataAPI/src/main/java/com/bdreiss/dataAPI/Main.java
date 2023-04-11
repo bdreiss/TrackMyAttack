@@ -13,12 +13,9 @@ public class Main {
 
 		DataModel data = new DataModel(PATH);
 
-		data.getAilmentData("TEST");
-
-		//
-//		processTextFile(data, PATH + "Text.txt");
-//		data.save();
-//		data.print();
+		processTextFile(data, PATH + "Text.txt");
+		data.save();
+		data.print();
 	}
 
 	private static void processTextFile(DataModel data, String file) throws FileNotFoundException {
