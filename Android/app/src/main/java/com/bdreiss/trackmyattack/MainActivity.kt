@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -141,41 +142,31 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.button_causes_view).setOnClickListener {
-            causesLayout(data)
+            setLayout(R.layout.causes,R.id.linear_layout_causes, data.causes, CausesOnClickListener(this,data))
         }
 
     }
 
-    private fun causesLayout(data:DataModel){
-        setContentView(R.layout.causes)
-        val causesLinearLayout = findViewById<LinearLayout>(R.id.linear_layout_causes)
-        val iterator = data.causes
+    private fun setLayout(idLayout : Int, idLinearLayout: Int, iterator : Iterator<String>, listener : CustomListener){
+        setContentView(idLayout)
+        val linearLayout = findViewById<LinearLayout>(idLinearLayout)
 
         while (iterator.hasNext()){
-            val cause = iterator.next()
+            val text = iterator.next()
 
-            val causeButton = Button(this)
-
-            causeButton.text = cause
-            causeButton.layoutParams = LinearLayout.LayoutParams(
+            val button = Button(this)
+            val listenerCopy = listener.clone()
+            button.text = text
+            button.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
 
 
-            causesLinearLayout.addView(causeButton)
+            linearLayout.addView(button)
 
-            causeButton.setOnClickListener{
-                if (data.getCauseData(cause).next() is DatumWithIntensity)
-                    chooseIntensity(this){
-                            chosenEnumValue ->
-                        data.addCause(cause, chosenEnumValue)
-                        data.save()
-                    }
-                else
-                    data.addCause(cause)
-                data.save()
-            }
+            listenerCopy.setTextValue(text)
+            button.setOnClickListener(listenerCopy)
 
         }
         val button = Button(this)
@@ -185,7 +176,7 @@ class MainActivity : AppCompatActivity() {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        causesLinearLayout.addView(button)
+        linearLayout.addView(button)
 
         val buttonBack = Button(this)
 
@@ -194,23 +185,62 @@ class MainActivity : AppCompatActivity() {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        causesLinearLayout.addView(buttonBack)
+        linearLayout.addView(buttonBack)
 
         buttonBack.setOnClickListener{
             activityMain()
         }
     }
-    private fun chooseIntensity(context: Context, onEnumSelected: (Intensity) -> Unit) {
-        val customEnumValues = Intensity.values().copyOfRange(1,Intensity.values().size)
-        val customEnumNames = customEnumValues.map { it.name }.toTypedArray()
 
-        AlertDialog.Builder(context)
-            .setTitle("Choose Intensity")
-            .setItems(customEnumNames) { _, which ->
-                onEnumSelected(customEnumValues[which])
-            }
-            .setNegativeButton("Cancel", null)
-            .create()
-            .show()
+    open class CustomListener(val context: Context, val data: DataModel) : View.OnClickListener{
+        lateinit var text : String
+
+        fun setTextValue(text : String){
+            this.text = text
+        }
+
+        override fun onClick(v: View?) {
+        }
+        open fun clone():CustomListener{
+            return CustomListener(context, data)
+        }
     }
+
+
+    class CausesOnClickListener(context: Context, data: DataModel) : CustomListener(context, data) {
+
+        override fun onClick(v: View?) {
+
+            if (data.getCauseData(text).next() is DatumWithIntensity)
+                chooseIntensity(context){
+                        chosenEnumValue ->
+                    data.addCause(text, chosenEnumValue)
+                    data.save()
+                }
+            else
+                data.addCause(super.text)
+            data.save()
+
+        }
+
+        private fun chooseIntensity(context: Context, onEnumSelected: (Intensity) -> Unit) {
+            val customEnumValues = Intensity.values().copyOfRange(1,Intensity.values().size)
+            val customEnumNames = customEnumValues.map { it.name }.toTypedArray()
+
+            AlertDialog.Builder(context)
+                .setTitle("Choose Intensity")
+                .setItems(customEnumNames) { _, which ->
+                    onEnumSelected(customEnumValues[which])
+                }
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show()
+        }
+
+        override fun clone():CustomListener{
+            return CausesOnClickListener(context, data)
+        }
+
+    }
+
 }
