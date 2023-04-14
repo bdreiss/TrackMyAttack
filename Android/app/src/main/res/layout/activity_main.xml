@@ -138,7 +138,7 @@
         android:id="@+id/button_remedies_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SHOW SYMPTOMS"
+        android:text="SHOW REMEDIES"
         app:layout_constraintTop_toBottomOf="@id/button_symptoms_view" />
 
 

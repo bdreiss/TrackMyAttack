@@ -145,6 +145,15 @@ class MainActivity : AppCompatActivity() {
             setLayout(R.layout.causes,R.id.linear_layout_causes, data.causes, CausesOnClickListener(this,data))
         }
 
+        findViewById<Button>(R.id.button_symptoms_view).setOnClickListener{
+            setLayout(R.layout.symptoms,R.id.linear_layout_symptoms,data.symptoms,SymptomOnClickListener(this,data))
+        }
+
+        findViewById<Button>(R.id.button_remedies_view).setOnClickListener{
+            setLayout(R.layout.remedies,R.id.linear_layout_remedies, data.remedies, RemedyOnClickListener(this,data))
+        }
+
+
     }
 
     private fun setLayout(idLayout : Int, idLinearLayout: Int, iterator : Iterator<String>, listener : CustomListener){
@@ -204,6 +213,20 @@ class MainActivity : AppCompatActivity() {
         open fun clone():CustomListener{
             return CustomListener(context, data)
         }
+        fun chooseIntensity(context: Context, onEnumSelected: (Intensity) -> Unit) {
+            val customEnumValues = Intensity.values().copyOfRange(1,Intensity.values().size)
+            val customEnumNames = customEnumValues.map { it.name }.toTypedArray()
+
+            AlertDialog.Builder(context)
+                .setTitle("Choose Intensity")
+                .setItems(customEnumNames) { _, which ->
+                    onEnumSelected(customEnumValues[which])
+                }
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show()
+        }
+
     }
 
 
@@ -218,23 +241,9 @@ class MainActivity : AppCompatActivity() {
                     data.save()
                 }
             else
-                data.addCause(super.text)
+                data.addCause(text)
             data.save()
 
-        }
-
-        private fun chooseIntensity(context: Context, onEnumSelected: (Intensity) -> Unit) {
-            val customEnumValues = Intensity.values().copyOfRange(1,Intensity.values().size)
-            val customEnumNames = customEnumValues.map { it.name }.toTypedArray()
-
-            AlertDialog.Builder(context)
-                .setTitle("Choose Intensity")
-                .setItems(customEnumNames) { _, which ->
-                    onEnumSelected(customEnumValues[which])
-                }
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show()
         }
 
         override fun clone():CustomListener{
@@ -242,5 +251,50 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    class SymptomOnClickListener(context: Context, data: DataModel) : CustomListener(context, data) {
+
+        override fun onClick(v: View?) {
+
+            if (data.getSymptomData(text).next() is DatumWithIntensity)
+                chooseIntensity(context){
+                        chosenEnumValue ->
+                    data.addSymptom(text, chosenEnumValue)
+                    data.save()
+                }
+            else
+                throw Exception("Somehow a Symptom without Intensity slipped in. You are in SymptomClickListener.")
+            data.save()
+
+        }
+
+        override fun clone():CustomListener{
+            return SymptomOnClickListener(context, data)
+        }
+
+    }
+
+    class RemedyOnClickListener(context: Context, data: DataModel) : CustomListener(context, data) {
+
+        override fun onClick(v: View?) {
+
+            if (data.getRemedyData(text).next() is DatumWithIntensity)
+                chooseIntensity(context){
+                        chosenEnumValue ->
+                    data.addRemedy(text, chosenEnumValue)
+                    data.save()
+                }
+            else
+                data.addRemedy(text)
+            data.save()
+
+        }
+
+        override fun clone():CustomListener{
+            return RemedyOnClickListener(context, data)
+        }
+
+    }
+
 
 }
