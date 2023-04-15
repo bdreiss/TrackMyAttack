@@ -1,5 +1,6 @@
 package com.bdreiss.trackmyattack
 
+import android.app.ProgressDialog.show
 import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private fun activityMain(){
         setContentView(R.layout.activity_main)
         //DataModel.deleteSaveFile(this)
+
+        AddItemDialog().show(supportFragmentManager,"AddItemDialog")
 
         val data = DataModel(filesDir.absolutePath)
 
@@ -295,6 +298,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
 
 }
