@@ -204,7 +204,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    open class CustomListener(val context: Context, val data: DataModel) : View.OnClickListener{
+    //abstract class for listeners being passed to layouts showing causes, symptoms and remedies
+    open abstract class CustomListener(val context: Context, val data: DataModel) : View.OnClickListener{
         lateinit var text : String
 
         fun setTextValue(text : String){
@@ -213,9 +214,9 @@ class MainActivity : AppCompatActivity() {
 
         override fun onClick(v: View?) {
         }
-        open fun clone():CustomListener{
-            return CustomListener(context, data)
-        }
+        abstract fun clone():CustomListener
+
+        //dialog that lets users choose intensity of item
         fun chooseIntensity(context: Context, onEnumSelected: (Intensity) -> Unit) {
             val customEnumValues = Intensity.values().copyOfRange(1,Intensity.values().size)
             val customEnumNames = customEnumValues.map { it.name }.toTypedArray()
@@ -232,7 +233,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    //Listener for adding data to causes
     class CausesOnClickListener(context: Context, data: DataModel) : CustomListener(context, data) {
 
         override fun onClick(v: View?) {
@@ -255,6 +256,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //Listener for adding data to symptoms
     class SymptomOnClickListener(context: Context, data: DataModel) : CustomListener(context, data) {
 
         override fun onClick(v: View?) {
@@ -277,6 +279,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //Listener for adding data to remedies
     class RemedyOnClickListener(context: Context, data: DataModel) : CustomListener(context, data) {
 
         override fun onClick(v: View?) {
