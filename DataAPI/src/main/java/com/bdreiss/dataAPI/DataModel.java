@@ -76,6 +76,28 @@ public class DataModel implements Serializable {
 		saveFile = new File(savePath + "/" + saveFileName);
 	}
 
+	//TODO: Add documentation, comments and tests
+	public void addAilmentKey(String ailment) {
+		addKey(ailments,ailment);
+	}
+
+	//TODO: Add documentation, comments and tests
+	public void addCauseKey(String cause) {
+		addKey(causes,cause);
+	}
+	
+	//TODO: Add documentation, comments and tests
+	public void addSymptomKey(String symptom) {
+		addKey(symptoms,symptom);
+	}
+	
+	//TODO: Add documentation, comments and tests
+	public void addRemedyKey(String remedy) {
+		addKey(remedies,remedy);
+	}
+
+
+	
 	/**
 	 * Adds an ailment with current time stamp and intensity to the data model.
 	 * 
@@ -219,6 +241,16 @@ public class DataModel implements Serializable {
 		addEntry(remedies, remedy, intensity, date);
 	}
 
+	//abstracts the task of adding keys to maps
+	private void addKey(Map<String, List<Datum>> map, String key) {
+
+		// create entry with key if it doesn't exist
+		if (!map.containsKey(key))
+			map.put(key, new ArrayList<Datum>());
+
+	}
+
+	
 	// abstracts the task of adding entries to the different ArrayLists
 	private void addEntry(Map<String, List<Datum>> map, String key, LocalDateTime date) {
 
