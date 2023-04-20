@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +17,8 @@ class DataModelTest {
 
 	private final String SAVE_FILE_PATH = "files/";
 
+	private static final Comparator<String> COMPARATOR = String.CASE_INSENSITIVE_ORDER;
+	
 	DataModel data;
 
 	// strings to be tested when adding data
@@ -636,6 +640,28 @@ class DataModelTest {
 		});
 	}
 
+	//tests whether keys are added to causes correctly
+	@Test
+	void addCauseKey() {
+		String[] testStrings = getTestStrings();
+
+		for (String s: testStrings)
+			data.addCauseKey(s);
+		
+		Iterator<String> it = data.getCauses();
+		
+		Arrays.sort(testStrings, COMPARATOR);;
+		
+		int i = 0;
+		
+		while (it.hasNext()) {
+			assert(it.next() == testStrings[i]);
+			i++;
+		}
+		
+		assert(i==testStrings.length);
+	}
+	
 	// tests whether added ailments are returned in correct order
 	@Test
 	void getAilmentsList() {
@@ -643,7 +669,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		String[] expectedResults = testStrings.clone();
-		Arrays.sort(expectedResults, String.CASE_INSENSITIVE_ORDER);
+		Arrays.sort(expectedResults, COMPARATOR);
 
 		// add test data
 		for (String s : testStrings)
@@ -668,7 +694,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		String[] expectedResults = testStrings.clone();
-		Arrays.sort(expectedResults, String.CASE_INSENSITIVE_ORDER);
+		Arrays.sort(expectedResults, COMPARATOR);
 
 		// add test data
 		for (String s : testStrings)
@@ -692,7 +718,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		String[] expectedResults = testStrings.clone();
-		Arrays.sort(expectedResults, String.CASE_INSENSITIVE_ORDER);
+		Arrays.sort(expectedResults, COMPARATOR);
 
 		// add test data
 		for (String s : testStrings)
@@ -716,7 +742,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		String[] expectedResults = testStrings.clone();
-		Arrays.sort(expectedResults, String.CASE_INSENSITIVE_ORDER);
+		Arrays.sort(expectedResults, COMPARATOR);
 
 		// add test data
 		for (String s : testStrings)

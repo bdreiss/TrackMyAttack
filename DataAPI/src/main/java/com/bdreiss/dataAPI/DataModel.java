@@ -91,8 +91,6 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause Cause to be added as key
 	 */
-
-	// TODO: add test
 	public void addCauseKey(String cause) {
 		addKey(causes, cause);
 	}
