@@ -81,7 +81,6 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param ailment Ailment to be added as key
 	 */
-	// TODO: Add test
 	public void addAilmentKey(String ailment) {
 		addKey(ailments, ailment);
 	}
@@ -100,7 +99,6 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param symptom Symptom to be added as key
 	 */
-	// TODO: Add test
 	public void addSymptomKey(String symptom) {
 		addKey(symptoms, symptom);
 	}
@@ -110,7 +108,6 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy Remedy to be added as key
 	 */
-	// TODO: Add test
 	public void addRemedyKey(String remedy) {
 		addKey(remedies, remedy);
 	}

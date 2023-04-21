@@ -639,7 +639,29 @@ class DataModelTest {
 			}
 		});
 	}
+	
+	//tests whether keys are added to ailments correctly
+	@Test
+	void addAilmentKey() {
+		String[] testStrings = getTestStrings();
 
+		for (String s: testStrings)
+			data.addAilmentKey(s);
+		
+		Iterator<String> it = data.getAilments();
+		
+		Arrays.sort(testStrings, COMPARATOR);;
+		
+		int i = 0;
+		
+		while (it.hasNext()) {
+			assert(it.next() == testStrings[i]);
+			i++;
+		}
+		
+		assert(i==testStrings.length);
+	}
+	
 	//tests whether keys are added to causes correctly
 	@Test
 	void addCauseKey() {
@@ -661,6 +683,53 @@ class DataModelTest {
 		
 		assert(i==testStrings.length);
 	}
+
+	//tests whether keys are added to symptoms correctly
+	@Test
+	void addSymptomKey() {
+		String[] testStrings = getTestStrings();
+
+		for (String s: testStrings)
+			data.addSymptomKey(s);
+		
+		Iterator<String> it = data.getSymptoms();
+		
+		Arrays.sort(testStrings, COMPARATOR);;
+		
+		int i = 0;
+		
+		while (it.hasNext()) {
+			assert(it.next() == testStrings[i]);
+			i++;
+		}
+		
+		assert(i==testStrings.length);
+	}
+
+	
+	//tests whether keys are added to remedies correctly
+	@Test
+	void addRemedyKey() {
+		String[] testStrings = getTestStrings();
+
+		for (String s: testStrings)
+			data.addRemedyKey(s);
+		
+		Iterator<String> it = data.getRemedies();
+		
+		Arrays.sort(testStrings, COMPARATOR);;
+		
+		int i = 0;
+		
+		while (it.hasNext()) {
+			assert(it.next() == testStrings[i]);
+			i++;
+		}
+		
+		assert(i==testStrings.length);
+	}
+	
+
 	
 	// tests whether added ailments are returned in correct order
 	@Test
