@@ -43,7 +43,7 @@ public class DataModel implements Serializable {
 	 * 
 	 * The Map contains the description of ailments, causes, symptoms or remedies as
 	 * keys. -> The value is a List containing dates and intensity as Datum. The
-	 * List is guaranteed to be ordered, since the dates are inserted accordingly.
+	 * List is guaranteed to be ordered by date, since the dates are inserted using insertion sort.
 	 *
 	 */
 	private Map<String, List<Datum>> ailments = new TreeMap<>(TREE_COMPARATOR);
@@ -352,8 +352,30 @@ public class DataModel implements Serializable {
 
 	}
 
-	// TODO edit entry
+	//TODO add documentation
+	public void editAilmentEntry(String ailment, LocalDateTime date, LocalDateTime newDate) {
+		
+		for (Datum d: ailments.get(ailment))
+			if (d.getDate().equals(date))
+				d.setDate(newDate);
+	}
 
+	//TODO add documentation
+	// TODO implement editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity)
+	//TODO add documentation
+	// TODO implement editCauseEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
+	//TODO add documentation
+	// TODO implement editCauseEntry(String ailment, LocalDateTime date, Intensity intensity)
+	//TODO add documentation
+	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
+	//TODO add documentation
+	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, Intensity intensity)
+	//TODO add documentation
+	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
+	//TODO add documentation
+	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, Intensity intensity)
+
+	
 	// abstracts the task of adding entries with Intensity to the different
 	// ArrayLists
 	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) {

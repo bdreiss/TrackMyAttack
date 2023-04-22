@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -729,6 +728,64 @@ class DataModelTest {
 		assert(i==testStrings.length);
 	}
 	
+	//tests whether ailment entries can be edited correctly
+	@Test
+	void editAilmentEntry() throws EntryNotFoundException {
+		
+		String[] testStrings = {"String1", "String2"};
+		
+		for (String s: testStrings)
+			data.addAilmentKey(s);
+		
+		int numberOfTestDates = 5;
+		
+		ArrayList<LocalDateTime> datesAdded = new ArrayList<>();
+		
+		for (int i=0;i<numberOfTestDates;i++)
+			datesAdded.add(LocalDateTime.now());
+		
+		for (String s: testStrings)
+			for (LocalDateTime ldt: datesAdded)
+				data.addAilment(s, Intensity.LOW, ldt);
+		
+		LocalDateTime now = LocalDateTime.now();
+		
+		int minuteOffset = 0;
+		
+		//change all dates to now + 1 minute per iteration but only for first testString
+		for (LocalDateTime ldt: datesAdded) {
+			data.editAilmentEntry(testStrings[0], ldt, now.plusMinutes(minuteOffset));
+			minuteOffset++;
+		}
+		
+		Iterator<Datum> it = data.getAilmentData(testStrings[0]);
+		//assert all dates for the first test string have changed
+		minuteOffset = 0;
+		while (it.hasNext()) {
+			Datum datum = it.next();
+			assert(datum.getDate().equals(now.plusMinutes(minuteOffset)));
+			minuteOffset++;
+		}
+		
+		//assert all dates for the second test string stayed the same
+		it = data.getAilmentData(testStrings[1]);
+		int i = 0;
+		while (it.hasNext()) {
+			Datum datum = it.next();
+			assert(datum.getDate().equals(datesAdded.get(i)));
+			i++;
+		}
+		
+		// TODO implement editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity)
+			
+	}
+
+	// TODO implement editCauseEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
+	// TODO implement editCauseEntry(String ailment, LocalDateTime date, Intensity intensity)
+	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
+	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, Intensity intensity)
+	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
+	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, Intensity intensity)
 
 	
 	// tests whether added ailments are returned in correct order
