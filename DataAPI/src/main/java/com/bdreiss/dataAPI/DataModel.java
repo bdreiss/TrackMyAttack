@@ -361,7 +361,16 @@ public class DataModel implements Serializable {
 	}
 
 	//TODO add documentation
-	// TODO implement editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity)
+	public void editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity) {
+		
+		if (ailments.get(ailment)!= null && ailments.get(ailment).size()>0)
+			if (!(ailments.get(ailment).get(0) instanceof DatumWithIntensity))
+				return;
+		
+		for (Datum d: ailments.get(ailment))
+			if (d.getDate().equals(date))
+				((DatumWithIntensity) d).setIntensity(intensity);
+	}
 	//TODO add documentation
 	// TODO implement editCauseEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
 	//TODO add documentation

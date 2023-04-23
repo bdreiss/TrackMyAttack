@@ -17,7 +17,7 @@ class DataModelTest {
 	private final String SAVE_FILE_PATH = "files/";
 
 	private static final Comparator<String> COMPARATOR = String.CASE_INSENSITIVE_ORDER;
-	
+
 	DataModel data;
 
 	// strings to be tested when adding data
@@ -231,7 +231,8 @@ class DataModelTest {
 
 	// abstracts away the task of adding with custom date by providing an interface
 	// with the relevant methods
-	private void addWithIntensityAndCustomDate(AddWithIntensityAndCustomDate addInterface) throws EntryNotFoundException {
+	private void addWithIntensityAndCustomDate(AddWithIntensityAndCustomDate addInterface)
+			throws EntryNotFoundException {
 		// strings to be added
 		String[] testStrings = getTestStrings();
 		//
@@ -638,99 +639,108 @@ class DataModelTest {
 			}
 		});
 	}
-	
-	//tests whether keys are added to ailments correctly
+
+	// tests whether keys are added to ailments correctly
 	@Test
 	void addAilmentKey() {
 		String[] testStrings = getTestStrings();
 
-		for (String s: testStrings)
+		for (String s : testStrings)
 			data.addAilmentKey(s);
-		
+
 		Iterator<String> it = data.getAilments();
-		
-		Arrays.sort(testStrings, COMPARATOR);;
-		
+
+		Arrays.sort(testStrings, COMPARATOR);
+		;
+
 		int i = 0;
-		
+
 		while (it.hasNext()) {
-			assert(it.next() == testStrings[i]);
+			assert (it.next() == testStrings[i]);
 			i++;
 		}
-		
-		assert(i==testStrings.length);
+
+		assert (i == testStrings.length);
 	}
-	
-	//tests whether keys are added to causes correctly
+
+	// tests whether keys are added to causes correctly
 	@Test
 	void addCauseKey() {
 		String[] testStrings = getTestStrings();
 
-		for (String s: testStrings)
+		for (String s : testStrings)
 			data.addCauseKey(s);
-		
+
 		Iterator<String> it = data.getCauses();
-		
-		Arrays.sort(testStrings, COMPARATOR);;
-		
+
+		Arrays.sort(testStrings, COMPARATOR);
+		;
+
 		int i = 0;
-		
+
 		while (it.hasNext()) {
-			assert(it.next() == testStrings[i]);
+			assert (it.next() == testStrings[i]);
 			i++;
 		}
-		
-		assert(i==testStrings.length);
+
+		assert (i == testStrings.length);
 	}
 
-	//tests whether keys are added to symptoms correctly
+	// tests whether keys are added to symptoms correctly
 	@Test
 	void addSymptomKey() {
 		String[] testStrings = getTestStrings();
 
-		for (String s: testStrings)
+		for (String s : testStrings)
 			data.addSymptomKey(s);
-		
+
 		Iterator<String> it = data.getSymptoms();
-		
-		Arrays.sort(testStrings, COMPARATOR);;
-		
+
+		Arrays.sort(testStrings, COMPARATOR);
+		;
+
 		int i = 0;
-		
+
 		while (it.hasNext()) {
-			assert(it.next() == testStrings[i]);
+			assert (it.next() == testStrings[i]);
 			i++;
 		}
-		
-		assert(i==testStrings.length);
+
+		assert (i == testStrings.length);
 	}
 
-	
-	//tests whether keys are added to remedies correctly
+	// tests whether keys are added to remedies correctly
 	@Test
 	void addRemedyKey() {
 		String[] testStrings = getTestStrings();
 
-		for (String s: testStrings)
+		for (String s : testStrings)
 			data.addRemedyKey(s);
-		
+
 		Iterator<String> it = data.getRemedies();
-		
-		Arrays.sort(testStrings, COMPARATOR);;
-		
+
+		Arrays.sort(testStrings, COMPARATOR);
+		;
+
 		int i = 0;
-		
+
 		while (it.hasNext()) {
-			assert(it.next() == testStrings[i]);
+			assert (it.next() == testStrings[i]);
 			i++;
 		}
-		
-		assert(i==testStrings.length);
+
+		assert (i == testStrings.length);
 	}
-	
-	//tests whether ailment entries can be edited correctly
+
+	// tests whether ailment entries can be edited correctly, including dates and
+	// intensities
 	@Test
 	void editAilmentEntry() throws EntryNotFoundException {
+		
+
+		/*
+		*	The following code tests editing dates
+		*/
 		
 		String[] testStrings = {"String1", "String2"};
 		
@@ -769,25 +779,74 @@ class DataModelTest {
 		
 		//assert all dates for the second test string stayed the same
 		it = data.getAilmentData(testStrings[1]);
-		int i = 0;
+		int counter = 0;
 		while (it.hasNext()) {
 			Datum datum = it.next();
-			assert(datum.getDate().equals(datesAdded.get(i)));
-			i++;
+			assert(datum.getDate().equals(datesAdded.get(counter)));
+			counter++;
 		}
 		
-		// TODO implement editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity)
+		/*
+		*	The following code tests editing intensities
+		*/
+
+		//create new DataModel
+		prepare();
+		
+		String[] testStringsIntensity = {"String1", "String2"};
+
+		int numberOfIntensities = 5;
+		
+		now = LocalDateTime.now();
+		
+		LocalDateTime[] dates = {now, now.plusMinutes(1),now.plusMinutes(2),now.plusMinutes(3),now.plusMinutes(4),now.plusMinutes(5)};
+		
+		//loop through intensities and add entries with them
+		for (String s : testStringsIntensity) {
+			data.addAilmentKey(s);
+		
+			for (int i=0;i<numberOfIntensities;i++)
+				data.addAilment(s, Intensity.values()[i%Intensity.values().length], dates[i]);
+		}
+		
+		//change intensities for first testString only
+		Iterator<Datum> itIntensity = data.getAilmentData(testStringsIntensity[0]);
+		
+		while (itIntensity.hasNext()) {
+			data.editAilmentEntry(testStringsIntensity[0], itIntensity.next().getDate(), Intensity.NO_INTENSITY);
+		}
+		
+		//assert all intensities have been changed for first testString
+		itIntensity = data.getAilmentData(testStringsIntensity[0]);
+		while (itIntensity.hasNext()) {
+			assert(((DatumWithIntensity) itIntensity.next()).getIntensity() == Intensity.NO_INTENSITY);
+		}
+		
+		//assert intensities haven't changed for second testString
+		itIntensity = data.getAilmentData(testStringsIntensity[1]);
+		counter = 0;
+		
+		while (itIntensity.hasNext()) {
+			assert(((DatumWithIntensity) itIntensity.next()).getIntensity() == Intensity.values()[counter % Intensity.values().length]);
+			counter++;
+		}
+		
 			
 	}
 
-	// TODO implement editCauseEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
-	// TODO implement editCauseEntry(String ailment, LocalDateTime date, Intensity intensity)
-	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
-	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, Intensity intensity)
-	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
-	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, Intensity intensity)
+	// TODO implement editCauseEntry(String ailment, LocalDateTime date,
+	// LocalDateTime newDate)
+	// TODO implement editCauseEntry(String ailment, LocalDateTime date, Intensity
+	// intensity)
+	// TODO implement editSymptomEntry(String ailment, LocalDateTime date,
+	// LocalDateTime newDate)
+	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, Intensity
+	// intensity)
+	// TODO implement editRemedyEntry(String ailment, LocalDateTime date,
+	// LocalDateTime newDate)
+	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, Intensity
+	// intensity)
 
-	
 	// tests whether added ailments are returned in correct order
 	@Test
 	void getAilmentsList() {
@@ -953,7 +1012,7 @@ class DataModelTest {
 
 		LocalDateTime[] datesToBeRemoved = { null, now.minusHours(3), now, now.minusDays(1), now.minusHours(2),
 				now.minusDays(2), now.minusDays(1).minusHours(2), now.minusHours(1), now.minusDays(2).minusHours(1),
-				now.minusDays(2).minusHours(2)};
+				now.minusDays(2).minusHours(2) };
 
 		LocalDateTime[][] expectedResults = {
 				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(2),
@@ -975,8 +1034,8 @@ class DataModelTest {
 				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(1).minusHours(1),
 						now.minusHours(1) },
 				{ now.minusDays(2).minusHours(2), now.minusDays(2).minusHours(1), now.minusDays(1).minusHours(1) },
-				{ now.minusDays(2).minusHours(2), now.minusDays(1).minusHours(1) }, { now.minusDays(1).minusHours(1) },
-				 };
+				{ now.minusDays(2).minusHours(2), now.minusDays(1).minusHours(1) },
+				{ now.minusDays(1).minusHours(1) }, };
 
 		for (String s : tests) {
 			for (LocalDateTime d : dates) {
@@ -999,14 +1058,14 @@ class DataModelTest {
 
 				assert (j == expectedResults[i].length);
 			}
-			
-			//remove last entry and assert that key has been removed from map
+
+			// remove last entry and assert that key has been removed from map
 			removeInterface.remove(s, now.minusDays(1).minusHours(1));
 			try {
 				removeInterface.getData(s);
-				assert(false);
+				assert (false);
 			} catch (EntryNotFoundException e) {
-				assert(true);
+				assert (true);
 			}
 		}
 	}
