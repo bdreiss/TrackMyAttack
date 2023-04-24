@@ -352,7 +352,12 @@ public class DataModel implements Serializable {
 
 	}
 
-	//TODO add documentation
+	/**
+	 * Edit date of an ailment entry;
+	 * @param ailment Ailment String for which entry shall be changed
+	 * @param date LocalDateTime of entry
+	 * @param newDate New LocalDateTime entry should be changed to 
+	 */
 	public void editAilmentEntry(String ailment, LocalDateTime date, LocalDateTime newDate) {
 		
 		for (Datum d: ailments.get(ailment))
@@ -360,7 +365,12 @@ public class DataModel implements Serializable {
 				d.setDate(newDate);
 	}
 
-	//TODO add documentation
+	/**
+	 * Edit intensity of an ailment entry
+	 * @param ailment Ailment String for which entry shall be changed
+	 * @param date LocalDateTime of entry
+	 * @param intensity New Intensity entry should be changed to
+	 */
 	public void editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity) {
 		
 		if (ailments.get(ailment)!= null && ailments.get(ailment).size()>0)
