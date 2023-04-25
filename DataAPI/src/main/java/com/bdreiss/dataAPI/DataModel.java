@@ -153,7 +153,7 @@ public class DataModel implements Serializable {
 	 */
 	public LocalDateTime addCause(String cause) {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(causes, cause, date);
+		addEntry(causes, cause, null, date);
 		return date;
 	}
 
@@ -164,7 +164,7 @@ public class DataModel implements Serializable {
 	 * @param date  LocalDateTime when the attack occurred
 	 */
 	public void addCause(String cause, LocalDateTime date) {
-		addEntry(causes, cause, date);
+		addEntry(causes, cause,null, date);
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class DataModel implements Serializable {
 
 	public LocalDateTime addRemedy(String remedy) {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(remedies, remedy, date);
+		addEntry(remedies, remedy,null, date);
 		return date;
 	}
 
@@ -235,7 +235,7 @@ public class DataModel implements Serializable {
 	 * @param date   LocalDateTime when remedy was applied
 	 */
 	public void addRemedy(String remedy, LocalDateTime date) {
-		addEntry(remedies, remedy, date);
+		addEntry(remedies, remedy,null, date);
 	}
 
 	/**
@@ -264,31 +264,6 @@ public class DataModel implements Serializable {
 		addEntry(remedies, remedy, intensity, date);
 	}
 
-	// abstracts the task of adding entries to the different ArrayLists
-	private void addEntry(Map<String, List<Datum>> map, String key, LocalDateTime date) {
-
-		// create entry with key if it doesn't exist
-		if (!map.containsKey(key))
-			map.put(key, new ArrayList<Datum>());
-
-		List<Datum> list = map.get(key);
-
-		// add new Datum to end of list
-		list.add(new Datum(date));
-
-		// as long as the date is smaller than the date before, swap it with the
-		// previous item
-		// stop when dates are smaller than date to be added or when beginning of list
-		// is reached
-		// this means that the lists are always ordered
-		int i = list.size() - 1;
-		while (i > 0 && list.get(i).getDate().compareTo(list.get(i - 1).getDate()) <= 0) {
-			Datum temp = list.get(i);
-			list.set(i, list.get(i - 1));
-			list.set(i - 1, temp);
-			i--;
-		}
-	}
 
 	/**
 	 * Removes an entry in ailments.
@@ -359,10 +334,7 @@ public class DataModel implements Serializable {
 	 * @param newDate New LocalDateTime entry should be changed to 
 	 */
 	public void editAilmentEntry(String ailment, LocalDateTime date, LocalDateTime newDate) {
-		
-		for (Datum d: ailments.get(ailment))
-			if (d.getDate().equals(date))
-				d.setDate(newDate);
+		editEntry(ailments,ailment,date,null,newDate);
 	}
 
 	/**
@@ -372,17 +344,13 @@ public class DataModel implements Serializable {
 	 * @param intensity New Intensity entry should be changed to
 	 */
 	public void editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity) {
+		editEntry(ailments,ailment,date,intensity,null);
 		
-		if (ailments.get(ailment)!= null && ailments.get(ailment).size()>0)
-			if (!(ailments.get(ailment).get(0) instanceof DatumWithIntensity))
-				return;
-		
-		for (Datum d: ailments.get(ailment))
-			if (d.getDate().equals(date))
-				((DatumWithIntensity) d).setIntensity(intensity);
 	}
 	//TODO add documentation
-	// TODO implement editCauseEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
+	public void editCauseEntry(String ailment, LocalDateTime date, LocalDateTime newDate) {
+		
+	}
 	//TODO add documentation
 	// TODO implement editCauseEntry(String ailment, LocalDateTime date, Intensity intensity)
 	//TODO add documentation
@@ -394,9 +362,36 @@ public class DataModel implements Serializable {
 	//TODO add documentation
 	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, Intensity intensity)
 
+	private void editEntry(Map<String, List<Datum>> map, String key, LocalDateTime date, Intensity intensity, LocalDateTime newDate) {
+
+		if (date == null)
+			return;
+		
+		if (map.get(key)!= null && map.get(key).size()>0)
+			if (intensity != null && !(map.get(key).get(0) instanceof DatumWithIntensity))
+				return;
+			
+		
+		
+		for (Datum d: map.get(key)) {
+			if (d.getDate().equals(date) && d.getDate().getNano() == date.getNano()) {
+				if (intensity != null)
+					((DatumWithIntensity) d).setIntensity(intensity);
+				
+				//if new date is assigned remove entry and insert new one so list stays sorted via insertion sort
+				if (newDate != null) {
+					map.get(key).remove(d);
+					addEntry(map,key,intensity,newDate);
+					d.setDate(newDate);
+				}
+				break;
+			}
+			
+		}
+		
+	}
 	
-	// abstracts the task of adding entries with Intensity to the different
-	// ArrayLists
+	// abstracts the task of adding entries to the different ArrayLists
 	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) {
 
 		// create entry with key if it doesn't exist
@@ -406,8 +401,11 @@ public class DataModel implements Serializable {
 		List<Datum> list = map.get(key);
 
 		// add new Datum to end of list
-		list.add(new DatumWithIntensity(date, intensity));
-
+		if (intensity != null)
+			list.add(new DatumWithIntensity(date, intensity));
+		else
+			list.add(new Datum(date));
+		
 		// as long as the date is smaller than the date before, swap it with the
 		// previous item
 		// stop when dates are smaller than date to be added or when beginning of list
