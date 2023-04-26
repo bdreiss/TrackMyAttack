@@ -732,108 +732,149 @@ class DataModelTest {
 		assert (i == testStrings.length);
 	}
 
-	// tests whether ailment entries can be edited correctly, including dates and
+	// abstracts testing whether entries can be edited correctly, including dates and
 	// intensities
-	@Test
-	void editAilmentEntry() throws EntryNotFoundException {
-		
+	private void editEntry(Edit edit) throws EntryNotFoundException {
 
 		/*
-		*	The following code tests editing dates
-		*/
-		
-		String[] testStrings = {"String1", "String2"};
-		
-		for (String s: testStrings)
-			data.addAilmentKey(s);
-		
+		 * The following code tests editing dates
+		 */
+
+		String[] testStrings = { "String1", "String2" };
+
+		for (String s : testStrings)
+			edit.addKey(s);
+
 		int numberOfTestDates = 5;
-		
+
 		ArrayList<LocalDateTime> datesAdded = new ArrayList<>();
-		
-		for (int i=0;i<numberOfTestDates;i++)
+
+		for (int i = 0; i < numberOfTestDates; i++)
 			datesAdded.add(LocalDateTime.now());
-		
-		for (String s: testStrings)
-			for (LocalDateTime ldt: datesAdded)
-				data.addAilment(s, Intensity.LOW, ldt);
-		
+
+		for (String s : testStrings)
+			for (LocalDateTime ldt : datesAdded)
+				edit.add(s, Intensity.LOW, ldt);
+
 		LocalDateTime now = LocalDateTime.now();
-		
+
 		int minuteOffset = 0;
-		
+
 		//change all dates to now + 1 minute per iteration but only for first testString
 		for (LocalDateTime ldt: datesAdded) {
-			data.editAilmentEntry(testStrings[0], ldt, now.plusMinutes(minuteOffset));
+			edit.editEntry(testStrings[0], ldt, now.minusMinutes(minuteOffset));
 			minuteOffset++;
 		}
-		
-		Iterator<Datum> it = data.getAilmentData(testStrings[0]);
-		//assert all dates for the first test string have changed
-		minuteOffset = 0;
+
+		Iterator<Datum> it = edit.getData(testStrings[0]);
+
+		// assert all dates for the first test string have changed
+		minuteOffset--;
 		while (it.hasNext()) {
 			Datum datum = it.next();
-			assert(datum.getDate().equals(now.plusMinutes(minuteOffset)));
-			minuteOffset++;
+			assert (datum.getDate().compareTo(now.minusMinutes(minuteOffset))==0);
+			minuteOffset--;
 		}
-		
-		//assert all dates for the second test string stayed the same
-		it = data.getAilmentData(testStrings[1]);
+
+		// assert all dates for the second test string stayed the same
+		it = edit.getData(testStrings[1]);
 		int counter = 0;
 		while (it.hasNext()) {
 			Datum datum = it.next();
-			assert(datum.getDate().equals(datesAdded.get(counter)));
+			assert (datum.getDate().equals(datesAdded.get(counter)));
 			counter++;
 		}
-		
-		/*
-		*	The following code tests editing intensities
-		*/
 
-		//create new DataModel
+		/*
+		 * The following code tests editing intensities
+		 */
+
+		// create new DataModel
 		prepare();
-		
-		String[] testStringsIntensity = {"String1", "String2"};
+
+		String[] testStringsIntensity = { "String1", "String2" };
 
 		int numberOfIntensities = 5;
-		
+
 		now = LocalDateTime.now();
-		
-		LocalDateTime[] dates = {now, now.plusMinutes(1),now.plusMinutes(2),now.plusMinutes(3),now.plusMinutes(4),now.plusMinutes(5)};
-		
-		//loop through intensities and add entries with them
+
+		LocalDateTime[] dates = { now, now.plusMinutes(1), now.plusMinutes(2), now.plusMinutes(3), now.plusMinutes(4),
+				now.plusMinutes(5) };
+
+		// loop through intensities and add entries with them
 		for (String s : testStringsIntensity) {
-			data.addAilmentKey(s);
-		
-			for (int i=0;i<numberOfIntensities;i++)
-				data.addAilment(s, Intensity.values()[i%Intensity.values().length], dates[i]);
+			edit.addKey(s);
+
+			for (int i = 0; i < numberOfIntensities; i++)
+				edit.add(s, Intensity.values()[i % Intensity.values().length], dates[i]);
 		}
-		
-		//change intensities for first testString only
-		Iterator<Datum> itIntensity = data.getAilmentData(testStringsIntensity[0]);
-		
+
+		// change intensities for first testString only
+		Iterator<Datum> itIntensity = edit.getData(testStringsIntensity[0]);
+
 		while (itIntensity.hasNext()) {
-			data.editAilmentEntry(testStringsIntensity[0], itIntensity.next().getDate(), Intensity.NO_INTENSITY);
+			edit.editEntry(testStringsIntensity[0], itIntensity.next().getDate(), Intensity.NO_INTENSITY);
 		}
-		
-		//assert all intensities have been changed for first testString
-		itIntensity = data.getAilmentData(testStringsIntensity[0]);
+
+		// assert all intensities have been changed for first testString
+		itIntensity = edit.getData(testStringsIntensity[0]);
 		while (itIntensity.hasNext()) {
-			assert(((DatumWithIntensity) itIntensity.next()).getIntensity() == Intensity.NO_INTENSITY);
+			assert (((DatumWithIntensity) itIntensity.next()).getIntensity() == Intensity.NO_INTENSITY);
 		}
-		
-		//assert intensities haven't changed for second testString
-		itIntensity = data.getAilmentData(testStringsIntensity[1]);
+
+		// assert intensities haven't changed for second testString
+		itIntensity = edit.getData(testStringsIntensity[1]);
 		counter = 0;
-		
+
 		while (itIntensity.hasNext()) {
-			assert(((DatumWithIntensity) itIntensity.next()).getIntensity() == Intensity.values()[counter % Intensity.values().length]);
+			assert (((DatumWithIntensity) itIntensity.next())
+					.getIntensity() == Intensity.values()[counter % Intensity.values().length]);
 			counter++;
 		}
-		
-			
+
 	}
 
+	//tests whether ailment entries can be edited properly
+	@Test
+	public void editAilmentEntry() throws EntryNotFoundException {
+		editEntry(new Edit() {
+
+			@Override
+			public void addKey(String key) {
+				data.addAilmentKey(key);
+			}
+
+			@Override
+			public void add(String s, Intensity intensity, LocalDateTime ldt) {
+				data.addAilment(s, intensity, ldt);
+			}
+
+			@Override
+			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) {
+				data.editAilmentEntry(s, ldt, ldtNew);
+			}
+
+			@Override
+			public void editEntry(String s, LocalDateTime ldt, Intensity i) {
+				data.editAilmentEntry(s, ldt, i);
+			}
+
+			@Override
+			public Iterator<Datum> getData(String s) {
+				try {
+					return data.getAilmentData(s);
+				} catch (EntryNotFoundException e) {
+					
+					System.out.println("Entry not found.");
+					e.printStackTrace();
+					assert(false);
+					return null;
+				}
+			}
+			
+		});
+	}
+	
 	// TODO implement editCauseEntry(String ailment, LocalDateTime date,
 	// LocalDateTime newDate)
 	// TODO implement editCauseEntry(String ailment, LocalDateTime date, Intensity
