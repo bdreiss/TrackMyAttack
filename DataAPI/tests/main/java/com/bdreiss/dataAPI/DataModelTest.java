@@ -875,18 +875,128 @@ class DataModelTest {
 		});
 	}
 	
-	// TODO implement editCauseEntry(String ailment, LocalDateTime date,
-	// LocalDateTime newDate)
-	// TODO implement editCauseEntry(String ailment, LocalDateTime date, Intensity
-	// intensity)
-	// TODO implement editSymptomEntry(String ailment, LocalDateTime date,
-	// LocalDateTime newDate)
-	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, Intensity
-	// intensity)
-	// TODO implement editRemedyEntry(String ailment, LocalDateTime date,
-	// LocalDateTime newDate)
-	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, Intensity
-	// intensity)
+
+	//tests whether cause entries can be edited properly
+	@Test
+	public void editCauseEntry() throws EntryNotFoundException {
+		editEntry(new Edit() {
+
+			@Override
+			public void addKey(String key) {
+				data.addCauseKey(key);
+			}
+
+			@Override
+			public void add(String s, Intensity intensity, LocalDateTime ldt) {
+				data.addCause(s, intensity, ldt);
+			}
+
+			@Override
+			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) {
+				data.editCauseEntry(s, ldt, ldtNew);
+			}
+
+			@Override
+			public void editEntry(String s, LocalDateTime ldt, Intensity i) {
+				data.editCauseEntry(s, ldt, i);
+			}
+
+			@Override
+			public Iterator<Datum> getData(String s) {
+				try {
+					return data.getCauseData(s);
+				} catch (EntryNotFoundException e) {
+					
+					System.out.println("Entry not found.");
+					e.printStackTrace();
+					assert(false);
+					return null;
+				}
+			}
+			
+		});
+	}
+	//tests whether symptom entries can be edited properly
+	@Test
+	public void editSymptomEntry() throws EntryNotFoundException {
+		editEntry(new Edit() {
+
+			@Override
+			public void addKey(String key) {
+				data.addSymptomKey(key);
+			}
+
+			@Override
+			public void add(String s, Intensity intensity, LocalDateTime ldt) {
+				data.addSymptom(s, intensity, ldt);
+			}
+
+			@Override
+			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) {
+				data.editSymptomEntry(s, ldt, ldtNew);
+			}
+
+			@Override
+			public void editEntry(String s, LocalDateTime ldt, Intensity i) {
+				data.editSymptomEntry(s, ldt, i);
+			}
+
+			@Override
+			public Iterator<Datum> getData(String s) {
+				try {
+					return data.getSymptomData(s);
+				} catch (EntryNotFoundException e) {
+					
+					System.out.println("Entry not found.");
+					e.printStackTrace();
+					assert(false);
+					return null;
+				}
+			}
+			
+		});
+	}
+
+	//tests whether remedy entries can be edited properly
+	@Test
+	public void editRemedyEntry() throws EntryNotFoundException {
+		editEntry(new Edit() {
+
+			@Override
+			public void addKey(String key) {
+				data.addRemedyKey(key);
+			}
+
+			@Override
+			public void add(String s, Intensity intensity, LocalDateTime ldt) {
+				data.addRemedy(s, intensity, ldt);
+			}
+
+			@Override
+			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) {
+				data.editRemedyEntry(s, ldt, ldtNew);
+			}
+
+			@Override
+			public void editEntry(String s, LocalDateTime ldt, Intensity i) {
+				data.editRemedyEntry(s, ldt, i);
+			}
+
+			@Override
+			public Iterator<Datum> getData(String s) {
+				try {
+					return data.getRemedyData(s);
+				} catch (EntryNotFoundException e) {
+					
+					System.out.println("Entry not found.");
+					e.printStackTrace();
+					assert(false);
+					return null;
+				}
+			}
+			
+		});
+	}
 
 	// tests whether added ailments are returned in correct order
 	@Test

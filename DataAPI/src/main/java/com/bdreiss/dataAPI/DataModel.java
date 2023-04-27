@@ -347,20 +347,69 @@ public class DataModel implements Serializable {
 		editEntry(ailments,ailment,date,intensity,null);
 		
 	}
-	//TODO add documentation
-	public void editCauseEntry(String ailment, LocalDateTime date, LocalDateTime newDate) {
-		
+
+	/**
+	 * Edit date of a cause entry;
+	 * @param cause Cause String for which entry shall be changed
+	 * @param date LocalDateTime of entry
+	 * @param newDate New LocalDateTime entry should be changed to 
+	 */
+	public void editCauseEntry(String cause, LocalDateTime date, LocalDateTime newDate) {
+		editEntry(causes,cause,date,null,newDate);
 	}
-	//TODO add documentation
-	// TODO implement editCauseEntry(String ailment, LocalDateTime date, Intensity intensity)
-	//TODO add documentation
-	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
-	//TODO add documentation
-	// TODO implement editSymptomEntry(String ailment, LocalDateTime date, Intensity intensity)
-	//TODO add documentation
-	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
-	//TODO add documentation
-	// TODO implement editRemedyEntry(String ailment, LocalDateTime date, Intensity intensity)
+
+	/**
+	 * Edit intensity of a cause entry
+	 * @param cause Cause String for which entry shall be changed
+	 * @param date LocalDateTime of entry
+	 * @param intensity New Intensity entry should be changed to
+	 */
+	public void editCauseEntry(String cause, LocalDateTime date, Intensity intensity) {
+		editEntry(causes,cause,date,intensity,null);
+	}
+
+	/**
+	 * Edit date of a symptom entry;
+	 * @param symptom Symptom String for which entry shall be changed
+	 * @param date LocalDateTime of entry
+	 * @param newDate New LocalDateTime entry should be changed to 
+	 */
+	public void editSymptomEntry(String symptom, LocalDateTime date, LocalDateTime newDate) {
+		editEntry(symptoms,symptom,date,null,newDate);
+	}
+
+	/**
+	 * Edit intensity of a symptom entry
+	 * @param symptom Symptom String for which entry shall be changed
+	 * @param date LocalDateTime of entry
+	 * @param intensity New Intensity entry should be changed to
+	 */
+	public void editSymptomEntry(String symptom, LocalDateTime date, Intensity intensity) {
+		editEntry(symptoms,symptom,date,intensity,null);
+	}
+
+
+	/**
+	 * Edit date of a remedy entry;
+	 * @param remedy Remedy String for which entry shall be changed
+	 * @param date LocalDateTime of entry
+	 * @param newDate New LocalDateTime entry should be changed to 
+	 */
+	public void editRemedyEntry(String remedy, LocalDateTime date, LocalDateTime newDate) {
+		editEntry(remedies,remedy,date,null,newDate);
+	}
+
+	/**
+	 * Edit intensity of a remedy entry
+	 * @param remedy Remedy String for which entry shall be changed
+	 * @param date LocalDateTime of entry
+	 * @param intensity New Intensity entry should be changed to
+	 */
+	public void editRemedyEntry(String remedy, LocalDateTime date, Intensity intensity) {
+		editEntry(remedies,remedy,date,intensity,null);
+	}
+
+
 
 	private void editEntry(Map<String, List<Datum>> map, String key, LocalDateTime date, Intensity intensity, LocalDateTime newDate) {
 
