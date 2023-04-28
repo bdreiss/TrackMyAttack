@@ -1,10 +1,10 @@
 package com.bdreiss.trackmyattack
 
-import android.app.ProgressDialog.show
 import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -14,7 +14,7 @@ import main.java.com.bdreiss.dataAPI.DatumWithIntensity
 import main.java.com.bdreiss.dataAPI.Intensity
 import java.io.File
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AddItemDialog.AddItemDialogListener {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
     private fun activityMain(){
         setContentView(R.layout.activity_main)
         //DataModel.deleteSaveFile(this)
-
-        AddItemDialog().show(supportFragmentManager,"AddItemDialog")
 
         val data = DataModel(filesDir.absolutePath)
 
@@ -45,55 +43,60 @@ class MainActivity : AppCompatActivity() {
         val habitsButton = findViewById<Button>(R.id.button_habit)
 
         habitsButton.setOnClickListener {
-            val text = habitsEditTextText.text.toString()
+            val text = habitsEditTextText.text.toString().trim()
             val intensityText = habitsEditTextIntensity.text.toString()
 
-            var intensity = Intensity.NO_INTENSITY
-            if (intensityText.isNotEmpty()) {
-                when(intensityText.toInt()){
-                    0 -> intensity = Intensity.LOW
-                    1 -> intensity = Intensity.MEDIUM
-                    2 -> intensity = Intensity.HIGH
+            if (text.isNotEmpty()) {
+
+                var intensity = Intensity.NO_INTENSITY
+                if (intensityText.isNotEmpty()) {
+                    when (intensityText.toInt()) {
+                        0 -> intensity = Intensity.LOW
+                        1 -> intensity = Intensity.MEDIUM
+                        2 -> intensity = Intensity.HIGH
+                    }
+                    data.addCause(text, intensity)
+
+                } else {
+                    data.addCause(text)
                 }
-                data.addCause(text.trim(), intensity)
 
-            } else{
-                data.addCause(text)
+
+                data.save()
+
+                textView.text = data.print()
+                habitsEditTextText.setText("")
+                habitsEditTextIntensity.setText("")
             }
-
-
-            data.save()
-
-            textView.text = data.print()
-            habitsEditTextText.setText("")
-            habitsEditTextIntensity.setText("")
         }
-
         val symptomsEditTextText = findViewById<EditText>(R.id.edit_text_symptom_text)
         val symptomsEditTextIntensity = findViewById<EditText>(R.id.edit_text_symptom_intensity)
         val symptomsButton = findViewById<Button>(R.id.button_symptom)
 
         symptomsButton.setOnClickListener {
-            val text = symptomsEditTextText.text.toString()
+            val text = symptomsEditTextText.text.toString().trim()
             val intensityText = symptomsEditTextIntensity.text.toString()
 
-            var intensity = Intensity.NO_INTENSITY
-            if (intensityText.isNotEmpty()) {
-                when(intensityText.toInt()){
-                    0 -> intensity = Intensity.LOW
-                    1 -> intensity = Intensity.MEDIUM
-                    2 -> intensity = Intensity.HIGH
+            if (text.isNotEmpty()) {
+
+                var intensity = Intensity.NO_INTENSITY
+                if (intensityText.isNotEmpty()) {
+                    when (intensityText.toInt()) {
+                        0 -> intensity = Intensity.LOW
+                        1 -> intensity = Intensity.MEDIUM
+                        2 -> intensity = Intensity.HIGH
+                    }
+
                 }
 
+                data.addSymptom(text.trim(), intensity)
+
+                data.save()
+
+                textView.text = data.print()
+                symptomsEditTextText.setText("")
+                symptomsEditTextIntensity.setText("")
             }
-
-            data.addSymptom(text.trim(), intensity)
-
-            data.save()
-
-            textView.text = data.print()
-            symptomsEditTextText.setText("")
-            symptomsEditTextIntensity.setText("")
         }
 
         val migraineEditTextText = findViewById<EditText>(R.id.edit_text_migraine_text)
@@ -124,42 +127,44 @@ class MainActivity : AppCompatActivity() {
         val remedyButton = findViewById<Button>(R.id.button_remedy)
 
         remedyButton.setOnClickListener {
-            val text = remedyEditTextText.text.toString()
+            val text = remedyEditTextText.text.toString().trim()
             val intensityText = remedyEditTextIntensity.text.toString()
+            if (text.isNotEmpty()) {
 
-            var intensity = Intensity.LOW
-            if (intensityText.isNotEmpty()) {
-                when(intensityText.toInt()){
-                    0 -> intensity = Intensity.LOW
-                    1 -> intensity = Intensity.MEDIUM
-                    2 -> intensity = Intensity.HIGH
+
+                var intensity = Intensity.LOW
+                if (intensityText.isNotEmpty()) {
+                    when (intensityText.toInt()) {
+                        0 -> intensity = Intensity.LOW
+                        1 -> intensity = Intensity.MEDIUM
+                        2 -> intensity = Intensity.HIGH
+                    }
                 }
+
+                data.addRemedy(text.trim(), intensity)
+                data.save()
+
+                textView.text = data.print()
+                remedyEditTextText.setText("")
+                remedyEditTextIntensity.setText("")
             }
-
-            data.addRemedy(text.trim(), intensity)
-            data.save()
-
-            textView.text = data.print()
-            remedyEditTextText.setText("")
-            remedyEditTextIntensity.setText("")
         }
-
         findViewById<Button>(R.id.button_causes_view).setOnClickListener {
-            setLayout(R.layout.causes,R.id.linear_layout_causes, data.causes, CausesOnClickListener(this,data))
+            setLayout(Category.CAUSE, R.layout.causes,R.id.linear_layout_causes, data.causes, CausesOnClickListener(this,data))
         }
 
         findViewById<Button>(R.id.button_symptoms_view).setOnClickListener{
-            setLayout(R.layout.symptoms,R.id.linear_layout_symptoms,data.symptoms,SymptomOnClickListener(this,data))
+            setLayout(Category.SYMPTOM, R.layout.symptoms,R.id.linear_layout_symptoms,data.symptoms,SymptomOnClickListener(this,data))
         }
 
         findViewById<Button>(R.id.button_remedies_view).setOnClickListener{
-            setLayout(R.layout.remedies,R.id.linear_layout_remedies, data.remedies, RemedyOnClickListener(this,data))
+            setLayout(Category.REMEDY, R.layout.remedies,R.id.linear_layout_remedies, data.remedies, RemedyOnClickListener(this,data))
         }
 
 
     }
 
-    private fun setLayout(idLayout : Int, idLinearLayout: Int, iterator : Iterator<String>, listener : CustomListener){
+    private fun setLayout(category: Category, idLayout : Int, idLinearLayout: Int, iterator : Iterator<String>, listener : CustomListener){
         setContentView(idLayout)
         val linearLayout = findViewById<LinearLayout>(idLinearLayout)
 
@@ -181,14 +186,25 @@ class MainActivity : AppCompatActivity() {
             button.setOnClickListener(listenerCopy)
 
         }
-        val button = Button(this)
+        val buttonAdd = Button(this)
 
-        button.text = "+"
-        button.layoutParams = LinearLayout.LayoutParams(
+        buttonAdd.text = "+"
+        buttonAdd.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        linearLayout.addView(button)
+        linearLayout.addView(buttonAdd)
+
+        buttonAdd.setOnClickListener{
+
+            val addItemDialog = AddItemDialog(listener.data, category)
+            addItemDialog.setAddItemDialogListener(this)
+            addItemDialog.show(supportFragmentManager, "AddItemDialog")
+
+
+        }
+
+
 
         val buttonBack = Button(this)
 
@@ -302,6 +318,39 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onDialogPositiveClick(data: DataModel, category: Category, item: String, intensity: Boolean) {
+        Log.d("XXX", item + " " + intensity)
+
+        when(category){
+            Category.AILMENT -> {
+                data.addAilmentKey(item)
+            }
+            Category.CAUSE -> {
+                data.addCauseKey(item)
+                setLayout(Category.CAUSE, R.layout.causes,R.id.linear_layout_causes, data.causes, CausesOnClickListener(this,data))
+
+            }
+            Category.SYMPTOM -> {
+                data.addSymptomKey(item)
+                setLayout(Category.SYMPTOM, R.layout.symptoms,R.id.linear_layout_symptoms, data.symptoms, SymptomOnClickListener(this,data))
+
+            }
+            Category.REMEDY -> {
+                data.addRemedyKey(item)
+                setLayout(Category.REMEDY, R.layout.remedies,R.id.linear_layout_remedies, data.remedies, RemedyOnClickListener(this,data))
+            }
+        }
+
+        data.save()
+
+        // Use the data from the EditText and ToggleButton
+        // You can store the data, update the UI, etc.
+    }
 
 
+
+}
+
+enum class Category {
+    AILMENT, CAUSE, SYMPTOM, REMEDY
 }

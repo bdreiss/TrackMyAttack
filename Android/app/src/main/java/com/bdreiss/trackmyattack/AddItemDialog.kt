@@ -1,22 +1,55 @@
 package com.bdreiss.trackmyattack
 
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ToggleButton
 import androidx.fragment.app.DialogFragment
+import main.java.com.bdreiss.dataAPI.DataModel
 
-class AddItemDialog: DialogFragment() {
+class AddItemDialog(data:DataModel, category: Category) : DialogFragment() {
+
+    interface AddItemDialogListener {
+        fun onDialogPositiveClick(data: DataModel, category: Category, item: String, intensity: Boolean)
+    }
+
+
+    private lateinit var listener: AddItemDialogListener
+    private val data = data
+    private val category = category
+
+    fun setAddItemDialogListener(listener: AddItemDialogListener) {
+        this.listener = listener
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.add_item_dialog, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
-        val height = (resources.displayMetrics.heightPixels * 0.40).toInt()
-        dialog!!.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val itemToBeAdded = view.findViewById<EditText>(R.id.item_to_be_added)
+        val chooseIntensityButton = view.findViewById<ToggleButton>(R.id.choose_intensity_button)
+        val addItemButton = view.findViewById<Button>(R.id.add_item_button)
+
+        addItemButton.setOnClickListener {
+            val item = itemToBeAdded.text.toString()
+            val intensity = chooseIntensityButton.isChecked
+
+            listener.onDialogPositiveClick(data, category, item, intensity)
+            dismiss()
+        }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
+        dialog!!.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
 }
