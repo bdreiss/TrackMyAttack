@@ -63,6 +63,8 @@ class DataModelTest {
 		data.deleteSaveFile();
 	}
 
+	//TODO test whether Iterators are returned as right instanceof
+	
 	private void add(Add addInterface) throws EntryNotFoundException {
 
 		// Strings to be added
@@ -646,7 +648,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		for (String s : testStrings)
-			data.addAilmentKey(s);
+			data.addAilmentKey(s,false);
 
 		Iterator<String> it = data.getAilments();
 
@@ -669,7 +671,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		for (String s : testStrings)
-			data.addCauseKey(s);
+			data.addCauseKey(s,false);
 
 		Iterator<String> it = data.getCauses();
 
@@ -692,7 +694,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		for (String s : testStrings)
-			data.addSymptomKey(s);
+			data.addSymptomKey(s,false);
 
 		Iterator<String> it = data.getSymptoms();
 
@@ -715,7 +717,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		for (String s : testStrings)
-			data.addRemedyKey(s);
+			data.addRemedyKey(s,false);
 
 		Iterator<String> it = data.getRemedies();
 
@@ -841,7 +843,7 @@ class DataModelTest {
 
 			@Override
 			public void addKey(String key) {
-				data.addAilmentKey(key);
+				data.addAilmentKey(key,false);
 			}
 
 			@Override
@@ -883,7 +885,7 @@ class DataModelTest {
 
 			@Override
 			public void addKey(String key) {
-				data.addCauseKey(key);
+				data.addCauseKey(key,false);
 			}
 
 			@Override
@@ -923,7 +925,7 @@ class DataModelTest {
 
 			@Override
 			public void addKey(String key) {
-				data.addSymptomKey(key);
+				data.addSymptomKey(key,false);
 			}
 
 			@Override
@@ -964,7 +966,7 @@ class DataModelTest {
 
 			@Override
 			public void addKey(String key) {
-				data.addRemedyKey(key);
+				data.addRemedyKey(key,false);
 			}
 
 			@Override

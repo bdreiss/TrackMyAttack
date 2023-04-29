@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Representation of a single piece of data containing the date and intensity of
+ * Representation of a single piece of data containing the date of
  * the cause/symptom/remedy.
  */
 public class Datum implements Serializable {

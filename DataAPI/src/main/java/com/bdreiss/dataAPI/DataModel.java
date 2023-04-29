@@ -43,7 +43,8 @@ public class DataModel implements Serializable {
 	 * 
 	 * The Map contains the description of ailments, causes, symptoms or remedies as
 	 * keys. -> The value is a List containing dates and intensity as Datum. The
-	 * List is guaranteed to be ordered by date, since the dates are inserted using insertion sort.
+	 * List is guaranteed to be ordered by date, since the dates are inserted using
+	 * insertion sort.
 	 *
 	 */
 	private Map<String, List<Datum>> ailments = new TreeMap<>(TREE_COMPARATOR);
@@ -81,8 +82,8 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param ailment Ailment to be added as key
 	 */
-	public void addAilmentKey(String ailment) {
-		addKey(ailments, ailment);
+	public void addAilmentKey(String ailment, boolean intensity) {
+		addKey(ailments, ailment, intensity);
 	}
 
 	/**
@@ -90,8 +91,8 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause Cause to be added as key
 	 */
-	public void addCauseKey(String cause) {
-		addKey(causes, cause);
+	public void addCauseKey(String cause, boolean intensity) {
+		addKey(causes, cause, intensity);
 	}
 
 	/**
@@ -99,8 +100,8 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param symptom Symptom to be added as key
 	 */
-	public void addSymptomKey(String symptom) {
-		addKey(symptoms, symptom);
+	public void addSymptomKey(String symptom, boolean intensity) {
+		addKey(symptoms, symptom, intensity);
 	}
 
 	/**
@@ -108,17 +109,21 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy Remedy to be added as key
 	 */
-	public void addRemedyKey(String remedy) {
-		addKey(remedies, remedy);
+	public void addRemedyKey(String remedy, boolean intensity) {
+		addKey(remedies, remedy, intensity);
 	}
 
 	// abstracts the task of adding keys to maps
-	private void addKey(Map<String, List<Datum>> map, String key) {
+	private void addKey(Map<String, List<Datum>> map, String key, boolean intensity) {
 
 		// create entry with key if it doesn't exist
-		if (!map.containsKey(key))
-			map.put(key, new ArrayList<Datum>());
+		if (!map.containsKey(key)) {
+			if (intensity)
+				map.put(key, new ListWithIntensity());
+			else
+				map.put(key, new ArrayList<Datum>());
 
+		}
 	}
 
 	/**
@@ -164,7 +169,7 @@ public class DataModel implements Serializable {
 	 * @param date  LocalDateTime when the attack occurred
 	 */
 	public void addCause(String cause, LocalDateTime date) {
-		addEntry(causes, cause,null, date);
+		addEntry(causes, cause, null, date);
 	}
 
 	/**
@@ -224,7 +229,7 @@ public class DataModel implements Serializable {
 
 	public LocalDateTime addRemedy(String remedy) {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(remedies, remedy,null, date);
+		addEntry(remedies, remedy, null, date);
 		return date;
 	}
 
@@ -235,7 +240,7 @@ public class DataModel implements Serializable {
 	 * @param date   LocalDateTime when remedy was applied
 	 */
 	public void addRemedy(String remedy, LocalDateTime date) {
-		addEntry(remedies, remedy,null, date);
+		addEntry(remedies, remedy, null, date);
 	}
 
 	/**
@@ -263,7 +268,6 @@ public class DataModel implements Serializable {
 	public void addRemedy(String remedy, Intensity intensity, LocalDateTime date) {
 		addEntry(remedies, remedy, intensity, date);
 	}
-
 
 	/**
 	 * Removes an entry in ailments.
@@ -329,117 +333,122 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Edit date of an ailment entry;
+	 * 
 	 * @param ailment Ailment String for which entry shall be changed
-	 * @param date LocalDateTime of entry
-	 * @param newDate New LocalDateTime entry should be changed to 
+	 * @param date    LocalDateTime of entry
+	 * @param newDate New LocalDateTime entry should be changed to
 	 */
 	public void editAilmentEntry(String ailment, LocalDateTime date, LocalDateTime newDate) {
-		editEntry(ailments,ailment,date,null,newDate);
+		editEntry(ailments, ailment, date, null, newDate);
 	}
 
 	/**
 	 * Edit intensity of an ailment entry
-	 * @param ailment Ailment String for which entry shall be changed
-	 * @param date LocalDateTime of entry
+	 * 
+	 * @param ailment   Ailment String for which entry shall be changed
+	 * @param date      LocalDateTime of entry
 	 * @param intensity New Intensity entry should be changed to
 	 */
 	public void editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity) {
-		editEntry(ailments,ailment,date,intensity,null);
-		
+		editEntry(ailments, ailment, date, intensity, null);
+
 	}
 
 	/**
 	 * Edit date of a cause entry;
-	 * @param cause Cause String for which entry shall be changed
-	 * @param date LocalDateTime of entry
-	 * @param newDate New LocalDateTime entry should be changed to 
+	 * 
+	 * @param cause   Cause String for which entry shall be changed
+	 * @param date    LocalDateTime of entry
+	 * @param newDate New LocalDateTime entry should be changed to
 	 */
 	public void editCauseEntry(String cause, LocalDateTime date, LocalDateTime newDate) {
-		editEntry(causes,cause,date,null,newDate);
+		editEntry(causes, cause, date, null, newDate);
 	}
 
 	/**
 	 * Edit intensity of a cause entry
-	 * @param cause Cause String for which entry shall be changed
-	 * @param date LocalDateTime of entry
+	 * 
+	 * @param cause     Cause String for which entry shall be changed
+	 * @param date      LocalDateTime of entry
 	 * @param intensity New Intensity entry should be changed to
 	 */
 	public void editCauseEntry(String cause, LocalDateTime date, Intensity intensity) {
-		editEntry(causes,cause,date,intensity,null);
+		editEntry(causes, cause, date, intensity, null);
 	}
 
 	/**
 	 * Edit date of a symptom entry;
+	 * 
 	 * @param symptom Symptom String for which entry shall be changed
-	 * @param date LocalDateTime of entry
-	 * @param newDate New LocalDateTime entry should be changed to 
+	 * @param date    LocalDateTime of entry
+	 * @param newDate New LocalDateTime entry should be changed to
 	 */
 	public void editSymptomEntry(String symptom, LocalDateTime date, LocalDateTime newDate) {
-		editEntry(symptoms,symptom,date,null,newDate);
+		editEntry(symptoms, symptom, date, null, newDate);
 	}
 
 	/**
 	 * Edit intensity of a symptom entry
-	 * @param symptom Symptom String for which entry shall be changed
-	 * @param date LocalDateTime of entry
+	 * 
+	 * @param symptom   Symptom String for which entry shall be changed
+	 * @param date      LocalDateTime of entry
 	 * @param intensity New Intensity entry should be changed to
 	 */
 	public void editSymptomEntry(String symptom, LocalDateTime date, Intensity intensity) {
-		editEntry(symptoms,symptom,date,intensity,null);
+		editEntry(symptoms, symptom, date, intensity, null);
 	}
-
 
 	/**
 	 * Edit date of a remedy entry;
-	 * @param remedy Remedy String for which entry shall be changed
-	 * @param date LocalDateTime of entry
-	 * @param newDate New LocalDateTime entry should be changed to 
+	 * 
+	 * @param remedy  Remedy String for which entry shall be changed
+	 * @param date    LocalDateTime of entry
+	 * @param newDate New LocalDateTime entry should be changed to
 	 */
 	public void editRemedyEntry(String remedy, LocalDateTime date, LocalDateTime newDate) {
-		editEntry(remedies,remedy,date,null,newDate);
+		editEntry(remedies, remedy, date, null, newDate);
 	}
 
 	/**
 	 * Edit intensity of a remedy entry
-	 * @param remedy Remedy String for which entry shall be changed
-	 * @param date LocalDateTime of entry
+	 * 
+	 * @param remedy    Remedy String for which entry shall be changed
+	 * @param date      LocalDateTime of entry
 	 * @param intensity New Intensity entry should be changed to
 	 */
 	public void editRemedyEntry(String remedy, LocalDateTime date, Intensity intensity) {
-		editEntry(remedies,remedy,date,intensity,null);
+		editEntry(remedies, remedy, date, intensity, null);
 	}
 
-
-
-	private void editEntry(Map<String, List<Datum>> map, String key, LocalDateTime date, Intensity intensity, LocalDateTime newDate) {
+	private void editEntry(Map<String, List<Datum>> map, String key, LocalDateTime date, Intensity intensity,
+			LocalDateTime newDate) {
 
 		if (date == null)
 			return;
-		
-		if (map.get(key)!= null && map.get(key).size()>0)
+
+		if (map.get(key) != null && map.get(key).size() > 0)
 			if (intensity != null && !(map.get(key).get(0) instanceof DatumWithIntensity))
 				return;
-			
-		
-		
-		for (Datum d: map.get(key)) {
+
+		for (Datum d : map.get(key)) {
 			if (d.getDate().equals(date) && d.getDate().getNano() == date.getNano()) {
 				if (intensity != null)
 					((DatumWithIntensity) d).setIntensity(intensity);
-				
-				//if new date is assigned remove entry and insert new one so list stays sorted via insertion sort
+
+				// if new date is assigned remove entry and insert new one so list stays sorted
+				// via insertion sort
 				if (newDate != null) {
 					map.get(key).remove(d);
-					addEntry(map,key,intensity,newDate);
+					addEntry(map, key, intensity, newDate);
 					d.setDate(newDate);
 				}
 				break;
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	// abstracts the task of adding entries to the different ArrayLists
 	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) {
 
@@ -454,7 +463,7 @@ public class DataModel implements Serializable {
 			list.add(new DatumWithIntensity(date, intensity));
 		else
 			list.add(new Datum(date));
-		
+
 		// as long as the date is smaller than the date before, swap it with the
 		// previous item
 		// stop when dates are smaller than date to be added or when beginning of list
@@ -548,15 +557,12 @@ public class DataModel implements Serializable {
 	 * @param ailment String describing ailment
 	 * @param date    Day for which data should be retrieved
 	 * @return Iterator containing data when and how intense ailment occurred as
-	 *         Datum
+	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
 	public Iterator<Datum> getAilmentData(String ailment, LocalDate date) throws EntryNotFoundException {
 
-		if (ailments.get(ailment) == null)
-			throw new EntryNotFoundException();
-
-		return new DayIterator(ailments.get(ailment), date);
+		return getIterator(ailments.get(ailment), date);
 	}
 
 	/**
@@ -565,15 +571,13 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param ailment String describing ailment
 	 * @return Iterator containing data when and how intense ailment occurred as
-	 *         Datum
+	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
 	public Iterator<Datum> getAilmentData(String ailment) throws EntryNotFoundException {
 
-		if (ailments.get(ailment) == null)
-			throw new EntryNotFoundException();
+		return getIterator(ailments.get(ailment), null);
 
-		return ailments.get(ailment).iterator();
 	}
 
 	/**
@@ -582,14 +586,12 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause String describing cause
 	 * @param date  Day for which data should be retrieved
-	 * @return Iterator containing data when and how intense cause occurred as Datum
+	 * @return Iterator containing data when and how intense cause occurred as
+	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
 	public Iterator<Datum> getCauseData(String cause, LocalDate date) throws EntryNotFoundException {
-		if (causes.get(cause) == null)
-			throw new EntryNotFoundException();
-
-		return new DayIterator(causes.get(cause), date);
+		return getIterator(causes.get(cause), date);
 	}
 
 	/**
@@ -597,14 +599,12 @@ public class DataModel implements Serializable {
 	 * Iterator for all dates.
 	 * 
 	 * @param cause String describing cause
-	 * @return Iterator containing data when and how intense cause occurred as Datum
+	 * @return Iterator containing data when and how intense cause occurred as
+	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
 	public Iterator<Datum> getCauseData(String cause) throws EntryNotFoundException {
-		if (causes.get(cause) == null)
-			throw new EntryNotFoundException();
-
-		return causes.get(cause).iterator();
+		return getIterator(causes.get(cause), null);
 	}
 
 	/**
@@ -614,14 +614,11 @@ public class DataModel implements Serializable {
 	 * @param symptom String describing symptom
 	 * @param date    Day for which data should be retrieved
 	 * @return Iterator containing data when and how intense symptom occurred as
-	 *         Datum
+	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
 	public Iterator<Datum> getSymptomData(String symptom, LocalDate date) throws EntryNotFoundException {
-		if (symptoms.get(symptom) == null)
-			throw new EntryNotFoundException();
-
-		return new DayIterator(symptoms.get(symptom), date);
+		return getIterator(symptoms.get(symptom), date);
 	}
 
 	/**
@@ -630,14 +627,11 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param symptom String describing symptom
 	 * @return Iterator containing data when and how intense symptom occurred as
-	 *         Datum
+	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
 	public Iterator<Datum> getSymptomData(String symptom) throws EntryNotFoundException {
-		if (symptoms.get(symptom) == null)
-			throw new EntryNotFoundException();
-
-		return symptoms.get(symptom).iterator();
+		return getIterator(symptoms.get(symptom), null);
 	}
 
 	/**
@@ -647,14 +641,12 @@ public class DataModel implements Serializable {
 	 * @param remedy String describing remedy.
 	 * @param date   Day for which data should be retrieved
 	 * @return Iterator containing data when and how intense remedy was used as
-	 *         Datum
+	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
 	public Iterator<Datum> getRemedyData(String remedy, LocalDate date) throws EntryNotFoundException {
-		if (remedies.get(remedy) == null)
-			throw new EntryNotFoundException();
 
-		return new DayIterator(remedies.get(remedy), date);
+		return getIterator(remedies.get(remedy), null);
 	}
 
 	/**
@@ -663,14 +655,34 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy String describing remedy.
 	 * @return Iterator containing data when and how intense remedy was used as
-	 *         Datum
+	 *         Datum- If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
 	public Iterator<Datum> getRemedyData(String remedy) throws EntryNotFoundException {
-		if (remedies.get(remedy) == null)
+		return getIterator(remedies.get(remedy), null);
+	}
+
+	// method that abstracts the task of returning an Iterator of the right kind
+	private Iterator<Datum> getIterator(List<Datum> list, LocalDate date) throws EntryNotFoundException {
+
+		// if item does not exist throw exception
+		if (list == null)
 			throw new EntryNotFoundException();
 
-		return remedies.get(remedy).iterator();
+		// if date is null return IteratorWithIntensity or Iterator<Datum> for all data
+		if (date == null) {
+			if (list instanceof ListWithIntensity)
+				return (IteratorWithIntensity) list.iterator();
+			else
+				return list.iterator();
+		}
+
+		// return data for specific date as IteratorWithIntensity or Iterator<Datum>
+		if (list instanceof ListWithIntensity)
+			return (IteratorWithIntensity) new DayIterator(list, date);
+		else
+			return new DayIterator(list, date);
+
 	}
 
 	/**
@@ -781,6 +793,13 @@ public class DataModel implements Serializable {
 		public Datum next() {
 			return list.get(index++);
 		}
+
+	}
+
+	// class that represents a List with items being of the kind DatumWithIntensity
+	private class ListWithIntensity extends ArrayList<Datum> {
+
+		private static final long serialVersionUID = 1L;
 
 	}
 
