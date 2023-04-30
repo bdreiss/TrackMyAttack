@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TrackMyAttack</string>
+    <string name="BACK_BUTTON">BACK</string>
 </resources>

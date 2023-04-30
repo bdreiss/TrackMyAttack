@@ -1,7 +1,6 @@
 package com.bdreiss.trackmyattack
 
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import android.widget.ToggleButton
 import androidx.fragment.app.DialogFragment
 import main.java.com.bdreiss.dataAPI.DataModel
 
-class AddItemDialog(data:DataModel, category: Category) : DialogFragment() {
+class AddItemDialog(private val data: DataModel, private val category: Category) : DialogFragment() {
 
     interface AddItemDialogListener {
         fun onDialogPositiveClick(data: DataModel, category: Category, item: String, intensity: Boolean)
@@ -19,8 +18,6 @@ class AddItemDialog(data:DataModel, category: Category) : DialogFragment() {
 
 
     private lateinit var listener: AddItemDialogListener
-    private val data = data
-    private val category = category
 
     fun setAddItemDialogListener(listener: AddItemDialogListener) {
         this.listener = listener
@@ -37,6 +34,11 @@ class AddItemDialog(data:DataModel, category: Category) : DialogFragment() {
         val chooseIntensityButton = view.findViewById<ToggleButton>(R.id.choose_intensity_button)
         val addItemButton = view.findViewById<Button>(R.id.add_item_button)
 
+        if (category == Category.SYMPTOM) {
+            chooseIntensityButton.isChecked = true
+            chooseIntensityButton.isEnabled = false
+
+        }
         addItemButton.setOnClickListener {
             val item = itemToBeAdded.text.toString()
             val intensity = chooseIntensityButton.isChecked

@@ -3,13 +3,30 @@ package main.java.com.bdreiss.dataAPI;
 import java.util.Iterator;
 
 /**
- * Interface that represents an Iterator with Intensity.
+ * Class that represents an Iterator with Intensity.
  * 
  * @author bernd
  *
  */
 
-public interface IteratorWithIntensity extends Iterator<Datum>{
+public class IteratorWithIntensity implements Iterator<Datum>{
 
+	private Iterator<Datum> originalIterator;
+	
+	IteratorWithIntensity(Iterator<Datum> originalIterator){
+		this.originalIterator = originalIterator;
+	}
+
+	@Override
+	public boolean hasNext() {
+		return originalIterator.hasNext();
+	}
+
+	@Override
+	public Datum next() {
+		return originalIterator.next();
+	}
+	
+	
 
 }

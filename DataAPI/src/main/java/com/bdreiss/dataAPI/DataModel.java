@@ -668,18 +668,18 @@ public class DataModel implements Serializable {
 		// if item does not exist throw exception
 		if (list == null)
 			throw new EntryNotFoundException();
-
+		
 		// if date is null return IteratorWithIntensity or Iterator<Datum> for all data
 		if (date == null) {
 			if (list instanceof ListWithIntensity)
-				return (IteratorWithIntensity) list.iterator();
+				return new IteratorWithIntensity(list.iterator());
 			else
 				return list.iterator();
 		}
 
 		// return data for specific date as IteratorWithIntensity or Iterator<Datum>
 		if (list instanceof ListWithIntensity)
-			return (IteratorWithIntensity) new DayIterator(list, date);
+			return new IteratorWithIntensity(new DayIterator(list, date));
 		else
 			return new DayIterator(list, date);
 

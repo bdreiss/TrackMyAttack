@@ -4,14 +4,13 @@ import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import main.java.com.bdreiss.dataAPI.DataModel
-import main.java.com.bdreiss.dataAPI.DatumWithIntensity
 import main.java.com.bdreiss.dataAPI.Intensity
+import main.java.com.bdreiss.dataAPI.IteratorWithIntensity
 import java.io.File
 
 class MainActivity : AppCompatActivity(), AddItemDialog.AddItemDialogListener {
@@ -208,7 +207,7 @@ class MainActivity : AppCompatActivity(), AddItemDialog.AddItemDialogListener {
 
         val buttonBack = Button(this)
 
-        buttonBack.text = "BACK"
+        buttonBack.text = getString(R.string.BACK_BUTTON)
         buttonBack.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -221,7 +220,7 @@ class MainActivity : AppCompatActivity(), AddItemDialog.AddItemDialogListener {
     }
 
     //abstract class for listeners being passed to layouts showing causes, symptoms and remedies
-    open abstract class CustomListener(val context: Context, val data: DataModel) : View.OnClickListener{
+    abstract class CustomListener(val context: Context, val data: DataModel) : View.OnClickListener{
         lateinit var text : String
 
         fun setTextValue(text : String){
@@ -254,7 +253,7 @@ class MainActivity : AppCompatActivity(), AddItemDialog.AddItemDialogListener {
 
         override fun onClick(v: View?) {
 
-            if (data.getCauseData(text).next() is DatumWithIntensity)
+            if (data.getCauseData(text) is IteratorWithIntensity)
                 chooseIntensity(context){
                         chosenEnumValue ->
                     data.addCause(text, chosenEnumValue)
@@ -277,7 +276,7 @@ class MainActivity : AppCompatActivity(), AddItemDialog.AddItemDialogListener {
 
         override fun onClick(v: View?) {
 
-            if (data.getSymptomData(text).next() is DatumWithIntensity)
+            if (data.getSymptomData(text) is IteratorWithIntensity)
                 chooseIntensity(context){
                         chosenEnumValue ->
                     data.addSymptom(text, chosenEnumValue)
@@ -300,7 +299,7 @@ class MainActivity : AppCompatActivity(), AddItemDialog.AddItemDialogListener {
 
         override fun onClick(v: View?) {
 
-            if (data.getRemedyData(text).next() is DatumWithIntensity)
+            if (data.getRemedyData(text) is IteratorWithIntensity)
                 chooseIntensity(context){
                         chosenEnumValue ->
                     data.addRemedy(text, chosenEnumValue)
@@ -319,24 +318,22 @@ class MainActivity : AppCompatActivity(), AddItemDialog.AddItemDialogListener {
     }
 
     override fun onDialogPositiveClick(data: DataModel, category: Category, item: String, intensity: Boolean) {
-        Log.d("XXX", item + " " + intensity)
-
         when(category){
             Category.AILMENT -> {
-                data.addAilmentKey(item)
+                data.addAilmentKey(item, intensity)
             }
             Category.CAUSE -> {
-                data.addCauseKey(item)
+                data.addCauseKey(item, intensity)
                 setLayout(Category.CAUSE, R.layout.causes,R.id.linear_layout_causes, data.causes, CausesOnClickListener(this,data))
 
             }
             Category.SYMPTOM -> {
-                data.addSymptomKey(item)
+                data.addSymptomKey(item, intensity)
                 setLayout(Category.SYMPTOM, R.layout.symptoms,R.id.linear_layout_symptoms, data.symptoms, SymptomOnClickListener(this,data))
 
             }
             Category.REMEDY -> {
-                data.addRemedyKey(item)
+                data.addRemedyKey(item, intensity)
                 setLayout(Category.REMEDY, R.layout.remedies,R.id.linear_layout_remedies, data.remedies, RemedyOnClickListener(this,data))
             }
         }
