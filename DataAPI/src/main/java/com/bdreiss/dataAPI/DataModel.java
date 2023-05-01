@@ -454,7 +454,7 @@ public class DataModel implements Serializable {
 
 		// create entry with key if it doesn't exist
 		if (!map.containsKey(key))
-			map.put(key, new ArrayList<Datum>());
+			addKey(map, key, intensity != null);
 
 		List<Datum> list = map.get(key);
 

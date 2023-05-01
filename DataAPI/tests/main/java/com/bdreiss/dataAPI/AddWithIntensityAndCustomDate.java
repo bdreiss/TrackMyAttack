@@ -8,6 +8,7 @@ import java.util.Iterator;
 //interface to pass methods to test function adding entries with custom date
 public interface AddWithIntensityAndCustomDate {
 	void add(String s, Intensity i, LocalDateTime d);
+	void addKey(String s, boolean b);
 	int getSize();
 	Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException;
 	Iterator<Datum> getAllData(String s) throws EntryNotFoundException;

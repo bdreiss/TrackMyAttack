@@ -9,6 +9,7 @@ import java.util.Iterator;
 public interface AddWithCustomDate {
 	
 	void add(String s, LocalDateTime d);
+	void addKey(String s, boolean b);
 	int getSize();
 	Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException;
 	Iterator<Datum> getAllData(String s) throws EntryNotFoundException;

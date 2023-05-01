@@ -1,5 +1,7 @@
 package main.java.com.bdreiss.dataAPI;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +24,7 @@ class DataModelTest {
 
 	// strings to be tested when adding data
 	private String[] getTestStrings() {
-		String[] strings = { "Migraine", "Test", "", "Apple", "Something", "something2" };
+		String[] strings = { "Migraine", "Testing", "", "Apple", "Something", "something2" };
 		return strings;
 	}
 
@@ -63,6 +65,8 @@ class DataModelTest {
 		data.deleteSaveFile();
 	}
 
+
+	
 	//TODO test whether Iterators are returned as right instanceof
 	
 	private void add(Add addInterface) throws EntryNotFoundException {
@@ -110,6 +114,12 @@ class DataModelTest {
 			assert (k == datesAdded.size());
 
 		}
+		
+		//Test whether Iterators are returned as the correct type
+		addInterface.add("Test");
+		
+		assert(!(addInterface.getAllData("Test") instanceof IteratorWithIntensity));
+		assert(!(addInterface.getData("Test", LocalDate.now()) instanceof IteratorWithIntensity));
 	}
 
 	private void addWithCustomDate(AddWithCustomDate addInterface) throws EntryNotFoundException {
@@ -182,6 +192,16 @@ class DataModelTest {
 			// assert the dataset is complete
 			assert (k == expectedResults[i].length);
 		}
+
+		//test whether Iterators are returned as the right type
+		addInterface.add("Test", LocalDateTime.now());
+		addInterface.addKey("Test1", false);
+		
+		assert(!(addInterface.getAllData("Test") instanceof IteratorWithIntensity));
+		assert(!(addInterface.getData("Test", LocalDate.now()) instanceof IteratorWithIntensity));
+		assert(!(addInterface.getAllData("Test1") instanceof IteratorWithIntensity));
+		assert(!(addInterface.getData("Test1", LocalDate.now()) instanceof IteratorWithIntensity));
+
 	}
 
 	private void addWithIntensity(AddWithIntensity addInterface) throws EntryNotFoundException {
@@ -228,6 +248,22 @@ class DataModelTest {
 			// assert the dataset is complete
 			assert (k == datesAdded.size());
 		}
+		
+		//test whether Iterators are returned as the right type
+		addInterface.add("Test", null);
+		addInterface.add("Test1", Intensity.HIGH);
+		addInterface.addKey("Test2", true);
+		addInterface.addKey("Test3", false);
+		
+		assert(!(addInterface.getAllData("Test") instanceof IteratorWithIntensity));
+		assert(!(addInterface.getData("Test", LocalDate.now()) instanceof IteratorWithIntensity));
+		assert(addInterface.getAllData("Test1") instanceof IteratorWithIntensity);
+		assert(addInterface.getData("Test1", LocalDate.now()) instanceof IteratorWithIntensity);
+		assert(addInterface.getAllData("Test2") instanceof IteratorWithIntensity);
+		assert(addInterface.getData("Test2", LocalDate.now()) instanceof IteratorWithIntensity);
+		assert(!(addInterface.getAllData("Test3") instanceof IteratorWithIntensity));
+		assert(!(addInterface.getData("Test3", LocalDate.now()) instanceof IteratorWithIntensity));
+
 
 	}
 
@@ -306,6 +342,22 @@ class DataModelTest {
 			assert (k == expectedResults[i].length);
 
 		}
+		//test whether Iterators are returned as the right type
+		addInterface.add("Test", null, LocalDateTime.now());
+		addInterface.add("Test1", Intensity.HIGH,LocalDateTime.now());
+		addInterface.addKey("Test2", true);
+		addInterface.addKey("Test3", false);
+		
+		assert(!(addInterface.getAllData("Test") instanceof IteratorWithIntensity));
+		assert(!(addInterface.getData("Test", LocalDate.now()) instanceof IteratorWithIntensity));
+		assert(addInterface.getAllData("Test1") instanceof IteratorWithIntensity);
+		assert(addInterface.getData("Test1", LocalDate.now()) instanceof IteratorWithIntensity);
+		assert(addInterface.getAllData("Test2") instanceof IteratorWithIntensity);
+		assert(addInterface.getData("Test2", LocalDate.now()) instanceof IteratorWithIntensity);
+		assert(!(addInterface.getAllData("Test3") instanceof IteratorWithIntensity));
+		assert(!(addInterface.getData("Test3", LocalDate.now()) instanceof IteratorWithIntensity));
+
+
 	}
 
 	// tests whether ailments are added correctly and can be retrieved
@@ -331,6 +383,12 @@ class DataModelTest {
 			@Override
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getAilmentData(s);
+			}
+
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addAilmentKey(s, b);
+				
 			}
 
 		});
@@ -361,6 +419,11 @@ class DataModelTest {
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getAilmentData(s);
 			}
+
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addAilmentKey(s, b);
+			}
 		});
 
 	}
@@ -388,6 +451,10 @@ class DataModelTest {
 			@Override
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getCauseData(s);
+			}
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addCauseKey(s, b);
 			}
 		});
 	}
@@ -417,6 +484,10 @@ class DataModelTest {
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getCauseData(s);
 			}
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addCauseKey(s, b);
+			}
 		});
 	}
 
@@ -443,6 +514,10 @@ class DataModelTest {
 			@Override
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getCauseData(s);
+			}
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addCauseKey(s, b);
 			}
 		});
 	}
@@ -472,6 +547,10 @@ class DataModelTest {
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getCauseData(s);
 			}
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addCauseKey(s, b);
+			}
 		});
 	}
 
@@ -498,6 +577,10 @@ class DataModelTest {
 			@Override
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getSymptomData(s);
+			}
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addSymptomKey(s, b);
 			}
 		});
 	}
@@ -527,6 +610,10 @@ class DataModelTest {
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getSymptomData(s);
 			}
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addSymptomKey(s, b);
+			}
 		});
 	}
 
@@ -554,7 +641,11 @@ class DataModelTest {
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getRemedyData(s);
 			}
-
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addRemedyKey(s, b);
+			}
+			
 		});
 	}
 
@@ -582,6 +673,10 @@ class DataModelTest {
 			@Override
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getRemedyData(s);
+			}
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addRemedyKey(s, b);
 			}
 		});
 	}
@@ -611,6 +706,10 @@ class DataModelTest {
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getRemedyData(s);
 			}
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addRemedyKey(s, b);
+			}
 		});
 	}
 
@@ -638,6 +737,10 @@ class DataModelTest {
 			@Override
 			public Iterator<Datum> getAllData(String s) throws EntryNotFoundException {
 				return data.getRemedyData(s);
+			}
+			@Override
+			public void addKey(String s, boolean b) {
+				data.addRemedyKey(s, b);
 			}
 		});
 	}
