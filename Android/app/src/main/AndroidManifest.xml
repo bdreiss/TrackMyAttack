@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bdreiss.trackmyattack">
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,16 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackMyAttack"
-        tools:targetApi="31">
+        tools:targetApi="33">
+
         <activity
             android:name=".MainActivity"
+            android:label="TrackMyAttack"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+             <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
