@@ -19,14 +19,17 @@ public class SymptomOnClickListener extends CustomListener{
 
         try {
             if (data.getSymptomData(text) instanceof IteratorWithIntensity){
-                chooseIntensity(context, (dialogInterface, i) -> data.addSymptom(text, Intensity.values()[i]));
+                chooseIntensity(context, (dialogInterface, i) ->{
+
+                 data.addSymptom(text, Intensity.values()[i+1]);
+                 data.save();
+
+                });
             }
 
         } catch (EntryNotFoundException e) {
             e.printStackTrace();
         }
-
-        data.save();
 
     }
 

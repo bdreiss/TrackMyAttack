@@ -23,16 +23,20 @@ public class CauseOnClickListener extends CustomListener {
 
         try {
             if (data.getCauseData(text) instanceof IteratorWithIntensity){
-                chooseIntensity(context, (dialogInterface, i) -> data.addCause(text, Intensity.values()[i]));
+                chooseIntensity(context, (dialogInterface, i) -> {
+                    data.addCause(text, Intensity.values()[i+1]);
+                    data.save();
+                });
             }
             else{
                 data.addCause(text);
+                data.save();
+
             }
         } catch (EntryNotFoundException e) {
             e.printStackTrace();
         }
 
-        data.save();
 
     }
 

@@ -20,16 +20,19 @@ public class RemedyOnClickListener extends CustomListener{
 
         try {
             if (data.getRemedyData(text) instanceof IteratorWithIntensity){
-                chooseIntensity(context, (dialogInterface, i) -> data.addRemedy(text, Intensity.values()[i]));
+                chooseIntensity(context, (dialogInterface, i) -> {
+                    data.addRemedy(text, Intensity.values()[i+1]);
+                    data.save();
+                });
             }
             else{
                 data.addRemedy(text);
+                data.save();
+
             }
         } catch (EntryNotFoundException e) {
             e.printStackTrace();
         }
-
-        data.save();
 
     }
 
