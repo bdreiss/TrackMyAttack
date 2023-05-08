@@ -1,8 +1,6 @@
 package com.bdreiss.trackmyattack.listeners;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.provider.ContactsContract;
 import android.view.View;
 
 import main.java.com.bdreiss.dataAPI.DataModel;

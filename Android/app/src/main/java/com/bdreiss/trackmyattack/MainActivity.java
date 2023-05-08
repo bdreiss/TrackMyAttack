@@ -1,16 +1,12 @@
 package com.bdreiss.trackmyattack;
 
 
-import android.content.Context;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bdreiss.trackmyattack.listeners.CauseOnClickListener;
@@ -24,8 +20,6 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.Datum;
-import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,61 +54,40 @@ public class MainActivity extends AppCompatActivity {
         EditText migraineEditTextIntensity = findViewById(R.id.edit_text_migraine_intensity);
         Button migraineButton = findViewById(R.id.button_migraine);
 
-        migraineButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        migraineButton.setOnClickListener(view -> {
 
-                        String intensityText = migraineEditTextIntensity.getText().toString();
+                String intensityText = migraineEditTextIntensity.getText().toString();
 
-                        Intensity intensity = Intensity.NO_INTENSITY;
-                        if (!intensityText.isEmpty()) {
-                                switch(Integer.parseInt(intensityText)){
-                                        case 0: intensity = Intensity.LOW;
-                                        break;
-                                        case 1: intensity = Intensity.MEDIUM;
-                                        break;
-                                        case 2: intensity = Intensity.HIGH;
-                                }
+                Intensity intensity = Intensity.NO_INTENSITY;
+                if (!intensityText.isEmpty()) {
+                        switch(Integer.parseInt(intensityText)){
+                                case 0: intensity = Intensity.LOW;
+                                break;
+                                case 1: intensity = Intensity.MEDIUM;
+                                break;
+                                case 2: intensity = Intensity.HIGH;
                         }
-
-                        data.addAilment("Migraine", intensity);
-                        data.save();
-
-                        textView.setText(data.print());
-                        migraineEditTextText.setText("");
-                        migraineEditTextIntensity.setText("");
-
                 }
+
+                data.addAilment("Migraine", intensity);
+                data.save();
+
+                textView.setText(data.print());
+                migraineEditTextText.setText("");
+                migraineEditTextIntensity.setText("");
+
         });
 
         Button causesViewButton = findViewById(R.id.button_causes_view);
-        causesViewButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                        setLayout(Category.CAUSE, R.layout.causes,R.id.linear_layout_causes, data.getCauses(), new CauseOnClickListener(view.getContext(),data));
-
-                }
-        }); {
+        causesViewButton.setOnClickListener(view -> setLayout(Category.CAUSE, R.layout.causes,R.id.linear_layout_causes, data.getCauses(), new CauseOnClickListener(view.getContext(),data))); {
         }
 
         Button symptomsViewButton = findViewById(R.id.button_symptoms_view);
-                symptomsViewButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                                setLayout(Category.SYMPTOM, R.layout.symptoms,R.id.linear_layout_symptoms,data.getSymptoms(), new SymptomOnClickListener(view.getContext(),data));
-
-                        }
-                });
+                symptomsViewButton.setOnClickListener(view -> setLayout(Category.SYMPTOM, R.layout.symptoms,R.id.linear_layout_symptoms,data.getSymptoms(), new SymptomOnClickListener(view.getContext(),data)));
 
 
         Button remedyViewButton = findViewById(R.id.button_remedies_view);
-        remedyViewButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                        setLayout(Category.REMEDY, R.layout.remedies, R.id.linear_layout_remedies, data.getRemedies(), new RemedyOnClickListener(view.getContext(),data));
-
-                }
-        });
+        remedyViewButton.setOnClickListener(view -> setLayout(Category.REMEDY, R.layout.remedies, R.id.linear_layout_remedies, data.getRemedies(), new RemedyOnClickListener(view.getContext(),data)));
 
         }
 
@@ -182,5 +155,5 @@ public class MainActivity extends AppCompatActivity {
 }
 
 enum Category {
-        AILMENT, CAUSE, SYMPTOM, REMEDY;
+        AILMENT, CAUSE, SYMPTOM, REMEDY
 }

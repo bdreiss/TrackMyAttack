@@ -29,11 +29,11 @@ public class CustomListener implements View.OnClickListener {
         CustomListener newListener = new CustomListener(context, data);
         newListener.setTextValue(text);
         return newListener;
-    };
+    }
 
     public DataModel getData(){
         return data;
-    };
+    }
 
     public void chooseIntensity(Context context, DialogInterface.OnClickListener listener){
         String[] intensities = new String[Intensity.values().length-1];

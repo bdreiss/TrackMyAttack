@@ -1,6 +1,5 @@
 package com.bdreiss.trackmyattack;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.Objects;
+
 import main.java.com.bdreiss.dataAPI.DataModel;
 
 public class AddItemDialog extends DialogFragment {
 
-    private DataModel data;
-    private Category category;
+    private final DataModel data;
+    private final Category category;
 
     public AddItemDialog(DataModel data, Category category){
         this.data = data;
@@ -50,17 +51,14 @@ public class AddItemDialog extends DialogFragment {
             chooseIntensityButton.setEnabled(false);
 
         }
-        addItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String item = itemToBeAdded.getText().toString();
-                Boolean intensity = chooseIntensityButton.isChecked();
+        addItemButton.setOnClickListener(view1 -> {
+            String item = itemToBeAdded.getText().toString();
+            Boolean intensity = chooseIntensityButton.isChecked();
 
-                listener.onDialogPositiveClick(data, category, item, intensity);
+            listener.onDialogPositiveClick(data, category, item, intensity);
 
-                dismiss();
+            dismiss();
 
-            }
         });
     {
         }
@@ -71,10 +69,7 @@ public class AddItemDialog extends DialogFragment {
         super.onStart();
 
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.85);
-        getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-    }
-
-    private void onDialogPositiveClick(DataModel data, Category category, String item, Boolean intensity) {
+        Objects.requireNonNull(getDialog()).getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
 
