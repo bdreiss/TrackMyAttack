@@ -37,6 +37,7 @@ public class UITests {
         String testString = "ßßß123124dadofajdf";
         onView(withId(R.id.button_causes_view)).perform(click());
 
+
         //because button was created dynamically
         onView(withTagValue(is((Object) "add_key_button"))).perform(click());
         onView(withId(R.id.item_to_be_added)).perform(typeText(testString));
