@@ -270,6 +270,53 @@ public class DataModel implements Serializable {
 	}
 
 	/**
+	 * Removes a key in ailments.
+	 * 
+	 * @param key Ailment which is to be removed.
+	 */
+	public void removeAilmentKey(String key) {
+		removeKey(ailments, key);
+	}
+
+	/**
+	 * Removes a key in causes.
+	 * 
+	 * @param key Cause which is to be removed.
+	 */
+	public void removeCauseKey(String key) {
+		removeKey(causes, key);
+	}
+
+	/**
+	 * Removes a key in symptoms.
+	 * 
+	 * @param key Symptom which is to be removed.
+	 */
+	public void removeSymptomKey(String key) {
+		removeKey(symptoms, key);
+	}
+
+	/**
+	 * Removes a key in remedies.
+	 * 
+	 * @param key Remedy which is to be removed.
+	 */
+	public void removeRemedyKey(String key) {
+		removeKey(remedies, key);
+	}
+
+	// abstracts the task of removing entries from the different ArrayLists
+	private void removeKey(Map<String, List<Datum>> map, String key) {
+
+		// return if key doesn't exist
+		if (!map.containsKey(key))
+			return;
+
+		map.remove(key);
+		
+	}
+	
+	/**
 	 * Removes an entry in ailments.
 	 * 
 	 * @param ailment Ailment for which entry is to be removed.
@@ -325,9 +372,6 @@ public class DataModel implements Serializable {
 				break;
 			}
 		}
-
-		if (list.size() == 0)
-			map.remove(key);
 
 	}
 

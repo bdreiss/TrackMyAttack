@@ -1,7 +1,5 @@
 package main.java.com.bdreiss.dataAPI;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -836,6 +834,32 @@ class DataModelTest {
 
 		assert (i == testStrings.length);
 	}
+
+	 //TODO comment removeAilmentKey 
+	 @Test 
+	 public void removeAilmentKey() {
+		 //TODO implement removeAilmentKey
+	 }
+	 
+	 
+	 //TODO comment removeCauseKey
+	 @Test 
+	 public void removeCauseKey() {
+		 //TODO implement removeCauseKey
+	 }
+	 
+	 
+	 //TODO comment removeSymptomKey
+	 @Test
+	 public void removeSymptomKey() {
+		 //TODO implement removeSymptomKey
+	 }
+	 
+	 //TODO comment removeRemedyKey
+	 @Test 
+	 public void removeRemedyKey() {
+		 //TODO implement removeRemedyKey
+	 }
 
 	// abstracts testing whether entries can be edited correctly, including dates and
 	// intensities
