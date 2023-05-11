@@ -58,6 +58,7 @@ public class DataModel implements Serializable {
 
 	public void setSaveFile(File saveFile) {
 		this.saveFile = saveFile;
+		load();
 	}
 
 	public String getSaveFileName() {
@@ -75,6 +76,7 @@ public class DataModel implements Serializable {
 	 */
 	public DataModel(String savePath) {
 		saveFile = new File(savePath + "/" + saveFileName);
+		load();
 	}
 
 	/**
@@ -759,7 +761,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Loads data if file exists in save path provided in constructor.
 	 */
-	public void load() {
+	private void load() {
 
 		DataModel data = null;
 

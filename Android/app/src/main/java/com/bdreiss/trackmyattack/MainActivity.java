@@ -2,6 +2,7 @@ package com.bdreiss.trackmyattack;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         //DataModel.deleteSaveFile(this)
 
         DataModel data = new DataModel(getFilesDir().getAbsolutePath());
-
-        data.load();
 
         try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir().getAbsolutePath() + "/Text.txt"));
@@ -115,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
 
                 addButton.setText("+");
                 addButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                addButton.setTag("add_key_button");
+
                 linearLayout.addView(addButton);
 
                 addButton.setOnClickListener(view -> {
