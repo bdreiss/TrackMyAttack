@@ -835,10 +835,29 @@ class DataModelTest {
 		assert (i == testStrings.length);
 	}
 
-	 //TODO comment removeAilmentKey 
+	 //tests whether ailment keys are removed properly
 	 @Test 
 	 public void removeAilmentKey() {
-		 //TODO implement removeAilmentKey
+		 String[] keysToAdd = {"Test1", "Test2", "Test3"};
+		 String[] keysToRemove = {"Test4", "Test2", "Test3", "Test1"};
+		 String[][] expectedResults = {{"Test1", "Test2", "Test3"},{"Test1", "Test3"},{"Test1"},{}};
+		 
+		 for (String s: keysToAdd)
+			 data.addAilmentKey(s, false);
+		 
+		 for (int i = 0; i <keysToRemove.length;i++) {
+			 
+			 data.removeAilmentKey(keysToRemove[i]);
+			 
+			 Iterator<String> it = data.getAilments();
+			 
+			 int j = 0;
+			 
+			 while (it.hasNext())
+				 assert(it.next().equals(expectedResults[i][j++]));
+			 
+		 }
+		 
 	 }
 	 
 	 
@@ -1339,13 +1358,12 @@ class DataModelTest {
 				assert (j == expectedResults[i].length);
 			}
 
-			// remove last entry and assert that key has been removed from map
+			// remove last entry and assert that key has empty array
 			removeInterface.remove(s, now.minusDays(1).minusHours(1));
 			try {
-				removeInterface.getData(s);
-				assert (false);
+				assert(!removeInterface.getData(s).hasNext());
 			} catch (EntryNotFoundException e) {
-				assert (true);
+				assert (false);
 			}
 		}
 	}
