@@ -8,7 +8,7 @@ import java.util.Iterator;
 //interface to pass methods to test functions
 public interface Add {
 	
-	LocalDateTime add(String s);
+	LocalDateTime add(String s) throws TypeMismatchException;
 	void addKey(String s, boolean b);
 	int getSize();
 	Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException;

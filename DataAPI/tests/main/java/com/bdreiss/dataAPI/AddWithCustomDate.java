@@ -8,9 +8,9 @@ import java.util.Iterator;
 //interface to pass methods to test functions with custom dates
 public interface AddWithCustomDate {
 	
-	void add(String s, LocalDateTime d);
+	void add(String s, LocalDateTime d) throws TypeMismatchException;
 	void addKey(String s, boolean b);
 	int getSize();
-	Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException;
+	Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException, TypeMismatchException;
 	Iterator<Datum> getAllData(String s) throws EntryNotFoundException;
 }

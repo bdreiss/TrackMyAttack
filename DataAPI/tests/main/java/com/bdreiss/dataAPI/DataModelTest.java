@@ -46,7 +46,6 @@ class DataModelTest {
 	@Test
 	void dataModel() {
 		// assert file exists
-		data.save();
 		assert (new File(SAVE_FILE_PATH + data.getSaveFileName()).exists());
 	}
 
@@ -67,7 +66,35 @@ class DataModelTest {
 	
 	//TODO test whether Iterators are returned as right instanceof
 	
-	private void add(Add addInterface) throws EntryNotFoundException {
+	//tests whether adding wrong types to keys throws TypeMismatchException
+	@Test
+	public void throwsTypeMismatchExceptionAdd() {
+		data.addCauseKey("Test", true);
+		
+		try {
+			data.addCause("Test");
+			assert(false);
+		} catch (TypeMismatchException e) {
+			assert(true);
+		}
+		
+		data.addCauseKey("Test1", false);
+		
+		try {
+			data.addCause("Test1", Intensity.HIGH);
+			assert(false);
+		} catch (TypeMismatchException e) {
+			assert(true);
+		}
+	}
+	
+	//tests whether editing aspects not present in type throws TypeMismatchException
+	@Test
+	public void throwsTypeMismatchExceptionEdit() {
+		//TODO implement throwsTypeMismatchExceptionEdit()
+	}
+	
+	private void add(Add addInterface) throws EntryNotFoundException, TypeMismatchException {
 
 		// Strings to be added
 		String[] testStrings = getTestStrings();
@@ -120,7 +147,7 @@ class DataModelTest {
 		assert(!(addInterface.getData("Test", LocalDate.now()) instanceof IteratorWithIntensity));
 	}
 
-	private void addWithCustomDate(AddWithCustomDate addInterface) throws EntryNotFoundException {
+	private void addWithCustomDate(AddWithCustomDate addInterface) throws EntryNotFoundException, TypeMismatchException {
 		// strings to be added
 		String[] testStrings = getTestStrings();
 		//
@@ -202,7 +229,7 @@ class DataModelTest {
 
 	}
 
-	private void addWithIntensity(AddWithIntensity addInterface) throws EntryNotFoundException {
+	private void addWithIntensity(AddWithIntensity addInterface) throws EntryNotFoundException, TypeMismatchException {
 		// Strings to be added
 		String[] testStrings = getTestStrings();
 
@@ -268,7 +295,7 @@ class DataModelTest {
 	// abstracts away the task of adding with custom date by providing an interface
 	// with the relevant methods
 	private void addWithIntensityAndCustomDate(AddWithIntensityAndCustomDate addInterface)
-			throws EntryNotFoundException {
+			throws EntryNotFoundException, TypeMismatchException {
 		// strings to be added
 		String[] testStrings = getTestStrings();
 		//
@@ -296,7 +323,7 @@ class DataModelTest {
 			for (int j = 0; j < testDates[i].length; j++)
 				addInterface.add(testStrings[i], Intensity.values()[j % Intensity.values().length], testDates[i][j]);
 
-			// assert size is correct
+			// assert size is correct1
 			assert (addInterface.getSize() == i + 1);
 
 			// current date for asserts
@@ -360,11 +387,11 @@ class DataModelTest {
 
 	// tests whether ailments are added correctly and can be retrieved
 	@Test
-	void addAilment() throws EntryNotFoundException {
+	void addAilment() throws EntryNotFoundException, TypeMismatchException {
 		addWithIntensity(new AddWithIntensity() {
 
 			@Override
-			public LocalDateTime add(String s, Intensity i) {
+			public LocalDateTime add(String s, Intensity i) throws TypeMismatchException {
 				return data.addAilment(s, i);
 			}
 
@@ -395,11 +422,11 @@ class DataModelTest {
 	// tests whether ailments with custom dates are added correctly and can be
 	// retrieved
 	@Test
-	void addAilmentWithCustomDate() throws EntryNotFoundException {
+	void addAilmentWithCustomDate() throws EntryNotFoundException, TypeMismatchException {
 		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
 
 			@Override
-			public void add(String s, Intensity i, LocalDateTime d) {
+			public void add(String s, Intensity i, LocalDateTime d) throws TypeMismatchException {
 				data.addAilment(s, i, d);
 			}
 
@@ -428,7 +455,7 @@ class DataModelTest {
 
 	// tests whether causes are added correctly and can be retrieved
 	@Test
-	void addCause() throws EntryNotFoundException {
+	void addCause() throws EntryNotFoundException, TypeMismatchException {
 		add(new Add() {
 
 			@Override
@@ -442,7 +469,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public LocalDateTime add(String s) {
+			public LocalDateTime add(String s) throws TypeMismatchException {
 				return data.addCause(s);
 			}
 
@@ -460,7 +487,7 @@ class DataModelTest {
 	// tests whether causes with custom dates are added correctly and can be
 	// retrieved
 	@Test
-	void addCauseWithCustomDate() throws EntryNotFoundException {
+	void addCauseWithCustomDate() throws EntryNotFoundException, TypeMismatchException {
 		addWithCustomDate(new AddWithCustomDate() {
 
 			@Override
@@ -469,12 +496,12 @@ class DataModelTest {
 			}
 
 			@Override
-			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException {
+			public Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException, TypeMismatchException {
 				return data.getCauseData(s, d);
 			}
 
 			@Override
-			public void add(String s, LocalDateTime d) {
+			public void add(String s, LocalDateTime d) throws TypeMismatchException {
 				data.addCause(s, d);
 			}
 
@@ -491,7 +518,7 @@ class DataModelTest {
 
 	// tests whether causes with intensity are added correctly and can be retrieved
 	@Test
-	void addCauseWithIntensity() throws EntryNotFoundException {
+	void addCauseWithIntensity() throws EntryNotFoundException, TypeMismatchException {
 		addWithIntensity(new AddWithIntensity() {
 
 			@Override
@@ -505,7 +532,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public LocalDateTime add(String s, Intensity i) {
+			public LocalDateTime add(String s, Intensity i) throws TypeMismatchException {
 				return data.addCause(s, i);
 			}
 
@@ -523,7 +550,7 @@ class DataModelTest {
 	// tests whether causes with custom dates and intensity are added correctly and
 	// can be retrieved
 	@Test
-	void addCauseWithIntensityAndCustomDate() throws EntryNotFoundException {
+	void addCauseWithIntensityAndCustomDate() throws EntryNotFoundException, TypeMismatchException {
 		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
 
 			@Override
@@ -537,7 +564,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public void add(String s, Intensity i, LocalDateTime d) {
+			public void add(String s, Intensity i, LocalDateTime d) throws TypeMismatchException {
 				data.addCause(s, i, d);
 			}
 
@@ -554,7 +581,7 @@ class DataModelTest {
 
 	// tests whether symptoms are added correctly and can be retrieved
 	@Test
-	void addSymptom() throws EntryNotFoundException {
+	void addSymptom() throws EntryNotFoundException, TypeMismatchException {
 		addWithIntensity(new AddWithIntensity() {
 
 			@Override
@@ -568,7 +595,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public LocalDateTime add(String s, Intensity i) {
+			public LocalDateTime add(String s, Intensity i) throws TypeMismatchException {
 				return data.addSymptom(s, i);
 			}
 
@@ -586,7 +613,7 @@ class DataModelTest {
 	// tests whether symptoms with custom dates are added correctly and can be
 	// retrieved
 	@Test
-	void addSymptomWithCustomDate() throws EntryNotFoundException {
+	void addSymptomWithCustomDate() throws EntryNotFoundException, TypeMismatchException {
 		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
 
 			@Override
@@ -600,7 +627,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public void add(String s, Intensity i, LocalDateTime d) {
+			public void add(String s, Intensity i, LocalDateTime d) throws TypeMismatchException {
 				data.addSymptom(s, i, d);
 			}
 
@@ -617,11 +644,11 @@ class DataModelTest {
 
 	// tests whether remedies are added correctly and can be retrieved
 	@Test
-	void addRemedy() throws EntryNotFoundException {
+	void addRemedy() throws EntryNotFoundException, TypeMismatchException {
 		add(new Add() {
 
 			@Override
-			public LocalDateTime add(String s) {
+			public LocalDateTime add(String s) throws TypeMismatchException {
 				return data.addRemedy(s);
 			}
 
@@ -650,7 +677,7 @@ class DataModelTest {
 	// tests whether remedies with custom date are added correctly and can be
 	// retrieved
 	@Test
-	void addRemedyWithCustomDate() throws EntryNotFoundException {
+	void addRemedyWithCustomDate() throws EntryNotFoundException, TypeMismatchException {
 		addWithCustomDate(new AddWithCustomDate() {
 
 			@Override
@@ -664,7 +691,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public void add(String s, LocalDateTime d) {
+			public void add(String s, LocalDateTime d) throws TypeMismatchException {
 				data.addRemedy(s, d);
 			}
 
@@ -682,7 +709,7 @@ class DataModelTest {
 	// tests whether remedies with intensity are added correctly and can be
 	// retrieved
 	@Test
-	void addRemedyWithIntensity() throws EntryNotFoundException {
+	void addRemedyWithIntensity() throws EntryNotFoundException, TypeMismatchException {
 		addWithIntensity(new AddWithIntensity() {
 
 			@Override
@@ -696,7 +723,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public LocalDateTime add(String s, Intensity i) {
+			public LocalDateTime add(String s, Intensity i) throws TypeMismatchException {
 				return data.addRemedy(s, i);
 			}
 
@@ -714,7 +741,7 @@ class DataModelTest {
 	// tests whether remedies with intensity and custom date are added correctly and
 	// can be retrieved
 	@Test
-	void addRemedyWithIntensityAndCustomDate() throws EntryNotFoundException {
+	void addRemedyWithIntensityAndCustomDate() throws EntryNotFoundException, TypeMismatchException {
 		addWithIntensityAndCustomDate(new AddWithIntensityAndCustomDate() {
 
 			@Override
@@ -728,7 +755,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public void add(String s, Intensity i, LocalDateTime d) {
+			public void add(String s, Intensity i, LocalDateTime d) throws TypeMismatchException {
 				data.addRemedy(s, i, d);
 			}
 
@@ -882,16 +909,13 @@ class DataModelTest {
 
 	// abstracts testing whether entries can be edited correctly, including dates and
 	// intensities
-	private void editEntry(Edit edit) throws EntryNotFoundException {
+	private void editEntry(Edit edit) throws EntryNotFoundException, TypeMismatchException {
 
 		/*
 		 * The following code tests editing dates
 		 */
 
 		String[] testStrings = { "String1", "String2" };
-
-		for (String s : testStrings)
-			edit.addKey(s);
 
 		int numberOfTestDates = 5;
 
@@ -938,6 +962,7 @@ class DataModelTest {
 		 */
 
 		// create new DataModel
+		cleanUp();
 		prepare();
 
 		String[] testStringsIntensity = { "String1", "String2" };
@@ -951,7 +976,6 @@ class DataModelTest {
 
 		// loop through intensities and add entries with them
 		for (String s : testStringsIntensity) {
-			edit.addKey(s);
 
 			for (int i = 0; i < numberOfIntensities; i++)
 				edit.add(s, Intensity.values()[i % Intensity.values().length], dates[i]);
@@ -964,8 +988,13 @@ class DataModelTest {
 			edit.editEntry(testStringsIntensity[0], itIntensity.next().getDate(), Intensity.NO_INTENSITY);
 		}
 
+		assert(itIntensity instanceof IteratorWithIntensity);
+
 		// assert all intensities have been changed for first testString
 		itIntensity = edit.getData(testStringsIntensity[0]);
+
+		assert(itIntensity.next() instanceof DatumWithIntensity);
+		
 		while (itIntensity.hasNext()) {
 			assert (((DatumWithIntensity) itIntensity.next()).getIntensity() == Intensity.NO_INTENSITY);
 		}
@@ -984,26 +1013,21 @@ class DataModelTest {
 
 	//tests whether ailment entries can be edited properly
 	@Test
-	public void editAilmentEntry() throws EntryNotFoundException {
+	public void editAilmentEntry() throws EntryNotFoundException, TypeMismatchException {
 		editEntry(new Edit() {
 
 			@Override
-			public void addKey(String key) {
-				data.addAilmentKey(key,false);
-			}
-
-			@Override
-			public void add(String s, Intensity intensity, LocalDateTime ldt) {
+			public void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException {
 				data.addAilment(s, intensity, ldt);
 			}
 
 			@Override
-			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) {
+			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) throws TypeMismatchException {
 				data.editAilmentEntry(s, ldt, ldtNew);
 			}
 
 			@Override
-			public void editEntry(String s, LocalDateTime ldt, Intensity i) {
+			public void editEntry(String s, LocalDateTime ldt, Intensity i) throws TypeMismatchException {
 				data.editAilmentEntry(s, ldt, i);
 			}
 
@@ -1026,26 +1050,22 @@ class DataModelTest {
 
 	//tests whether cause entries can be edited properly
 	@Test
-	public void editCauseEntry() throws EntryNotFoundException {
+	public void editCauseEntry() throws EntryNotFoundException, TypeMismatchException {
 		editEntry(new Edit() {
 
-			@Override
-			public void addKey(String key) {
-				data.addCauseKey(key,false);
-			}
 
 			@Override
-			public void add(String s, Intensity intensity, LocalDateTime ldt) {
+			public void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException {
 				data.addCause(s, intensity, ldt);
 			}
 
 			@Override
-			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) {
+			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) throws TypeMismatchException {
 				data.editCauseEntry(s, ldt, ldtNew);
 			}
 
 			@Override
-			public void editEntry(String s, LocalDateTime ldt, Intensity i) {
+			public void editEntry(String s, LocalDateTime ldt, Intensity i) throws TypeMismatchException {
 				data.editCauseEntry(s, ldt, i);
 			}
 
@@ -1066,26 +1086,22 @@ class DataModelTest {
 	}
 	//tests whether symptom entries can be edited properly
 	@Test
-	public void editSymptomEntry() throws EntryNotFoundException {
+	public void editSymptomEntry() throws EntryNotFoundException, TypeMismatchException {
 		editEntry(new Edit() {
 
-			@Override
-			public void addKey(String key) {
-				data.addSymptomKey(key,false);
-			}
 
 			@Override
-			public void add(String s, Intensity intensity, LocalDateTime ldt) {
+			public void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException {
 				data.addSymptom(s, intensity, ldt);
 			}
 
 			@Override
-			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) {
+			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) throws TypeMismatchException {
 				data.editSymptomEntry(s, ldt, ldtNew);
 			}
 
 			@Override
-			public void editEntry(String s, LocalDateTime ldt, Intensity i) {
+			public void editEntry(String s, LocalDateTime ldt, Intensity i) throws TypeMismatchException {
 				data.editSymptomEntry(s, ldt, i);
 			}
 
@@ -1107,26 +1123,21 @@ class DataModelTest {
 
 	//tests whether remedy entries can be edited properly
 	@Test
-	public void editRemedyEntry() throws EntryNotFoundException {
+	public void editRemedyEntry() throws EntryNotFoundException, TypeMismatchException {
 		editEntry(new Edit() {
 
 			@Override
-			public void addKey(String key) {
-				data.addRemedyKey(key,false);
-			}
-
-			@Override
-			public void add(String s, Intensity intensity, LocalDateTime ldt) {
+			public void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException {
 				data.addRemedy(s, intensity, ldt);
 			}
 
 			@Override
-			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) {
+			public void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) throws TypeMismatchException {
 				data.editRemedyEntry(s, ldt, ldtNew);
 			}
 
 			@Override
-			public void editEntry(String s, LocalDateTime ldt, Intensity i) {
+			public void editEntry(String s, LocalDateTime ldt, Intensity i) throws TypeMismatchException {
 				data.editRemedyEntry(s, ldt, i);
 			}
 
@@ -1148,7 +1159,7 @@ class DataModelTest {
 
 	// tests whether added ailments are returned in correct order
 	@Test
-	void getAilmentsList() {
+	void getAilmentsList() throws TypeMismatchException {
 
 		String[] testStrings = getTestStrings();
 
@@ -1174,7 +1185,7 @@ class DataModelTest {
 
 	// tests whether added causes are returned in correct order
 	@Test
-	void getCausesList() {
+	void getCausesList() throws TypeMismatchException {
 		String[] testStrings = getTestStrings();
 
 		String[] expectedResults = testStrings.clone();
@@ -1198,7 +1209,7 @@ class DataModelTest {
 
 	// tests whether added symptoms are returned in correct order
 	@Test
-	void getSymptomsList() {
+	void getSymptomsList() throws TypeMismatchException {
 		String[] testStrings = getTestStrings();
 
 		String[] expectedResults = testStrings.clone();
@@ -1222,7 +1233,7 @@ class DataModelTest {
 
 	// tests whether added remedies are returned in correct order
 	@Test
-	void getRemediesList() {
+	void getRemediesList() throws TypeMismatchException {
 		String[] testStrings = getTestStrings();
 
 		String[] expectedResults = testStrings.clone();
@@ -1247,7 +1258,7 @@ class DataModelTest {
 
 	// test if size of ailments is returned correctly
 	@Test
-	void getAilmentsListSize() {
+	void getAilmentsListSize() throws TypeMismatchException {
 		String[] testStrings = getTestStrings();
 
 		// add test data
@@ -1261,7 +1272,7 @@ class DataModelTest {
 
 	// test if size of causes is returned correctly
 	@Test
-	void getCausesListSize() {
+	void getCausesListSize() throws TypeMismatchException {
 		String[] testStrings = getTestStrings();
 
 		// add test data
@@ -1275,7 +1286,7 @@ class DataModelTest {
 
 	// test if size of symptoms is returned correctly
 	@Test
-	void getSymptomsListSize() {
+	void getSymptomsListSize() throws TypeMismatchException {
 		String[] testStrings = getTestStrings();
 
 		// add test data
@@ -1289,7 +1300,7 @@ class DataModelTest {
 
 	// test if size of remedies is returned correctly
 	@Test
-	void getRemediesListSize() {
+	void getRemediesListSize() throws TypeMismatchException {
 		String[] testStrings = getTestStrings();
 
 		// add test data
@@ -1301,7 +1312,7 @@ class DataModelTest {
 
 	}
 
-	void removeEntry(String[] tests, Remove removeInterface) throws EntryNotFoundException {
+	void removeEntry(String[] tests, Remove removeInterface) throws EntryNotFoundException, TypeMismatchException {
 
 		LocalDateTime now = LocalDateTime.now();
 
@@ -1369,7 +1380,7 @@ class DataModelTest {
 	}
 
 	@Test
-	public void removeAilment() throws EntryNotFoundException {
+	public void removeAilment() throws EntryNotFoundException, TypeMismatchException {
 		String[] testStrings = getTestStrings();
 		removeEntry(testStrings, new Remove() {
 
@@ -1379,7 +1390,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public void add(String s, LocalDateTime d) {
+			public void add(String s, LocalDateTime d) throws TypeMismatchException {
 				data.addAilment(s, Intensity.NO_INTENSITY, d);
 			}
 
@@ -1392,7 +1403,7 @@ class DataModelTest {
 	}
 
 	@Test
-	public void removeCause() throws EntryNotFoundException {
+	public void removeCause() throws EntryNotFoundException, TypeMismatchException {
 		String[] testStrings = getTestStrings();
 		removeEntry(testStrings, new Remove() {
 
@@ -1407,14 +1418,14 @@ class DataModelTest {
 			}
 
 			@Override
-			public void add(String s, LocalDateTime d) {
+			public void add(String s, LocalDateTime d) throws TypeMismatchException {
 				data.addCause(s, d);
 			}
 		});
 	}
 
 	@Test
-	public void removeSymptom() throws EntryNotFoundException {
+	public void removeSymptom() throws EntryNotFoundException, TypeMismatchException {
 		String[] testStrings = getTestStrings();
 		removeEntry(testStrings, new Remove() {
 
@@ -1429,14 +1440,14 @@ class DataModelTest {
 			}
 
 			@Override
-			public void add(String s, LocalDateTime d) {
+			public void add(String s, LocalDateTime d) throws TypeMismatchException {
 				data.addSymptom(s, Intensity.NO_INTENSITY, d);
 			}
 		});
 	}
 
 	@Test
-	public void removeRemedy() throws EntryNotFoundException {
+	public void removeRemedy() throws EntryNotFoundException, TypeMismatchException {
 		String[] testStrings = getTestStrings();
 		removeEntry(testStrings, new Remove() {
 
@@ -1451,7 +1462,7 @@ class DataModelTest {
 			}
 
 			@Override
-			public void add(String s, LocalDateTime d) {
+			public void add(String s, LocalDateTime d) throws TypeMismatchException {
 				data.addRemedy(s, d);
 			}
 		});

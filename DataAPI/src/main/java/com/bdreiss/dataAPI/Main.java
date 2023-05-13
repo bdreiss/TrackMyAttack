@@ -9,16 +9,15 @@ public class Main {
 
 	final static String PATH = "files/";
 
-	public static void main(String[] args) throws FileNotFoundException, InterruptedException, EntryNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, InterruptedException, EntryNotFoundException, TypeMismatchException {
 
 		DataModel data = new DataModel(PATH);
 
 		processTextFile(data, PATH + "Text.txt");
-		data.save();
 		data.print();
 	}
 
-	private static void processTextFile(DataModel data, String file) throws FileNotFoundException {
+	private static void processTextFile(DataModel data, String file) throws FileNotFoundException, TypeMismatchException {
 		Scanner scanner = new Scanner(new File(file));
 
 		boolean check = true;

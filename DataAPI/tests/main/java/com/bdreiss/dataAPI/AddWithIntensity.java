@@ -8,7 +8,7 @@ import java.util.Iterator;
 //interface to pass methods to test functions for entries with Intensity
 public interface AddWithIntensity {
 	
-	LocalDateTime add(String s, Intensity i);
+	LocalDateTime add(String s, Intensity i) throws TypeMismatchException;
 	void addKey(String s, boolean b);
 	int getSize();
 	Iterator<Datum> getData(String s, LocalDate d) throws EntryNotFoundException;

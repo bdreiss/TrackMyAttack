@@ -5,13 +5,11 @@ import java.util.Iterator;
 
 public interface Edit {
 
-	void addKey(String key);
+	void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException;
 
-	void add(String s, Intensity intensity, LocalDateTime ldt);
+	void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew) throws TypeMismatchException;
 
-	void editEntry(String s, LocalDateTime ldt, LocalDateTime ldtNew);
-
-	void editEntry(String s, LocalDateTime ldt, Intensity i);
+	void editEntry(String s, LocalDateTime ldt, Intensity i) throws TypeMismatchException;
 
 	Iterator<Datum> getData(String s);
 

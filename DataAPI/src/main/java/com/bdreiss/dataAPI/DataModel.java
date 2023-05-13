@@ -58,7 +58,7 @@ public class DataModel implements Serializable {
 
 	public void setSaveFile(File saveFile) {
 		this.saveFile = saveFile;
-		load();
+		save();
 	}
 
 	public String getSaveFileName() {
@@ -67,6 +67,7 @@ public class DataModel implements Serializable {
 
 	public void setSaveFileName(String saveFileName) {
 		this.saveFileName = saveFileName;
+		save();
 	}
 
 	/**
@@ -77,6 +78,7 @@ public class DataModel implements Serializable {
 	public DataModel(String savePath) {
 		saveFile = new File(savePath + "/" + saveFileName);
 		load();
+		save();//creates file in case it doesn't exist
 	}
 
 	/**
@@ -126,6 +128,7 @@ public class DataModel implements Serializable {
 				map.put(key, new ArrayList<Datum>());
 
 		}
+		save();
 	}
 
 	/**
@@ -134,8 +137,9 @@ public class DataModel implements Serializable {
 	 * @param ailment   String ailment to be added
 	 * @param intensity Intensity of ailment
 	 * @return LocalDateTime when ailment was added
+	 * @throws TypeMismatchException 
 	 */
-	public LocalDateTime addAilment(String ailment, Intensity intensity) {
+	public LocalDateTime addAilment(String ailment, Intensity intensity) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
 		addEntry(ailments, ailment, intensity, date);
 		return date;
@@ -147,8 +151,9 @@ public class DataModel implements Serializable {
 	 * @param ailment   String ailment to be added
 	 * @param intensity Intensity of ailment
 	 * @param date      LocalDateTime when ailment occurred
+	 * @throws TypeMismatchException 
 	 */
-	public void addAilment(String ailment, Intensity intensity, LocalDateTime date) {
+	public void addAilment(String ailment, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
 		addEntry(ailments, ailment, intensity, date);
 	}
 
@@ -157,8 +162,9 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause String description of the cause
 	 * @return LocalDateTime when cause was added
+	 * @throws TypeMismatchException 
 	 */
-	public LocalDateTime addCause(String cause) {
+	public LocalDateTime addCause(String cause) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
 		addEntry(causes, cause, null, date);
 		return date;
@@ -169,8 +175,9 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause String description of the cause
 	 * @param date  LocalDateTime when the attack occurred
+	 * @throws TypeMismatchException 
 	 */
-	public void addCause(String cause, LocalDateTime date) {
+	public void addCause(String cause, LocalDateTime date) throws TypeMismatchException {
 		addEntry(causes, cause, null, date);
 	}
 
@@ -180,8 +187,9 @@ public class DataModel implements Serializable {
 	 * @param cause     String description of the cause
 	 * @param intensity Intensity of the cause
 	 * @return LocalDateTime when cause was added
+	 * @throws TypeMismatchException 
 	 */
-	public LocalDateTime addCause(String cause, Intensity intensity) {
+	public LocalDateTime addCause(String cause, Intensity intensity) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
 		addEntry(causes, cause, intensity, date);
 		return date;
@@ -193,8 +201,9 @@ public class DataModel implements Serializable {
 	 * @param cause     String description of the cause
 	 * @param intensity Intensity of the cause
 	 * @param date      LocalDateTime when the cause occurred
+	 * @throws TypeMismatchException 
 	 */
-	public void addCause(String cause, Intensity intensity, LocalDateTime date) {
+	public void addCause(String cause, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
 		addEntry(causes, cause, intensity, date);
 	}
 
@@ -204,8 +213,9 @@ public class DataModel implements Serializable {
 	 * @param symptom   String description of the symptom
 	 * @param intensity Intensity of the symptom
 	 * @return LocalDateTime when symptom was added
+	 * @throws TypeMismatchException 
 	 */
-	public LocalDateTime addSymptom(String symptom, Intensity intensity) {
+	public LocalDateTime addSymptom(String symptom, Intensity intensity) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
 		addEntry(symptoms, symptom, intensity, date);
 		return date;
@@ -217,8 +227,9 @@ public class DataModel implements Serializable {
 	 * @param symptom   String description of the symptom
 	 * @param intensity Intensity of the symptom
 	 * @param date      LocalDateTime when the symptom occurred
+	 * @throws TypeMismatchException 
 	 */
-	public void addSymptom(String symptom, Intensity intensity, LocalDateTime date) {
+	public void addSymptom(String symptom, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
 		addEntry(symptoms, symptom, intensity, date);
 	}
 
@@ -227,9 +238,10 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy String description of the remedy
 	 * @return LocalDateTime when remedy was added
+	 * @throws TypeMismatchException 
 	 */
 
-	public LocalDateTime addRemedy(String remedy) {
+	public LocalDateTime addRemedy(String remedy) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
 		addEntry(remedies, remedy, null, date);
 		return date;
@@ -240,8 +252,9 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy String description of the remedy
 	 * @param date   LocalDateTime when remedy was applied
+	 * @throws TypeMismatchException 
 	 */
-	public void addRemedy(String remedy, LocalDateTime date) {
+	public void addRemedy(String remedy, LocalDateTime date) throws TypeMismatchException {
 		addEntry(remedies, remedy, null, date);
 	}
 
@@ -251,9 +264,10 @@ public class DataModel implements Serializable {
 	 * @param remedy    String description of the remedy
 	 * @param intensity Intensity with which remedy was applied
 	 * @return LocalDateTime when remedy was added
+	 * @throws TypeMismatchException 
 	 */
 
-	public LocalDateTime addRemedy(String remedy, Intensity intensity) {
+	public LocalDateTime addRemedy(String remedy, Intensity intensity) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
 		addEntry(remedies, remedy, intensity, date);
 		return date;
@@ -265,10 +279,48 @@ public class DataModel implements Serializable {
 	 * @param remedy    String description of the remedy
 	 * @param intensity Intensity with which remedy was applied
 	 * @param date      LocalDateTime when remedy was applied
+	 * @throws TypeMismatchException 
 	 */
 
-	public void addRemedy(String remedy, Intensity intensity, LocalDateTime date) {
+	public void addRemedy(String remedy, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
 		addEntry(remedies, remedy, intensity, date);
+	}
+
+	// abstracts the task of adding entries to the different ArrayLists
+	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
+
+		// create entry with key if it doesn't exist
+		if (!map.containsKey(key))
+			addKey(map, key, intensity != null);
+
+		List<Datum> list = map.get(key);
+
+		if (intensity != null && !(map.get(key) instanceof ListWithIntensity))
+			throw new TypeMismatchException();
+
+		if (intensity == null && (map.get(key) instanceof ListWithIntensity))
+			throw new TypeMismatchException();
+
+		
+		// add new Datum to end of list
+		if (intensity != null)
+			list.add(new DatumWithIntensity(date, intensity));
+		else
+			list.add(new Datum(date));
+
+		// as long as the date is smaller than the date before, swap it with the
+		// previous item
+		// stop when dates are smaller than date to be added or when beginning of list
+		// is reached
+		// this means that the lists are always ordered
+		int i = list.size() - 1;
+		while (i > 0 && list.get(i).getDate().compareTo(list.get(i - 1).getDate()) < 0) {
+			Datum temp = list.get(i);
+			list.set(i, list.get(i - 1));
+			list.set(i - 1, temp);
+			i--;
+		}
+		save();
 	}
 
 	/**
@@ -316,6 +368,7 @@ public class DataModel implements Serializable {
 
 		map.remove(key);
 		
+		save();
 	}
 	
 	/**
@@ -374,6 +427,7 @@ public class DataModel implements Serializable {
 				break;
 			}
 		}
+		save();
 
 	}
 
@@ -383,8 +437,9 @@ public class DataModel implements Serializable {
 	 * @param ailment Ailment String for which entry shall be changed
 	 * @param date    LocalDateTime of entry
 	 * @param newDate New LocalDateTime entry should be changed to
+	 * @throws TypeMismatchException 
 	 */
-	public void editAilmentEntry(String ailment, LocalDateTime date, LocalDateTime newDate) {
+	public void editAilmentEntry(String ailment, LocalDateTime date, LocalDateTime newDate) throws TypeMismatchException {
 		editEntry(ailments, ailment, date, null, newDate);
 	}
 
@@ -394,8 +449,9 @@ public class DataModel implements Serializable {
 	 * @param ailment   Ailment String for which entry shall be changed
 	 * @param date      LocalDateTime of entry
 	 * @param intensity New Intensity entry should be changed to
+	 * @throws TypeMismatchException 
 	 */
-	public void editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity) {
+	public void editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
 		editEntry(ailments, ailment, date, intensity, null);
 
 	}
@@ -406,8 +462,9 @@ public class DataModel implements Serializable {
 	 * @param cause   Cause String for which entry shall be changed
 	 * @param date    LocalDateTime of entry
 	 * @param newDate New LocalDateTime entry should be changed to
+	 * @throws TypeMismatchException 
 	 */
-	public void editCauseEntry(String cause, LocalDateTime date, LocalDateTime newDate) {
+	public void editCauseEntry(String cause, LocalDateTime date, LocalDateTime newDate) throws TypeMismatchException {
 		editEntry(causes, cause, date, null, newDate);
 	}
 
@@ -417,8 +474,9 @@ public class DataModel implements Serializable {
 	 * @param cause     Cause String for which entry shall be changed
 	 * @param date      LocalDateTime of entry
 	 * @param intensity New Intensity entry should be changed to
+	 * @throws TypeMismatchException 
 	 */
-	public void editCauseEntry(String cause, LocalDateTime date, Intensity intensity) {
+	public void editCauseEntry(String cause, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
 		editEntry(causes, cause, date, intensity, null);
 	}
 
@@ -428,8 +486,9 @@ public class DataModel implements Serializable {
 	 * @param symptom Symptom String for which entry shall be changed
 	 * @param date    LocalDateTime of entry
 	 * @param newDate New LocalDateTime entry should be changed to
+	 * @throws TypeMismatchException 
 	 */
-	public void editSymptomEntry(String symptom, LocalDateTime date, LocalDateTime newDate) {
+	public void editSymptomEntry(String symptom, LocalDateTime date, LocalDateTime newDate) throws TypeMismatchException {
 		editEntry(symptoms, symptom, date, null, newDate);
 	}
 
@@ -439,8 +498,9 @@ public class DataModel implements Serializable {
 	 * @param symptom   Symptom String for which entry shall be changed
 	 * @param date      LocalDateTime of entry
 	 * @param intensity New Intensity entry should be changed to
+	 * @throws TypeMismatchException 
 	 */
-	public void editSymptomEntry(String symptom, LocalDateTime date, Intensity intensity) {
+	public void editSymptomEntry(String symptom, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
 		editEntry(symptoms, symptom, date, intensity, null);
 	}
 
@@ -450,8 +510,9 @@ public class DataModel implements Serializable {
 	 * @param remedy  Remedy String for which entry shall be changed
 	 * @param date    LocalDateTime of entry
 	 * @param newDate New LocalDateTime entry should be changed to
+	 * @throws TypeMismatchException 
 	 */
-	public void editRemedyEntry(String remedy, LocalDateTime date, LocalDateTime newDate) {
+	public void editRemedyEntry(String remedy, LocalDateTime date, LocalDateTime newDate) throws TypeMismatchException {
 		editEntry(remedies, remedy, date, null, newDate);
 	}
 
@@ -461,13 +522,14 @@ public class DataModel implements Serializable {
 	 * @param remedy    Remedy String for which entry shall be changed
 	 * @param date      LocalDateTime of entry
 	 * @param intensity New Intensity entry should be changed to
+	 * @throws TypeMismatchException 
 	 */
-	public void editRemedyEntry(String remedy, LocalDateTime date, Intensity intensity) {
+	public void editRemedyEntry(String remedy, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
 		editEntry(remedies, remedy, date, intensity, null);
 	}
 
 	private void editEntry(Map<String, List<Datum>> map, String key, LocalDateTime date, Intensity intensity,
-			LocalDateTime newDate) {
+			LocalDateTime newDate) throws TypeMismatchException {
 
 		if (date == null)
 			return;
@@ -478,9 +540,17 @@ public class DataModel implements Serializable {
 
 		for (Datum d : map.get(key)) {
 			if (d.getDate().equals(date) && d.getDate().getNano() == date.getNano()) {
-				if (intensity != null)
+				if (intensity != null) {
+					if (!(d instanceof DatumWithIntensity))
+						throw new TypeMismatchException();
+					
 					((DatumWithIntensity) d).setIntensity(intensity);
-
+				
+				}else {
+					if (d instanceof DatumWithIntensity)
+						intensity = ((DatumWithIntensity) d).getIntensity();
+				}
+				
 				// if new date is assigned remove entry and insert new one so list stays sorted
 				// via insertion sort
 				if (newDate != null) {
@@ -492,37 +562,10 @@ public class DataModel implements Serializable {
 			}
 
 		}
+		save();
 
 	}
 
-	// abstracts the task of adding entries to the different ArrayLists
-	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) {
-
-		// create entry with key if it doesn't exist
-		if (!map.containsKey(key))
-			addKey(map, key, intensity != null);
-
-		List<Datum> list = map.get(key);
-
-		// add new Datum to end of list
-		if (intensity != null)
-			list.add(new DatumWithIntensity(date, intensity));
-		else
-			list.add(new Datum(date));
-
-		// as long as the date is smaller than the date before, swap it with the
-		// previous item
-		// stop when dates are smaller than date to be added or when beginning of list
-		// is reached
-		// this means that the lists are always ordered
-		int i = list.size() - 1;
-		while (i > 0 && list.get(i).getDate().compareTo(list.get(i - 1).getDate()) < 0) {
-			Datum temp = list.get(i);
-			list.set(i, list.get(i - 1));
-			list.set(i - 1, temp);
-			i--;
-		}
-	}
 
 	/**
 	 * Returns ailments as list iterator.
@@ -734,7 +777,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Saves data in save path provided in constructor.
 	 */
-	public void save() {
+	private void save() {
 
 		if (!saveFile.exists()) {
 			try {
