@@ -64,7 +64,43 @@ class DataModelTest {
 
 
 	
-	//TODO test whether Iterators are returned as right instanceof
+	//tests whether Iterators are returned as right instanceof
+	@Test
+	public void rightInstanceOf() throws TypeMismatchException, EntryNotFoundException{
+		data.addAilment("Test1",Intensity.HIGH);
+		assert(data.getAilmentData("Test1") instanceof IteratorWithIntensity);
+		data.addAilmentKey("Test3");
+		assert(data.getAilmentData("Test3") instanceof IteratorWithIntensity);
+		assert(data.getAilmentData("Test3",LocalDate.now()) instanceof IteratorWithIntensity);
+		
+		data.addCause("Test");
+		assert(data.getCauseData("Test") instanceof Iterator);
+		data.addCause("Test1",Intensity.HIGH);
+		assert(data.getCauseData("Test1") instanceof IteratorWithIntensity);
+		data.addCauseKey("Test2", false);
+		assert(data.getCauseData("Test2") instanceof Iterator);
+		data.addCauseKey("Test3", true);
+		assert(data.getCauseData("Test3") instanceof IteratorWithIntensity);
+		assert(data.getCauseData("Test3",LocalDate.now()) instanceof IteratorWithIntensity);
+
+		data.addSymptom("Test1",Intensity.HIGH);
+		assert(data.getSymptomData("Test1") instanceof IteratorWithIntensity);
+		data.addSymptomKey("Test3");
+		assert(data.getSymptomData("Test3") instanceof IteratorWithIntensity);
+		assert(data.getSymptomData("Test3",LocalDate.now()) instanceof IteratorWithIntensity);
+		
+		data.addRemedy("Test");
+		assert(data.getRemedyData("Test") instanceof Iterator);
+		data.addRemedy("Test1",Intensity.HIGH);
+		assert(data.getRemedyData("Test1") instanceof IteratorWithIntensity);
+		data.addRemedyKey("Test2", false);
+		assert(data.getRemedyData("Test2") instanceof Iterator);
+		data.addRemedyKey("Test3", true);
+		assert(data.getRemedyData("Test3") instanceof IteratorWithIntensity);
+		assert(data.getRemedyData("Test3",LocalDate.now()) instanceof IteratorWithIntensity);
+
+
+	}
 	
 	//tests whether adding wrong types to keys throws TypeMismatchException
 	@Test
@@ -88,7 +124,7 @@ class DataModelTest {
 		}
 	}
 	
-	//tests whether editing aspects not present in type throws TypeMismatchException
+	//tests whether editing aspects not represented by type throws TypeMismatchException
 	@Test
 	public void throwsTypeMismatchExceptionEdit() {
 		//TODO implement throwsTypeMismatchExceptionEdit()
@@ -274,21 +310,6 @@ class DataModelTest {
 			assert (k == datesAdded.size());
 		}
 		
-		//test whether Iterators are returned as the right type
-		addInterface.add("Test", null);
-		addInterface.add("Test1", Intensity.HIGH);
-		addInterface.addKey("Test2", true);
-		addInterface.addKey("Test3", false);
-		
-		assert(!(addInterface.getAllData("Test") instanceof IteratorWithIntensity));
-		assert(!(addInterface.getData("Test", LocalDate.now()) instanceof IteratorWithIntensity));
-		assert(addInterface.getAllData("Test1") instanceof IteratorWithIntensity);
-		assert(addInterface.getData("Test1", LocalDate.now()) instanceof IteratorWithIntensity);
-		assert(addInterface.getAllData("Test2") instanceof IteratorWithIntensity);
-		assert(addInterface.getData("Test2", LocalDate.now()) instanceof IteratorWithIntensity);
-		assert(!(addInterface.getAllData("Test3") instanceof IteratorWithIntensity));
-		assert(!(addInterface.getData("Test3", LocalDate.now()) instanceof IteratorWithIntensity));
-
 
 	}
 
@@ -367,20 +388,6 @@ class DataModelTest {
 			assert (k == expectedResults[i].length);
 
 		}
-		//test whether Iterators are returned as the right type
-		addInterface.add("Test", null, LocalDateTime.now());
-		addInterface.add("Test1", Intensity.HIGH,LocalDateTime.now());
-		addInterface.addKey("Test2", true);
-		addInterface.addKey("Test3", false);
-		
-		assert(!(addInterface.getAllData("Test") instanceof IteratorWithIntensity));
-		assert(!(addInterface.getData("Test", LocalDate.now()) instanceof IteratorWithIntensity));
-		assert(addInterface.getAllData("Test1") instanceof IteratorWithIntensity);
-		assert(addInterface.getData("Test1", LocalDate.now()) instanceof IteratorWithIntensity);
-		assert(addInterface.getAllData("Test2") instanceof IteratorWithIntensity);
-		assert(addInterface.getData("Test2", LocalDate.now()) instanceof IteratorWithIntensity);
-		assert(!(addInterface.getAllData("Test3") instanceof IteratorWithIntensity));
-		assert(!(addInterface.getData("Test3", LocalDate.now()) instanceof IteratorWithIntensity));
 
 
 	}
@@ -412,7 +419,7 @@ class DataModelTest {
 
 			@Override
 			public void addKey(String s, boolean b) {
-				data.addAilmentKey(s, b);
+				data.addAilmentKey(s);
 				
 			}
 
@@ -447,7 +454,7 @@ class DataModelTest {
 
 			@Override
 			public void addKey(String s, boolean b) {
-				data.addAilmentKey(s, b);
+				data.addAilmentKey(s);
 			}
 		});
 
@@ -605,7 +612,7 @@ class DataModelTest {
 			}
 			@Override
 			public void addKey(String s, boolean b) {
-				data.addSymptomKey(s, b);
+				data.addSymptomKey(s);
 			}
 		});
 	}
@@ -637,7 +644,7 @@ class DataModelTest {
 			}
 			@Override
 			public void addKey(String s, boolean b) {
-				data.addSymptomKey(s, b);
+				data.addSymptomKey(s);
 			}
 		});
 	}
@@ -776,7 +783,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		for (String s : testStrings)
-			data.addAilmentKey(s,false);
+			data.addAilmentKey(s);
 
 		Iterator<String> it = data.getAilments();
 
@@ -822,7 +829,7 @@ class DataModelTest {
 		String[] testStrings = getTestStrings();
 
 		for (String s : testStrings)
-			data.addSymptomKey(s,false);
+			data.addSymptomKey(s);
 
 		Iterator<String> it = data.getSymptoms();
 
@@ -870,7 +877,7 @@ class DataModelTest {
 		 String[][] expectedResults = {{"Test1", "Test2", "Test3"},{"Test1", "Test3"},{"Test1"},{}};
 		 
 		 for (String s: keysToAdd)
-			 data.addAilmentKey(s, false);
+			 data.addAilmentKey(s);
 		 
 		 for (int i = 0; i <keysToRemove.length;i++) {
 			 

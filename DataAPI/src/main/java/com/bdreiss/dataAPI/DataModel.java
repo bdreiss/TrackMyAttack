@@ -86,8 +86,8 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param ailment Ailment to be added as key
 	 */
-	public void addAilmentKey(String ailment, boolean intensity) {
-		addKey(ailments, ailment, intensity);
+	public void addAilmentKey(String ailment) {
+		addKey(ailments, ailment, true);
 	}
 
 	/**
@@ -104,8 +104,8 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param symptom Symptom to be added as key
 	 */
-	public void addSymptomKey(String symptom, boolean intensity) {
-		addKey(symptoms, symptom, intensity);
+	public void addSymptomKey(String symptom) {
+		addKey(symptoms, symptom, true);
 	}
 
 	/**
