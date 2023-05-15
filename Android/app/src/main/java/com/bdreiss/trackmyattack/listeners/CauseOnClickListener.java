@@ -7,6 +7,7 @@ import main.java.com.bdreiss.dataAPI.DataModel;
 import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.IteratorWithIntensity;
+import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
 public class CauseOnClickListener extends CustomListener {
 
@@ -22,16 +23,19 @@ public class CauseOnClickListener extends CustomListener {
         try {
             if (data.getCauseData(text) instanceof IteratorWithIntensity){
                 chooseIntensity(context, (dialogInterface, i) -> {
-                    data.addCause(text, Intensity.values()[i+1]);
-                    data.save();
+                    try {
+                        data.addCause(text, Intensity.values()[i+1]);
+                    } catch (TypeMismatchException e) {
+                        e.printStackTrace();
+                    }
+
                 });
             }
             else{
                 data.addCause(text);
-                data.save();
 
             }
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | TypeMismatchException e) {
             e.printStackTrace();
         }
 

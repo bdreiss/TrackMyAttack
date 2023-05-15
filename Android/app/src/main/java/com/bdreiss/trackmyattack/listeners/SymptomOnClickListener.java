@@ -7,6 +7,7 @@ import main.java.com.bdreiss.dataAPI.DataModel;
 import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.IteratorWithIntensity;
+import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
 public class SymptomOnClickListener extends CustomListener{
 
@@ -21,8 +22,11 @@ public class SymptomOnClickListener extends CustomListener{
             if (data.getSymptomData(text) instanceof IteratorWithIntensity){
                 chooseIntensity(context, (dialogInterface, i) ->{
 
-                 data.addSymptom(text, Intensity.values()[i+1]);
-                 data.save();
+                    try {
+                        data.addSymptom(text, Intensity.values()[i+1]);
+                    } catch (TypeMismatchException e) {
+                        e.printStackTrace();
+                    }
 
                 });
             }

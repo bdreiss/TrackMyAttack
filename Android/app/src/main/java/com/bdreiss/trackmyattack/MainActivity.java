@@ -2,7 +2,6 @@ package com.bdreiss.trackmyattack;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -22,6 +21,7 @@ import java.util.Iterator;
 
 import main.java.com.bdreiss.dataAPI.DataModel;
 import main.java.com.bdreiss.dataAPI.Intensity;
+import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
 public class MainActivity extends AppCompatActivity {
         @Override
@@ -68,8 +68,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                 }
 
-                data.addAilment("Migraine", intensity);
-                data.save();
+                try {
+                        data.addAilment("Migraine", intensity);
+                } catch (TypeMismatchException e) {
+                        e.printStackTrace();
+                }
 
                 textView.setText(data.print());
                 migraineEditTextText.setText("");
@@ -124,21 +127,20 @@ public class MainActivity extends AppCompatActivity {
                         addItemDialog.setAddItemDialogListener((data, category1, item, intensity) -> {
                                 switch(category1){
                                         case AILMENT:
-                                                data.addAilmentKey(item, intensity);
+                                                data.addAilmentKey(item);
                                                 break;
                                         case CAUSE:
                                                 data.addCauseKey(item, intensity);
                                                 setLayout(Category.CAUSE, R.layout.causes,R.id.linear_layout_causes, data.getCauses(), new CauseOnClickListener(view.getContext(),data));
                                                 break;
                                         case SYMPTOM:
-                                                data.addSymptomKey(item, intensity);
+                                                data.addSymptomKey(item);
                                                 setLayout(Category.SYMPTOM, R.layout.symptoms,R.id.linear_layout_symptoms, data.getSymptoms(), new SymptomOnClickListener(view.getContext(),data));
                                                 break;
                                         case REMEDY:
                                                 data.addRemedyKey(item, intensity);
                                                 setLayout(Category.REMEDY, R.layout.remedies,R.id.linear_layout_remedies, data.getRemedies(), new RemedyOnClickListener(view.getContext(),data));
                                 }
-                                data.save();
                         });
                         addItemDialog.show(getSupportFragmentManager(), "AddItemDialog");
 
