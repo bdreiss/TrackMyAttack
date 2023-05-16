@@ -74,8 +74,90 @@ public class UITests {
         }
         assert(!contains);
 
-        data.save();
+
+    }
+
+    @Test
+    public void addSymptomKey(){
+
+        String testString = "ßßß123124dadofajdf";
+        onView(withId(R.id.button_symptoms_view)).perform(click());
+
+
+        //because button was created dynamically
+        onView(withTagValue(is((Object) "add_key_button"))).perform(click());
+        onView(withId(R.id.item_to_be_added)).perform(typeText(testString));
+        onView(withId(R.id.add_item_button)).perform(click());
+
+        DataModel data = new DataModel(InstrumentationRegistry.getInstrumentation().getTargetContext().getFilesDir().getAbsolutePath());
+
+        Iterator<String> it = data.getSymptoms();
+        boolean contains = false;
+
+        while (it.hasNext()) {
+            contains = it.next().equals(testString);
+            if (contains)
+                break;
+        }
+        assert(contains);
+
+        //clean up
+        data.removeSymptomKey(testString);
+
+        it = data.getSymptoms();
+
+        contains = false;
+
+        while (it.hasNext()) {
+            contains = it.next().equals(testString);
+            if (contains)
+                break;
+        }
+        assert(!contains);
 
 
     }
+
+    @Test
+    public void addRemedyKey(){
+
+        String testString = "ßßß123124dadofajdf";
+        onView(withId(R.id.button_remedies_view)).perform(click());
+
+
+        //because button was created dynamically
+        onView(withTagValue(is((Object) "add_key_button"))).perform(click());
+        onView(withId(R.id.item_to_be_added)).perform(typeText(testString));
+        onView(withId(R.id.add_item_button)).perform(click());
+
+        DataModel data = new DataModel(InstrumentationRegistry.getInstrumentation().getTargetContext().getFilesDir().getAbsolutePath());
+
+        Iterator<String> it = data.getRemedies();
+        boolean contains = false;
+
+        while (it.hasNext()) {
+            contains = it.next().equals(testString);
+            if (contains)
+                break;
+        }
+        assert(contains);
+
+        //clean up
+        data.removeRemedyKey(testString);
+
+        it = data.getRemedies();
+
+        contains = false;
+
+        while (it.hasNext()) {
+            contains = it.next().equals(testString);
+            if (contains)
+                break;
+        }
+        assert(!contains);
+
+
+    }
+
+
 }
