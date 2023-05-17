@@ -42,9 +42,9 @@ public class AddItemDialog extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EditText itemToBeAdded = view.findViewById(R.id.item_to_be_added);
+        EditText itemToBeAdded = view.findViewById(R.id.key_to_be_added);
         ToggleButton chooseIntensityButton = view.findViewById(R.id.choose_intensity_button);
-        Button addItemButton = view.findViewById(R.id.add_item_button);
+        Button addItemButton = view.findViewById(R.id.add_key_button);
 
         if (category == Category.SYMPTOM) {
             chooseIntensityButton.setChecked(true);
