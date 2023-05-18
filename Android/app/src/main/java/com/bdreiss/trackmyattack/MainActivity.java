@@ -80,84 +80,49 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        LayoutListener causeLayoutListener = new LayoutListener(this, Category.CAUSE, R.layout.causes, R.id.linear_layout_causes, new CauseOnClickListener(this, data), getSupportFragmentManager(), new LayoutListenerInterface() {
+                @Override
+                public Iterator<String> getData() {
+                        return data.getCauses();
+                }
+
+                @Override
+                public void returnToActivity() {
+                        activityMain();
+                }
+        });
+
         Button causesViewButton = findViewById(R.id.button_causes_view);
-        causesViewButton.setOnClickListener(view -> setLayout(Category.CAUSE, R.layout.causes,R.id.linear_layout_causes, data.getCauses(), new CauseOnClickListener(view.getContext(),data))); {
-        }
+        causesViewButton.setOnClickListener(causeLayoutListener);
 
+        LayoutListener symptomLayoutListener = new LayoutListener(this,Category.SYMPTOM,R.layout.symptoms,R.id.linear_layout_symptoms,new SymptomOnClickListener(this,data),getSupportFragmentManager(),new LayoutListenerInterface(){
+                @Override
+                public Iterator<String> getData() {
+                        return data.getSymptoms();
+                }
+
+                @Override
+                public void returnToActivity() {
+                        activityMain();
+                }
+
+        });
         Button symptomsViewButton = findViewById(R.id.button_symptoms_view);
-                symptomsViewButton.setOnClickListener(view -> setLayout(Category.SYMPTOM, R.layout.symptoms,R.id.linear_layout_symptoms,data.getSymptoms(), new SymptomOnClickListener(view.getContext(),data)));
+                symptomsViewButton.setOnClickListener(symptomLayoutListener);
+        LayoutListener remedyLayoutListener = new LayoutListener(this, Category.REMEDY, R.layout.remedies, R.id.linear_layout_remedies, new RemedyOnClickListener(this, data), getSupportFragmentManager(), new LayoutListenerInterface() {
+                @Override
+                public Iterator<String> getData() {
+                        return data.getRemedies();
+                }
 
+                @Override
+                public void returnToActivity() {
+                        activityMain();
+                }
+        });
 
         Button remedyViewButton = findViewById(R.id.button_remedies_view);
-        remedyViewButton.setOnClickListener(view -> setLayout(Category.REMEDY, R.layout.remedies, R.id.linear_layout_remedies, data.getRemedies(), new RemedyOnClickListener(view.getContext(),data)));
-
+        remedyViewButton.setOnClickListener(remedyLayoutListener);
         }
 
-        private void setLayout(Category category, int layoutID, int linearLayoutID, Iterator<String> iterator, CustomListener listener){
-                setContentView(layoutID);
-
-                LinearLayout linearLayout = findViewById(linearLayoutID);
-                while (iterator.hasNext()){
-                        String item = iterator.next();
-
-                        Button itemButton = new Button(this);
-
-                        CustomListener listenerCopy = listener.copy();
-                        itemButton.setText(item);
-
-                        itemButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-                        linearLayout.addView(itemButton);
-
-                        listenerCopy.setTextValue(item);
-                         itemButton.setOnClickListener(listenerCopy);
-
-                }
-                Button addButton = new Button(this);
-
-                addButton.setText("+");
-                addButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-                addButton.setTag("add_key_button");
-
-                linearLayout.addView(addButton);
-
-                addButton.setOnClickListener(view -> {
-                        AddItemDialog addItemDialog = new AddItemDialog(listener.getData(), category);
-                        addItemDialog.setAddItemDialogListener((data, category1, item, intensity) -> {
-                                switch(category1){
-                                        case AILMENT:
-                                                data.addAilmentKey(item);
-                                                break;
-                                        case CAUSE:
-                                                data.addCauseKey(item, intensity);
-                                                setLayout(Category.CAUSE, R.layout.causes,R.id.linear_layout_causes, data.getCauses(), new CauseOnClickListener(view.getContext(),data));
-                                                break;
-                                        case SYMPTOM:
-                                                data.addSymptomKey(item);
-                                                setLayout(Category.SYMPTOM, R.layout.symptoms,R.id.linear_layout_symptoms, data.getSymptoms(), new SymptomOnClickListener(view.getContext(),data));
-                                                break;
-                                        case REMEDY:
-                                                data.addRemedyKey(item, intensity);
-                                                setLayout(Category.REMEDY, R.layout.remedies,R.id.linear_layout_remedies, data.getRemedies(), new RemedyOnClickListener(view.getContext(),data));
-                                }
-                        });
-                        addItemDialog.show(getSupportFragmentManager(), "AddItemDialog");
-
-                });
-
-                Button backButton = new Button(this);
-
-                backButton.setText(getString(R.string.BACK_BUTTON));
-                backButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                linearLayout.addView(backButton);
-
-                backButton.setOnClickListener(view -> activityMain());
-
-        }
-
-}
-
-enum Category {
-        AILMENT, CAUSE, SYMPTOM, REMEDY
 }

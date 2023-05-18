@@ -20,10 +20,12 @@ public class AddItemDialog extends DialogFragment {
 
     private final DataModel data;
     private final Category category;
+    DataUpdater dataUpdater;
 
-    public AddItemDialog(DataModel data, Category category){
+    public AddItemDialog(DataModel data, Category category,DataUpdater dataUpdater){
         this.data = data;
         this.category = category;
+        this.dataUpdater = dataUpdater;
     }
 
     private AddItemDialogListener listener;
@@ -56,6 +58,8 @@ public class AddItemDialog extends DialogFragment {
             Boolean intensity = chooseIntensityButton.isChecked();
 
             listener.onDialogPositiveClick(data, category, item, intensity);
+
+            dataUpdater.update();
 
             dismiss();
 
