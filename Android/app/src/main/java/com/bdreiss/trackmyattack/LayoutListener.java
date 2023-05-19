@@ -8,23 +8,23 @@ import android.widget.LinearLayout;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.bdreiss.trackmyattack.listeners.CauseOnClickListener;
 import com.bdreiss.trackmyattack.listeners.CustomListener;
-import com.bdreiss.trackmyattack.listeners.RemedyOnClickListener;
-import com.bdreiss.trackmyattack.listeners.SymptomOnClickListener;
 
 import java.util.Iterator;
 
+/*
+ * Class that represents a listener that on click initializes a layout (causes, remedies or symptoms)
+ */
+
 public class LayoutListener implements View.OnClickListener {
 
-    Context context;
-    Category category;
-    int layoutID;
-    int linearLayoutID;
-    Iterator<String> iterator;
-    CustomListener listener;
+    Context context;//context of main activity
+    Category category;//CAUSE, SYMPTOM or REMEDY
+    int layoutID;//id of the layout
+    int linearLayoutID;//id of the linearLayout containing the keys of given category
+    CustomListener listener;//custom listener for adding entries
     FragmentManager fragmentManager;
-    LayoutListenerInterface layoutListenerInterface;
+    LayoutListenerInterface layoutListenerInterface;//includes functions for getting data and returning to main activity
 
     public LayoutListener(Context context, Category category, int layoutID, int linearLayoutID, CustomListener listener, FragmentManager fragmentManager, LayoutListenerInterface layoutListenerInterface){
         this.context = context;
@@ -34,7 +34,6 @@ public class LayoutListener implements View.OnClickListener {
         this.listener = listener;
         this.fragmentManager = fragmentManager;
         this.layoutListenerInterface = layoutListenerInterface;
-        iterator = layoutListenerInterface.getData();
 
     }
 
@@ -43,37 +42,52 @@ public class LayoutListener implements View.OnClickListener {
         setLayout();
     }
 
+    //initialize and show the layout
     public void setLayout(){
+
+        //show layout
         ((Activity) context).setContentView(layoutID);
 
+        //iterator for keys in category
+        Iterator<String> iterator = layoutListenerInterface.getData();
         LinearLayout linearLayout = ((Activity) context).findViewById(linearLayoutID);
+
+        //iterate through keys, add them to linear layout as buttons and set button listeners
         while (iterator.hasNext()){
+
+            //get next item
             String item = iterator.next();
 
+            //create new button for item
             Button itemButton = new Button(context);
-
-            CustomListener listenerCopy = listener.copy();
             itemButton.setText(item);
-
             itemButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
+            //copy the listener for adding entries with current time stamp TODO WHY?
+            CustomListener listenerCopy = listener.copy();
+
+            //add the button to the linear layout
             linearLayout.addView(itemButton);
 
             listenerCopy.setTextValue(item);
             itemButton.setOnClickListener(listenerCopy);
 
         }
-        Button addButton = new Button(context);
 
+        //create button to add new keys
+        Button addButton = new Button(context);
         addButton.setText("+");
         addButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        //set tag so button can be accessed later on, since it has no id (this is important for testing purposes for example)
         addButton.setTag("add_key_button");
 
+        //add add button to linear layout
         linearLayout.addView(addButton);
 
+        //set listener for addButton that adds new key to given category (see AddItemDialog.java)
         addButton.setOnClickListener(view -> {
-            AddItemDialog addItemDialog = new AddItemDialog(listener.getData(), category,()-> {iterator = layoutListenerInterface.getData();setLayout();});
+            AddItemDialog addItemDialog = new AddItemDialog(listener.getData(), category, this::setLayout);
             addItemDialog.setAddItemDialogListener((data, category1, item, intensity) -> {
                 switch(category1){
                     case AILMENT:
@@ -92,12 +106,15 @@ public class LayoutListener implements View.OnClickListener {
             addItemDialog.show(fragmentManager, "AddItemDialog");
         });
 
+        //button for returning back to main activity
         Button backButton = new Button(context);
-
         backButton.setText(context.getResources().getString(R.string.BACK_BUTTON));
         backButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        //add button to linear layout
         linearLayout.addView(backButton);
 
+        //set listener for button
         backButton.setOnClickListener(view -> layoutListenerInterface.returnToActivity());
 
     }
