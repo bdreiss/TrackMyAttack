@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/edit_screen_text_view"
+        android:id="@+id/edit_item_dialog_label"
         android:text="TEST"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/edit_screen_text_view">
+        app:layout_constraintTop_toBottomOf="@id/edit_item_dialog_label">
 
         <LinearLayout
             android:id="@+id/edit_screen_linear_layout"

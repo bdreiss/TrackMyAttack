@@ -12,6 +12,9 @@ import com.bdreiss.trackmyattack.listeners.CustomListener;
 
 import java.util.Iterator;
 
+import main.java.com.bdreiss.dataAPI.Datum;
+import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
+
 /*
  * Class that represents a listener that on click initializes a layout (causes, remedies or symptoms)
  */
@@ -71,6 +74,24 @@ public class LayoutListener implements View.OnClickListener {
 
             listenerCopy.setTextValue(item);
             itemButton.setOnClickListener(listenerCopy);
+
+            itemButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    EditItemDialog editItemDialog = new EditItemDialog(item, new EditItemDialogInterface() {
+                        @Override
+                        public Iterator<Datum> getEntries(String key) throws EntryNotFoundException {
+                            switch (category){
+                                case SYMPTOM:
+                                    return listener.getData().getSymptomData(key);
+                            }
+                            return null;
+                        }
+                    });
+                    editItemDialog.show(fragmentManager,"Edit Item Dialog");
+                    return true;
+                }
+            });
 
         }
 
