@@ -82,8 +82,14 @@ public class LayoutListener implements View.OnClickListener {
                         @Override
                         public Iterator<Datum> getEntries(String key) throws EntryNotFoundException {
                             switch (category){
+                                case AILMENT:
+                                    return listener.getData().getAilmentData(key);
+                                case CAUSE:
+                                    return listener.getData().getCauseData(key);
                                 case SYMPTOM:
                                     return listener.getData().getSymptomData(key);
+                                case REMEDY:
+                                    return listener.getData().getRemedyData(key);
                             }
                             return null;
                         }
