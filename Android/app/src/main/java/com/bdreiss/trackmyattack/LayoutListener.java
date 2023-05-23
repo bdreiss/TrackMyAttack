@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.bdreiss.trackmyattack.listeners.CustomListener;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 import main.java.com.bdreiss.dataAPI.Datum;
@@ -92,6 +93,24 @@ public class LayoutListener implements View.OnClickListener {
                                     return listener.getData().getRemedyData(key);
                             }
                             return null;
+                        }
+
+                        @Override
+                        public void removeItem(String key, LocalDateTime date) {
+                            switch (category){
+                                case AILMENT:
+                                    listener.getData().removeAilment(key, date);
+                                    break;
+                                case CAUSE:
+                                    listener.getData().removeCause(key,date);
+                                    break;
+                                case SYMPTOM:
+                                    listener.getData().removeSymptom(key, date);
+                                    break;
+                                case REMEDY:
+                                    listener.getData().removeRemedy(key, date);
+                            }
+
                         }
                     });
                     editItemDialog.show(fragmentManager,"Edit Item Dialog");

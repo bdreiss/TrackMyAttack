@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 
 import org.w3c.dom.Text;
@@ -62,6 +64,20 @@ public class EditItemDialog extends DialogFragment {
                 textViewIntensity.setText(((DatumWithIntensity) entry).getIntensity().toString());
                 linearLayoutForEntry.addView(textViewIntensity);
             }
+
+            Button deleteButton = new Button(getContext());
+            deleteButton.setCompoundDrawablesWithIntrinsicBounds(null, getContext().getDrawable(R.drawable.ic_action_delete), null,null);
+
+            linearLayoutForEntry.addView(deleteButton);
+            deleteButton.setWidth(20);
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editItemDialogInterface.removeItem(key, entry.getDate());
+                    linearLayout.removeView(linearLayoutForEntry);
+                }
+            });
             linearLayout.addView(linearLayoutForEntry);
         }
 
