@@ -15,6 +15,8 @@ import java.util.Iterator;
 
 import main.java.com.bdreiss.dataAPI.Datum;
 import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
+import main.java.com.bdreiss.dataAPI.Intensity;
+import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
 /*
  * Class that represents a listener that on click initializes a layout (causes, remedies or symptoms)
@@ -112,12 +114,48 @@ public class LayoutListener implements View.OnClickListener {
                             }
 
                         }
+
+                        @Override
+                        public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
+                            switch (category){
+                                case AILMENT:
+                                    listener.getData().editAilmentEntry(key, dateOriginal, dateNew);
+                                    break;
+                                case CAUSE:
+                                    listener.getData().editCauseEntry(key, dateOriginal, dateNew);
+                                    break;
+                                case SYMPTOM:
+                                    listener.getData().editSymptomEntry(key, dateOriginal, dateNew);
+                                    break;
+                                case REMEDY:
+                                    listener.getData().editRemedyEntry(key, dateOriginal, dateNew);
+
+                            }
+
+                        }
+
+                        @Override
+                        public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
+                            switch (category){
+                                case AILMENT:
+                                    listener.getData().editAilmentEntry(key, date, intensity);
+                                    break;
+                                case CAUSE:
+                                    listener.getData().editCauseEntry(key, date, intensity);
+                                    break;
+                                case SYMPTOM:
+                                    listener.getData().editSymptomEntry(key, date, intensity);
+                                    break;
+                                case REMEDY:
+                                    listener.getData().editRemedyEntry(key, date, intensity);
+
+                            }
+                        }
                     });
                     editItemDialog.show(fragmentManager,"Edit Item Dialog");
                     return true;
                 }
             });
-
         }
 
         //create button to add new keys

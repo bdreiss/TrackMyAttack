@@ -23,7 +23,9 @@ import java.util.Iterator;
 import main.java.com.bdreiss.dataAPI.Datum;
 import main.java.com.bdreiss.dataAPI.DatumWithIntensity;
 import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
+import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.IteratorWithIntensity;
+import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
 public class EditItemDialog extends DialogFragment {
 
@@ -57,11 +59,43 @@ public class EditItemDialog extends DialogFragment {
             linearLayoutForEntry.setOrientation(LinearLayout.HORIZONTAL);
 
             TextView textView = new TextView(getContext());
-            textView.setText(date.toString());
+            textView.setText(formatDate(date));
+            textView.setClickable(true);
+            textView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    LocalDateTime newDate = LocalDateTime.now();
+                    try {
+                        editItemDialogInterface.editDate(key, date, newDate);
+                    } catch (TypeMismatchException e) {
+                        e.printStackTrace();
+                    }
+                    textView.setText(formatDate(newDate));
+                    return true;
+                }
+            });
             linearLayoutForEntry.addView(textView);
             if (entries instanceof IteratorWithIntensity) {
                 TextView textViewIntensity = new TextView(getContext());
                 textViewIntensity.setText(((DatumWithIntensity) entry).getIntensity().toString());
+                textViewIntensity.setClickable(true);
+                textViewIntensity.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Intensity newIntensity = Intensity.LOW;
+
+                        try {
+                            editItemDialogInterface.editIntensity(key,date, newIntensity);
+                        } catch (TypeMismatchException e) {
+                            e.printStackTrace();
+                        }
+
+                        textViewIntensity.setText(newIntensity.toString());
+
+                        return true;
+                    }
+                });
                 linearLayoutForEntry.addView(textViewIntensity);
             }
 
@@ -91,5 +125,9 @@ public class EditItemDialog extends DialogFragment {
         } catch (EntryNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private String formatDate(LocalDateTime date){
+        return date.toString();
     }
 }
