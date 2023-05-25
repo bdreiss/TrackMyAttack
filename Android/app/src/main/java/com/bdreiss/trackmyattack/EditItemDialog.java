@@ -1,6 +1,7 @@
 package com.bdreiss.trackmyattack;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
+
+import com.bdreiss.trackmyattack.listeners.CustomListener;
 
 import org.w3c.dom.Text;
 
@@ -83,15 +86,26 @@ public class EditItemDialog extends DialogFragment {
                 textViewIntensity.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        Intensity newIntensity = Intensity.LOW;
 
-                        try {
-                            editItemDialogInterface.editIntensity(key,date, newIntensity);
-                        } catch (TypeMismatchException e) {
-                            e.printStackTrace();
-                        }
+                        CustomListener.chooseIntensity(getContext(), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                        textViewIntensity.setText(newIntensity.toString());
+                                //which + 1 because NO_INTENSITY is no option in the dialog
+                                Intensity newIntensity = Intensity.values()[which+1];
+
+                                try {
+                                    editItemDialogInterface.editIntensity(key,date, newIntensity);
+                                } catch (TypeMismatchException e) {
+                                    e.printStackTrace();
+                                }
+
+                                textViewIntensity.setText(newIntensity.toString());
+
+                            }
+                        });
+
+
 
                         return true;
                     }

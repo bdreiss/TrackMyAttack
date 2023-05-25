@@ -35,7 +35,7 @@ public class CustomListener implements View.OnClickListener {
         return data;
     }
 
-    public void chooseIntensity(Context context, DialogInterface.OnClickListener listener){
+    public static void chooseIntensity(Context context, DialogInterface.OnClickListener listener){
         String[] intensities = new String[Intensity.values().length-1];
 
         for (int i=1;i <Intensity.values().length;i++)
