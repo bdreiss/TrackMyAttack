@@ -61,10 +61,10 @@ public class EditItemDialog extends DialogFragment {
 
             linearLayoutForEntry.setOrientation(LinearLayout.HORIZONTAL);
 
-            TextView textView = new TextView(getContext());
-            textView.setText(formatDate(date));
-            textView.setClickable(true);
-            textView.setOnLongClickListener(new View.OnLongClickListener() {
+            TextView textViewDate = new TextView(getContext());
+            textViewDate.setText(formatDate(date));
+            textViewDate.setClickable(true);
+            textViewDate.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
 
@@ -74,41 +74,59 @@ public class EditItemDialog extends DialogFragment {
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }
-                    textView.setText(formatDate(newDate));
+                    textViewDate.setText(formatDate(newDate));
                     return true;
                 }
             });
-            linearLayoutForEntry.addView(textView);
+
+            linearLayoutForEntry.addView(textViewDate);
+
+            TextView textViewTime = new TextView(getContext());
+            textViewTime.setText(formatTime(date));
+            textViewTime.setClickable(true);
+
+            textViewTime.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    LocalDateTime newDate = LocalDateTime.now();
+                    try {
+                        editItemDialogInterface.editDate(key, date, newDate);
+                    } catch (TypeMismatchException e) {
+                        e.printStackTrace();
+                    }
+                    textViewDate.setText(formatTime(newDate));
+                    return true;
+
+                }
+            });
+
+            linearLayoutForEntry.addView(textViewTime);
+
+
             if (entries instanceof IteratorWithIntensity) {
                 TextView textViewIntensity = new TextView(getContext());
                 textViewIntensity.setText(((DatumWithIntensity) entry).getIntensity().toString());
                 textViewIntensity.setClickable(true);
-                textViewIntensity.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
+                textViewIntensity.setOnLongClickListener(v -> {
 
-                        CustomListener.chooseIntensity(getContext(), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                    CustomListener.chooseIntensity(getContext(), (dialog, which) -> {
 
-                                //which + 1 because NO_INTENSITY is no option in the dialog
-                                Intensity newIntensity = Intensity.values()[which+1];
+                        //which + 1 because NO_INTENSITY is no option in the dialog
+                        Intensity newIntensity = Intensity.values()[which+1];
 
-                                try {
-                                    editItemDialogInterface.editIntensity(key,date, newIntensity);
-                                } catch (TypeMismatchException e) {
-                                    e.printStackTrace();
-                                }
+                        try {
+                            editItemDialogInterface.editIntensity(key,date, newIntensity);
+                        } catch (TypeMismatchException e) {
+                            e.printStackTrace();
+                        }
 
-                                textViewIntensity.setText(newIntensity.toString());
+                        textViewIntensity.setText(newIntensity.toString());
 
-                            }
-                        });
+                    });
 
 
 
-                        return true;
-                    }
+                    return true;
                 });
                 linearLayoutForEntry.addView(textViewIntensity);
             }
@@ -142,6 +160,25 @@ public class EditItemDialog extends DialogFragment {
     }
 
     private String formatDate(LocalDateTime date){
-        return date.toString();
+
+        String year = String.valueOf(date.getYear());
+        String month = addZeroToNumber(date.getMonthValue());
+        String day = addZeroToNumber(date.getDayOfMonth());
+
+        return year + "-" + month + "-" + day;
+    }
+    private String formatTime(LocalDateTime date){
+        String hour = addZeroToNumber(date.getHour());
+        String minute = addZeroToNumber(date.getMinute());
+        String second = addZeroToNumber(date.getSecond());
+
+        return hour + ":" + minute + ":" + second;
+    }
+
+    private String addZeroToNumber(int number){
+        if (number < 10)
+            return "0" + number;
+
+        return String.valueOf(number);
     }
 }
