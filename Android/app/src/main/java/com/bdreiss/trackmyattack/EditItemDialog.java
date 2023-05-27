@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,7 +86,6 @@ public class EditItemDialog extends DialogFragment {
                             } catch (TypeMismatchException e) {
                                 e.printStackTrace();
                             }
-                            textViewDate.setText(formatDate(newDate));
                             try {
                                 linearLayout.removeAllViews();
                                 setup();//reload entries so they are shown in right order after changes
@@ -110,13 +110,28 @@ public class EditItemDialog extends DialogFragment {
                 @Override
                 public boolean onLongClick(View v) {
 
-                    LocalDateTime newDate = LocalDateTime.now();
-                    try {
-                        editItemDialogInterface.editDate(key, date, newDate);
-                    } catch (TypeMismatchException e) {
-                        e.printStackTrace();
-                    }
-                    textViewDate.setText(formatTime(newDate));
+                    TimePickerDialog.OnTimeSetListener timeListener = new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            LocalDateTime newDate = date.withHour(hourOfDay).withMinute(minute);
+                            try {
+                                editItemDialogInterface.editDate(key, date, newDate);
+                            } catch (TypeMismatchException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                linearLayout.removeAllViews();
+                                setup();
+                            } catch (EntryNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),timeListener,LocalDateTime.now().getHour(),LocalDateTime.now().getMinute(),true);
+
+                    timePickerDialog.show();
+
                     return true;
 
                 }
