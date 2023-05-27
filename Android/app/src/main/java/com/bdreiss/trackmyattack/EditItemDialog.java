@@ -1,5 +1,7 @@
 package com.bdreiss.trackmyattack;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -68,13 +71,31 @@ public class EditItemDialog extends DialogFragment {
                 @Override
                 public boolean onLongClick(View v) {
 
-                    LocalDateTime newDate = LocalDateTime.now();
-                    try {
-                        editItemDialogInterface.editDate(key, date, newDate);
-                    } catch (TypeMismatchException e) {
-                        e.printStackTrace();
-                    }
-                    textViewDate.setText(formatDate(newDate));
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(getContext());
+
+                    datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                            //for some reason month is always given -1
+                            LocalDateTime newDate = date.withYear(year).withMonth(month+1).withDayOfMonth(dayOfMonth);
+
+                            try {
+                                editItemDialogInterface.editDate(key, date, newDate);
+                            } catch (TypeMismatchException e) {
+                                e.printStackTrace();
+                            }
+                            textViewDate.setText(formatDate(newDate));
+                            try {
+                                linearLayout.removeAllViews();
+                                setup();//reload entries so they are shown in right order after changes
+                            } catch (EntryNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    datePickerDialog.show();
                     return true;
                 }
             });
@@ -88,6 +109,7 @@ public class EditItemDialog extends DialogFragment {
             textViewTime.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+
                     LocalDateTime newDate = LocalDateTime.now();
                     try {
                         editItemDialogInterface.editDate(key, date, newDate);
