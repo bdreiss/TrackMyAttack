@@ -8,11 +8,10 @@ import android.widget.LinearLayout;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.bdreiss.trackmyattack.listeners.CustomListener;
-
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
+import main.java.com.bdreiss.dataAPI.DataModel;
 import main.java.com.bdreiss.dataAPI.Datum;
 import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
@@ -25,6 +24,7 @@ import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 public class LayoutListener implements View.OnClickListener {
 
     Context context;//context of main activity
+    DataModel data;
     Category category;//CAUSE, SYMPTOM or REMEDY
     int layoutID;//id of the layout
     int linearLayoutID;//id of the linearLayout containing the keys of given category
@@ -32,8 +32,9 @@ public class LayoutListener implements View.OnClickListener {
     FragmentManager fragmentManager;
     LayoutListenerInterface layoutListenerInterface;//includes functions for getting data and returning to main activity
 
-    public LayoutListener(Context context, Category category, int layoutID, int linearLayoutID, CustomListener listener, FragmentManager fragmentManager, LayoutListenerInterface layoutListenerInterface){
+    public LayoutListener(Context context, DataModel data, Category category, int layoutID, int linearLayoutID, CustomListener listener, FragmentManager fragmentManager, LayoutListenerInterface layoutListenerInterface){
         this.context = context;
+        this.data = data;
         this.category = category;
         this.layoutID = layoutID;
         this.linearLayoutID = linearLayoutID;
@@ -78,83 +79,80 @@ public class LayoutListener implements View.OnClickListener {
             listenerCopy.setTextValue(item);
             itemButton.setOnClickListener(listenerCopy);
 
-            itemButton.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    EditItemDialog editItemDialog = new EditItemDialog(item, new EditItemDialogInterface() {
-                        @Override
-                        public Iterator<Datum> getEntries(String key) throws EntryNotFoundException {
-                            switch (category){
-                                case AILMENT:
-                                    return listener.getData().getAilmentData(key);
-                                case CAUSE:
-                                    return listener.getData().getCauseData(key);
-                                case SYMPTOM:
-                                    return listener.getData().getSymptomData(key);
-                                case REMEDY:
-                                    return listener.getData().getRemedyData(key);
-                            }
-                            return null;
+            itemButton.setOnLongClickListener(v -> {
+                EditItemDialog editItemDialog = new EditItemDialog(item, new EditItemDialogInterface() {
+                    @Override
+                    public Iterator<Datum> getEntries(String key) throws EntryNotFoundException {
+                        switch (category){
+                            case AILMENT:
+                                return data.getAilmentData(key);
+                            case CAUSE:
+                                return data.getCauseData(key);
+                            case SYMPTOM:
+                                return data.getSymptomData(key);
+                            case REMEDY:
+                                return data.getRemedyData(key);
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    public void removeItem(String key, LocalDateTime date) {
+                        switch (category){
+                            case AILMENT:
+                                data.removeAilment(key, date);
+                                break;
+                            case CAUSE:
+                                data.removeCause(key,date);
+                                break;
+                            case SYMPTOM:
+                                data.removeSymptom(key, date);
+                                break;
+                            case REMEDY:
+                                data.removeRemedy(key, date);
                         }
 
-                        @Override
-                        public void removeItem(String key, LocalDateTime date) {
-                            switch (category){
-                                case AILMENT:
-                                    listener.getData().removeAilment(key, date);
-                                    break;
-                                case CAUSE:
-                                    listener.getData().removeCause(key,date);
-                                    break;
-                                case SYMPTOM:
-                                    listener.getData().removeSymptom(key, date);
-                                    break;
-                                case REMEDY:
-                                    listener.getData().removeRemedy(key, date);
-                            }
+                    }
 
-                        }
-
-                        @Override
-                        public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
-                            switch (category){
-                                case AILMENT:
-                                    listener.getData().editAilmentEntry(key, dateOriginal, dateNew);
-                                    break;
-                                case CAUSE:
-                                    listener.getData().editCauseEntry(key, dateOriginal, dateNew);
-                                    break;
-                                case SYMPTOM:
-                                    listener.getData().editSymptomEntry(key, dateOriginal, dateNew);
-                                    break;
-                                case REMEDY:
-                                    listener.getData().editRemedyEntry(key, dateOriginal, dateNew);
-
-                            }
+                    @Override
+                    public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
+                        switch (category){
+                            case AILMENT:
+                                data.editAilmentEntry(key, dateOriginal, dateNew);
+                                break;
+                            case CAUSE:
+                                data.editCauseEntry(key, dateOriginal, dateNew);
+                                break;
+                            case SYMPTOM:
+                                data.editSymptomEntry(key, dateOriginal, dateNew);
+                                break;
+                            case REMEDY:
+                                data.editRemedyEntry(key, dateOriginal, dateNew);
 
                         }
 
-                        @Override
-                        public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
-                            switch (category){
-                                case AILMENT:
-                                    listener.getData().editAilmentEntry(key, date, intensity);
-                                    break;
-                                case CAUSE:
-                                    listener.getData().editCauseEntry(key, date, intensity);
-                                    break;
-                                case SYMPTOM:
-                                    listener.getData().editSymptomEntry(key, date, intensity);
-                                    break;
-                                case REMEDY:
-                                    listener.getData().editRemedyEntry(key, date, intensity);
+                    }
 
-                            }
+                    @Override
+                    public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
+                        switch (category){
+                            case AILMENT:
+                                data.editAilmentEntry(key, date, intensity);
+                                break;
+                            case CAUSE:
+                                data.editCauseEntry(key, date, intensity);
+                                break;
+                            case SYMPTOM:
+                                data.editSymptomEntry(key, date, intensity);
+                                break;
+                            case REMEDY:
+                                data.editRemedyEntry(key, date, intensity);
+
                         }
-                    });
-                    editItemDialog.show(fragmentManager,"Edit Item Dialog");
-                    return true;
-                }
+                    }
+                });
+                editItemDialog.show(fragmentManager,"Edit Item Dialog");
+                return true;
             });
         }
 
@@ -171,7 +169,7 @@ public class LayoutListener implements View.OnClickListener {
 
         //set listener for addButton that adds new key to given category (see AddItemDialog.java)
         addButton.setOnClickListener(view -> {
-            AddItemDialog addItemDialog = new AddItemDialog(listener.getData(), category, this::setLayout);
+            AddItemDialog addItemDialog = new AddItemDialog(data, category, this::setLayout);
             addItemDialog.setAddItemDialogListener((data, category1, item, intensity) -> {
                 switch(category1){
                     case AILMENT:

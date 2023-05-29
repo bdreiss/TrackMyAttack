@@ -16,8 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.DialogFragment;
 
-import com.bdreiss.trackmyattack.listeners.CustomListener;
-
 import java.time.LocalDateTime;
 import java.util.Iterator;
 

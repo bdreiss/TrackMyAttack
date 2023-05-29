@@ -4,15 +4,9 @@ package com.bdreiss.trackmyattack;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.bdreiss.trackmyattack.listeners.CauseOnClickListener;
-import com.bdreiss.trackmyattack.listeners.CustomListener;
-import com.bdreiss.trackmyattack.listeners.RemedyOnClickListener;
-import com.bdreiss.trackmyattack.listeners.SymptomOnClickListener;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -20,6 +14,8 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import main.java.com.bdreiss.dataAPI.DataModel;
+import main.java.com.bdreiss.dataAPI.Datum;
+import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
@@ -80,7 +76,22 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        LayoutListener causeLayoutListener = new LayoutListener(this, Category.CAUSE, R.layout.causes, R.id.linear_layout_causes, new CauseOnClickListener(this, data), getSupportFragmentManager(), new LayoutListenerInterface() {
+        LayoutListener causeLayoutListener = new LayoutListener(this, data, Category.CAUSE, R.layout.causes, R.id.linear_layout_causes, new CustomListener(this, new CustomListenerInterface() {
+                @Override
+                public Iterator<Datum> getData(String key) throws EntryNotFoundException {
+                        return data.getCauseData(key);
+                }
+
+                @Override
+                public void add(String key) throws TypeMismatchException {
+                        data.addCause(key);
+                }
+
+                @Override
+                public void add(String key, Intensity intensity) throws TypeMismatchException {
+                        data.addCause(key, intensity);
+                }
+        }), getSupportFragmentManager(), new LayoutListenerInterface() {
                 @Override
                 public Iterator<String> getData() {
                         return data.getCauses();
@@ -95,7 +106,23 @@ public class MainActivity extends AppCompatActivity {
         Button causesViewButton = findViewById(R.id.button_causes_view);
         causesViewButton.setOnClickListener(causeLayoutListener);
 
-        LayoutListener symptomLayoutListener = new LayoutListener(this,Category.SYMPTOM,R.layout.symptoms,R.id.linear_layout_symptoms,new SymptomOnClickListener(this,data),getSupportFragmentManager(),new LayoutListenerInterface(){
+        LayoutListener symptomLayoutListener = new LayoutListener(this,data,Category.SYMPTOM,R.layout.symptoms,R.id.linear_layout_symptoms,new CustomListener(this, new CustomListenerInterface() {
+                @Override
+                public Iterator<Datum> getData(String key) throws EntryNotFoundException {
+                        return data.getSymptomData(key);
+                }
+
+                @Override
+                public void add(String key) throws TypeMismatchException {
+                        //TODO implement TypeMismatchException with message: throw new TypeMismatchException("Symptom should always have Intensity!");
+                        throw new TypeMismatchException();
+                }
+
+                @Override
+                public void add(String key, Intensity intensity) throws TypeMismatchException {
+                        data.addSymptom(key, intensity);
+                }
+        }),getSupportFragmentManager(),new LayoutListenerInterface(){
                 @Override
                 public Iterator<String> getData() {
                         return data.getSymptoms();
@@ -109,7 +136,22 @@ public class MainActivity extends AppCompatActivity {
         });
         Button symptomsViewButton = findViewById(R.id.button_symptoms_view);
                 symptomsViewButton.setOnClickListener(symptomLayoutListener);
-        LayoutListener remedyLayoutListener = new LayoutListener(this, Category.REMEDY, R.layout.remedies, R.id.linear_layout_remedies, new RemedyOnClickListener(this, data), getSupportFragmentManager(), new LayoutListenerInterface() {
+        LayoutListener remedyLayoutListener = new LayoutListener(this, data, Category.REMEDY, R.layout.remedies, R.id.linear_layout_remedies, new CustomListener(this, new CustomListenerInterface() {
+                @Override
+                public Iterator<Datum> getData(String key) throws EntryNotFoundException {
+                        return data.getRemedyData(key);
+                }
+
+                @Override
+                public void add(String key) throws TypeMismatchException {
+                        data.addRemedy(key);
+                }
+
+                @Override
+                public void add(String key, Intensity intensity) throws TypeMismatchException {
+                        data.addRemedy(key, intensity);
+                }
+        }), getSupportFragmentManager(), new LayoutListenerInterface() {
                 @Override
                 public Iterator<String> getData() {
                         return data.getRemedies();

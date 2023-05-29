@@ -16,6 +16,10 @@ import java.util.Objects;
 
 import main.java.com.bdreiss.dataAPI.DataModel;
 
+/*
+ * Dialog that
+ */
+
 public class AddItemDialog extends DialogFragment {
 
     private final DataModel data;
