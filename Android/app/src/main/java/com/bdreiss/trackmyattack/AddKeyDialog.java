@@ -12,29 +12,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Objects;
+import com.bdreiss.trackmyattack.DataClasses.AbstractDataModel;
 
-import main.java.com.bdreiss.dataAPI.DataModel;
+import java.util.Objects;
 
 /*
  * Dialog that
  */
 
-public class AddItemDialog extends DialogFragment {
+public class AddKeyDialog extends DialogFragment {
 
-    private final DataModel data;
-    private final Category category;
-    DataUpdater dataUpdater;
+    private  AbstractDataModel dataModel;
+    private  DataUpdater dataUpdater;
 
-    public AddItemDialog(DataModel data, Category category,DataUpdater dataUpdater){
-        this.data = data;
-        this.category = category;
+    public AddKeyDialog(AbstractDataModel dataModel, DataUpdater dataUpdater){
+        this.dataModel = dataModel;
         this.dataUpdater = dataUpdater;
     }
 
-    private AddItemDialogListener listener;
+    private AddKeyDialogListener listener;
 
-    public void setAddItemDialogListener(AddItemDialogListener listener) {
+    public void setAddItemDialogListener(AddKeyDialogListener listener) {
         this.listener = listener;
     }
 
@@ -52,7 +50,7 @@ public class AddItemDialog extends DialogFragment {
         ToggleButton chooseIntensityButton = view.findViewById(R.id.choose_intensity_button);
         Button addItemButton = view.findViewById(R.id.add_key_button);
 
-        if (category == Category.SYMPTOM) {
+        if (dataModel.getCategory() == Category.SYMPTOM) {
             chooseIntensityButton.setChecked(true);
             chooseIntensityButton.setEnabled(false);
 
@@ -61,7 +59,7 @@ public class AddItemDialog extends DialogFragment {
             String item = itemToBeAdded.getText().toString();
             Boolean intensity = chooseIntensityButton.isChecked();
 
-            listener.onDialogPositiveClick(data, category, item, intensity);
+            listener.onDialogPositiveClick(item, intensity);
 
             dataUpdater.update();
 

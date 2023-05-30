@@ -5,21 +5,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
+import com.bdreiss.trackmyattack.DataClasses.AbstractDataModel;
+
 import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.IteratorWithIntensity;
 import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
 
-public class CustomListener implements View.OnClickListener {
+public class AddEntryListener implements View.OnClickListener {
 
     private  Context context;
     private String key;
-    CustomListenerInterface customListenerInterface;
+    AbstractDataModel dataModel;
 
-    public CustomListener(Context context, CustomListenerInterface customListenerInterface){
+    public AddEntryListener(Context context, AbstractDataModel dataModel){
         this.context = context;
-        this.customListenerInterface = customListenerInterface;
+        this.dataModel = dataModel;
     }
 
 
@@ -28,8 +30,8 @@ public class CustomListener implements View.OnClickListener {
         this.key = text;
     }
 
-    public CustomListener copy(){
-        CustomListener newListener = new CustomListener(context, customListenerInterface);
+    public AddEntryListener copy(){
+        AddEntryListener newListener = new AddEntryListener(context, dataModel);
         newListener.setTextValue(key);
         return newListener;
     }
@@ -52,10 +54,10 @@ public class CustomListener implements View.OnClickListener {
     public void onClick(View view) {
 
         try {
-            if (customListenerInterface.getData(key) instanceof IteratorWithIntensity){
+            if (dataModel.getData(key) instanceof IteratorWithIntensity){
                 chooseIntensity(context, (dialogInterface, i) -> {
                     try {
-                        customListenerInterface.add(key, Intensity.values()[i+1]);
+                        dataModel.add(key, Intensity.values()[i+1]);
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }
@@ -63,7 +65,7 @@ public class CustomListener implements View.OnClickListener {
                 });
             }
             else{
-                customListenerInterface.add(key);
+                dataModel.add(key);
 
             }
         } catch (EntryNotFoundException | TypeMismatchException e) {

@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.DialogFragment;
 
+import com.bdreiss.trackmyattack.DataClasses.AbstractDataModel;
+
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
@@ -40,11 +42,11 @@ public class EditItemDialog extends DialogFragment {
     //method for removing items
     //methods for editing date and intensity
     //this is necessary, so that the dialog can support different types of data (Causes, Symptoms and Remedies)
-    private final EditItemDialogInterface editItemDialogInterface;
+    private final AbstractDataModel dataModel;
 
-    EditItemDialog(String key, EditItemDialogInterface editItemDialogInterface) {
+    EditItemDialog(String key, AbstractDataModel dataModel) {
         this.key = key;
-        this.editItemDialogInterface = editItemDialogInterface;
+        this.dataModel = dataModel;
     }
 
     @Nullable
@@ -59,7 +61,7 @@ public class EditItemDialog extends DialogFragment {
         //get Iterator for data and handle entry not found
         Iterator<Datum> entries;
         try {
-            entries = editItemDialogInterface.getEntries(key);
+            entries = dataModel.getData(key);
         } catch (EntryNotFoundException e){
             e.printStackTrace();
             Toast.makeText(getContext(),"Key not found", Toast.LENGTH_LONG).show();
@@ -104,7 +106,7 @@ public class EditItemDialog extends DialogFragment {
                     LocalDateTime newDate = date.withYear(year).withMonth(month+1).withDayOfMonth(dayOfMonth);
 
                     try {
-                        editItemDialogInterface.editDate(key, date, newDate);
+                        dataModel.editDate(key, date, newDate);
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }
@@ -131,7 +133,7 @@ public class EditItemDialog extends DialogFragment {
                 TimePickerDialog.OnTimeSetListener timeListener = (view, hourOfDay, minute) -> {
                     LocalDateTime newDate = date.withHour(hourOfDay).withMinute(minute);
                     try {
-                        editItemDialogInterface.editDate(key, date, newDate);
+                        dataModel.editDate(key, date, newDate);
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }
@@ -162,13 +164,13 @@ public class EditItemDialog extends DialogFragment {
                 textViewIntensity.setOnLongClickListener(v -> {
 
                     //open choose Intensity dialog and write back data
-                    CustomListener.chooseIntensity(getContext(), (dialog, which) -> {
+                    AddEntryListener.chooseIntensity(getContext(), (dialog, which) -> {
 
                         //which + 1 because NO_INTENSITY is no option in the dialog
                         Intensity newIntensity = Intensity.values()[which+1];
 
                         try {
-                            editItemDialogInterface.editIntensity(key,date, newIntensity);
+                            dataModel.editIntensity(key,date, newIntensity);
                         } catch (TypeMismatchException e) {
                             e.printStackTrace();
                         }
@@ -196,7 +198,7 @@ public class EditItemDialog extends DialogFragment {
 
             //delete item on click and remove it from linearLayout
             deleteButton.setOnClickListener(v -> {
-                editItemDialogInterface.removeItem(key, entry.getDate());
+                dataModel.removeItem(key, entry.getDate());
                 linearLayout.removeView(linearLayoutForEntry);
             });
 
