@@ -58,12 +58,12 @@ public class LayoutListener implements View.OnClickListener {
             itemButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
             //copy the listener for adding entries with current time stamp TODO WHY?
-            AddEntryListener listener = new AddEntryListener(context, dataModel);
+            AddDatumListener listener = new AddDatumListener(context, dataModel);
 
             //add the button to the linear layout
             linearLayout.addView(itemButton);
 
-            listener.setTextValue(item);
+            listener.setKey(item);
             itemButton.setOnClickListener(listener);
 
             itemButton.setOnLongClickListener(v -> {
@@ -86,14 +86,21 @@ public class LayoutListener implements View.OnClickListener {
 
         //set listener for addButton that adds new key to given category (see AddItemDialog.java)
         addButton.setOnClickListener(view -> {
-            AddKeyDialog addItemDialog = new AddKeyDialog(dataModel, this::setLayout);
-            addItemDialog.setAddItemDialogListener((key, intensity) -> {
+            AddKeyDialog addItemDialog = new AddKeyDialog(dataModel, new AddKeyDialogListener() {
+                @Override
+                public void addKey(String key, Boolean intensity) {
+                    if (dataModel.getCategory() == Category.AILMENT || dataModel.getCategory() == Category.SYMPTOM)
+                        dataModel.addKey(key, false);
+                    else
+                        dataModel.addKey(key, intensity);
+                }
 
-                if (dataModel.getCategory() == Category.AILMENT || dataModel.getCategory() == Category.SYMPTOM)
-                    dataModel.addKey(key, false);
-                else
-                    dataModel.addKey(key, intensity);
+                @Override
+                public void updateOriginalLayout() {
+                    setLayout();
+                }
             });
+
             addItemDialog.show(fragmentManager, "AddItemDialog");
         });
 

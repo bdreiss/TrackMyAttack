@@ -1,9 +1,5 @@
 package com.bdreiss.trackmyattack.DataClasses;
 
-import android.content.Context;
-
-import androidx.appcompat.content.res.AppCompatResources;
-
 import com.bdreiss.trackmyattack.Category;
 import com.bdreiss.trackmyattack.R;
 
@@ -15,6 +11,10 @@ import main.java.com.bdreiss.dataAPI.Datum;
 import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.TypeMismatchException;
+
+/*
+ * Class representing the category CAUSE.
+ */
 
 public class CauseDataModel extends AbstractDataModel{
 
@@ -41,12 +41,12 @@ public class CauseDataModel extends AbstractDataModel{
     }
 
     @Override
-    public void add(String key) throws TypeMismatchException {
+    public void addData(String key) throws TypeMismatchException {
         data.addCause(key);
     }
 
     @Override
-    public void add(String key, Intensity intensity) throws TypeMismatchException {
+    public void addData(String key, Intensity intensity) throws TypeMismatchException {
         data.addCause(key, intensity);
     }
 

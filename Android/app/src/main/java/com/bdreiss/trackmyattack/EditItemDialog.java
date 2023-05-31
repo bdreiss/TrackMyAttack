@@ -69,11 +69,11 @@ public class EditItemDialog extends DialogFragment {
         }
 
         //set label text for dialog
-        TextView itemLabel = (TextView) requireView().findViewById(R.id.edit_item_dialog_label);
+        TextView itemLabel = requireView().findViewById(R.id.edit_item_dialog_label);
         itemLabel.setText(key);
 
         //get linear layout for adding items
-        LinearLayout linearLayout = (LinearLayout) requireView().findViewById(R.id.edit_item_linear_layout);
+        LinearLayout linearLayout = requireView().findViewById(R.id.edit_item_linear_layout);
         //if there are any items in the linearLayout (because an item has been updated and called setup) remove them
         linearLayout.removeAllViews();
 
@@ -164,7 +164,7 @@ public class EditItemDialog extends DialogFragment {
                 textViewIntensity.setOnLongClickListener(v -> {
 
                     //open choose Intensity dialog and write back data
-                    AddEntryListener.chooseIntensity(getContext(), (dialog, which) -> {
+                    AddDatumListener.chooseIntensity(getContext(), (dialog, which) -> {
 
                         //which + 1 because NO_INTENSITY is no option in the dialog
                         Intensity newIntensity = Intensity.values()[which+1];

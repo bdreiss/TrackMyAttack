@@ -12,33 +12,33 @@ import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.IteratorWithIntensity;
 import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
+/*
+ * Adds a Datum to the DataModel for the key given.
+ */
 
-public class AddEntryListener implements View.OnClickListener {
+public class AddDatumListener implements View.OnClickListener {
 
-    private  Context context;
+    private final Context context;
     private String key;
     AbstractDataModel dataModel;
 
-    public AddEntryListener(Context context, AbstractDataModel dataModel){
+    public AddDatumListener(Context context, AbstractDataModel dataModel){
         this.context = context;
         this.dataModel = dataModel;
     }
 
 
 
-    public void setTextValue(String text){
-        this.key = text;
+    public void setKey(String key){
+        this.key = key;
     }
 
-    public AddEntryListener copy(){
-        AddEntryListener newListener = new AddEntryListener(context, dataModel);
-        newListener.setTextValue(key);
-        return newListener;
-    }
-
+    //Creates and shows a dialog that let's the user choose an Intensity
     public static void chooseIntensity(Context context, DialogInterface.OnClickListener listener){
+
         String[] intensities = new String[Intensity.values().length-1];
 
+        //get all intensities without NO_INTENSITY
         for (int i=1;i <Intensity.values().length;i++)
             intensities[i-1] = Intensity.values()[i].toString();
 
@@ -54,10 +54,11 @@ public class AddEntryListener implements View.OnClickListener {
     public void onClick(View view) {
 
         try {
+            //check whether key has Intensity and show Intensity dialog if so, add Datum without Intensity otherwise
             if (dataModel.getData(key) instanceof IteratorWithIntensity){
                 chooseIntensity(context, (dialogInterface, i) -> {
                     try {
-                        dataModel.add(key, Intensity.values()[i+1]);
+                        dataModel.addData(key, Intensity.values()[i+1]);
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }
@@ -65,7 +66,7 @@ public class AddEntryListener implements View.OnClickListener {
                 });
             }
             else{
-                dataModel.add(key);
+                dataModel.addData(key);
 
             }
         } catch (EntryNotFoundException | TypeMismatchException e) {

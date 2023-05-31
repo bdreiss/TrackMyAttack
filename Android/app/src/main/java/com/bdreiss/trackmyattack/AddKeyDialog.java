@@ -17,22 +17,16 @@ import com.bdreiss.trackmyattack.DataClasses.AbstractDataModel;
 import java.util.Objects;
 
 /*
- * Dialog that
+ * Dialog that adds a new key to the DataModel.
  */
 
 public class AddKeyDialog extends DialogFragment {
 
     private  AbstractDataModel dataModel;
-    private  DataUpdater dataUpdater;
-
-    public AddKeyDialog(AbstractDataModel dataModel, DataUpdater dataUpdater){
-        this.dataModel = dataModel;
-        this.dataUpdater = dataUpdater;
-    }
-
     private AddKeyDialogListener listener;
 
-    public void setAddItemDialogListener(AddKeyDialogListener listener) {
+    public AddKeyDialog(AbstractDataModel dataModel, AddKeyDialogListener listener){
+        this.dataModel = dataModel;
         this.listener = listener;
     }
 
@@ -46,7 +40,7 @@ public class AddKeyDialog extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EditText itemToBeAdded = view.findViewById(R.id.key_to_be_added);
+        EditText keyToBeAdded = view.findViewById(R.id.key_to_be_added);
         ToggleButton chooseIntensityButton = view.findViewById(R.id.choose_intensity_button);
         Button addItemButton = view.findViewById(R.id.add_key_button);
 
@@ -55,13 +49,15 @@ public class AddKeyDialog extends DialogFragment {
             chooseIntensityButton.setEnabled(false);
 
         }
-        addItemButton.setOnClickListener(view1 -> {
-            String item = itemToBeAdded.getText().toString();
+
+        //add new key and update Layout from which dialog was called
+        addItemButton.setOnClickListener(v -> {
+            String item = keyToBeAdded.getText().toString();
             Boolean intensity = chooseIntensityButton.isChecked();
 
-            listener.onDialogPositiveClick(item, intensity);
+            listener.addKey(item, intensity);
 
-            dataUpdater.update();
+            listener.updateOriginalLayout();
 
             dismiss();
 

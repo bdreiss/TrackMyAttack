@@ -1,8 +1,5 @@
 package com.bdreiss.trackmyattack.DataClasses;
 
-import android.content.Context;
-import android.provider.ContactsContract;
-
 import com.bdreiss.trackmyattack.Category;
 import com.bdreiss.trackmyattack.R;
 
@@ -14,6 +11,10 @@ import main.java.com.bdreiss.dataAPI.Datum;
 import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.TypeMismatchException;
+
+/*
+ * Class representing the category SYMPTOM.
+ */
 
 public class SymptomDataModel extends AbstractDataModel{
 
@@ -40,13 +41,13 @@ public class SymptomDataModel extends AbstractDataModel{
     }
 
     @Override
-    public void add(String key) throws TypeMismatchException {
+    public void addData(String key) throws TypeMismatchException {
         throw new TypeMismatchException();
         //TODO: throw new TypeMismatchException(); with message!
     }
 
     @Override
-    public void add(String key, Intensity intensity) throws TypeMismatchException {
+    public void addData(String key, Intensity intensity) throws TypeMismatchException {
         data.addSymptom(key, intensity);
     }
 

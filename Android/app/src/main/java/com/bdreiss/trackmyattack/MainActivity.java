@@ -15,11 +15,8 @@ import com.bdreiss.trackmyattack.DataClasses.SymptomDataModel;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
 
 import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.Datum;
-import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 

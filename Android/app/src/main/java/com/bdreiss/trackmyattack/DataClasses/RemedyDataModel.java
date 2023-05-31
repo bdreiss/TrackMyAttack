@@ -12,6 +12,10 @@ import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
+/*
+ * Class representing the category REMEDY.
+ */
+
 public class RemedyDataModel extends AbstractDataModel{
 
     public RemedyDataModel(DataModel data){
@@ -37,12 +41,12 @@ public class RemedyDataModel extends AbstractDataModel{
     }
 
     @Override
-    public void add(String key) throws TypeMismatchException {
+    public void addData(String key) throws TypeMismatchException {
         data.addRemedy(key);
     }
 
     @Override
-    public void add(String key, Intensity intensity) throws TypeMismatchException {
+    public void addData(String key, Intensity intensity) throws TypeMismatchException {
         data.addRemedy(key, intensity);
     }
 
