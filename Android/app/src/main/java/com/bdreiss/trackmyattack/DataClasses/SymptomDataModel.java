@@ -42,8 +42,7 @@ public class SymptomDataModel extends AbstractDataModel{
 
     @Override
     public void addData(String key) throws TypeMismatchException {
-        throw new TypeMismatchException();
-        //TODO: throw new TypeMismatchException(); with message!
+        throw new TypeMismatchException("This exception has been thrown because there was an attempt to add a symptom without Intensity.");
     }
 
     @Override

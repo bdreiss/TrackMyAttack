@@ -57,7 +57,7 @@ public class LayoutListener implements View.OnClickListener {
             itemButton.setText(item);
             itemButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-            //copy the listener for adding entries with current time stamp TODO WHY?
+            //listener for adding new Datum
             AddDatumListener listener = new AddDatumListener(context, dataModel);
 
             //add the button to the linear layout

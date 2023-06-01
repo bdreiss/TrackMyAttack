@@ -10,6 +10,14 @@ package main.java.com.bdreiss.dataAPI;
 public class EntryNotFoundException extends Exception {
 
 	private static final long serialVersionUID = 1L;
+	
+	public EntryNotFoundException() {
+		super("Entry has not been found.");
+	}
+	
+	public EntryNotFoundException(String message) {
+		super(message);
+	}
 
 	//TODO implement EntryNotFoundException
 	
