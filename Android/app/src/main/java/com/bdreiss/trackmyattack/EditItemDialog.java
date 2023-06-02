@@ -206,6 +206,10 @@ public class EditItemDialog extends DialogFragment {
             linearLayout.addView(linearLayoutForEntry);
         }
 
+        Button backButton = requireView().findViewById(R.id.button_edit_back);
+
+        backButton.setOnClickListener(v -> dismiss());
+
     }
 
     @Override
