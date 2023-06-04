@@ -35,6 +35,8 @@ import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 public class EditItemDialog extends DialogFragment {
 
     private static final int DELETE_BUTTON_WIDTH = 20;
+    private static final int TEXT_VIEW_PADDING = 10;
+    private static final int LINEAR_LAYOUT_PADDING = 5;
     //key for which dialog is shown
     private final String key;
     //interface including:
@@ -87,12 +89,15 @@ public class EditItemDialog extends DialogFragment {
 
             //LinearLayout for TextViews showing date, time and intensity and the remove Button
             LinearLayout linearLayoutForEntry = new LinearLayout(getContext());
+
             linearLayoutForEntry.setOrientation(LinearLayout.HORIZONTAL);
+            linearLayoutForEntry.setPadding(0,LINEAR_LAYOUT_PADDING,0,LINEAR_LAYOUT_PADDING);
 
             //set up TextView for date
             TextView textViewDate = new TextView(getContext());
             textViewDate.setText(formatDate(date));
             textViewDate.setClickable(true);
+            textViewDate.setPadding(TEXT_VIEW_PADDING,0,TEXT_VIEW_PADDING,0);
 
             //edit on long click
             textViewDate.setOnLongClickListener(v -> {
@@ -125,6 +130,7 @@ public class EditItemDialog extends DialogFragment {
             TextView textViewTime = new TextView(getContext());
             textViewTime.setText(formatTime(date));
             textViewTime.setClickable(true);
+            textViewTime.setPadding(TEXT_VIEW_PADDING,0,TEXT_VIEW_PADDING,0);
 
             //edit on long click
             textViewTime.setOnLongClickListener(v -> {
@@ -159,6 +165,7 @@ public class EditItemDialog extends DialogFragment {
                 TextView textViewIntensity = new TextView(getContext());
                 textViewIntensity.setText(((DatumWithIntensity) entry).getIntensity().toString());
                 textViewIntensity.setClickable(true);
+                textViewIntensity.setPadding(TEXT_VIEW_PADDING,0,TEXT_VIEW_PADDING,0);
 
                 //edit on long click
                 textViewIntensity.setOnLongClickListener(v -> {
