@@ -184,6 +184,11 @@ public class EditItemDialog extends DialogFragment {
                 });
                 linearLayoutForEntry.addView(textViewIntensity);
             }
+            else{
+                TextView intensityView = new TextView(getContext());
+                intensityView.setWidth(EditItemView.INTENSITY_WIDTH);
+                linearLayoutForEntry.addView(intensityView);
+            }
 
             //Button to delete entry
             Button deleteButton = new Button(getContext());
