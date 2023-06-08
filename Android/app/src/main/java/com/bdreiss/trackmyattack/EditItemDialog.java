@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,12 @@ import main.java.com.bdreiss.dataAPI.TypeMismatchException;
  */
 public class EditItemDialog extends DialogFragment {
 
+    private static final int LABEL_TEXT_SIZE = 20;
+    private static final int LABEL_PADDING = 10;
     private static final int DELETE_BUTTON_WIDTH = 20;
     private static final int LINEAR_LAYOUT_PADDING = 5;
+
+
 
     //key for which dialog is shown
     private final String key;
@@ -74,6 +79,9 @@ public class EditItemDialog extends DialogFragment {
         //set label text for dialog
         TextView itemLabel = requireView().findViewById(R.id.edit_item_dialog_label);
         itemLabel.setText(key);
+        itemLabel.setGravity(Gravity.CENTER);
+        itemLabel.setTextSize(LABEL_TEXT_SIZE);
+        itemLabel.setPadding(LABEL_PADDING,LABEL_PADDING,LABEL_PADDING,LABEL_PADDING);
 
         //get linear layout for adding items
         LinearLayout linearLayout = requireView().findViewById(R.id.edit_item_linear_layout);
