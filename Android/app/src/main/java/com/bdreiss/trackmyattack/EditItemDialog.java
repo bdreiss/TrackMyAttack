@@ -38,6 +38,7 @@ public class EditItemDialog extends DialogFragment {
 
     private static final int LABEL_TEXT_SIZE = 20;
     private static final int LABEL_PADDING = 10;
+    private static final int DELETE_BUTTON_HEIGHT = 10;
     private static final int DELETE_BUTTON_WIDTH = 20;
     private static final int LINEAR_LAYOUT_PADDING = 5;
 
@@ -85,19 +86,25 @@ public class EditItemDialog extends DialogFragment {
 
         //get linear layout for adding items
         LinearLayout linearLayout = requireView().findViewById(R.id.edit_item_linear_layout);
+
         //if there are any items in the linearLayout (because an item has been updated and called setup) remove them
         linearLayout.removeAllViews();
 
         assert(entries != null);
 
+
         //loop through entries and add them to linearLayout
         while (entries.hasNext()) {
+
+            //add separation line
+            linearLayout.addView(EditItemView.getSeparationLine(getContext()));
 
             Datum entry = entries.next();
             LocalDateTime date = entry.getDate();
 
             //LinearLayout for TextViews showing date, time and intensity and the remove Button
             LinearLayout linearLayoutForEntry = new LinearLayout(getContext());
+            linearLayoutForEntry.setGravity(Gravity.CENTER);
 
             linearLayoutForEntry.setOrientation(LinearLayout.HORIZONTAL);
             linearLayoutForEntry.setPadding(0,LINEAR_LAYOUT_PADDING,0,LINEAR_LAYOUT_PADDING);
@@ -206,8 +213,9 @@ public class EditItemDialog extends DialogFragment {
             //add Button to linearLayout
             linearLayoutForEntry.addView(deleteButton);
 
-            //set width
+            //set width and height
             deleteButton.setWidth(DELETE_BUTTON_WIDTH);
+            deleteButton.setHeight(DELETE_BUTTON_HEIGHT);
 
             //delete item on click and remove it from linearLayout
             deleteButton.setOnClickListener(v -> {
@@ -217,7 +225,12 @@ public class EditItemDialog extends DialogFragment {
 
             //add linearLayoutForEntry with TextViews and Button to linearLayout
             linearLayout.addView(linearLayoutForEntry);
+
+
+
         }
+        //add separation line
+        linearLayout.addView(EditItemView.getSeparationLine(getContext()));
 
         //Button to return to LayoutListener
         Button backButton = requireView().findViewById(R.id.button_edit_back);
