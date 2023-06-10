@@ -21,8 +21,6 @@ public class SymptomDataModel extends AbstractDataModel{
     public SymptomDataModel(DataModel data){
         this.data = data;
         category = Category.SYMPTOM;
-        layoutID = R.layout.symptoms;
-        linearLayoutID = R.id.linear_layout_symptoms;
     }
 
     @Override

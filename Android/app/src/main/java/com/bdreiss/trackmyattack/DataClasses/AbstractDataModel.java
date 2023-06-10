@@ -20,8 +20,6 @@ public abstract class AbstractDataModel {
 
     DataModel data;
     Category category; //CAUSE, SYMPTOM, REMEDY
-    int layoutID; //Layout representing the category
-    int linearLayoutID; //LinearLayout holding entries of the category above
 
     public DataModel getData(){
         return data;
@@ -29,14 +27,6 @@ public abstract class AbstractDataModel {
 
     public Category getCategory(){
         return category;
-    }
-
-    public int getLayoutID(){
-        return layoutID;
-    }
-
-    public int getLinearLayoutID(){
-        return linearLayoutID;
     }
 
     //for documentation of these methods look into DataAPI

@@ -39,12 +39,12 @@ public class LayoutListener implements View.OnClickListener {
     public void setLayout(){
 
         //show layout
-        ((Activity) context).setContentView(dataModel.getLayoutID());
+        ((Activity) context).setContentView(R.layout.data_interface);
 
         //iterator for keys in category
         Iterator<String> iterator = dataModel.getKeys();
 
-        LinearLayout linearLayout = ((Activity) context).findViewById(dataModel.getLinearLayoutID());
+        LinearLayout linearLayout = ((Activity) context).findViewById(R.id.linear_layout_data_interface);
 
         //iterate through keys, add them to linear layout as buttons and set button listeners
         while (iterator.hasNext()){

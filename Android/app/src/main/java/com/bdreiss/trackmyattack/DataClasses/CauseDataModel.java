@@ -21,8 +21,6 @@ public class CauseDataModel extends AbstractDataModel{
     public CauseDataModel(DataModel data){
         this.data = data;
         category = Category.CAUSE;
-        layoutID = R.layout.causes;
-        linearLayoutID = R.id.linear_layout_causes;
     }
 
     @Override

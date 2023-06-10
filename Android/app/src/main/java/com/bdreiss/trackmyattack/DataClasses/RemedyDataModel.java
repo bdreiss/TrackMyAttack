@@ -21,8 +21,6 @@ public class RemedyDataModel extends AbstractDataModel{
     public RemedyDataModel(DataModel data){
         this.data = data;
         category = Category.REMEDY;
-        layoutID = R.layout.remedies;
-        linearLayoutID = R.id.linear_layout_remedies;
     }
 
     @Override
