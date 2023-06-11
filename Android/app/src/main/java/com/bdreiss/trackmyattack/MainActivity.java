@@ -1,13 +1,13 @@
 package com.bdreiss.trackmyattack;
 
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bdreiss.trackmyattack.DataClasses.AilmentDataModel;
 import com.bdreiss.trackmyattack.DataClasses.CauseDataModel;
 import com.bdreiss.trackmyattack.DataClasses.RemedyDataModel;
 import com.bdreiss.trackmyattack.DataClasses.SymptomDataModel;
@@ -42,40 +42,39 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
         }
 
-        TextView textView = findViewById(R.id.textView);
 
-        textView.setText(data.print());
-
-        EditText migraineEditTextText = findViewById(R.id.edit_text_migraine_text);
-        EditText migraineEditTextIntensity = findViewById(R.id.edit_text_migraine_intensity);
         Button migraineButton = findViewById(R.id.button_migraine);
 
-        migraineButton.setOnClickListener(view -> {
+        AilmentDataModel ailmentDataModel = new AilmentDataModel(data);
+        //listener for adding new Datum
 
-                String intensityText = migraineEditTextIntensity.getText().toString();
+        migraineButton.setOnClickListener(v ->{
+                String[] intensities = new String[Intensity.values().length];
 
-                Intensity intensity = Intensity.NO_INTENSITY;
-                if (!intensityText.isEmpty()) {
-                        switch(Integer.parseInt(intensityText)){
-                                case 0: intensity = Intensity.LOW;
-                                break;
-                                case 1: intensity = Intensity.MEDIUM;
-                                break;
-                                case 2: intensity = Intensity.HIGH;
+                //get all intensities
+                for (int i=0;i <Intensity.values().length;i++)
+                        intensities[i] = Intensity.values()[i].toString();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Choose Intensity");
+                builder.setItems(intensities, (dialog, which) -> {
+                        try {
+                                ailmentDataModel.addData("Migraine", Intensity.values()[which]);
+                        } catch (TypeMismatchException e) {
+                                e.printStackTrace();
                         }
-                }
-
-                try {
-                        data.addAilment("Migraine", intensity);
-                } catch (TypeMismatchException e) {
-                        e.printStackTrace();
-                }
-
-                textView.setText(data.print());
-                migraineEditTextText.setText("");
-                migraineEditTextIntensity.setText("");
-
+                });
+                builder.setNegativeButton("Cancel", null);
+                builder.create();
+                builder.show();
         });
+
+        migraineButton.setOnLongClickListener(v -> {
+                EditItemDialog editItemDialog = new EditItemDialog("Migraine", ailmentDataModel);
+                editItemDialog.show(getSupportFragmentManager(),"Edit Item Dialog");
+                return true;
+        });
+
 
         LayoutListener causeLayoutListener = new LayoutListener(this, new CauseDataModel(data), getSupportFragmentManager(), this::activityMain);
         Button causesViewButton = findViewById(R.id.button_causes_view);

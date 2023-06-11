@@ -27,8 +27,6 @@ public class AddDatumListener implements View.OnClickListener {
         this.dataModel = dataModel;
     }
 
-
-
     public void setKey(String key){
         this.key = key;
     }

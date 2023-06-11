@@ -11,21 +11,11 @@
         android:id="@+id/linear_layout_migraine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <EditText
-            android:id="@+id/edit_text_migraine_text"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/edit_text_migraine_intensity"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
 
         <Button
             android:id="@+id/button_migraine"
@@ -33,40 +23,25 @@
             android:layout_height="wrap_content"
             android:text="ADD MIGRAINE" />
 
+        <Button
+            android:id="@+id/button_causes_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SHOW CAUSES"/>
+
+        <Button
+            android:id="@+id/button_symptoms_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SHOW SYMPTOMS"/>
+
+        <Button
+            android:id="@+id/button_remedies_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SHOW REMEDIES"/>
+
+
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/button_causes_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SHOW CAUSES"
-        app:layout_constraintTop_toBottomOf="@id/linear_layout_migraine" />
-
-    <Button
-        android:id="@+id/button_symptoms_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SHOW SYMPTOMS"
-        app:layout_constraintTop_toBottomOf="@id/button_causes_view" />
-
-    <Button
-        android:id="@+id/button_remedies_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SHOW REMEDIES"
-        app:layout_constraintTop_toBottomOf="@id/button_symptoms_view" />
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        app:layout_constraintTop_toBottomOf="@id/button_remedies_view" >
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
