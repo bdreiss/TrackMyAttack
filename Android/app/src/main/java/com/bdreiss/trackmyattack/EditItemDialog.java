@@ -220,6 +220,8 @@ public class EditItemDialog extends DialogFragment {
             //delete item on click and remove it from linearLayout
             deleteButton.setOnClickListener(v -> {
                 dataModel.removeItem(key, entry.getDate());
+                //remove separation line
+                linearLayout.removeViewAt(linearLayout.indexOfChild(linearLayoutForEntry)+1);
                 linearLayout.removeView(linearLayoutForEntry);
             });
 
