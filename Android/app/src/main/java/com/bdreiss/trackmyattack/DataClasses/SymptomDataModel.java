@@ -54,6 +54,11 @@ public class SymptomDataModel extends AbstractDataModel{
     }
 
     @Override
+    public void removeKey(String key) {
+        data.removeSymptomKey(key);
+    }
+
+    @Override
     public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
         data.editSymptomEntry(key, dateOriginal, dateNew);
     }

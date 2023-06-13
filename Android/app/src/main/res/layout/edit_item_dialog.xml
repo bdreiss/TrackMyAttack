@@ -6,19 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:id="@+id/edit_item_dialog_label_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     <TextView
         android:id="@+id/edit_item_dialog_label"
         android:text="TEST"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_width="0dp"
+        android:layout_weight="5"/>
 
+    <Button
+        android:id="@+id/edit_item_dialog_delete_button"
+        android:background="@drawable/ic_action_delete"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"/>
+
+
+    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="600dp"
         android:id="@+id/scroll_view_edit"
-        app:layout_constraintTop_toBottomOf="@id/edit_item_dialog_label">
+        app:layout_constraintTop_toBottomOf="@id/edit_item_dialog_label_layout">
 
         <LinearLayout
             android:id="@+id/edit_item_linear_layout"

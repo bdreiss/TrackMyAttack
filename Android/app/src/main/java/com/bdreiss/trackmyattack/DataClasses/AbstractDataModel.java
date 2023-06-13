@@ -36,6 +36,7 @@ public abstract class AbstractDataModel {
     public abstract void addData(String key) throws TypeMismatchException;
     public abstract void addData(String key, Intensity intensity) throws TypeMismatchException;
     public abstract void removeItem(String key, LocalDateTime date);
+    public abstract void removeKey(String key);
     public abstract void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException;
     public abstract void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException;
 

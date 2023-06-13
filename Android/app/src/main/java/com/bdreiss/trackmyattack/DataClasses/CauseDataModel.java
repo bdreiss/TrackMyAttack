@@ -54,6 +54,11 @@ public class CauseDataModel extends AbstractDataModel{
     }
 
     @Override
+    public void removeKey(String key) {
+        data.removeCauseKey(key);
+    }
+
+    @Override
     public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
         data.editCauseEntry(key, dateOriginal, dateNew);
     }

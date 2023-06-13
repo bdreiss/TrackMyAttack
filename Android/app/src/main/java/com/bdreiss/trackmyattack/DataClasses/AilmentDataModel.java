@@ -54,6 +54,11 @@ public class AilmentDataModel extends AbstractDataModel{
     }
 
     @Override
+    public void removeKey(String key) {
+        data.removeAilmentKey(key);
+    }
+
+    @Override
     public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
         data.editAilmentEntry(key, dateOriginal, dateNew);
     }

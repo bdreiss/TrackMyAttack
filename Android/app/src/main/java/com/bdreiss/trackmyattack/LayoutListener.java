@@ -67,7 +67,15 @@ public class LayoutListener implements View.OnClickListener {
             itemButton.setOnClickListener(listener);
 
             itemButton.setOnLongClickListener(v -> {
-                EditItemDialog editItemDialog = new EditItemDialog(item, dataModel);
+                EditItemDialog editItemDialog = new EditItemDialog(item, dataModel, new AddKeyDialogListener() {
+                    @Override
+                    public void addKey(String key, Boolean intensity) {}
+
+                    @Override
+                    public void updateOriginalLayout() {
+                        setLayout();
+                    }
+                });
                 editItemDialog.show(fragmentManager,"Edit Item Dialog");
                 return true;
             });

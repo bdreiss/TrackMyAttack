@@ -53,9 +53,13 @@ public class EditItemDialog extends DialogFragment {
     //this is necessary, so that the dialog can support different types of data (Causes, Symptoms and Remedies)
     private final AbstractDataModel dataModel;
 
-    EditItemDialog(String key, AbstractDataModel dataModel) {
+    //contains method to update original layout in case key is removed from data
+    private final AddKeyDialogListener addKeyDialogListener;
+
+    EditItemDialog(String key, AbstractDataModel dataModel, AddKeyDialogListener addKeyDialogListener) {
         this.key = key;
         this.dataModel = dataModel;
+        this.addKeyDialogListener = addKeyDialogListener;
     }
 
     @Nullable
@@ -83,6 +87,15 @@ public class EditItemDialog extends DialogFragment {
         itemLabel.setGravity(Gravity.CENTER);
         itemLabel.setTextSize(LABEL_TEXT_SIZE);
         itemLabel.setPadding(LABEL_PADDING,LABEL_PADDING,LABEL_PADDING,LABEL_PADDING);
+
+        Button deleteButton = requireView().findViewById(R.id.edit_item_dialog_delete_button);
+
+        deleteButton.setOnClickListener(v->{dataModel.removeKey(key);addKeyDialogListener.updateOriginalLayout();dismiss();});
+
+        if (dataModel.getCategory() == Category.AILMENT){
+            deleteButton.setOnClickListener(v->{});
+            deleteButton.setVisibility(View.GONE);
+        }
 
         //get linear layout for adding items
         LinearLayout linearLayout = requireView().findViewById(R.id.edit_item_linear_layout);
@@ -206,19 +219,19 @@ public class EditItemDialog extends DialogFragment {
             }
 
             //Button to delete entry
-            Button deleteButton = new Button(getContext());
+            Button deleteItemButton = new Button(getContext());
             //set Drawable
-            deleteButton.setCompoundDrawablesWithIntrinsicBounds(null, AppCompatResources.getDrawable(requireContext(),R.drawable.ic_action_delete), null,null);
+            deleteItemButton.setCompoundDrawablesWithIntrinsicBounds(null, AppCompatResources.getDrawable(requireContext(),R.drawable.ic_action_delete), null,null);
 
             //add Button to linearLayout
-            linearLayoutForEntry.addView(deleteButton);
+            linearLayoutForEntry.addView(deleteItemButton);
 
             //set width and height
-            deleteButton.setWidth(DELETE_BUTTON_WIDTH);
-            deleteButton.setHeight(DELETE_BUTTON_HEIGHT);
+            deleteItemButton.setWidth(DELETE_BUTTON_WIDTH);
+            deleteItemButton.setHeight(DELETE_BUTTON_HEIGHT);
 
             //delete item on click and remove it from linearLayout
-            deleteButton.setOnClickListener(v -> {
+            deleteItemButton.setOnClickListener(v -> {
                 dataModel.removeItem(key, entry.getDate());
                 //remove separation line
                 linearLayout.removeViewAt(linearLayout.indexOfChild(linearLayoutForEntry)+1);

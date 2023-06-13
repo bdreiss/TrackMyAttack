@@ -70,7 +70,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         migraineButton.setOnLongClickListener(v -> {
-                EditItemDialog editItemDialog = new EditItemDialog("Migraine", ailmentDataModel);
+                EditItemDialog editItemDialog = new EditItemDialog("Migraine", ailmentDataModel, new AddKeyDialogListener() {
+                        @Override
+                        public void addKey(String key, Boolean intensity) {
+
+                        }
+
+                        @Override
+                        public void updateOriginalLayout() {
+
+                        }
+                });
                 editItemDialog.show(getSupportFragmentManager(),"Edit Item Dialog");
                 return true;
         });
