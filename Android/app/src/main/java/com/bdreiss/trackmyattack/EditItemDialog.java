@@ -1,5 +1,6 @@
 package com.bdreiss.trackmyattack;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -90,7 +91,19 @@ public class EditItemDialog extends DialogFragment {
 
         Button deleteButton = requireView().findViewById(R.id.edit_item_dialog_delete_button);
 
-        deleteButton.setOnClickListener(v->{dataModel.removeKey(key);addKeyDialogListener.updateOriginalLayout();dismiss();});
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setMessage("Erase all data for '" + key + "'?");
+        builder.setTitle("Confirm deletion");
+        builder.setPositiveButton("YES", (dialog, which) -> {
+            dataModel.removeKey(key);addKeyDialogListener.updateOriginalLayout();dismiss();
+        });
+
+        builder.setNegativeButton("NO",(dialog, which) -> {});
+
+        AlertDialog deleteKeyConfirmationDialog = builder.create();
+
+        deleteButton.setOnClickListener(v->deleteKeyConfirmationDialog.show());
 
         if (dataModel.getCategory() == Category.AILMENT){
             deleteButton.setOnClickListener(v->{});
