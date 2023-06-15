@@ -8,6 +8,7 @@
 
     <LinearLayout
         android:id="@+id/edit_item_dialog_label_layout"
+        android:background="@color/primary"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -15,13 +16,13 @@
     <TextView
         android:id="@+id/edit_item_dialog_label"
         android:text="TEST"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="5"/>
 
     <Button
         android:id="@+id/edit_item_dialog_delete_button"
-        android:background="@drawable/ic_action_delete"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1"/>

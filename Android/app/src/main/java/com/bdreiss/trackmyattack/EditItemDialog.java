@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -91,6 +92,11 @@ public class EditItemDialog extends DialogFragment {
 
         Button deleteButton = requireView().findViewById(R.id.edit_item_dialog_delete_button);
 
+        Drawable deleteSymbol = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_action_delete);
+        assert deleteSymbol != null;
+        deleteSymbol.setBounds(0,0,20,20);
+        deleteButton.setCompoundDrawablesWithIntrinsicBounds(null, deleteSymbol, null,null);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setMessage("Erase all data for '" + key + "'?");
@@ -112,6 +118,8 @@ public class EditItemDialog extends DialogFragment {
 
         //get linear layout for adding items
         LinearLayout linearLayout = requireView().findViewById(R.id.edit_item_linear_layout);
+
+        linearLayout.setGravity(Gravity.CENTER);
 
         //if there are any items in the linearLayout (because an item has been updated and called setup) remove them
         linearLayout.removeAllViews();
