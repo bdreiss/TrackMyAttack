@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 public class EditItemDialog extends DialogFragment {
 
     private static final int LABEL_TEXT_SIZE = 20;
-    private static final int LABEL_PADDING = 10;
+    private static final int LABEL_PADDING = 40;
     private static final int DELETE_BUTTON_HEIGHT = 10;
     private static final int DELETE_BUTTON_WIDTH = 20;
     private static final int LINEAR_LAYOUT_PADDING = 5;
@@ -90,12 +91,9 @@ public class EditItemDialog extends DialogFragment {
         itemLabel.setTextSize(LABEL_TEXT_SIZE);
         itemLabel.setPadding(LABEL_PADDING,LABEL_PADDING,LABEL_PADDING,LABEL_PADDING);
 
-        Button deleteButton = requireView().findViewById(R.id.edit_item_dialog_delete_button);
+        ImageView deleteButton = requireView().findViewById(R.id.edit_item_dialog_delete_image_view);
 
-        Drawable deleteSymbol = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_action_delete);
-        assert deleteSymbol != null;
-        deleteSymbol.setBounds(0,0,20,20);
-        deleteButton.setCompoundDrawablesWithIntrinsicBounds(null, deleteSymbol, null,null);
+        deleteButton.setPadding(LABEL_PADDING/2,LABEL_PADDING/2,LABEL_PADDING/2,LABEL_PADDING/2);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 

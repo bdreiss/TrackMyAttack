@@ -21,11 +21,13 @@
         android:layout_width="0dp"
         android:layout_weight="5"/>
 
-    <Button
-        android:id="@+id/edit_item_dialog_delete_button"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/edit_item_dialog_delete_image_view"
+        android:src="@drawable/ic_action_delete"
+        android:layout_height="match_parent"
         android:layout_width="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:clickable="true"/>
 
 
     </LinearLayout>
