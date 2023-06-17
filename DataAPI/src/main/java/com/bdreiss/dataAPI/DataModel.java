@@ -843,26 +843,28 @@ public class DataModel implements Serializable {
 		private int index;
 		private List<Datum> list;
 		private LocalDate date;
+		final private int OFFSET = 4;
 
 		public DayIterator(List<Datum> list, LocalDate date) {
 			this.list = list;
 			this.date = date;
-			index = getStartingIndex(list, 0, list.size() - 1, date);
+			index = getStartingIndex(list, 0, list.size() - 1, this.date);
+			System.out.println(index);
 		}
 
 		// returns the starting index by finding the lowest entry for the given date
 		// using binary search
 		private int getStartingIndex(List<Datum> list, int b, int e, LocalDate date) {
 			if (b > e)
-				return list.size() - 1;
+				return list.size();
 			int mid = (b + e) / 2;
 
-			int minIndex = list.size() - 1;
+			int minIndex = list.size();
 
-			if (list.get(mid).getDate().toLocalDate().equals(date))
+			if (list.get(mid).getDate().minusHours(OFFSET).toLocalDate().compareTo(date)==0)
 				minIndex = mid;
 
-			if (list.get(mid).getDate().toLocalDate().compareTo(date) >= 0)
+			if (list.get(mid).getDate().minusHours(OFFSET).toLocalDate().compareTo(date) >= 0)
 				return Math.min(minIndex, getStartingIndex(list, b, mid - 1, date));
 			else
 				return getStartingIndex(list, mid + 1, e, date);
@@ -873,7 +875,7 @@ public class DataModel implements Serializable {
 		public boolean hasNext() {
 			if (index == list.size())
 				return false;
-			if (list.get(index).getDate().toLocalDate().compareTo(date) > 0)
+			if (list.get(index).getDate().minusHours(OFFSET).toLocalDate().compareTo(date) > 0)
 				return false;
 			return true;
 		}
