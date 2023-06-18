@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import main.java.com.bdreiss.dataAPI.DataModel;
+import main.java.com.bdreiss.dataAPI.Datum;
+import main.java.com.bdreiss.dataAPI.DatumWithIntensity;
+import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Date;
 
 import java.awt.Color;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,16 +27,14 @@ import java.io.ObjectOutputStream;
 class Main{
 
 	public static void main(String[] args){
+
+		DataModel data = new DataModel("/home/bernd/Schreibtisch/TrackMyAttack/Desktop");
+
+		MainFrame frame = new MainFrame(data);	
+
+		frame.setVisible(true);
 	
-	//	MainFrame frame = new MainFrame();	
 		
-	//	frame.setData(new DataModel(20,21));
-//		frame.setVisible(true);
-	
-		DataModel data = new DataModel("Test");
-		
-		System.out.println("Test");
-		data.save();
 		
 	}
 	
