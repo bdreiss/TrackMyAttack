@@ -12,6 +12,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import main.java.com.bdreiss.dataAPI.util.Datum;
+import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
+import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
+
 class DataModelTest {
 
 	private final String SAVE_FILE_PATH = "files/";

@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
-import com.bdreiss.trackmyattack.DataClasses.AbstractDataModel;
+import main.java.com.bdreiss.dataAPI.AbstractDataModel;
+import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
-import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.Intensity;
-import main.java.com.bdreiss.dataAPI.IteratorWithIntensity;
-import main.java.com.bdreiss.dataAPI.TypeMismatchException;
 
 /*
  * Adds a Datum to the DataModel for the key given.

@@ -1,9 +1,16 @@
-package main.java.com.bdreiss.dataAPI;
+package main.java.com.bdreiss.dataAPI.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+
+import main.java.com.bdreiss.dataAPI.DataModel;
+import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import main.java.com.bdreiss.dataAPI.util.Datum;
+import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
 
 public class Main {
 

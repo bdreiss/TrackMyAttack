@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.dataAPI;
+package main.java.com.bdreiss.dataAPI.util;
 
 import java.util.Iterator;
 
@@ -13,7 +13,7 @@ public class IteratorWithIntensity implements Iterator<Datum>{
 
 	private Iterator<Datum> originalIterator;
 	
-	IteratorWithIntensity(Iterator<Datum> originalIterator){
+	public IteratorWithIntensity(Iterator<Datum> originalIterator){
 		this.originalIterator = originalIterator;
 	}
 

@@ -21,17 +21,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.DialogFragment;
 
-import com.bdreiss.trackmyattack.DataClasses.AbstractDataModel;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
-import main.java.com.bdreiss.dataAPI.Datum;
-import main.java.com.bdreiss.dataAPI.DatumWithIntensity;
-import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.Intensity;
-import main.java.com.bdreiss.dataAPI.IteratorWithIntensity;
-import main.java.com.bdreiss.dataAPI.TypeMismatchException;
+import main.java.com.bdreiss.dataAPI.AbstractDataModel;
+import main.java.com.bdreiss.dataAPI.enums.Category;
+import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import main.java.com.bdreiss.dataAPI.util.Datum;
+import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
+import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
+
 
 /*
  * Creates a Dialog that shows all entries for a key with date, time and intensity (if key has intensity).

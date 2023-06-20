@@ -17,6 +17,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import main.java.com.bdreiss.dataAPI.util.Datum;
+import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
+import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+
 /**
  * Class that represents a data model for keeping track of ailments.
  * 

@@ -3,10 +3,10 @@ package main.java.com.bdreiss.trackmyattack;
 import javax.swing.JPanel;
 
 import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.Datum;
-import main.java.com.bdreiss.dataAPI.DatumWithIntensity;
 import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.Intensity;
+import main.java.com.bdreiss.dataAPI.util.Datum;
+import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;

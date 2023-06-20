@@ -1,16 +1,15 @@
-package com.bdreiss.trackmyattack.DataClasses;
+package main.java.com.bdreiss.dataAPI;
 
-import com.bdreiss.trackmyattack.Category;
-import com.bdreiss.trackmyattack.R;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
-import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.Datum;
-import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.Intensity;
-import main.java.com.bdreiss.dataAPI.TypeMismatchException;
+import main.java.com.bdreiss.dataAPI.enums.Category;
+import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import main.java.com.bdreiss.dataAPI.util.Datum;
+
 
 /*
  * Class representing the category AILMENT.
@@ -67,4 +66,6 @@ public class AilmentDataModel extends AbstractDataModel{
     public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
         data.editAilmentEntry(key, date, intensity);
     }
+
+
 }

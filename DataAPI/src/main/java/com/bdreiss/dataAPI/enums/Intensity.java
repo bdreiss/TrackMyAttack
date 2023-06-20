@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.dataAPI;
+package main.java.com.bdreiss.dataAPI.enums;
 /**
  * Represents the intensity of causes, symptoms and remedies.
  * 

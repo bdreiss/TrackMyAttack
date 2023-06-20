@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.dataAPI;
+package main.java.com.bdreiss.dataAPI.exceptions;
 
 public class TypeMismatchException extends Exception {
 

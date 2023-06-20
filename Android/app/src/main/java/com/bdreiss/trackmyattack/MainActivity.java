@@ -7,18 +7,17 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bdreiss.trackmyattack.DataClasses.AilmentDataModel;
-import com.bdreiss.trackmyattack.DataClasses.CauseDataModel;
-import com.bdreiss.trackmyattack.DataClasses.RemedyDataModel;
-import com.bdreiss.trackmyattack.DataClasses.SymptomDataModel;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import main.java.com.bdreiss.dataAPI.AilmentDataModel;
+import main.java.com.bdreiss.dataAPI.CauseDataModel;
 import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.Intensity;
-import main.java.com.bdreiss.dataAPI.TypeMismatchException;
+import main.java.com.bdreiss.dataAPI.RemedyDataModel;
+import main.java.com.bdreiss.dataAPI.SymptomDataModel;
+import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 
 public class MainActivity extends AppCompatActivity {
         @Override

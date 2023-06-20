@@ -3,6 +3,8 @@ package main.java.com.bdreiss.dataAPI;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
+import main.java.com.bdreiss.dataAPI.util.Datum;
+
 public interface Edit {
 
 	void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException;

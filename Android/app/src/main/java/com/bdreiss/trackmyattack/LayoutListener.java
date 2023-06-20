@@ -8,9 +8,10 @@ import android.widget.LinearLayout;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.bdreiss.trackmyattack.DataClasses.AbstractDataModel;
-
 import java.util.Iterator;
+
+import main.java.com.bdreiss.dataAPI.AbstractDataModel;
+import main.java.com.bdreiss.dataAPI.enums.Category;
 
 /*
  * Class that represents a listener that on click initializes a layout (causes, remedies or symptoms)

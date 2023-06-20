@@ -12,9 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.bdreiss.trackmyattack.DataClasses.AbstractDataModel;
-
 import java.util.Objects;
+
+import main.java.com.bdreiss.dataAPI.AbstractDataModel;
+import main.java.com.bdreiss.dataAPI.enums.Category;
 
 /*
  * Dialog that adds a new key to the DataModel.
@@ -22,7 +23,7 @@ import java.util.Objects;
 
 public class AddKeyDialog extends DialogFragment {
 
-    private  AbstractDataModel dataModel;
+    private AbstractDataModel dataModel;
     private AddKeyDialogListener listener;
 
     public AddKeyDialog(AbstractDataModel dataModel, AddKeyDialogListener listener){

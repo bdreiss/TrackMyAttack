@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.dataAPI;
+package main.java.com.bdreiss.dataAPI.util;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
