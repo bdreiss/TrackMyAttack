@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.Stack;
 
 import main.java.com.bdreiss.dataAPI.AbstractDataModel;
 import main.java.com.bdreiss.dataAPI.enums.Category;
@@ -126,14 +126,21 @@ public class EditItemDialog extends DialogFragment {
 
         assert(entries != null);
 
+        //in order to show the newest entries on top of the list push all entries on top of a Stack
+        // so that they are in reverse order and then pop them one by one
+        Stack<Datum> entriesStack = new Stack<>();
+
+        while (entries.hasNext())
+            entriesStack.push(entries.next());
 
         //loop through entries and add them to linearLayout
-        while (entries.hasNext()) {
+        while (!entriesStack.empty()) {
+
+            Datum entry = entriesStack.pop();
 
             //add separation line
             linearLayout.addView(EditItemView.getSeparationLine(getContext()));
 
-            Datum entry = entries.next();
             LocalDateTime date = entry.getDate();
 
             //LinearLayout for TextViews showing date, time and intensity and the remove Button
