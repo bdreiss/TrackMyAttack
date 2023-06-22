@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
+import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import main.java.com.bdreiss.dataAPI.util.Datum;
 
 

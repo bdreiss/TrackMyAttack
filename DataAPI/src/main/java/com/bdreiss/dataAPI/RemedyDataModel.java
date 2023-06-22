@@ -65,4 +65,10 @@ public class RemedyDataModel extends AbstractDataModel{
     public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
         data.editRemedyEntry(key, date, intensity);
     }
+
+	@Override
+	public int getSize() {
+		return data.getRemediesSize();
+	}
+
 }

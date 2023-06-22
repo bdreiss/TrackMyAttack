@@ -12,6 +12,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import main.java.com.bdreiss.dataAPI.util.Datum;
 import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
 import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;

@@ -1,6 +1,7 @@
 package main.java.com.bdreiss.dataAPI;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
@@ -9,6 +10,7 @@ import main.java.com.bdreiss.dataAPI.enums.Intensity;
 import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import main.java.com.bdreiss.dataAPI.util.Datum;
+import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
 
 /*
@@ -66,6 +68,15 @@ public class AilmentDataModel extends AbstractDataModel{
     public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
         data.editAilmentEntry(key, date, intensity);
     }
+
+	@Override
+	public int getSize() {
+		return data.getAilmentsSize();
+	}
+	
+	public IteratorWithIntensity getEntry(LocalDate ld) throws EntryNotFoundException {
+		return (IteratorWithIntensity) data.getAilmentData("Migraine", ld);
+	}
 
 
 }

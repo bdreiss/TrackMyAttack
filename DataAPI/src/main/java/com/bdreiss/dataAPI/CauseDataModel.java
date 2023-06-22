@@ -65,4 +65,11 @@ public class CauseDataModel extends AbstractDataModel{
     public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
         data.editCauseEntry(key, date, intensity);
     }
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return data.getCausesSize();
+	}
+
 }

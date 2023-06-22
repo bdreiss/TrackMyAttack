@@ -39,6 +39,6 @@ import main.java.com.bdreiss.dataAPI.util.Datum;
     public abstract void removeKey(String key);
     public abstract void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException;
     public abstract void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException;
-
+    public abstract int getSize();
 
 }
