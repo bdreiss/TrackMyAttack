@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.Intensity;
 import main.java.com.bdreiss.dataAPI.util.Datum;
 import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
 

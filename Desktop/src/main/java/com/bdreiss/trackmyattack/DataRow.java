@@ -2,11 +2,13 @@ package main.java.com.bdreiss.trackmyattack;
 
 import javax.swing.JPanel;
 
+import main.java.com.bdreiss.dataAPI.AilmentDataModel;
 import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.Intensity;
+import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import main.java.com.bdreiss.dataAPI.util.Datum;
 import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
+import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -32,7 +34,7 @@ class DataRow extends JPanel{
 	final int CIRCLE_OFFSET_HIGH = 2;
 
 	
-	public DataRow(String key, DataModel data, int size, Color color){
+	public DataRow(String labelString, Iterator<Datum> it, int size, AilmentDataModel ailments, Color color){
 
 		
 		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
@@ -51,7 +53,7 @@ class DataRow extends JPanel{
 		c.gridx = 0;
 		c.gridy = 0;
 
-		JLabel label = new JLabel(key);
+		JLabel label = new JLabel(labelString);
 
 		
 		label.setMinimumSize(new Dimension(Dimensions.LABEL_WIDTH.value(),Dimensions.HEIGHT.value()));
@@ -67,34 +69,64 @@ class DataRow extends JPanel{
 		layout.setHgap(0);
 
 		dataPanel.setLayout(layout);
-		
-
-		int dataSize = data.getCausesSize();
-				
+						
 		
 		LocalDate dateCounter = LocalDate.now().minusDays(size);
 		
-
-
+		System.out.println(dateCounter);
+		
+		Datum datum = null;
+		
+		if (it.hasNext())
+			datum = it.next();
+		
 		while (dateCounter.compareTo(LocalDate.now()) <= 0) {
-
 
 			final LocalDate currentDate = dateCounter;
 			
-			boolean dataExists = false;
+			Color colorToSet = Colors.EMPTY_COLOR.value();
 			
-			
-			try {
-				dataExists = data.getCauseData(key, dateCounter).hasNext();
-			} catch (EntryNotFoundException e) {
-				// TODO Auto-generated catch block
+			if (datum != null) {
+				if (datum.getDate().toLocalDate().compareTo(currentDate) == 0) {
+					Intensity intensity = Intensity.LOW;
+					
+					if (datum instanceof DatumWithIntensity) {
+						
+					
+						while (datum != null && datum.getDate().toLocalDate().compareTo(currentDate)==0 ) {
+						
+							if (((DatumWithIntensity) datum).getIntensity().compareTo(intensity)>0)
+								intensity = ((DatumWithIntensity) datum).getIntensity();
+							if (it.hasNext())
+								datum = it.next();
+							else
+								datum = null;
+						}
+					}else {
+						while (datum != null && datum.getDate().toLocalDate().compareTo(currentDate)==0 ) {
+							if (it.hasNext())
+								datum = it.next();
+							else
+								datum = null;
+							
+						}
+						intensity = Intensity.MEDIUM;
 
-				e.printStackTrace();
+					}
+					
+					if (intensity == Intensity.LOW)
+						colorToSet = color.brighter();
+					else if (intensity == Intensity.HIGH)
+						colorToSet = color.darker();
+					else
+						colorToSet = color;
+				
+					if (datum != null)
+						System.out.println(labelString + ": " + datum.getDate());
+				}
 			}
 
-			if (!dataExists)
-				System.out.println(key + " has not data for " + dateCounter.toString());
-			final Color colorToSet = dataExists ? color : Colors.EMPTY_COLOR.value();
+			final Color colorToSetFinal = colorToSet;
 
 			JPanel box = new JPanel(){
 			
@@ -104,7 +136,7 @@ class DataRow extends JPanel{
 				@Override
 				public void paint(Graphics graphics){
 			
-					graphics.setColor(colorToSet);
+					graphics.setColor(colorToSetFinal);
 					
 					graphics.fillRect(0,0,Dimensions.WIDTH.value(),Dimensions.HEIGHT.value());
 					
@@ -113,9 +145,9 @@ class DataRow extends JPanel{
 					graphics.drawRect(0, 0, Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()+20);
 					
 					try {
-						if (data.getAilmentData("Migraine", currentDate).hasNext()) {
+						if (ailments.getEntry(currentDate).hasNext()) {
 							
-							Iterator<Datum> it = data.getAilmentData("Migraine",currentDate);
+							IteratorWithIntensity it = ailments.getEntry(currentDate);
 							
 							Intensity intensity = Intensity.NO_INTENSITY;
 							

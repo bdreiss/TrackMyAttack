@@ -2,14 +2,17 @@ package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Iterator;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
-import main.java.com.bdreiss.dataAPI.Category;
+import main.java.com.bdreiss.dataAPI.CauseDataModel;
 import main.java.com.bdreiss.dataAPI.DataModel;
 
 class MainFrame extends JFrame{
@@ -26,9 +29,14 @@ class MainFrame extends JFrame{
 		
 		setSize(screenSize);
 						
-		dataPanel = new DataPanel(data, (int)screenSize.getWidth(), (int) (screenSize.getHeight()*0.8));
+		dataPanel = new DataPanel(new CauseDataModel(data), (int)screenSize.getWidth(), (int) (screenSize.getHeight()*0.8));
+
 		
-		add(dataPanel, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(dataPanel);
+
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);;
+		
+		add(scrollPane, BorderLayout.CENTER);
 
 		addWindowListener(new WindowAdapter(){
 		
