@@ -2,6 +2,7 @@ package main.java.com.bdreiss.trackmyattack;
 
 import javax.swing.JPanel;
 
+import main.java.com.bdreiss.dataAPI.AbstractDataModel;
 import main.java.com.bdreiss.dataAPI.AilmentDataModel;
 import main.java.com.bdreiss.dataAPI.DataModel;
 import main.java.com.bdreiss.dataAPI.enums.Intensity;
@@ -34,7 +35,7 @@ class DataRow extends JPanel{
 	final int CIRCLE_OFFSET_HIGH = 2;
 
 	
-	public DataRow(String labelString, Iterator<Datum> it, int size, AilmentDataModel ailments, Color color){
+	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments,int size, Color[] colorSet) throws EntryNotFoundException{
 
 		
 		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
@@ -53,7 +54,7 @@ class DataRow extends JPanel{
 		c.gridx = 0;
 		c.gridy = 0;
 
-		JLabel label = new JLabel(labelString);
+		JLabel label = new JLabel(key);
 
 		
 		label.setMinimumSize(new Dimension(Dimensions.LABEL_WIDTH.value(),Dimensions.HEIGHT.value()));
@@ -73,12 +74,6 @@ class DataRow extends JPanel{
 		
 		LocalDate dateCounter = LocalDate.now().minusDays(size);
 		
-		System.out.println(dateCounter);
-		
-		Datum datum = null;
-		
-		if (it.hasNext())
-			datum = it.next();
 		
 		while (dateCounter.compareTo(LocalDate.now()) <= 0) {
 
@@ -86,45 +81,31 @@ class DataRow extends JPanel{
 			
 			Color colorToSet = Colors.EMPTY_COLOR.value();
 			
-			if (datum != null) {
-				if (datum.getDate().toLocalDate().compareTo(currentDate) == 0) {
-					Intensity intensity = Intensity.LOW;
-					
-					if (datum instanceof DatumWithIntensity) {
-						
-					
-						while (datum != null && datum.getDate().toLocalDate().compareTo(currentDate)==0 ) {
-						
-							if (((DatumWithIntensity) datum).getIntensity().compareTo(intensity)>0)
-								intensity = ((DatumWithIntensity) datum).getIntensity();
-							if (it.hasNext())
-								datum = it.next();
-							else
-								datum = null;
-						}
-					}else {
-						while (datum != null && datum.getDate().toLocalDate().compareTo(currentDate)==0 ) {
-							if (it.hasNext())
-								datum = it.next();
-							else
-								datum = null;
-							
-						}
-						intensity = Intensity.MEDIUM;
-
-					}
-					
-					if (intensity == Intensity.LOW)
-						colorToSet = color.brighter();
-					else if (intensity == Intensity.HIGH)
-						colorToSet = color.darker();
-					else
-						colorToSet = color;
+			Iterator<Datum> it = data.getData(key, currentDate);
+			
+			Intensity intensity = Intensity.NO_INTENSITY;
+			
+			while (it.hasNext()) {
 				
-					if (datum != null)
-						System.out.println(labelString + ": " + datum.getDate());
+				if (it instanceof IteratorWithIntensity) {
+					DatumWithIntensity datum = (DatumWithIntensity) it.next();
+					if (datum.getIntensity().compareTo(intensity)>0)
+						intensity = datum.getIntensity();
 				}
+				else {
+					intensity = Intensity.MEDIUM;
+					it.next();
+				}
+				
 			}
+
+			if (intensity == Intensity.LOW)
+				colorToSet = colorSet[0];
+			else if (intensity == Intensity.MEDIUM)
+				colorToSet = colorSet[1];
+			else if (intensity == Intensity.HIGH)
+				colorToSet = colorSet[2];
+
 
 			final Color colorToSetFinal = colorToSet;
 

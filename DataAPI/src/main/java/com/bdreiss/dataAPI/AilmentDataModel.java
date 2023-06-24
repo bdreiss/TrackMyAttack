@@ -78,5 +78,10 @@ public class AilmentDataModel extends AbstractDataModel{
 		return (IteratorWithIntensity) data.getAilmentData("Migraine", ld);
 	}
 
+	@Override
+	public Iterator<Datum> getData(String key, LocalDate date) throws EntryNotFoundException {
+		return data.getAilmentData(key, date);
+	}
+
 
 }

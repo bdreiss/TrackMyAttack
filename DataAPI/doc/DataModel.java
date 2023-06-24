@@ -647,6 +647,47 @@ public class DataModel implements Serializable {
 	}
 
 	/**
+	 * Returns the number of entries for an ailment.
+	 * 
+	 * @param ailment
+	 * @return size of entries for an ailment
+	 */
+	public int getAilmentEntriesSize(String ailment) {
+		return ailments.get(ailment).size();
+	}
+
+	/**
+	 * Returns the number of entries for a cause.
+	 * 
+	 * @param cause
+	 * @return size of entries for a cause
+	 */
+	public int getCauseEntriesSize(String cause) {
+		return causes.get(cause).size();
+	}
+
+	/**
+	 * Returns the number of entries for a symptom.
+	 * 
+	 * @param symptom
+	 * @return size of entries for a symptom
+	 */
+	public int getSymptomEntriesSize(String symptom) {
+		return symptoms.get(symptom).size();
+	}
+	
+	/**
+	 * Returns the number of entries for a remedy.
+	 * 
+	 * @param remedy
+	 * @return size of entries for a remedy
+	 */
+	public int getRemedyEntriesSize(String remedy) {
+		return remedies.get(remedy).size();
+	}
+
+
+	/**
 	 * Returns all data when ailment occurred (including LocalDateTime and
 	 * Intensity) as Iterator for date.
 	 * 
@@ -856,6 +897,7 @@ public class DataModel implements Serializable {
 			this.list = list;
 			this.date = date;
 			index = getStartingIndex(list, 0, list.size() - 1, this.date);
+			System.out.println(index);
 		}
 
 		// returns the starting index by finding the lowest entry for the given date

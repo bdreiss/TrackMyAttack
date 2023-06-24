@@ -24,7 +24,7 @@ import java.time.ZoneId;
 
 public class DataPanel extends JPanel{
 
-	ArrayList<Color> testColors = new ArrayList<>();
+	ArrayList<Color[]> colorSets = new ArrayList<>();
 	
 	AbstractDataModel data;
 	
@@ -34,9 +34,13 @@ public class DataPanel extends JPanel{
 		
 		this.data = data;
 		
-		testColors.add(Color.BLUE);
-		testColors.add(Color.GREEN);
-		testColors.add(Color.YELLOW);
+		Color[] blues = {new Color(65,105,225), Color.BLUE, Color.BLUE.darker()};
+		Color[] greens = {Color.GREEN.brighter(), Color.GREEN,Color.GREEN.darker()};
+		Color[] yellows = {Color.YELLOW.brighter(), Color.YELLOW, Color.YELLOW.darker()};
+		
+		colorSets.add(blues);
+		colorSets.add(greens);
+		colorSets.add(yellows);
 		setData();
 
 	
@@ -75,18 +79,13 @@ public class DataPanel extends JPanel{
 			
 				LocalDate earliestDate = itForKey.next().getDate().toLocalDate();
 				entriesSize = (int) Duration.between(earliestDate.atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
-				
-				System.out.println(earliestDate + ": " + entriesSize);
-			
+							
 			}
-			System.out.println(entriesSize);
 			
 			if (entriesSize >= 0)
 				entriesSize += 1;
 			else
 				entriesSize = 0;
-
-			System.out.println(entriesSize);
 
 			size = entriesSize > size ? entriesSize : size;
 		}
@@ -101,7 +100,8 @@ public class DataPanel extends JPanel{
 		while (it.hasNext()) {
 			String key = it.next();
 			try {
-				add(new DataRow(key, data.getData(key), size, new AilmentDataModel(data.getData()), testColors.get(c.gridy%(testColors.size()))),c);
+				Color[] colorSet = colorSets.get(c.gridy%(colorSets.size()));
+				add(new DataRow(key, data, new AilmentDataModel(data.getData()), size, colorSet),c);
 			} catch (EntryNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

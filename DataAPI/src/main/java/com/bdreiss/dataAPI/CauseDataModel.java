@@ -1,6 +1,7 @@
 package main.java.com.bdreiss.dataAPI;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
@@ -70,6 +71,11 @@ public class CauseDataModel extends AbstractDataModel{
 	public int getSize() {
 		// TODO Auto-generated method stub
 		return data.getCausesSize();
+	}
+
+	@Override
+	public Iterator<Datum> getData(String key, LocalDate date) throws EntryNotFoundException {
+		return data.getCauseData(key, date);
 	}
 
 }

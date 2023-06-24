@@ -1,6 +1,7 @@
 package main.java.com.bdreiss.dataAPI;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
@@ -69,6 +70,11 @@ public class RemedyDataModel extends AbstractDataModel{
 	@Override
 	public int getSize() {
 		return data.getRemediesSize();
+	}
+
+	@Override
+	public Iterator<Datum> getData(String key, LocalDate date) throws EntryNotFoundException {
+		return data.getRemedyData(key, date);
 	}
 
 }
