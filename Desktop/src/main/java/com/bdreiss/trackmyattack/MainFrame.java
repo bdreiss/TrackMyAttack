@@ -32,7 +32,7 @@ class MainFrame extends JFrame{
 		
 		setSize(screenSize);
 						
-		dataPanel = new DataPanel(new GeoDataModel(new GeoData(LocalDate.now().minusDays(100), null)), (int)screenSize.getWidth(), (int) (screenSize.getHeight()*0.8));
+		dataPanel = new DataPanel(new CauseDataModel(data), (int)screenSize.getWidth(), (int) (screenSize.getHeight()*0.8));
 
 		
 		JScrollPane scrollPane = new JScrollPane(dataPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);

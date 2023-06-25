@@ -63,7 +63,7 @@ public class DataPanel extends JPanel{
 
 		Iterator<String> it = data.getKeys();
 
-		int size = 0;
+		LocalDate startDate = LocalDate.now();
 		
 		while (it.hasNext()) {
 			Iterator<Datum> itForKey = null;
@@ -73,35 +73,28 @@ public class DataPanel extends JPanel{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			int entriesSize = 0;
 			
 			if (itForKey != null && itForKey.hasNext()) {
 			
 				LocalDate earliestDate = itForKey.next().getDate().toLocalDate();
-				entriesSize = (int) Duration.between(earliestDate.atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
-							
+				
+				if (earliestDate.compareTo(startDate)< 0)
+					startDate = earliestDate;
+				
 			}
 			
-			if (entriesSize >= 0)
-				entriesSize += 1;
-			else
-				entriesSize = 0;
-
-			size = entriesSize > size ? entriesSize : size;
 		}
-		
+				
 		it = data.getKeys();
 		
-		it = data.getKeys();
-		
-		add(new DataRow(size),c);
+		add(new DataRow(startDate),c);
 		
 
 		while (it.hasNext()) {
 			String key = it.next();
 			try {
 				Color[] colorSet = colorSets.get(c.gridy%(colorSets.size()));
-				add(new DataRow(key, data, new AilmentDataModel(data.getData()), size, colorSet),c);
+				add(new DataRow(key, data, new AilmentDataModel(data.getData()), startDate, colorSet),c);
 			} catch (EntryNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

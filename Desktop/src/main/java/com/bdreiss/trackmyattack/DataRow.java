@@ -35,7 +35,7 @@ class DataRow extends JPanel{
 	final int CIRCLE_OFFSET_HIGH = 2;
 
 	
-	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments,int size, Color[] colorSet) throws EntryNotFoundException{
+	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments, LocalDate startDate, Color[] colorSet) throws EntryNotFoundException{
 
 		
 		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
@@ -72,7 +72,7 @@ class DataRow extends JPanel{
 		dataPanel.setLayout(layout);
 						
 		
-		LocalDate dateCounter = LocalDate.now().minusDays(size);
+		LocalDate dateCounter = startDate;
 		
 		
 		while (dateCounter.compareTo(LocalDate.now()) <= 0) {
@@ -182,7 +182,7 @@ class DataRow extends JPanel{
 		
 	} 
 
-	public DataRow(int size){
+	public DataRow(LocalDate startDate){
 		
 		setPreferredSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
 		
@@ -218,31 +218,25 @@ class DataRow extends JPanel{
 
 		dataPanel.setLayout(layout);
 			
-		ArrayList<JLabel> labels = new ArrayList<>();
-		
-		if ((size>0) && (size>6)){
-
-			Date date = new Date();
-			LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate dateCounter = startDate;
+				
+		while (dateCounter.compareTo(LocalDate.now())<=0) {
 			
-			for (int i = size; i > 0; i -= 7) {
-				
-				localDate = localDate.minusWeeks(1);
-				int month = localDate.getMonthValue();
-				int day = localDate.getDayOfMonth();
-				JLabel dateLabel = new JLabel(month + "-" + day);
-				dateLabel.setMinimumSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
-				dateLabel.setMaximumSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
-				dateLabel.setPreferredSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
-				
-				labels.add(dateLabel);
-			}
+			
+			
+			int month = dateCounter.getMonthValue();
+			int day = dateCounter.getDayOfMonth();
+			JLabel dateLabel = new JLabel(month + "-" + day);
+			dateLabel.setMinimumSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
+			dateLabel.setMaximumSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
+			dateLabel.setPreferredSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
+			
+			dataPanel.add(dateLabel);
+			
+			dateCounter = dateCounter.plusWeeks(1);
+			
 		}
 		
-		for (int i = labels.size(); i > 0; i--)
-			dataPanel.add(labels.get(i-1));
-
-		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = Dimensions.RATIO.value();
 		c.gridx = 1;
 		c.gridy = 0;
