@@ -811,7 +811,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Loads data if file exists in save path provided in constructor.
 	 */
-	private void load() {
+	public void load() {
 
 		DataModel data = null;
 

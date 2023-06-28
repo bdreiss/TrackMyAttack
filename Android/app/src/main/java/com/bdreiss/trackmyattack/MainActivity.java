@@ -3,6 +3,8 @@ package com.bdreiss.trackmyattack;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,9 +19,14 @@ import main.java.com.bdreiss.dataAPI.DataModel;
 import main.java.com.bdreiss.dataAPI.RemedyDataModel;
 import main.java.com.bdreiss.dataAPI.SymptomDataModel;
 import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import main.java.com.bdreiss.dataAPI.exceptions.NetworkException;
 import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import network.Dropbox;
 
 public class MainActivity extends AppCompatActivity {
+
+        public static DataModel data;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -31,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //DataModel.deleteSaveFile(this)
 
-        DataModel data = new DataModel(getFilesDir().getAbsolutePath());
+        data = new DataModel(getFilesDir().getAbsolutePath());
 
         try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir().getAbsolutePath() + "/Text.txt"));
@@ -41,6 +48,24 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
         }
 
+        Button syncButton = findViewById(R.id.button_sync);
+
+        syncButton.setOnClickListener(v -> {
+
+                Thread t = new Thread(() -> {
+                        try {
+                                Dropbox.upload(data);
+                        } catch (NetworkException e) {
+                                e.printStackTrace();
+                                Log.d("Dropbox", e.toString());
+                        }
+
+
+                });
+                t.start();
+                Log.d("Dropbox", "HERE");
+
+        });
 
         Button migraineButton = findViewById(R.id.button_migraine);
 
