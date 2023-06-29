@@ -2,26 +2,41 @@ package com.bdreiss.trackmyattack;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Looper;
+import android.text.Html;
+import android.text.InputType;
+import android.text.Layout;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
-import main.java.com.bdreiss.dataAPI.AilmentDataModel;
-import main.java.com.bdreiss.dataAPI.CauseDataModel;
-import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.RemedyDataModel;
-import main.java.com.bdreiss.dataAPI.SymptomDataModel;
-import main.java.com.bdreiss.dataAPI.enums.Intensity;
-import main.java.com.bdreiss.dataAPI.exceptions.NetworkException;
-import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import network.Dropbox;
+import com.bdreiss.dataAPI.AilmentDataModel;
+import com.bdreiss.dataAPI.CauseDataModel;
+import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.RemedyDataModel;
+import com.bdreiss.dataAPI.SymptomDataModel;
+import com.bdreiss.dataAPI.enums.Intensity;
+import com.bdreiss.dataAPI.exceptions.NetworkException;
+import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.network.Dropbox;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +69,52 @@ public class MainActivity extends AppCompatActivity {
 
                 Thread t = new Thread(() -> {
                         try {
-                                Dropbox.upload(data);
+                                Dropbox.upload(data, getKey(), (url, s) -> {
+                                        ArrayList<String> inputString = new ArrayList<>();
+
+                                        final boolean[] dismissed = {false};
+
+                                        runOnUiThread(() -> {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                                                View alertView = getLayoutInflater().inflate(R.layout.custom_alert, null);
+                                                builder.setView(alertView);
+                                                builder.create().show();
+                                                builder.setTitle("Dropbox Authentication");
+                                                EditText input = (EditText) alertView.findViewById(R.id.custom_alert_edit_text);
+                                                TextView text = (TextView) alertView.findViewById(R.id.custom_alert_text_view);
+                                                text.setMovementMethod(LinkMovementMethod.getInstance());
+
+                                                text.setText(s + "\n\n" + url);
+                                                //text.setText(Html.fromHtml(text.getText().toString()));
+                                                text.setClickable(true);
+                                                text.setTextSize(20);
+
+                                                text.setTextIsSelectable(true);
+
+                                                alertView.findViewById(R.id.custom_alert_button_confirm).setOnClickListener(v1 ->{
+                                                        inputString.add(input.getText().toString());
+                                                        dismissed[0] = true;});
+
+                                                alertView.findViewById(R.id.custom_alert_button_cancel).setOnClickListener(v2 ->{
+                                                        dismissed[0] = true;});
+
+                                                builder.setOnDismissListener(dialog -> {
+                                                        dismissed[0] = true;
+                                                });
+                                        });
+
+                                        while (!dismissed[0]) {
+
+                                                try {
+                                                        Log.d("XXX", "XXX");
+
+                                                        Thread.sleep(500);
+                                                } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                }
+                                        }
+                                        return inputString.size() > 0 ? inputString.get(0) : null;
+                                });
                         } catch (NetworkException e) {
                                 e.printStackTrace();
                                 Log.d("Dropbox", e.toString());
@@ -63,7 +123,12 @@ public class MainActivity extends AppCompatActivity {
 
                 });
                 t.start();
-                Log.d("Dropbox", "HERE");
+                try {
+                        t.join();
+                        Log.d("Dropbox", "Upload complete");
+                } catch (InterruptedException e) {
+                        e.printStackTrace();
+                }
 
         });
 
@@ -123,4 +188,20 @@ public class MainActivity extends AppCompatActivity {
         remedyViewButton.setOnClickListener(remedyLayoutListener);
         }
 
+        private String getKey() {
+                String key = "";
+                try {
+
+                        FileReader is = new FileReader(getFilesDir() + "/TrackMyAttackKey");
+                        BufferedReader bis = new BufferedReader(is);
+
+                        key = bis.readLine();
+
+                        bis.close();
+                        is.close();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+                return key;
+        }
 }

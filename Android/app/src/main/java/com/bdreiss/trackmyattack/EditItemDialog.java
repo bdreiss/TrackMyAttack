@@ -25,14 +25,14 @@ import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Stack;
 
-import main.java.com.bdreiss.dataAPI.AbstractDataModel;
-import main.java.com.bdreiss.dataAPI.enums.Category;
-import main.java.com.bdreiss.dataAPI.enums.Intensity;
-import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import main.java.com.bdreiss.dataAPI.util.Datum;
-import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
-import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.enums.Category;
+import com.bdreiss.dataAPI.enums.Intensity;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.util.DatumWithIntensity;
+import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
 
 /*

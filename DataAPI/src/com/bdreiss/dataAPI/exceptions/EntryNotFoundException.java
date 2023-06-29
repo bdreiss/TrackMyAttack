@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.dataAPI.exceptions;
+package com.bdreiss.dataAPI.exceptions;
 
 /**
  * Gets thrown it entry is not found in DataModel

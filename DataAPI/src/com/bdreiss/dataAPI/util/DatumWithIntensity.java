@@ -1,9 +1,9 @@
-package main.java.com.bdreiss.dataAPI.util;
+package com.bdreiss.dataAPI.util;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import main.java.com.bdreiss.dataAPI.enums.Intensity;
+import com.bdreiss.dataAPI.enums.Intensity;
 
 /**
  * Extending the basic data type Datum containing the date plus intensity of

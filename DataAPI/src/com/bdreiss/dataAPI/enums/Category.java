@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.dataAPI.enums;
+package com.bdreiss.dataAPI.enums;
 
 //Categories being supported by the DataModel
 

@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
-import main.java.com.bdreiss.dataAPI.AbstractDataModel;
-import main.java.com.bdreiss.dataAPI.enums.Intensity;
-import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.enums.Intensity;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
 
 /*

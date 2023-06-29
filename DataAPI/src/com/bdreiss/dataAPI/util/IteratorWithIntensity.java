@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.dataAPI.util;
+package com.bdreiss.dataAPI.util;
 
 import java.util.Iterator;
 

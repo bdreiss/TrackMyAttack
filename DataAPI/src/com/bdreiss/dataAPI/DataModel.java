@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.dataAPI;
+package com.bdreiss.dataAPI;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,12 +17,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import main.java.com.bdreiss.dataAPI.enums.Intensity;
-import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import main.java.com.bdreiss.dataAPI.util.Datum;
-import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
-import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
-import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.dataAPI.enums.Intensity;
+import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.util.DatumWithIntensity;
+import com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 
 /**
  * Class that represents a data model for keeping track of ailments.

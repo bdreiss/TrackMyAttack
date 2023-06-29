@@ -10,8 +10,8 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.Iterator;
 
-import main.java.com.bdreiss.dataAPI.AbstractDataModel;
-import main.java.com.bdreiss.dataAPI.enums.Category;
+import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.enums.Category;
 
 /*
  * Class that represents a listener that on click initializes a layout (causes, remedies or symptoms)

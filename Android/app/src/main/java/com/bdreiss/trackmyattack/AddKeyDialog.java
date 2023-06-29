@@ -14,8 +14,8 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.Objects;
 
-import main.java.com.bdreiss.dataAPI.AbstractDataModel;
-import main.java.com.bdreiss.dataAPI.enums.Category;
+import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.enums.Category;
 
 /*
  * Dialog that adds a new key to the DataModel.

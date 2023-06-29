@@ -1,26 +1,28 @@
-package main.java.com.bdreiss.dataAPI.test;
+package com.bdreiss.dataAPI.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
-import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.enums.Intensity;
-import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import main.java.com.bdreiss.dataAPI.util.Datum;
-import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
+import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.enums.Intensity;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.util.DatumWithIntensity;
+import com.dropbox.core.oauth.DbxCredential;
 
 public class Main {
 
-	final static String PATH = "files/";
+	final static String PATH = System.getProperty("user.home") + "/Apps/TrackMyAttack";
 
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException, EntryNotFoundException, TypeMismatchException {
 
+		System.out.println(PATH);
 		DataModel data = new DataModel(PATH);
 
-		processTextFile(data, PATH + "Text.txt");
+		processTextFile(data, PATH + "/Text.txt");
 		data.print();
 	}
 
