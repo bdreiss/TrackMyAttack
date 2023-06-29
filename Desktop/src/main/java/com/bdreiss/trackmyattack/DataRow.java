@@ -2,14 +2,14 @@ package main.java.com.bdreiss.trackmyattack;
 
 import javax.swing.JPanel;
 
-import main.java.com.bdreiss.dataAPI.AbstractDataModel;
-import main.java.com.bdreiss.dataAPI.AilmentDataModel;
-import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.enums.Intensity;
-import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.util.Datum;
-import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
-import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.AilmentDataModel;
+import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.enums.Intensity;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.util.DatumWithIntensity;
+import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;

@@ -11,11 +11,11 @@ import java.util.Iterator;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import main.java.com.bdreiss.dataAPI.AbstractDataModel;
-import main.java.com.bdreiss.dataAPI.AilmentDataModel;
-import main.java.com.bdreiss.dataAPI.DataModel;
-import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.AilmentDataModel;
+import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.dataAPI.util.Datum;
 
 import java.awt.GridBagLayout;
 import java.time.Duration;

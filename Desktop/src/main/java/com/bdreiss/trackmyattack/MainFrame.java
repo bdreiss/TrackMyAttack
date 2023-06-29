@@ -15,8 +15,8 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import main.java.com.bdreiss.dataAPI.CauseDataModel;
-import main.java.com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.CauseDataModel;
+import com.bdreiss.dataAPI.DataModel;
 
 class MainFrame extends JFrame{
 
