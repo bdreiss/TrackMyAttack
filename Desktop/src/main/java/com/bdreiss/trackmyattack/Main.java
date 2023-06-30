@@ -18,9 +18,12 @@ import java.awt.Color;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.time.LocalDate;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -36,37 +39,43 @@ class Main{
 
 		DataModel data = new DataModel(System.getProperty("user.home") + "/Apps/TrackMyAttack");
 
-
-		try {
-			Dropbox.upload(data, getKey(), (url, s) -> {
-				System.out.println(s);
+		if (!(new File(Dropbox.getDbxFilePath(data)).exists())) {
+			try {
+				URL url = new URL(Dropbox.getAuthorizationURL(getKey()));
+				System.out.println(Dropbox.message);
 				System.out.println(url);
 				
 				InputStreamReader isr = new InputStreamReader(System.in);
 				
 				BufferedReader br = new BufferedReader(isr);
+								
+				String authorizationToken = br.readLine();
 				
-				String returnString;
-				try {
-					returnString = br.readLine();
-					br.close();
-					isr.close();
+				br.close();
+				isr.close();
+				
+				Dropbox.authorize(getKey(), authorizationToken, data);
+				
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (NetworkException e) {
+				e.printStackTrace();
+			}
 
-				} catch (IOException e) {
-					throw new NetworkException(e);
-				}
-				
-				
-				return returnString;
-			});
+		}
+			
+
+		try {
+			Dropbox.download(data);
 		} catch (NetworkException e) {
 			e.printStackTrace();
 			System.out.println(e.toString());
 		}
 
-//		MainFrame frame = new MainFrame(data);	
-//
-//		frame.setVisible(true);
+		MainFrame frame = new MainFrame(data);	
+
+		frame.setVisible(true);
 	
 //	
 //		data.deleteSaveFile();

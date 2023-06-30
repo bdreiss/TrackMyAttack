@@ -1,30 +1,22 @@
 package com.bdreiss.dataAPI.network;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxAuthFinish;
 import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxPKCEWebAuth;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
+import com.dropbox.core.TokenAccessType;
 import com.dropbox.core.json.JsonReader.FileLoadException;
 import com.dropbox.core.oauth.DbxCredential;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.DownloadErrorException;
-import com.dropbox.core.v2.files.Metadata;
-import com.dropbox.core.v2.files.UploadError;
-import com.dropbox.core.v2.files.UploadErrorException;
 import com.dropbox.core.v2.files.WriteMode;
 
 import com.bdreiss.dataAPI.DataModel;
@@ -32,17 +24,60 @@ import com.bdreiss.dataAPI.exceptions.NetworkException;
 
 public class Dropbox {
 
+	public static String message = "Go to the following address and click \"Allow\" (you might have to log in first).\nCopy the authorization code and enter it here.";
+
 	private static String DROPBOX_PATH = "/";
+	
+	private static DbxPKCEWebAuth PKCE_WEB_AUTH;
+	
+	public static String getDbxFilePath(DataModel data) {
+		return data.getSaveFile().getParent()+"/DropboxAuth";
+	};
+	
+	public static String getAuthorizationURL(String key) {
+	     // Run through Dropbox API authorization process without client secret
+        DbxRequestConfig requestConfig = new DbxRequestConfig("TrackMyAttack");
+        DbxAppInfo appInfoWithoutSecret = new DbxAppInfo(key);
+        PKCE_WEB_AUTH = new DbxPKCEWebAuth(requestConfig, appInfoWithoutSecret);
+
+        DbxWebAuth.Request webAuthRequest =  DbxWebAuth.newRequestBuilder()
+                .withNoRedirect()
+                .withTokenAccessType(TokenAccessType.OFFLINE)
+                .build();
+            
+        return PKCE_WEB_AUTH.authorize(webAuthRequest);
+	}
+	
+	public static void authorize(String key, String authorizationToken, DataModel data) throws NetworkException {
+
+			try {
+			    if (authorizationToken == null)
+			        	throw new NetworkException(new NullPointerException("No authorization code has been passed to the Dropbox authorization routine."));
+			        
+			    authorizationToken =authorizationToken.trim();
+
+				DbxAuthFinish authorization = PKCE_WEB_AUTH.finishFromCode(authorizationToken);
+				
+				DbxCredential credential = new DbxCredential(authorization.getAccessToken(),authorization.getExpiresAt(), authorization.getRefreshToken(),key);
+				
+				DbxCredential.Writer.writeToFile(credential, getDbxFilePath(data));
+				
+			} catch (IOException | DbxException e) {
+				throw new NetworkException(e);
+			}
+			
+
+	}
+     
+	public static void upload(DataModel data) throws NetworkException {
 		
-	public static void upload(DataModel data, String key, DbxUserAuthCode dbxUserAuthCode) throws NetworkException {
-		
-		DbxClientV2 client = getClient(data, key, dbxUserAuthCode);
+		DbxClientV2 client = getClient(data);
 	
 
 		try {
 			InputStream is = new FileInputStream(data.getSaveFile());
 		
-			Metadata response = client.files().uploadBuilder(DROPBOX_PATH + data.getSaveFileName()).withMode(WriteMode.OVERWRITE).uploadAndFinish(is);
+			client.files().uploadBuilder(DROPBOX_PATH + data.getSaveFileName()).withMode(WriteMode.OVERWRITE).uploadAndFinish(is);
 		
 			is.close();
 		} catch (IOException | DbxException e) {
@@ -51,13 +86,14 @@ public class Dropbox {
 	}
 	
 
-	public static void download(DataModel data, String key, DbxUserAuthCode dbxUserAuthCode) throws NetworkException {
-		DbxClientV2 client = getClient(data, key, dbxUserAuthCode);
+	public static void download(DataModel data) throws NetworkException {
+		DbxClientV2 client = getClient(data);
 		
+	
 		try {
 			OutputStream os = new FileOutputStream(data.getSaveFile());
 		
-			Metadata response = client.files().download(DROPBOX_PATH + data.getSaveFileName()).download(os);
+			client.files().download(DROPBOX_PATH + data.getSaveFileName()).download(os);
 			
 			os.close();
 		} catch (IOException | DbxException e) {
@@ -67,38 +103,25 @@ public class Dropbox {
 		data.load();
 	}
 	
-	private static DbxClientV2 getClient(DataModel data, String key, DbxUserAuthCode dbxUserAuthCode) throws NetworkException {
+	private static DbxClientV2 getClient(DataModel data) throws NetworkException {
 		DbxRequestConfig config = new DbxRequestConfig("TrackMyAttack");
 		DbxClientV2 client;
 		
 		 //File authenticationFile = new File(data.getSaveFile().getParent().toString() + "/DropboxAuthentication");
-		File authenticationFile = new File(data.getSaveFile().getParent()+"/DropboxAuth");
+		File authenticationFile = new File(getDbxFilePath(data));
 		DbxCredential credential = null;
 
 		
-		if (!authenticationFile.exists()) {
-			try {
-				DbxAuthFinish authorization = PkceAuthorize.authorize(key, dbxUserAuthCode);
+		try {
+			credential = DbxCredential.Reader.readFromFile(authenticationFile);
 				
-				credential = new DbxCredential(authorization.getAccessToken(),authorization.getExpiresAt(), authorization.getRefreshToken(),key);
-				
+			if (credential.aboutToExpire()) {
+				credential.refresh(config);
 				DbxCredential.Writer.writeToFile(credential, authenticationFile);
-				
-			} catch (IOException e) {
-				throw new NetworkException(e);
 			}
-		} else {
-			try {
-				credential = DbxCredential.Reader.readFromFile(authenticationFile);
-				
-				if (credential.aboutToExpire()) {
-					credential.refresh(config);
-					DbxCredential.Writer.writeToFile(credential, authenticationFile);
-				}
-			} catch (FileLoadException | DbxException | IOException e) {
-				throw new NetworkException(e);
-			} 
-		}
+		} catch (FileLoadException | DbxException | IOException e) {
+			throw new NetworkException(e);
+		} 
 			
 		
 		client = new DbxClientV2(config,credential.getAccessToken());

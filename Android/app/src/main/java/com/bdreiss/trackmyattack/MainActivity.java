@@ -1,32 +1,26 @@
 package com.bdreiss.trackmyattack;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Looper;
-import android.text.Html;
-import android.text.InputType;
-import android.text.Layout;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.text.HtmlCompat;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 import com.bdreiss.dataAPI.AilmentDataModel;
 import com.bdreiss.dataAPI.CauseDataModel;
@@ -67,65 +61,83 @@ public class MainActivity extends AppCompatActivity {
 
         syncButton.setOnClickListener(v -> {
 
-                Thread t = new Thread(() -> {
+                @SuppressLint("SetTextI18n") Thread authorizationThread = new Thread(() -> {
                         try {
-                                Dropbox.upload(data, getKey(), (url, s) -> {
-                                        ArrayList<String> inputString = new ArrayList<>();
-
-                                        final boolean[] dismissed = {false};
-
+                                if (!(new File(Dropbox.getDbxFilePath(data)).exists())) {
+                                        URL url = new URL(Dropbox.getAuthorizationURL(getKey()));
                                         runOnUiThread(() -> {
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                                                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                                                 View alertView = getLayoutInflater().inflate(R.layout.custom_alert, null);
-                                                builder.setView(alertView);
-                                                builder.create().show();
-                                                builder.setTitle("Dropbox Authentication");
-                                                EditText input = (EditText) alertView.findViewById(R.id.custom_alert_edit_text);
-                                                TextView text = (TextView) alertView.findViewById(R.id.custom_alert_text_view);
-                                                text.setMovementMethod(LinkMovementMethod.getInstance());
+                                                alertDialog.setView(alertView);
+                                                alertDialog.show();
 
-                                                text.setText(s + "\n\n" + url);
-                                                //text.setText(Html.fromHtml(text.getText().toString()));
+                                                alertDialog.setTitle("Dropbox Authentication");
+                                                EditText input = alertView.findViewById(R.id.custom_alert_edit_text);
+
+                                                TextView text = alertView.findViewById(R.id.custom_alert_text_view);
+                                                text.setMovementMethod(LinkMovementMethod.getInstance());
+                                                text.setText(Dropbox.message + "\n\n" + url);
                                                 text.setClickable(true);
                                                 text.setTextSize(20);
-
                                                 text.setTextIsSelectable(true);
 
-                                                alertView.findViewById(R.id.custom_alert_button_confirm).setOnClickListener(v1 ->{
-                                                        inputString.add(input.getText().toString());
-                                                        dismissed[0] = true;});
+                                                alertView.findViewById(R.id.custom_alert_button_confirm).setOnClickListener(v1 -> {
+                                                        String inputString = input.getText().toString();
+                                                        alertDialog.dismiss();
 
-                                                alertView.findViewById(R.id.custom_alert_button_cancel).setOnClickListener(v2 ->{
-                                                        dismissed[0] = true;});
+                                                        Thread finalizeThread = new Thread(()->{
+                                                                try {
+                                                                        Dropbox.authorize(getKey(), inputString, data);
+                                                                } catch (NetworkException e) {
+                                                                        e.printStackTrace();
+                                                                }
 
-                                                builder.setOnDismissListener(dialog -> {
-                                                        dismissed[0] = true;
+                                                        });
+                                                        finalizeThread.start();
+
+                                                        try {
+                                                                finalizeThread.join();
+                                                        } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                        }
+
                                                 });
+
+                                                alertView.findViewById(R.id.custom_alert_button_cancel).setOnClickListener(v2 -> alertDialog.dismiss());
+
                                         });
+                                }
 
-                                        while (!dismissed[0]) {
-
-                                                try {
-                                                        Log.d("XXX", "XXX");
-
-                                                        Thread.sleep(500);
-                                                } catch (InterruptedException e) {
-                                                        e.printStackTrace();
-                                                }
-                                        }
-                                        return inputString.size() > 0 ? inputString.get(0) : null;
-                                });
-                        } catch (NetworkException e) {
+                        } catch (MalformedURLException e) {
                                 e.printStackTrace();
-                                Log.d("Dropbox", e.toString());
                         }
 
 
                 });
-                t.start();
+                authorizationThread.start();
                 try {
-                        t.join();
-                        Log.d("Dropbox", "Upload complete");
+                        authorizationThread.join();
+                } catch (InterruptedException e) {
+                        e.printStackTrace();
+                }
+
+                Thread uploadThread = new Thread(() -> {
+
+                        if ((new File(Dropbox.getDbxFilePath(data)).exists())) {
+                                try {
+
+                                        Dropbox.upload(data);
+                                        runOnUiThread(()->Toast.makeText(MainActivity.this,"Dropbox synchronized",Toast.LENGTH_LONG).show());
+
+                                } catch (NetworkException e) {
+                                        e.printStackTrace();
+                                }
+                        }
+                });
+
+                uploadThread.start();
+                try {
+                        uploadThread.join();
                 } catch (InterruptedException e) {
                         e.printStackTrace();
                 }
