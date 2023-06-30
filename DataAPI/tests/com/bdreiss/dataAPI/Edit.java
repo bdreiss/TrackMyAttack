@@ -1,11 +1,11 @@
-package main.java.com.bdreiss.dataAPI;
+package com.bdreiss.dataAPI;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
-import main.java.com.bdreiss.dataAPI.enums.Intensity;
-import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import main.java.com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.enums.Intensity;
+import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Datum;
 
 public interface Edit {
 

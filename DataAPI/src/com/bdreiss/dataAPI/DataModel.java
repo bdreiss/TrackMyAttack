@@ -824,6 +824,10 @@ public class DataModel implements Serializable {
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
 			data = (DataModel) ois.readObject();
+			this.causes = data.causes;
+			this.ailments = data.ailments;
+			this.remedies = data.remedies;
+			this.symptoms = data.symptoms;
 
 			ois.close();
 
@@ -831,12 +835,7 @@ public class DataModel implements Serializable {
 			e.printStackTrace();
 		}
 
-		this.causes = data.causes;
-		this.ailments = data.ailments;
-		this.remedies = data.remedies;
-		this.symptoms = data.symptoms;
 	}
-
 	/**
 	 * Deletes the file in save path provided in constructor.
 	 */

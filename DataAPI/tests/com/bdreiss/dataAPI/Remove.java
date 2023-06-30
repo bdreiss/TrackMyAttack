@@ -1,11 +1,11 @@
-package main.java.com.bdreiss.dataAPI;
+package com.bdreiss.dataAPI;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
-import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import main.java.com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Datum;
 
 public interface Remove {
 

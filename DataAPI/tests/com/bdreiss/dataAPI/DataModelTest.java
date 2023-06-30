@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.dataAPI;
+package com.bdreiss.dataAPI;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -12,12 +12,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import main.java.com.bdreiss.dataAPI.enums.Intensity;
-import main.java.com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import main.java.com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import main.java.com.bdreiss.dataAPI.util.Datum;
-import main.java.com.bdreiss.dataAPI.util.DatumWithIntensity;
-import main.java.com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import com.bdreiss.dataAPI.enums.Intensity;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.util.DatumWithIntensity;
+import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
 class DataModelTest {
 
