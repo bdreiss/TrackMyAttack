@@ -25,10 +25,12 @@ public class DropboxSync extends Thread{
 
     private Context context;
     private DataModel data;
+    private SyncCompleted syncCompleted;
 
-    public DropboxSync(Context context, DataModel data){
+    public DropboxSync(Context context, DataModel data, SyncCompleted syncCompleted){
         this.context = context;
         this.data = data;
+        this.syncCompleted = syncCompleted;
     }
 
 
@@ -101,7 +103,6 @@ public class DropboxSync extends Thread{
                 try {
 
                     Dropbox.upload(data);
-                    ((Activity) context).runOnUiThread(()-> Toast.makeText(context,"Dropbox synchronized",Toast.LENGTH_LONG).show());
 
                 } catch (NetworkException e) {
                     e.printStackTrace();
@@ -115,7 +116,7 @@ public class DropboxSync extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        syncCompleted.onComplete();
     }
     private String getKey() {
         String key = "";

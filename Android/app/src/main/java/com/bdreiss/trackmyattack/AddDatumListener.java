@@ -1,8 +1,10 @@
 package com.bdreiss.trackmyattack;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.View;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
@@ -57,6 +59,8 @@ public class AddDatumListener implements View.OnClickListener {
                 chooseIntensity(context, (dialogInterface, i) -> {
                     try {
                         dataModel.addData(key, Intensity.values()[i+1]);
+                        Synchronizer.synchronize(context, dataModel.getData());
+
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }

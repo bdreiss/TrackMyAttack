@@ -73,9 +73,11 @@ class Main{
 			System.out.println(e.toString());
 		}
 
-		MainFrame frame = new MainFrame(data);	
-
-		frame.setVisible(true);
+		System.out.println(data.print());
+		
+//		MainFrame frame = new MainFrame(data);	
+//
+//		frame.setVisible(true);
 	
 //	
 //		data.deleteSaveFile();

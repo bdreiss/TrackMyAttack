@@ -2,14 +2,21 @@ package com.bdreiss.trackmyattack;
 
 
 import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import com.bdreiss.dataAPI.AilmentDataModel;
 import com.bdreiss.dataAPI.CauseDataModel;
@@ -22,7 +29,7 @@ import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 public class MainActivity extends AppCompatActivity {
 
         public static DataModel data;
-
+        public Settings settings;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -35,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         //DataModel.deleteSaveFile(this)
 
         data = new DataModel(getFilesDir().getAbsolutePath());
+        settings = new Settings(this);
 
         try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir().getAbsolutePath() + "/Text.txt"));
@@ -44,9 +52,15 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
         }
 
+
         Button syncButton = findViewById(R.id.button_sync);
 
-        syncButton.setOnClickListener(v -> (new DropboxSync(this,data)).start());
+        if (!settings.getSynched())
+                syncButton.setBackgroundColor(Color.RED);
+
+        syncButton.setOnClickListener(v -> {
+                Synchronizer.synchronize(this, data, syncButton);
+        });
 
         Button migraineButton = findViewById(R.id.button_migraine);
 
