@@ -15,6 +15,7 @@ public class Settings implements Serializable {
     private String SETTINGS_FILE_NAME = "settings";
     private File SAVE_FILE;
     private boolean synched = true;
+    private boolean automaticSync = false;
 
     public Settings(Context context){
         this.SAVE_FILE = new File(context.getFilesDir() + "/" + SETTINGS_FILE_NAME);
@@ -46,6 +47,7 @@ public class Settings implements Serializable {
 
     private void transferSettings(Settings settings){
         this.synched = settings.synched;
+        this.automaticSync = settings.automaticSync;
     }
 
     private void save(){
@@ -75,6 +77,16 @@ public class Settings implements Serializable {
     public boolean getSynched(){
         load();
         return synched;
+    }
+
+    public void setAutomaticSync(boolean autoSync){
+        this.automaticSync = autoSync;
+        save();
+    }
+
+    public boolean getAutomaticSync(){
+        load();
+        return this.automaticSync;
     }
 
 }

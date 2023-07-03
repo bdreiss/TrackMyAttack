@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         data = new DataModel(getFilesDir().getAbsolutePath());
         settings = new Settings(this);
+        settings.setAutomaticSync(true);
 
         try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir().getAbsolutePath() + "/Text.txt"));

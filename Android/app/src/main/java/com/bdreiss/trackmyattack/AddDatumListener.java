@@ -59,7 +59,6 @@ public class AddDatumListener implements View.OnClickListener {
                 chooseIntensity(context, (dialogInterface, i) -> {
                     try {
                         dataModel.addData(key, Intensity.values()[i+1]);
-                        Synchronizer.synchronize(context, dataModel.getData());
 
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
@@ -69,8 +68,14 @@ public class AddDatumListener implements View.OnClickListener {
             }
             else{
                 dataModel.addData(key);
-
             }
+
+            Settings settings = new Settings(context);
+            if (settings.getAutomaticSync())
+                Synchronizer.synchronize(context, dataModel.getData());
+            else
+                settings.setSynched(false);
+
         } catch (EntryNotFoundException | TypeMismatchException e) {
             e.printStackTrace();
         }
