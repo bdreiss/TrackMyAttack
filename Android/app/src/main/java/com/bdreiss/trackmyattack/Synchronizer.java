@@ -7,12 +7,24 @@ import android.net.NetworkInfo;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+
 import com.bdreiss.dataAPI.DataModel;
 
 public class Synchronizer {
 
         public static void synchronize(Context context, DataModel data) {
             synchronize(context,data, null);
+        }
+
+        public static void autoSynchronize(Context context, DataModel data){
+            Settings settings = new Settings(context);
+            if (settings.getAutomaticSync())
+                synchronize(context, data);
+            else
+                settings.setSynched(false);
+
         }
 
         public static void synchronize(Context context, DataModel data, Button syncButton) {
@@ -26,9 +38,8 @@ public class Synchronizer {
         } else {
             Thread t = (new DropboxSync(context, data, () -> {
                 settings.setSynched(true);
-                ((Activity) context).runOnUiThread(()-> Toast.makeText(context,"Dropbox synchronized",Toast.LENGTH_LONG).show());
                 if (syncButton != null){
-                    syncButton.setBackgroundColor(context.getResources().getColor(R.color.primary));
+                    syncButton.setBackgroundColor(ContextCompat.getColor(context, R.color.primary));
                 }
 
             }));

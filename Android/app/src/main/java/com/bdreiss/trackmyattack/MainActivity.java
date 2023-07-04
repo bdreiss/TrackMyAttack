@@ -59,9 +59,7 @@ public class MainActivity extends AppCompatActivity {
         if (!settings.getSynched())
                 syncButton.setBackgroundColor(Color.RED);
 
-        syncButton.setOnClickListener(v -> {
-                Synchronizer.synchronize(this, data, syncButton);
-        });
+        syncButton.setOnClickListener(v -> Synchronizer.synchronize(this, data, syncButton));
 
         Button migraineButton = findViewById(R.id.button_migraine);
 
@@ -90,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         migraineButton.setOnLongClickListener(v -> {
-                EditItemDialog editItemDialog = new EditItemDialog("Migraine", ailmentDataModel, new AddKeyDialogListener() {
+                EditItemDialog editItemDialog = new EditItemDialog(this,"Migraine", ailmentDataModel, new AddKeyDialogListener() {
                         @Override
                         public void addKey(String key, Boolean intensity) {
 

@@ -70,11 +70,7 @@ public class AddDatumListener implements View.OnClickListener {
                 dataModel.addData(key);
             }
 
-            Settings settings = new Settings(context);
-            if (settings.getAutomaticSync())
-                Synchronizer.synchronize(context, dataModel.getData());
-            else
-                settings.setSynched(false);
+            Synchronizer.autoSynchronize(context, dataModel.getData());
 
         } catch (EntryNotFoundException | TypeMismatchException e) {
             e.printStackTrace();

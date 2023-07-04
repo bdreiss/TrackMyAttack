@@ -68,7 +68,7 @@ public class LayoutListener implements View.OnClickListener {
             itemButton.setOnClickListener(listener);
 
             itemButton.setOnLongClickListener(v -> {
-                EditItemDialog editItemDialog = new EditItemDialog(item, dataModel, new AddKeyDialogListener() {
+                EditItemDialog editItemDialog = new EditItemDialog(context, item, dataModel, new AddKeyDialogListener() {
                     @Override
                     public void addKey(String key, Boolean intensity) {}
 
@@ -95,7 +95,7 @@ public class LayoutListener implements View.OnClickListener {
 
         //set listener for addButton that adds new key to given category (see AddItemDialog.java)
         addButton.setOnClickListener(view -> {
-            AddKeyDialog addItemDialog = new AddKeyDialog(dataModel, new AddKeyDialogListener() {
+            AddKeyDialog addItemDialog = new AddKeyDialog(context, dataModel, new AddKeyDialogListener() {
                 @Override
                 public void addKey(String key, Boolean intensity) {
                     if (dataModel.getCategory() == Category.AILMENT || dataModel.getCategory() == Category.SYMPTOM)

@@ -1,5 +1,6 @@
 package com.bdreiss.trackmyattack;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +24,12 @@ import com.bdreiss.dataAPI.enums.Category;
 
 public class AddKeyDialog extends DialogFragment {
 
+    private Context context;
     private AbstractDataModel dataModel;
     private AddKeyDialogListener listener;
 
-    public AddKeyDialog(AbstractDataModel dataModel, AddKeyDialogListener listener){
+    public AddKeyDialog(Context context, AbstractDataModel dataModel, AddKeyDialogListener listener){
+        this.context = context;
         this.dataModel = dataModel;
         this.listener = listener;
     }
@@ -57,7 +60,7 @@ public class AddKeyDialog extends DialogFragment {
             Boolean intensity = chooseIntensityButton.isChecked();
 
             listener.addKey(item, intensity);
-
+            Synchronizer.autoSynchronize(context, dataModel.getData());
             listener.updateOriginalLayout();
 
             dismiss();
