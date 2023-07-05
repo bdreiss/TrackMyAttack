@@ -1,4 +1,4 @@
-package com.bdreiss.trackmyattack;
+package com.bdreiss.trackmyattack.datamanipulation;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -34,6 +34,8 @@ import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.util.Datum;
 import com.bdreiss.dataAPI.util.DatumWithIntensity;
 import com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import com.bdreiss.trackmyattack.R;
+import com.bdreiss.trackmyattack.sync.Synchronizer;
 
 
 /*
@@ -49,7 +51,7 @@ public class EditItemDialog extends DialogFragment {
     private static final int LINEAR_LAYOUT_PADDING = 5;
 
 
-    private Context context;
+    private final Context context;
     //key for which dialog is shown
     private final String key;
     //interface including:
@@ -62,7 +64,7 @@ public class EditItemDialog extends DialogFragment {
     //contains method to update original layout in case key is removed from data
     private final AddKeyDialogListener addKeyDialogListener;
 
-    EditItemDialog(Context context, String key, AbstractDataModel dataModel, AddKeyDialogListener addKeyDialogListener) {
+    public EditItemDialog(Context context, String key, AbstractDataModel dataModel, AddKeyDialogListener addKeyDialogListener) {
         this.context = context;
         this.key = key;
         this.dataModel = dataModel;

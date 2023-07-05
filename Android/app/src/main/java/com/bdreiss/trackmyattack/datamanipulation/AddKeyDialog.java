@@ -1,4 +1,4 @@
-package com.bdreiss.trackmyattack;
+package com.bdreiss.trackmyattack.datamanipulation;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import java.util.Objects;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
 import com.bdreiss.dataAPI.enums.Category;
+import com.bdreiss.trackmyattack.R;
+import com.bdreiss.trackmyattack.sync.Synchronizer;
 
 /*
  * Dialog that adds a new key to the DataModel.
@@ -24,9 +26,9 @@ import com.bdreiss.dataAPI.enums.Category;
 
 public class AddKeyDialog extends DialogFragment {
 
-    private Context context;
-    private AbstractDataModel dataModel;
-    private AddKeyDialogListener listener;
+    private final Context context;
+    private final AbstractDataModel dataModel;
+    private final AddKeyDialogListener listener;
 
     public AddKeyDialog(Context context, AbstractDataModel dataModel, AddKeyDialogListener listener){
         this.context = context;

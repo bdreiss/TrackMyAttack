@@ -4,7 +4,6 @@ import android.content.Context;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,12 +11,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Settings implements Serializable {
-    private String SETTINGS_FILE_NAME = "settings";
-    private File SAVE_FILE;
-    private boolean synched = true;
+    private final File SAVE_FILE;
+    private boolean synced = true;
     private boolean automaticSync = false;
 
     public Settings(Context context){
+        String SETTINGS_FILE_NAME = "settings";
         this.SAVE_FILE = new File(context.getFilesDir() + "/" + SETTINGS_FILE_NAME);
         load();
     }
@@ -34,11 +33,7 @@ public class Settings implements Serializable {
 
                 ois.close();
                 fis.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -46,12 +41,12 @@ public class Settings implements Serializable {
     }
 
     private void transferSettings(Settings settings){
-        this.synched = settings.synched;
+        this.synced = settings.synced;
         this.automaticSync = settings.automaticSync;
     }
 
     private void save(){
-        FileOutputStream fos = null;
+        FileOutputStream fos;
         try {
             fos = new FileOutputStream(SAVE_FILE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -60,23 +55,21 @@ public class Settings implements Serializable {
 
             oos.close();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void setSynched(boolean synched){
-        this.synched = synched;
+    public void setSynced(boolean synced){
+        this.synced = synced;
         save();
 
     }
 
-    public boolean getSynched(){
+    public boolean getSynced(){
         load();
-        return synched;
+        return synced;
     }
 
     public void setAutomaticSync(boolean autoSync){

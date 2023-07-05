@@ -1,10 +1,8 @@
-package com.bdreiss.trackmyattack;
+package com.bdreiss.trackmyattack.datamanipulation;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.View;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
@@ -12,6 +10,7 @@ import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import com.bdreiss.trackmyattack.sync.Synchronizer;
 
 
 /*

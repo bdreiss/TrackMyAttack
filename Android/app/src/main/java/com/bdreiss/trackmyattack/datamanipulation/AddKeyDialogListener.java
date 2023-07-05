@@ -1,4 +1,4 @@
-package com.bdreiss.trackmyattack;
+package com.bdreiss.trackmyattack.datamanipulation;
 
 public interface AddKeyDialogListener {
     //takes key and whether it should have Intensity assigned to it, adds new key to DataModel

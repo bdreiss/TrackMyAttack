@@ -12,6 +12,10 @@ import java.util.Iterator;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
 import com.bdreiss.dataAPI.enums.Category;
+import com.bdreiss.trackmyattack.datamanipulation.AddDatumListener;
+import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialog;
+import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
+import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;
 
 /*
  * Class that represents a listener that on click initializes a layout (causes, remedies or symptoms)

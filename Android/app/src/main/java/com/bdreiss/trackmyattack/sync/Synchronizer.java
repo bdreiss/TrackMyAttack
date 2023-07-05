@@ -1,16 +1,15 @@
-package com.bdreiss.trackmyattack;
+package com.bdreiss.trackmyattack.sync;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Button;
-import android.widget.Toast;
 
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.trackmyattack.R;
+import com.bdreiss.trackmyattack.Settings;
 
 public class Synchronizer {
 
@@ -23,7 +22,7 @@ public class Synchronizer {
             if (settings.getAutomaticSync())
                 synchronize(context, data);
             else
-                settings.setSynched(false);
+                settings.setSynced(false);
 
         }
 
@@ -34,10 +33,10 @@ public class Synchronizer {
 
         if (netInfo == null || !netInfo.isConnected()) {
 
-            settings.setSynched(false);
+            settings.setSynced(false);
         } else {
             Thread t = (new DropboxSync(context, data, () -> {
-                settings.setSynched(true);
+                settings.setSynced(true);
                 if (syncButton != null){
                     syncButton.setBackgroundColor(ContextCompat.getColor(context, R.color.primary));
                 }

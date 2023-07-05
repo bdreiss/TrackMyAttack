@@ -3,20 +3,14 @@ package com.bdreiss.trackmyattack;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 
 import com.bdreiss.dataAPI.AilmentDataModel;
 import com.bdreiss.dataAPI.CauseDataModel;
@@ -25,6 +19,9 @@ import com.bdreiss.dataAPI.RemedyDataModel;
 import com.bdreiss.dataAPI.SymptomDataModel;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
+import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;
+import com.bdreiss.trackmyattack.sync.Synchronizer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button syncButton = findViewById(R.id.button_sync);
 
-        if (!settings.getSynched())
+        if (!settings.getSynced())
                 syncButton.setBackgroundColor(Color.RED);
 
         syncButton.setOnClickListener(v -> Synchronizer.synchronize(this, data, syncButton));

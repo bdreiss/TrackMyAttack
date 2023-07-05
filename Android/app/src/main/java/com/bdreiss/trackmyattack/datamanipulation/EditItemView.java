@@ -1,4 +1,4 @@
-package com.bdreiss.trackmyattack;
+package com.bdreiss.trackmyattack.datamanipulation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

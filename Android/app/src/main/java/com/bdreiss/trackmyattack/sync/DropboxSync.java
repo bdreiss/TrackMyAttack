@@ -1,4 +1,4 @@
-package com.bdreiss.trackmyattack;
+package com.bdreiss.trackmyattack.sync;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -8,11 +8,11 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
 import com.bdreiss.dataAPI.network.Dropbox;
+import com.bdreiss.trackmyattack.R;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,9 +23,9 @@ import java.net.URL;
 
 public class DropboxSync extends Thread{
 
-    private Context context;
-    private DataModel data;
-    private SyncCompleted syncCompleted;
+    private final Context context;
+    private final DataModel data;
+    private final SyncCompleted syncCompleted;
 
     public DropboxSync(Context context, DataModel data, SyncCompleted syncCompleted){
         this.context = context;
