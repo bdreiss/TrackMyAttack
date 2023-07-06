@@ -39,7 +39,6 @@ class DataRow extends JPanel{
 
 		
 		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
-		setMaximumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
 		setPreferredSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
 		
 		setLayout(new GridBagLayout());
@@ -155,7 +154,6 @@ class DataRow extends JPanel{
 							graphics.fillOval(offset,offset,Dimensions.WIDTH.value()-2*offset,Dimensions.WIDTH.value()-2*offset);
 						}
 					} catch (EntryNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					

@@ -70,14 +70,14 @@ class Main{
 			Dropbox.download(data);
 		} catch (NetworkException e) {
 			e.printStackTrace();
-			System.out.println(e.toString());
+//			System.out.println(e.toString());
 		}
 
-		System.out.println(data.print());
+//		System.out.println(data.print());
 		
-//		MainFrame frame = new MainFrame(data);	
-//
-//		frame.setVisible(true);
+		MainFrame frame = new MainFrame(data);	
+
+		frame.setVisible(true);
 	
 //	
 //		data.deleteSaveFile();

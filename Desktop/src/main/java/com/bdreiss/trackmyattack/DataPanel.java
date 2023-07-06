@@ -24,13 +24,14 @@ import java.time.ZoneId;
 
 public class DataPanel extends JPanel{
 
-	ArrayList<Color[]> colorSets = new ArrayList<>();
+	private ArrayList<Color[]> colorSets = new ArrayList<>();
 	
-	AbstractDataModel data;
+	private AbstractDataModel data;
+	
+	private LocalDate startDate;
 	
 	public DataPanel(AbstractDataModel data, int width, int height) {
 		super(new GridBagLayout());
-		setSize(new Dimension(width, height));
 		
 		this.data = data;
 		
@@ -41,6 +42,35 @@ public class DataPanel extends JPanel{
 		colorSets.add(blues);
 		colorSets.add(greens);
 		colorSets.add(yellows);
+
+		
+		startDate = LocalDate.now();
+
+		Iterator<String> it = data.getKeys();
+
+		while (it.hasNext()) {
+			Iterator<Datum> itForKey = null;
+			try {
+				itForKey = data.getData(it.next());
+			} catch (EntryNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (itForKey != null && itForKey.hasNext()) {
+			
+				LocalDate earliestDate = itForKey.next().getDate().toLocalDate();
+				
+				if (earliestDate.compareTo(startDate)< 0)
+					startDate = earliestDate;
+				
+			}
+			
+		}
+		int daysSinceStartDate = (int) Duration.between(startDate.atStartOfDay(),LocalDate.now().atStartOfDay()).toDays();
+
+		setSize(new Dimension(Dimensions.WIDTH.value()*(daysSinceStartDate), Dimensions.HEIGHT.value()*data.getSize()+1));
+
 		setData();
 
 	
@@ -63,29 +93,7 @@ public class DataPanel extends JPanel{
 
 		Iterator<String> it = data.getKeys();
 
-		LocalDate startDate = LocalDate.now();
 		
-		while (it.hasNext()) {
-			Iterator<Datum> itForKey = null;
-			try {
-				itForKey = data.getData(it.next());
-			} catch (EntryNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			if (itForKey != null && itForKey.hasNext()) {
-			
-				LocalDate earliestDate = itForKey.next().getDate().toLocalDate();
-				
-				if (earliestDate.compareTo(startDate)< 0)
-					startDate = earliestDate;
-				
-			}
-			
-		}
-				
-		it = data.getKeys();
 		
 		add(new DataRow(startDate),c);
 		
@@ -96,7 +104,6 @@ public class DataPanel extends JPanel{
 				Color[] colorSet = colorSets.get(c.gridy%(colorSets.size()));
 				add(new DataRow(key, data, new AilmentDataModel(data.getData()), startDate, colorSet),c);
 			} catch (EntryNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			c.gridy++;

@@ -53,9 +53,4 @@ class MainFrame extends JFrame{
 
 	}
 	
-	public void setData(DataModel data) {
-
-		
-		//TODO set data in dataPanel
-	}
 }
