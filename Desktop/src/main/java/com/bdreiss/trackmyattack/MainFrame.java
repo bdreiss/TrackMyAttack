@@ -20,7 +20,6 @@ import com.bdreiss.dataAPI.DataModel;
 
 class MainFrame extends JFrame{
 
-	private DataPanel dataPanel;
 	
 	public MainFrame(DataModel data) throws MalformedURLException{
 		super("TrackMyAttack");
@@ -32,14 +31,10 @@ class MainFrame extends JFrame{
 		
 		setSize(screenSize);
 						
-		dataPanel = new DataPanel(new CauseDataModel(data), (int)screenSize.getWidth(), (int) (screenSize.getHeight()*0.8));
+		PanelWithLabel panelWithLabel = new PanelWithLabel(new CauseDataModel(data));
 
+		add(panelWithLabel, BorderLayout.CENTER);
 		
-		JScrollPane scrollPane = new JScrollPane(dataPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		
-		
-		add(scrollPane, BorderLayout.CENTER);
-
 		addWindowListener(new WindowAdapter(){
 		
 			@Override

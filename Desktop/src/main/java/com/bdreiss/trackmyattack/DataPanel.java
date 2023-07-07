@@ -30,7 +30,7 @@ public class DataPanel extends JPanel{
 	
 	private LocalDate startDate;
 	
-	public DataPanel(AbstractDataModel data, int width, int height) {
+	public DataPanel(AbstractDataModel data) {
 		super(new GridBagLayout());
 		
 		this.data = data;

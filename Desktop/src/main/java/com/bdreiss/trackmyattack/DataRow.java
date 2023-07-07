@@ -40,9 +40,7 @@ class DataRow extends JPanel{
 		
 		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
 		setPreferredSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
-		
-		setLayout(new GridBagLayout());
-		
+				
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets.left = Dimensions.SPACE.value();
 		c.insets.right = 0;
@@ -53,14 +51,6 @@ class DataRow extends JPanel{
 		c.gridx = 0;
 		c.gridy = 0;
 
-		JLabel label = new JLabel(key);
-
-		
-		label.setMinimumSize(new Dimension(Dimensions.LABEL_WIDTH.value(),Dimensions.HEIGHT.value()));
-		label.setMaximumSize(new Dimension(Dimensions.LABEL_WIDTH.value(),Dimensions.HEIGHT.value()));
-		label.setPreferredSize(new Dimension(Dimensions.LABEL_WIDTH.value(),Dimensions.HEIGHT.value()));
-
-		add(label,c);
 				
 		JPanel dataPanel = new JPanel();
 		
