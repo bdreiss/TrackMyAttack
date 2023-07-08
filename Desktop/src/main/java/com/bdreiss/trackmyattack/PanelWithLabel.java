@@ -1,12 +1,9 @@
 package main.java.com.bdreiss.trackmyattack;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.ScrollPane;
-import java.awt.TextField;
 import java.util.Iterator;
 
 import javax.swing.JLabel;
@@ -18,6 +15,8 @@ import com.bdreiss.dataAPI.AbstractDataModel;
 
 public class PanelWithLabel extends JPanel{
 	
+	private static final long serialVersionUID = 1L;
+
 	public PanelWithLabel(AbstractDataModel data) {
 
 		setLayout(new GridBagLayout());

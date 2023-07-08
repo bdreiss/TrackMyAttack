@@ -2,38 +2,62 @@ package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.ScrollPane;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
-import java.time.LocalDate;
-import java.util.Iterator;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollBar;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import com.bdreiss.dataAPI.CauseDataModel;
 import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.RemedyDataModel;
+import com.bdreiss.dataAPI.SymptomDataModel;
 
 class MainFrame extends JFrame{
 
 	
+	private static final long serialVersionUID = 1L;
+
 	public MainFrame(DataModel data) throws MalformedURLException{
 		super("TrackMyAttack");
 		
-		
-		setLayout(new BorderLayout());
-		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		setSize(screenSize);
-						
-		PanelWithLabel panelWithLabel = new PanelWithLabel(new CauseDataModel(data));
+		
+		setLayout(new BorderLayout());
+				
+		JPanel centerPanel = new JPanel();
+		centerPanel.setLayout(new GridBagLayout());
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		
+		JScrollPane scrollPane = new JScrollPane(centerPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setSize(new Dimension(100,100));
 
-		add(panelWithLabel, BorderLayout.CENTER);
+		
+		add(scrollPane, BorderLayout.CENTER);
+
+
+		c.gridx = 0;
+		c.gridy = 0;
+
+		centerPanel.add(new PanelWithLabel(new CauseDataModel(data)),c);
+
+		c.gridy = 1;
+		
+		centerPanel.add(new PanelWithLabel(new SymptomDataModel(data)),c);
+		
+		c.gridy = 2;
+		
+		centerPanel.add(new PanelWithLabel(new RemedyDataModel(data)),c);
 		
 		addWindowListener(new WindowAdapter(){
 		

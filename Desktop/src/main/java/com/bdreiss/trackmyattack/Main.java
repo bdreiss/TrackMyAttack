@@ -1,37 +1,17 @@
 package main.java.com.bdreiss.trackmyattack;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import com.bdreiss.dataAPI.DataModel;
-import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
-import com.bdreiss.dataAPI.util.Datum;
-import com.bdreiss.dataAPI.util.DatumWithIntensity;
 import com.bdreiss.dataAPI.network.Dropbox;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Date;
 
-import java.awt.Color;
-
-import java.io.Serializable;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
-import java.time.LocalDate;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 class Main{
 

@@ -4,25 +4,22 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
 import com.bdreiss.dataAPI.AilmentDataModel;
-import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.util.Datum;
 
 import java.awt.GridBagLayout;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class DataPanel extends JPanel{
+
+	private static final long serialVersionUID = 1L;
 
 	private ArrayList<Color[]> colorSets = new ArrayList<>();
 	

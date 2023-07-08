@@ -4,32 +4,25 @@ import javax.swing.JPanel;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
 import com.bdreiss.dataAPI.AilmentDataModel;
-import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.util.Datum;
 import com.bdreiss.dataAPI.util.DatumWithIntensity;
 import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.awt.Dimension;
-import java.awt.BasicStroke;
-import java.awt.Canvas;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 
 class DataRow extends JPanel{
 	
+	private static final long serialVersionUID = 1L;
 	final int CIRCLE_OFFSET_LOW = 8;
 	final int CIRCLE_OFFSET_MEDIUM = 6;
 	final int CIRCLE_OFFSET_HIGH = 2;
