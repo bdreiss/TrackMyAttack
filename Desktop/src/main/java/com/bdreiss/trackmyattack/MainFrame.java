@@ -39,17 +39,21 @@ class MainFrame extends JFrame{
 		GridBagConstraints c = new GridBagConstraints();
 		
 		
-		JScrollPane scrollPane = new JScrollPane(centerPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setSize(new Dimension(100,100));
+		JScrollPane scrollPane = new JScrollPane(centerPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setSize(screenSize);
 
 		
-		add(scrollPane, BorderLayout.CENTER);
-
+		
+		
+		PanelWithLabel causeDataPanel = new PanelWithLabel(new CauseDataModel(data));
+		
 
 		c.gridx = 0;
 		c.gridy = 0;
 
-		centerPanel.add(new PanelWithLabel(new CauseDataModel(data)),c);
+		
+		
+		centerPanel.add(causeDataPanel,c);
 
 		c.gridy = 1;
 		
@@ -58,6 +62,9 @@ class MainFrame extends JFrame{
 		c.gridy = 2;
 		
 		centerPanel.add(new PanelWithLabel(new RemedyDataModel(data)),c);
+
+		add(scrollPane, BorderLayout.CENTER);
+
 		
 		addWindowListener(new WindowAdapter(){
 		

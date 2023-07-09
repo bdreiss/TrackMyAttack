@@ -67,9 +67,9 @@ public class PanelWithLabel extends JPanel{
 		c.ipadx = 1000;
 		c.ipady = labelPanel.getHeight();
 
-		JScrollPane scrollPane = new JScrollPane(new DataPanel(data), ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setSize(new Dimension(100,100));
-		add(scrollPane, c);
+//		JScrollPane scrollPane = new JScrollPane(new DataPanel(data), ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		add(scrollPane, c);
+		add(new DataPanel(data), c);
 	}
 
 	
