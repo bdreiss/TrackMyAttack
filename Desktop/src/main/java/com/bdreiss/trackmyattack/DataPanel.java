@@ -64,9 +64,6 @@ public class DataPanel extends JPanel{
 			}
 			
 		}
-		int daysSinceStartDate = (int) Duration.between(startDate.atStartOfDay(),LocalDate.now().atStartOfDay()).toDays();
-
-		setSize(new Dimension(Dimensions.WIDTH.value()*(daysSinceStartDate), Dimensions.HEIGHT.value()*data.getSize()+1));
 
 		setData();
 
@@ -74,10 +71,11 @@ public class DataPanel extends JPanel{
 	}
 	
 	public void setData() {
+		int daysSinceStartDate = (int) Duration.between(startDate.atStartOfDay(),LocalDate.now().atStartOfDay()).toDays();
+
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.WEST;
-		c.ipadx = super.getWidth();
+		c.ipadx = (int) ((Dimensions.WIDTH.value()+Dimensions.SPACE.value())*(daysSinceStartDate)*1.048);
 		
 		c.insets.left = 0;
 		c.insets.right = 0;
@@ -86,7 +84,7 @@ public class DataPanel extends JPanel{
 
 		c.gridx = 0;
 		c.gridy = 0;
-		c.weighty = 1;
+
 
 		Iterator<String> it = data.getKeys();
 
@@ -108,9 +106,7 @@ public class DataPanel extends JPanel{
 
 
 		c.gridy=data.getSize()+1;
-		c.weighty = super.getHeight()-(data.getSize()+1)*10;
 		add(new JPanel(),c);
-		repaint();
 
 	}
 

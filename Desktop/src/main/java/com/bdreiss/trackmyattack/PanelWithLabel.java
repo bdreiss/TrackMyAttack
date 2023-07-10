@@ -26,18 +26,13 @@ public class PanelWithLabel extends JPanel{
 		JPanel labelPanel = new JPanel();
 		labelPanel.setLayout(new GridBagLayout());
 	
-		labelPanel.setSize(new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.HEIGHT.value()*(data.getSize()+1)));
 		
 		JPanel emptyLabel = new JPanel();
 		
-		emptyLabel.setSize(new Dimension(Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()));
-		
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.WEST;
-		c.ipadx = Dimensions.LABEL_WIDTH.value();
-		
+
 		c.insets.left = 0;
 		c.insets.right = 0;
 		c.insets.top = 0;
@@ -45,8 +40,6 @@ public class PanelWithLabel extends JPanel{
 
 		c.gridx = 0;
 		c.gridy = 0;
-
-		add(labelPanel, c);
 		
 		labelPanel.add(emptyLabel,c);
 		
@@ -62,13 +55,12 @@ public class PanelWithLabel extends JPanel{
 			
 		}
 
-		c.gridx = 1;
 		c.gridy = 0;
-		c.ipadx = 1000;
-		c.ipady = labelPanel.getHeight();
+		add(labelPanel, c);
 
-//		JScrollPane scrollPane = new JScrollPane(new DataPanel(data), ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		add(scrollPane, c);
+		
+		c.gridx = 1;
+
 		add(new DataPanel(data), c);
 	}
 
