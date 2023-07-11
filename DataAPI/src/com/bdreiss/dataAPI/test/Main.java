@@ -24,6 +24,7 @@ public class Main {
 
 		processTextFile(data, PATH + "/Text.txt");
 		data.print();
+		System.out.println(data.firstDate);
 	}
 
 	private static void processTextFile(DataModel data, String file) throws FileNotFoundException, TypeMismatchException {

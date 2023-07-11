@@ -45,6 +45,8 @@ public class DataModel implements Serializable {
 	private File saveFile;
 	private String saveFileName = "DataModel";
 
+	public LocalDate firstDate = null;
+	
 	/*
 	 * The following Maps contain all the relevant data.
 	 * 
@@ -296,6 +298,9 @@ public class DataModel implements Serializable {
 	// abstracts the task of adding entries to the different ArrayLists
 	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
 
+		if (firstDate == null || date.toLocalDate().compareTo(firstDate) < 0)
+			firstDate = date.toLocalDate();
+		
 		// create entry with key if it doesn't exist
 		if (!map.containsKey(key))
 			addKey(map, key, intensity != null);
