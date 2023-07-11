@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
         }
 
-
         Button syncButton = findViewById(R.id.button_sync);
 
         if (!settings.getSynced())

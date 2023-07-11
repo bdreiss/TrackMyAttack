@@ -28,7 +28,7 @@ class DataRow extends JPanel{
 	final int CIRCLE_OFFSET_HIGH = 2;
 
 	
-	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments, LocalDate startDate, Color[] colorSet) throws EntryNotFoundException{
+	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments, Color[] colorSet) throws EntryNotFoundException{
 
 		
 		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
@@ -54,7 +54,7 @@ class DataRow extends JPanel{
 		dataPanel.setLayout(layout);
 						
 		
-		LocalDate dateCounter = startDate;
+		LocalDate dateCounter = data.getFirstDate();
 		
 		
 		while (dateCounter.compareTo(LocalDate.now()) <= 0) {

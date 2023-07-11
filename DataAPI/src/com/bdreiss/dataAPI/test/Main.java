@@ -22,7 +22,7 @@ public class Main {
 		System.out.println(PATH);
 		DataModel data = new DataModel(PATH);
 
-		processTextFile(data, PATH + "/Text.txt");
+//		processTextFile(data, PATH + "/Text.txt");
 		data.print();
 		System.out.println(data.firstDate);
 	}

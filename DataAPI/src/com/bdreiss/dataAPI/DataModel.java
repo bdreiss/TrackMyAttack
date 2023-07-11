@@ -833,7 +833,8 @@ public class DataModel implements Serializable {
 			this.ailments = data.ailments;
 			this.remedies = data.remedies;
 			this.symptoms = data.symptoms;
-
+			this.firstDate = data.firstDate;
+			
 			ois.close();
 
 		} catch (IOException | ClassNotFoundException e) {
