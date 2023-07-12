@@ -747,7 +747,7 @@ public class DataModel implements Serializable {
 	 */
 	public Iterator<Datum> getRemedyData(String remedy, LocalDate date) throws EntryNotFoundException {
 
-		return getIterator(remedies.get(remedy), null);
+		return getIterator(remedies.get(remedy), date);
 	}
 
 	/**
@@ -778,6 +778,7 @@ public class DataModel implements Serializable {
 				return list.iterator();
 		}
 
+		System.out.println("HERE");
 		// return data for specific date as IteratorWithIntensity or Iterator<Datum>
 		if (list instanceof ListWithIntensity)
 			return new IteratorWithIntensity(new DayIterator(list, date));
