@@ -34,13 +34,7 @@ class DataRow extends JPanel{
 		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
 		setPreferredSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
 				
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets.left = Dimensions.SPACE.value();
-		c.insets.right = 0;
-		c.insets.bottom = 0;
-		c.insets.top = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 1;
+		GridBagSettings c = new GridBagSettings();
 		c.gridx = 0;
 		c.gridy = 0;
 
@@ -65,8 +59,8 @@ class DataRow extends JPanel{
 			
 			Iterator<Datum> it = data.getData(key, currentDate);
 			
-			Intensity intensity = Intensity.NO_INTENSITY;
 			
+			Intensity intensity = Intensity.NO_INTENSITY;
 			while (it.hasNext()) {
 				
 				if (it instanceof IteratorWithIntensity) {
@@ -154,8 +148,6 @@ class DataRow extends JPanel{
 			dateCounter = dateCounter.plusDays(1);
 		}
 
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = Dimensions.RATIO.value();
 		c.gridx = 1;
 		c.gridy = 0;
 		add(dataPanel,c);
@@ -169,13 +161,7 @@ class DataRow extends JPanel{
 		
 		setLayout(new GridBagLayout());
 		
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets.left = Dimensions.SPACE.value();
-		c.insets.right = 0;
-		c.insets.bottom = 0;
-		c.insets.top = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 1;
+		GridBagSettings c = new GridBagSettings();
 		c.gridx = 0;
 		c.gridy = 0;
 		

@@ -24,9 +24,7 @@ public class DataPanel extends JPanel{
 	private ArrayList<Color[]> colorSets = new ArrayList<>();
 	
 	private AbstractDataModel data;
-	
-	private LocalDate startDate;
-	
+		
 	public DataPanel(AbstractDataModel data) {
 		super(new GridBagLayout());
 		
@@ -40,30 +38,9 @@ public class DataPanel extends JPanel{
 		colorSets.add(greens);
 		colorSets.add(yellows);
 
-		
-		startDate = LocalDate.now();
 
 		Iterator<String> it = data.getKeys();
 
-		while (it.hasNext()) {
-			Iterator<Datum> itForKey = null;
-			try {
-				itForKey = data.getData(it.next());
-			} catch (EntryNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			if (itForKey != null && itForKey.hasNext()) {
-			
-				LocalDate earliestDate = itForKey.next().getDate().toLocalDate();
-				
-				if (earliestDate.compareTo(startDate)< 0)
-					startDate = earliestDate;
-				
-			}
-			
-		}
 
 		setData();
 
@@ -71,17 +48,11 @@ public class DataPanel extends JPanel{
 	}
 	
 	public void setData() {
-		int daysSinceStartDate = (int) Duration.between(startDate.atStartOfDay(),LocalDate.now().atStartOfDay()).toDays();
+		int daysSinceStartDate = (int) Duration.between(data.getFirstDate().atStartOfDay(),LocalDate.now().atStartOfDay()).toDays();
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.WEST;
-		c.ipadx = (int) ((Dimensions.WIDTH.value()+Dimensions.SPACE.value())*(daysSinceStartDate)*1.048);
+		GridBagSettings c = new GridBagSettings();
 		
-		c.insets.left = 0;
-		c.insets.right = 0;
-		c.insets.top = 0;
-		c.insets.bottom = 0;
-
+		c.setIPadX(daysSinceStartDate);
 		c.gridx = 0;
 		c.gridy = 0;
 
@@ -90,14 +61,15 @@ public class DataPanel extends JPanel{
 
 		
 		
-		add(new DataRow(startDate),c);
+		add(new DataRow(data.getFirstDate()),c);
 		
+		c.gridy++;
 
 		while (it.hasNext()) {
 			String key = it.next();
 			try {
 				Color[] colorSet = colorSets.get(c.gridy%(colorSets.size()));
-				add(new DataRow(key, data, new AilmentDataModel(data.getData()), startDate, colorSet),c);
+				add(new DataRow(key, data, new AilmentDataModel(data.getData()), colorSet),c);
 			} catch (EntryNotFoundException e) {
 				e.printStackTrace();
 			}

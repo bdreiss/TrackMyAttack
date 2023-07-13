@@ -30,13 +30,7 @@ public class PanelWithLabel extends JPanel{
 		JPanel emptyLabel = new JPanel();
 		
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.WEST;
-
-		c.insets.left = 0;
-		c.insets.right = 0;
-		c.insets.top = 0;
-		c.insets.bottom = 0;
+		GridBagConstraints c = new GridBagSettings();
 
 		c.gridx = 0;
 		c.gridy = 0;
