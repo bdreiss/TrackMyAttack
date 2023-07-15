@@ -2,6 +2,7 @@ package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
@@ -27,43 +28,28 @@ class MainFrame extends JFrame{
 	public MainFrame(DataModel data) throws MalformedURLException{
 		super("TrackMyAttack");
 		
-	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		setSize(screenSize);
+
+		setLayout(new GridBagLayout());
+		GridBagSettings c = new GridBagSettings();
 		
-		setLayout(new BorderLayout());
+		c.gridx=0;
+		c.gridy=0;
+		
+		LabelFrame labelFrame = new LabelFrame(data);
+		
+		add(labelFrame);
+		
+
 				
-		JPanel centerPanel = new JPanel();
-		centerPanel.setLayout(new GridBagLayout());
+		JScrollPane scrollPane = new JScrollPane(new DataPanelFrame(data),ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
-		GridBagConstraints c = new GridBagConstraints();
+		c.gridx=1;
 		
-		
-		JScrollPane scrollPane = new JScrollPane(centerPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setSize(screenSize);
-
-		
-		
-		
-		PanelWithLabel causeDataPanel = new PanelWithLabel(new CauseDataModel(data));
-		
-
-		c.gridx = 0;
-		c.gridy = 0;
-
-		
-		
-		centerPanel.add(causeDataPanel,c);
-
-		c.gridy = 1;
-		
-		centerPanel.add(new PanelWithLabel(new SymptomDataModel(data)),c);
-		
-		c.gridy = 2;
-		
-		centerPanel.add(new PanelWithLabel(new RemedyDataModel(data)),c);
-
-		add(scrollPane, BorderLayout.CENTER);
+		add(scrollPane,c);
 
 		
 		addWindowListener(new WindowAdapter(){

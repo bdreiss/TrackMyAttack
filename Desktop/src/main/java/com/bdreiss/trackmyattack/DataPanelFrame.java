@@ -12,50 +12,38 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.CauseDataModel;
+import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.RemedyDataModel;
+import com.bdreiss.dataAPI.SymptomDataModel;
 
-public class PanelWithLabel extends JPanel{
+public class DataPanelFrame extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 
-	public PanelWithLabel(AbstractDataModel data) {
-
+	private DataModel data;
+	
+	public DataPanelFrame(DataModel data) {
+		
+		this.data = data;
+		
 		setLayout(new GridBagLayout());
 		
-		setSize(super.getWidth(), Dimensions.HEIGHT.value()*(data.getSize()+1));
-		
-		JPanel labelPanel = new JPanel();
-		labelPanel.setLayout(new GridBagLayout());
 	
+		GridBagSettings c = new GridBagSettings();
 		
-		JPanel emptyLabel = new JPanel();
-		
-
-		GridBagConstraints c = new GridBagSettings();
-
 		c.gridx = 0;
 		c.gridy = 0;
+
+		add(new DataPanel(new CauseDataModel(data)));
 		
-		labelPanel.add(emptyLabel,c);
+		c.gridy++;
 		
-		Iterator<String> it = data.getKeys();
+		add(new DataPanel(new SymptomDataModel(data)));
 		
-		while (it.hasNext()) {
-			c.gridy++;
+		c.gridy++;
 			
-			JLabel label = new JLabel(it.next());
-			label.setBackground(Color.WHITE);
-			label.setSize(new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.HEIGHT.value()));
-			labelPanel.add(label, c);
-			
-		}
-
-		c.gridy = 0;
-		add(labelPanel, c);
-
-		
-		c.gridx = 1;
-
-		add(new DataPanel(data), c);
+		add(new DataPanel(new RemedyDataModel(data)));
 	}
 
 	

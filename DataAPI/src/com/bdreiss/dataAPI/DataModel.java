@@ -615,6 +615,9 @@ public class DataModel implements Serializable {
 		return remedies.keySet().iterator();
 	}
 
+	public int getSize() {
+		return getCausesSize() + getSymptomsSize() + getRemediesSize();
+	}
 	/**
 	 * Returns the size of list of ailments.
 	 * 
@@ -778,7 +781,6 @@ public class DataModel implements Serializable {
 				return list.iterator();
 		}
 
-		System.out.println("HERE");
 		// return data for specific date as IteratorWithIntensity or Iterator<Datum>
 		if (list instanceof ListWithIntensity)
 			return new IteratorWithIntensity(new DayIterator(list, date));
