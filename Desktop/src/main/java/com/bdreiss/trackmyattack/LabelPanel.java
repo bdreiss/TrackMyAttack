@@ -20,7 +20,7 @@ public class LabelPanel extends JPanel {
 		
 		
 		setLayout(new GridBagLayout());
-	
+		setAlignmentX(TOP_ALIGNMENT);
 		
 		JPanel emptyLabel = new JPanel();
 		

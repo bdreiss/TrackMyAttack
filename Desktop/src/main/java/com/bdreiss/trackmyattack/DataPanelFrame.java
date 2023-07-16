@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
 import com.bdreiss.dataAPI.CauseDataModel;
@@ -29,21 +30,24 @@ public class DataPanelFrame extends JPanel{
 		
 		setLayout(new GridBagLayout());
 		
-	
+		setBorder(new EmptyBorder(10,10,10,10));
 		GridBagSettings c = new GridBagSettings();
 		
 		c.gridx = 0;
 		c.gridy = 0;
-
-		add(new DataPanel(new CauseDataModel(data)));
+		
+		DataPanel causeData = new DataPanel(new CauseDataModel(data)); 
+		add(causeData, c);
 		
 		c.gridy++;
 		
-		add(new DataPanel(new SymptomDataModel(data)));
+		DataPanel symptomData = new DataPanel(new SymptomDataModel(data));
+		add(symptomData,c);
 		
 		c.gridy++;
 			
-		add(new DataPanel(new RemedyDataModel(data)));
+		DataPanel remedyData = new DataPanel(new RemedyDataModel(data)); 
+		add(remedyData,c);
 	}
 
 	

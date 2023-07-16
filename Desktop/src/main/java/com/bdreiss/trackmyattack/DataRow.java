@@ -31,21 +31,16 @@ class DataRow extends JPanel{
 	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments, Color[] colorSet) throws EntryNotFoundException{
 
 		
-		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
+//		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
 		setPreferredSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
 				
-		GridBagSettings c = new GridBagSettings();
-		c.gridx = 0;
-		c.gridy = 0;
-
 				
-		JPanel dataPanel = new JPanel();
 		
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		layout.setVgap(0);
 		layout.setHgap(0);
 
-		dataPanel.setLayout(layout);
+		setLayout(layout);
 						
 		
 		LocalDate dateCounter = data.getFirstDate();
@@ -144,13 +139,10 @@ class DataRow extends JPanel{
 			box.setMaximumSize(new Dimension(Dimensions.WIDTH.value(),Dimensions.HEIGHT.value()));
 			box.setPreferredSize(new Dimension(Dimensions.WIDTH.value(),Dimensions.HEIGHT.value()));
 			
-			dataPanel.add(box);	
+			add(box);	
 			dateCounter = dateCounter.plusDays(1);
 		}
 
-		c.gridx = 1;
-		c.gridy = 0;
-		add(dataPanel,c);
 
 		
 	} 
@@ -158,32 +150,13 @@ class DataRow extends JPanel{
 	public DataRow(LocalDate startDate){
 		
 		setPreferredSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
-		
-		setLayout(new GridBagLayout());
-		
-		GridBagSettings c = new GridBagSettings();
-		c.gridx = 0;
-		c.gridy = 0;
-		
-
-		
-
-		JLabel label = new JLabel();
-
-		
-		label.setMinimumSize(new Dimension(Dimensions.LABEL_WIDTH.value(),Dimensions.HEIGHT.value()));
-		label.setMaximumSize(new Dimension(Dimensions.LABEL_WIDTH.value(),Dimensions.HEIGHT.value()));
-		label.setPreferredSize(new Dimension(Dimensions.LABEL_WIDTH.value(),Dimensions.HEIGHT.value()));
-
-		add(label,c);
 				
-		JPanel dataPanel = new JPanel();
 		
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		layout.setVgap(0);
 		layout.setHgap(0);
 
-		dataPanel.setLayout(layout);
+		setLayout(layout);
 			
 		LocalDate dateCounter = startDate;
 				
@@ -198,16 +171,12 @@ class DataRow extends JPanel{
 			dateLabel.setMaximumSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
 			dateLabel.setPreferredSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
 			
-			dataPanel.add(dateLabel);
+			add(dateLabel);
 			
 			dateCounter = dateCounter.plusWeeks(1);
 			
 		}
 		
-		c.weightx = Dimensions.RATIO.value();
-		c.gridx = 1;
-		c.gridy = 0;
-		add(dataPanel,c);
 		
 	} 
 }

@@ -16,7 +16,7 @@ public class GridBagSettings extends GridBagConstraints {
 	}
 	
 	public void setIPadX(int daysSinceStartDate) {
-		ipadx = (int) ((Dimensions.WIDTH.value()+Dimensions.SPACE.value())*(daysSinceStartDate)*1.048);
+		ipadx = (int) ((Dimensions.WIDTH.value()+Dimensions.SPACE.value())*(daysSinceStartDate));
 
 	}
 	

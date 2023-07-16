@@ -19,13 +19,28 @@ public class LabelFrame extends JPanel {
 	
 	public LabelFrame(DataModel data) {
 		
+		setLayout(new GridBagLayout());
 		
-		Box box = Box.createVerticalBox();
-				
-		box.add(new LabelPanel(new CauseDataModel(data)));
-		//box.add(new LabelPanel(new SymptomDataModel(data)));
-		//box.add(new LabelPanel(new RemedyDataModel(data)));
-		add(box);
+		GridBagSettings c = new GridBagSettings();
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		
+		LabelPanel causeLabels = new LabelPanel(new CauseDataModel(data));
+
+		add(causeLabels, c);
+		
+		c.gridy++;
+		
+		LabelPanel symptomLabels = new LabelPanel(new SymptomDataModel(data));
+		
+		add(symptomLabels, c);
+		
+		c.gridy++;
+		
+		LabelPanel remedyLabels = new LabelPanel(new RemedyDataModel(data));
+		
+		add(remedyLabels, c);
 	}
 
 }
