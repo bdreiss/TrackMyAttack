@@ -39,16 +39,20 @@ class MainFrame extends JFrame{
 		c.gridx=0;
 		c.gridy=0;
 		
+		Dimension scrollSize = new Dimension((int) (screenSize.width*0.8),(data.getSize()+6)*Dimensions.HEIGHT.value());
+		
 		LabelFrame labelFrame = new LabelFrame(data);
 		
+		labelFrame.setSize(new Dimension(Dimensions.LABEL_WIDTH.value(), scrollSize.height));
+		
 		add(labelFrame,c);
+
 		
 
 		DataPanelFrame dataFrame = new DataPanelFrame(data);
 				
 		JScrollPane scrollPane = new JScrollPane(dataFrame,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-		Dimension scrollSize = new Dimension((int) (screenSize.width*0.8),(int) (screenSize.height*0.9));
 
 //		scrollSize = new Dimension(1500,1000);
 		scrollPane.setPreferredSize(scrollSize);

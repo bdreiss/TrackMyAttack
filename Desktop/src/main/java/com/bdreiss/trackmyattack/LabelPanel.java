@@ -20,7 +20,6 @@ public class LabelPanel extends JPanel {
 		
 		
 		setLayout(new GridBagLayout());
-		setAlignmentX(TOP_ALIGNMENT);
 		
 		JPanel emptyLabel = new JPanel();
 		
@@ -38,7 +37,6 @@ public class LabelPanel extends JPanel {
 			
 			JLabel label = new JLabel(it.next());
 			label.setBackground(Color.WHITE);
-			label.setSize(new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.HEIGHT.value()));
 			add(label, c);
 			
 		}
