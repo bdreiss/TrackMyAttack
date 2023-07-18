@@ -43,7 +43,7 @@ class MainFrame extends JFrame{
 		
 		LabelFrame labelFrame = new LabelFrame(data);
 		
-		labelFrame.setSize(new Dimension(Dimensions.LABEL_WIDTH.value(), scrollSize.height));
+		labelFrame.setPreferredSize(new Dimension(Dimensions.LABEL_WIDTH.value(), scrollSize.height));
 		
 		add(labelFrame,c);
 

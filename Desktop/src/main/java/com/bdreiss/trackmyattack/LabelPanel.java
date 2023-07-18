@@ -20,14 +20,19 @@ public class LabelPanel extends JPanel {
 		
 		
 		setLayout(new GridBagLayout());
+	
+		Dimension labelDimension = new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.HEIGHT.value());
+
 		
 		JPanel emptyLabel = new JPanel();
-		
-
+		emptyLabel.setPreferredSize(labelDimension);
+	
 		GridBagConstraints c = new GridBagSettings();
 
 		c.gridx = 0;
 		c.gridy = 0;
+
+		
 		add(emptyLabel,c);
 		
 		Iterator<String> it = data.getKeys();
@@ -37,6 +42,7 @@ public class LabelPanel extends JPanel {
 			
 			JLabel label = new JLabel(it.next());
 			label.setBackground(Color.WHITE);
+			label.setPreferredSize(labelDimension);
 			add(label, c);
 			
 		}
