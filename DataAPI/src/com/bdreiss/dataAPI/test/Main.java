@@ -18,22 +18,33 @@ public class Main {
 	final static String PATH = System.getProperty("user.home") + "/Apps/TrackMyAttack";
 
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException, EntryNotFoundException, TypeMismatchException {
-
-		System.out.println(PATH);
+		
 		DataModel data = new DataModel(PATH);
 
-//		processTextFile(data, PATH + "/Text.txt");
+		if (data.getSaveFile() != null)
+			data.getSaveFile().delete();
+		
+		data = new DataModel(PATH);
+		
+		processTextFile(data, PATH + "/Text.txt");
+		
 		data.print();
-		System.out.println(data.firstDate);
 	}
 
 	private static void processTextFile(DataModel data, String file) throws FileNotFoundException, TypeMismatchException {
 		Scanner scanner = new Scanner(new File(file));
 
+		String lastLine = "";
+		String nextLine = "";
 		boolean check = true;
 		while (scanner.hasNextLine() && check) {
-
 			String line = scanner.nextLine();
+
+			while (lastLine.equals(line) && scanner.hasNextLine())
+				line = scanner.nextLine();
+
+			lastLine = line;
+
 			if (line.equals("Causes"))
 				check = false;
 			if (line.contains(",")) {
@@ -49,6 +60,11 @@ public class Main {
 		while (scanner.hasNextLine() && check) {
 
 			String line = scanner.nextLine();
+
+			while (lastLine.equals(line) && scanner.hasNextLine())
+				line = scanner.nextLine();
+
+			lastLine = line;
 
 			if (line.equals("Symptoms"))
 				check = false;
@@ -69,9 +85,16 @@ public class Main {
 		while (scanner.hasNextLine() && check) {
 
 			String line = scanner.nextLine();
+			
+			while (lastLine.equals(line) && scanner.hasNextLine())
+				line = scanner.nextLine();
+
+			lastLine = line;
+
 			if (line.equals("Remedies"))
 				check = false;
 
+			
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
@@ -85,6 +108,11 @@ public class Main {
 		while (scanner.hasNextLine()) {
 
 			String line = scanner.nextLine();
+
+			while (lastLine.equals(line) && scanner.hasNextLine())
+				line = scanner.nextLine();
+
+			lastLine = line;
 
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
