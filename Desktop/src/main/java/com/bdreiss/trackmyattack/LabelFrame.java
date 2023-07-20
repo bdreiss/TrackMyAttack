@@ -41,9 +41,6 @@ public class LabelFrame extends JPanel {
 		c.gridx = 0;
 		c.gridy = 0;
 
-//		add(new FillPanel(modifiers[0]),c);	
-//		c.gridy++;
-
 		LabelPanel causeLabels = new LabelPanel(new CauseDataModel(data));
 
 		add(causeLabels, c);

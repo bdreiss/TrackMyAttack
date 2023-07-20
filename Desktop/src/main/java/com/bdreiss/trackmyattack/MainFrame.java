@@ -30,7 +30,8 @@ class MainFrame extends JFrame{
 		
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
+		Dimension scrollSize = new Dimension((int) (screenSize.width*0.8),(data.getSize()+6)*Dimensions.HEIGHT.value());
+			
 		setSize(screenSize);
 
 		setLayout(new GridBagLayout());
@@ -39,7 +40,9 @@ class MainFrame extends JFrame{
 		c.gridx=0;
 		c.gridy=0;
 		
-		Dimension scrollSize = new Dimension((int) (screenSize.width*0.8),(data.getSize()+6)*Dimensions.HEIGHT.value());
+	
+		c.ipady = scrollSize.height;		
+		c.ipadx = Dimensions.LABEL_WIDTH.value();
 		
 		LabelFrame labelFrame = new LabelFrame(data);
 		
@@ -47,14 +50,14 @@ class MainFrame extends JFrame{
 		
 		add(labelFrame,c);
 
-		
+
+		c.ipadx = scrollSize.width+20;
 
 		DataPanelFrame dataFrame = new DataPanelFrame(data);
 				
 		JScrollPane scrollPane = new JScrollPane(dataFrame,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 
-//		scrollSize = new Dimension(1500,1000);
 		scrollPane.setPreferredSize(scrollSize);
 		c.gridx=1;
 

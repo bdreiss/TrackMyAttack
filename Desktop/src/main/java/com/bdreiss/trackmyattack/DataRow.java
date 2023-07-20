@@ -92,7 +92,7 @@ class DataRow extends JPanel{
 					
 					graphics.fillRect(0,0,Dimensions.WIDTH.value(),Dimensions.HEIGHT.value());
 					
-					graphics.setColor(new Color(240,240,240));
+					graphics.setColor(Colors.GRID_COLOR.value());
 					
 					graphics.drawRect(0, 0, Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()+20);
 					

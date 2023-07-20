@@ -2,6 +2,7 @@ package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Iterator;
@@ -17,8 +18,11 @@ public class LabelPanel extends JPanel {
 	
 	public LabelPanel(AbstractDataModel data) {
 		this.data = data;
-		
-		
+	}
+	
+	@Override
+	public void paint(Graphics graphics) {
+		super.paint(graphics);
 		setLayout(new GridBagLayout());
 	
 		Dimension labelDimension = new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.HEIGHT.value());
@@ -40,11 +44,10 @@ public class LabelPanel extends JPanel {
 		while (it.hasNext()) {
 			c.gridy++;
 			
-			JLabel label = new JLabel(it.next());
-			label.setBackground(Color.WHITE);
-			label.setPreferredSize(labelDimension);
+			JLabel label = new Label(it.next());
 			add(label, c);
-			
+
 		}
+
 	}
 }
