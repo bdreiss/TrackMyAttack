@@ -4,6 +4,8 @@ import java.awt.GridBagConstraints;
 
 public class GridBagSettings extends GridBagConstraints {
 
+	private static final long serialVersionUID = 1L;
+
 	public GridBagSettings() {
 		anchor = GridBagConstraints.WEST;
 		

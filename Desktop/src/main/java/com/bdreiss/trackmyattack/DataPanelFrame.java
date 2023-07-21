@@ -1,18 +1,9 @@
 package main.java.com.bdreiss.trackmyattack;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Iterator;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
-import com.bdreiss.dataAPI.AbstractDataModel;
 import com.bdreiss.dataAPI.CauseDataModel;
 import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.RemedyDataModel;
@@ -22,11 +13,7 @@ public class DataPanelFrame extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 
-	private DataModel data;
-	
 	public DataPanelFrame(DataModel data) {
-		
-		this.data = data;
 		
 		setLayout(new GridBagLayout());
 		

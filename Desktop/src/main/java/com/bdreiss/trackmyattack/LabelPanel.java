@@ -1,6 +1,5 @@
 package main.java.com.bdreiss.trackmyattack;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -14,6 +13,7 @@ import com.bdreiss.dataAPI.AbstractDataModel;
 
 public class LabelPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
 	private AbstractDataModel data;
 	
 	public LabelPanel(AbstractDataModel data) {

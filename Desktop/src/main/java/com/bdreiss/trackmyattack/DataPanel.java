@@ -1,8 +1,6 @@
 package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -11,7 +9,6 @@ import javax.swing.JPanel;
 import com.bdreiss.dataAPI.AbstractDataModel;
 import com.bdreiss.dataAPI.AilmentDataModel;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import com.bdreiss.dataAPI.util.Datum;
 
 import java.awt.GridBagLayout;
 import java.time.Duration;
@@ -37,10 +34,6 @@ public class DataPanel extends JPanel{
 		colorSets.add(blues);
 		colorSets.add(greens);
 		colorSets.add(yellows);
-
-
-		Iterator<String> it = data.getKeys();
-
 
 		setData();
 

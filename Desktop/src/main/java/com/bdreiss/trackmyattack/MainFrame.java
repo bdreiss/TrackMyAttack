@@ -1,9 +1,6 @@
 package main.java.com.bdreiss.trackmyattack;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -11,14 +8,10 @@ import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import com.bdreiss.dataAPI.CauseDataModel;
 import com.bdreiss.dataAPI.DataModel;
-import com.bdreiss.dataAPI.RemedyDataModel;
-import com.bdreiss.dataAPI.SymptomDataModel;
 
 class MainFrame extends JFrame{
 

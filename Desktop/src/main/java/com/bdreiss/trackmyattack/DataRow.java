@@ -13,11 +13,9 @@ import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
 import java.time.LocalDate;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
 import java.util.Iterator;
 
 class DataRow extends JPanel{
