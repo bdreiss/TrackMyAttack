@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Android/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="Android/app/src/main/java"/>
+	<classpathentry kind="src" path="Android/app/src/test/java"/>
+	<classpathentry kind="src" path="DataAPI/src"/>
+	<classpathentry kind="src" path="DataAPI/tests"/>
+	<classpathentry kind="src" path="Desktop/src"/>
+	<classpathentry kind="lib" path="Android/app/libs/DataAPI.jar"/>
+	<classpathentry kind="lib" path="Android/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="Desktop/libs/json-20230618.jar"/>
+	<classpathentry kind="output" path="DataAPI/target/classes"/>
+</classpath>
