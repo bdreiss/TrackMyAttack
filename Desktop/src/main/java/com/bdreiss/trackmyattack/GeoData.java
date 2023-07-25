@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -19,6 +18,7 @@ import org.json.JSONObject;
 
 public class GeoData implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private String PREFIX = "https://dataset.api.hub.zamg.ac.at/v1/station/historical/klima-v1-1d?parameters=t,tmax,tmin,druckmit,rel,dampfmit&start=";
 	private String INFIX1 = "T00:00&end=";
 	private String INFIX2 = "T00:01&station_ids=";

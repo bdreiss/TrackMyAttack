@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setItems(intensities, (dialog, which) -> {
                         try {
                                 ailmentDataModel.addData("Migraine", Intensity.values()[which]);
+                                Synchronizer.autoSynchronize(this,data, syncButton);
                         } catch (TypeMismatchException e) {
                                 e.printStackTrace();
                         }

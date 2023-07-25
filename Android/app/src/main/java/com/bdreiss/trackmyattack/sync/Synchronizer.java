@@ -17,13 +17,20 @@ public class Synchronizer {
             synchronize(context,data, null);
         }
 
-        public static void autoSynchronize(Context context, DataModel data){
-            Settings settings = new Settings(context);
-            if (settings.getAutomaticSync())
-                synchronize(context, data);
-            else
-                settings.setSynced(false);
+    public static void autoSynchronize(Context context, DataModel data, Button syncButton){
+        Settings settings = new Settings(context);
+        if (settings.getAutomaticSync()) {
+            synchronize(context, data, syncButton);
+        }
+        else {
+            settings.setSynced(false);
+            setSyncButton(context, syncButton, true);
+        }
 
+    }
+
+        public static void autoSynchronize(Context context, DataModel data){
+            autoSynchronize(context, data, null);
         }
 
         public static void synchronize(Context context, DataModel data, Button syncButton) {
@@ -34,13 +41,12 @@ public class Synchronizer {
         if (netInfo == null || !netInfo.isConnected()) {
 
             settings.setSynced(false);
+            setSyncButton(context, syncButton, true);
+
         } else {
             Thread t = (new DropboxSync(context, data, () -> {
                 settings.setSynced(true);
-                if (syncButton != null){
-                    syncButton.setBackgroundColor(ContextCompat.getColor(context, R.color.primary));
-                }
-
+                setSyncButton(context, syncButton, false);
             }));
 
             t.start();
@@ -48,5 +54,13 @@ public class Synchronizer {
 
 
         }
+    }
+
+    private static void setSyncButton(Context context, Button syncButton, boolean active){
+            if (syncButton != null)
+                if (!active)
+                    syncButton.setBackgroundColor(ContextCompat.getColor(context, R.color.primary));
+                else
+                    syncButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_not_synced));
     }
 }
