@@ -64,11 +64,18 @@ public class EditItemDialog extends DialogFragment {
     //contains method to update original layout in case key is removed from data
     private final AddKeyDialogListener addKeyDialogListener;
 
-    public EditItemDialog(Context context, String key, AbstractDataModel dataModel, AddKeyDialogListener addKeyDialogListener) {
+    private Button syncButton;
+
+    public EditItemDialog(Context context, String key, AbstractDataModel dataModel, AddKeyDialogListener addKeyDialogListener, Button syncButton) {
         this.context = context;
         this.key = key;
         this.dataModel = dataModel;
         this.addKeyDialogListener = addKeyDialogListener;
+        this.syncButton = syncButton;
+    }
+
+    public EditItemDialog(Context context, String key, AbstractDataModel dataModel, AddKeyDialogListener addKeyDialogListener) {
+        this(context, key, dataModel, addKeyDialogListener, null);
     }
 
     @Nullable
@@ -86,7 +93,7 @@ public class EditItemDialog extends DialogFragment {
             entries = dataModel.getData(key);
         } catch (EntryNotFoundException e){
             e.printStackTrace();
-            Toast.makeText(getContext(),"Key not found", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),"Entry not found", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -107,7 +114,7 @@ public class EditItemDialog extends DialogFragment {
         builder.setTitle("Confirm deletion");
         builder.setPositiveButton("YES", (dialog, which) -> {
             dataModel.removeKey(key);
-            Synchronizer.autoSynchronize(context, dataModel.getData());
+            Synchronizer.autoSynchronize(context, dataModel.getData(),syncButton);
             addKeyDialogListener.updateOriginalLayout();
             dismiss();
         });
@@ -174,7 +181,7 @@ public class EditItemDialog extends DialogFragment {
 
                     try {
                         dataModel.editDate(key, date, newDate);
-                        Synchronizer.autoSynchronize(context, dataModel.getData());
+                        Synchronizer.autoSynchronize(context, dataModel.getData(), syncButton);
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }
@@ -200,7 +207,7 @@ public class EditItemDialog extends DialogFragment {
                     LocalDateTime newDate = date.withHour(hourOfDay).withMinute(minute);
                     try {
                         dataModel.editDate(key, date, newDate);
-                        Synchronizer.autoSynchronize(context,dataModel.getData());
+                        Synchronizer.autoSynchronize(context,dataModel.getData(), syncButton);
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }
@@ -236,7 +243,7 @@ public class EditItemDialog extends DialogFragment {
 
                         try {
                             dataModel.editIntensity(key,date, newIntensity);
-                            Synchronizer.autoSynchronize(context,dataModel.getData());
+                            Synchronizer.autoSynchronize(context,dataModel.getData(),syncButton);
                         } catch (TypeMismatchException e) {
                             e.printStackTrace();
                         }
@@ -271,7 +278,7 @@ public class EditItemDialog extends DialogFragment {
             //delete item on click and remove it from linearLayout
             deleteItemButton.setOnClickListener(v -> {
                 dataModel.removeItem(key, entry.getDate());
-                Synchronizer.autoSynchronize(context,dataModel.getData());
+                Synchronizer.autoSynchronize(context,dataModel.getData(), syncButton);
                 //remove separation line
                 linearLayout.removeViewAt(linearLayout.indexOfChild(linearLayoutForEntry)+1);
                 linearLayout.removeView(linearLayoutForEntry);

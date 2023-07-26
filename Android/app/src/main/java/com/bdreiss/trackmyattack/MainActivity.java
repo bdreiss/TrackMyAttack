@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         public void updateOriginalLayout() {
 
                         }
-                });
+                }, syncButton);
                 editItemDialog.show(getSupportFragmentManager(),"Edit Item Dialog");
                 return true;
         });
