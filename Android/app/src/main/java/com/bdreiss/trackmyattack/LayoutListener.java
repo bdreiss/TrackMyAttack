@@ -2,10 +2,13 @@ package com.bdreiss.trackmyattack;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Iterator;
@@ -121,6 +124,8 @@ public class LayoutListener implements View.OnClickListener {
         Button backButton = new Button(context);
         backButton.setText(context.getResources().getString(R.string.BACK_BUTTON));
         backButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        backButton.setBackgroundColor(ContextCompat.getColor(context, R.color.primary));
+        backButton.setTextColor(Color.WHITE);
 
         //add button to linear layout
         linearLayout.addView(backButton);
