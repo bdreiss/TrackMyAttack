@@ -94,6 +94,9 @@ public class LayoutListener implements View.OnClickListener {
         addButton.setText("+");
         addButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        addButton.setBackgroundColor(ContextCompat.getColor(context, R.color.primary_variant));
+        addButton.setTextColor(Color.WHITE);
+
         //set tag so button can be accessed later on, since it has no id (this is important for testing purposes for example)
         addButton.setTag("add_key_button");
 
