@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class DropboxSync extends Thread{
+public class DropboxSync extends Sync{
 
     private final Context context;
     private final DataModel data;

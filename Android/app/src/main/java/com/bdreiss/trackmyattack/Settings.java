@@ -2,6 +2,8 @@ package com.bdreiss.trackmyattack;
 
 import android.content.Context;
 
+import com.bdreiss.trackmyattack.sync.SyncMethod;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,6 +16,7 @@ public class Settings implements Serializable {
     private final File SAVE_FILE;
     private boolean synced = true;
     private boolean automaticSync = false;
+    private SyncMethod syncMethod;
 
     public Settings(Context context){
         String SETTINGS_FILE_NAME = "settings";
@@ -60,6 +63,14 @@ public class Settings implements Serializable {
         }
 
     }
+
+    public void setSyncMethod(SyncMethod syncMethod){
+        this.syncMethod = syncMethod;
+    }
+    public SyncMethod getSyncMethod(){
+        return syncMethod;
+    }
+
 
     public void setSynced(boolean synced){
         this.synced = synced;

@@ -21,6 +21,7 @@ import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
 import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;
+import com.bdreiss.trackmyattack.sync.SyncMethod;
 import com.bdreiss.trackmyattack.sync.Synchronizer;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         data = new DataModel(getFilesDir().getAbsolutePath());
         settings = new Settings(this);
         settings.setAutomaticSync(true);
+        settings.setSyncMethod(SyncMethod.DROPBOX);
 
         try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir().getAbsolutePath() + "/Text.txt"));
