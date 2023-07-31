@@ -46,6 +46,7 @@ public class Settings implements Serializable {
     private void transferSettings(Settings settings){
         this.synced = settings.synced;
         this.automaticSync = settings.automaticSync;
+        this.syncMethod = settings.syncMethod;
     }
 
     private void save(){
@@ -65,9 +66,13 @@ public class Settings implements Serializable {
     }
 
     public void setSyncMethod(SyncMethod syncMethod){
+
         this.syncMethod = syncMethod;
+        save();
+
     }
     public SyncMethod getSyncMethod(){
+        load();
         return syncMethod;
     }
 

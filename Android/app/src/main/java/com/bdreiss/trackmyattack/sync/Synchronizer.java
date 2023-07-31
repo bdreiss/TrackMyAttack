@@ -7,6 +7,7 @@ package com.bdreiss.trackmyattack.sync;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.core.content.ContextCompat;
@@ -34,18 +35,17 @@ public class Synchronizer {
             Sync sync = null;
 
             if (settings.getSyncMethod() == SyncMethod.DROPBOX) {
-                sync = (new DropboxSync(context, data, () -> {
+                sync = new DropboxSync(context, data, () -> {
                     settings.setSynced(true);
                     setSyncButton(context, syncButton, false);
-                }));
+                });
             }
 
             //sync should actually never be null
             if (sync != null)
                 sync.start();
             else
-                System.exit(0);
-
+                Log.e("SyncError", "No sync method has been identified");
 
         }
     }

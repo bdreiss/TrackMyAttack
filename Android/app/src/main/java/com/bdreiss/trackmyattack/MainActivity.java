@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         settings = new Settings(this);
         settings.setAutomaticSync(true);
         settings.setSyncMethod(SyncMethod.DROPBOX);
+
+                Toast.makeText(this, settings.getSyncMethod().toString(), Toast.LENGTH_LONG).show();
 
         try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir().getAbsolutePath() + "/Text.txt"));
