@@ -1,5 +1,6 @@
 package com.bdreiss.trackmyattack.sync;
 
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,27 +22,32 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+
+/*
+ *  Class that represents synchronization via Dropbox
+ */
+
 public class DropboxSync extends Sync{
 
-    private final Context context;
-    private final DataModel data;
-    private final SyncCompleted syncCompleted;
 
     public DropboxSync(Context context, DataModel data, SyncCompleted syncCompleted){
-        this.context = context;
-        this.data = data;
-        this.syncCompleted = syncCompleted;
+        super(context, data, syncCompleted);
     }
 
 
     @Override
     public void run() {
 
+        //thread to check for and preform authorization
         @SuppressLint("SetTextI18n") Thread authorizationThread = new Thread(() -> {
             try {
+
+                //if there are no Dropbox credentials, initialize authentication process
                 if (!(new File(Dropbox.getDbxFilePath(data)).exists())) {
                     URL url = new URL(Dropbox.getAuthorizationURL(getKey()));
                     ((Activity) context).runOnUiThread(() -> {
+
+                        //Initialize and show authentication dialog
                         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
                         View alertView = ((Activity) context).getLayoutInflater().inflate(R.layout.custom_alert, null);
                         alertDialog.setView(alertView);
@@ -52,6 +58,8 @@ public class DropboxSync extends Sync{
 
                         TextView text = alertView.findViewById(R.id.custom_alert_text_view);
                         text.setMovementMethod(LinkMovementMethod.getInstance());
+
+                        //Get message from DataAPI and display
                         text.setText(Dropbox.message + "\n\n" + url);
                         text.setClickable(true);
                         text.setTextSize(20);
@@ -90,6 +98,8 @@ public class DropboxSync extends Sync{
 
 
         });
+
+        //start thread to check for and preform authorization and wait for it to finish
         authorizationThread.start();
         try {
             authorizationThread.join();
@@ -97,6 +107,7 @@ public class DropboxSync extends Sync{
             e.printStackTrace();
         }
 
+        //create and start upload thread and wait for it to finish
         Thread uploadThread = new Thread(() -> {
 
             if ((new File(Dropbox.getDbxFilePath(data)).exists())) {
@@ -116,8 +127,12 @@ public class DropboxSync extends Sync{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        //perform on sync complete action
         syncCompleted.onComplete();
     }
+
+
     private String getKey() {
         String key = "";
         try {
