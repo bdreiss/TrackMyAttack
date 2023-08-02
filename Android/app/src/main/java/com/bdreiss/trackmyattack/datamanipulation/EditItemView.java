@@ -5,6 +5,10 @@ import android.content.Context;
 import android.view.Gravity;
 import android.widget.TextView;
 
+/*
+ *  Class that represents a View for items in EditItemDialog
+ */
+
 @SuppressLint("ViewConstructor")
 public class EditItemView extends androidx.appcompat.widget.AppCompatTextView {
     private static final int TEXT_VIEW_PADDING = 10;
@@ -12,6 +16,8 @@ public class EditItemView extends androidx.appcompat.widget.AppCompatTextView {
 
     public EditItemView(Context context, String text) {
         super(context);
+
+        //if size of string is bigger than 10 there must be intensity in item and the width therefore wider
         if (text.length() > 10)
            setWidth(INTENSITY_WIDTH);
         setText(text);
@@ -25,6 +31,7 @@ public class EditItemView extends androidx.appcompat.widget.AppCompatTextView {
         setText(text);
     }
 
+    //returns View with separation line
     public static TextView getSeparationLine(Context context){
         TextView separationLineView = new TextView(context);
         separationLineView.setGravity(Gravity.CENTER);

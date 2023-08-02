@@ -64,7 +64,7 @@ public class EditItemDialog extends DialogFragment {
     //contains method to update original layout in case key is removed from data
     private final AddKeyDialogListener addKeyDialogListener;
 
-    private Button syncButton;
+    private final Button syncButton;
 
     public EditItemDialog(Context context, String key, AbstractDataModel dataModel, AddKeyDialogListener addKeyDialogListener, Button syncButton) {
         this.context = context;
