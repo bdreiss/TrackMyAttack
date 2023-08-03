@@ -25,12 +25,14 @@ import java.net.URL;
 
 /*
  *  Class that represents synchronization via Dropbox
+ *
+ * //TODO handle API-key properly
  */
 
-public class DropboxSync extends Sync{
+public class DropboxSynchronizer extends Synchronizer {
 
 
-    public DropboxSync(Context context, DataModel data, SyncCompleted syncCompleted){
+    public DropboxSynchronizer(Context context, DataModel data, SyncCompleted syncCompleted){
         super(context, data, syncCompleted);
     }
 
@@ -137,7 +139,7 @@ public class DropboxSync extends Sync{
         String key = "";
         try {
 
-            FileReader is = new FileReader(((Activity) context).getFilesDir() + "/TrackMyAttackKey");
+            FileReader is = new FileReader(context.getFilesDir() + "/TrackMyAttackKey");
             BufferedReader bis = new BufferedReader(is);
 
             key = bis.readLine();

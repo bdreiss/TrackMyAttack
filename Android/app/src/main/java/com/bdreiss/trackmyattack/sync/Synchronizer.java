@@ -1,9 +1,5 @@
 package com.bdreiss.trackmyattack.sync;
 
-/*
- * Class that provides methods for (auto)synchronizing data
- */
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,7 +12,24 @@ import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.trackmyattack.R;
 import com.bdreiss.trackmyattack.Settings;
 
-public class Synchronizer {
+/*
+ *  Abstract class representing methods to synchronize. The actual sync methods (Dropbox, Google etc.)
+ *  are represented by subclasses.
+ */
+
+public abstract class Synchronizer extends Thread{
+
+    protected final Context context;
+    protected final DataModel data;
+    protected final SyncCompleted syncCompleted;//method to be executed when sync is performed
+
+    public Synchronizer(Context context, DataModel data, SyncCompleted syncCompleted){
+        this.context = context;
+        this.data = data;
+        this.syncCompleted = syncCompleted;
+
+
+    }
 
     //method that synchronizes data
     public static void synchronize(Context context, DataModel data, Button syncButton) {
@@ -32,10 +45,10 @@ public class Synchronizer {
             setSyncButton(context, syncButton, true);
 
         } else {
-            Sync sync = null;
+            Synchronizer sync = null;
 
             if (settings.getSyncMethod() == SyncMethod.DROPBOX) {
-                sync = new DropboxSync(context, data, () -> {
+                sync = new DropboxSynchronizer(context, data, () -> {
                     settings.setSynced(true);
                     setSyncButton(context, syncButton, false);
                 });
