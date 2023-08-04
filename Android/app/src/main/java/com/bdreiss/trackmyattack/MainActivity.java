@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,15 +37,17 @@ public class MainActivity extends AppCompatActivity {
 
         private void activityMain(){
         setContentView(R.layout.activity_main);
-        //DataModel.deleteSaveFile(this)
 
         data = new DataModel(getFilesDir().getAbsolutePath());
+
+        //temporary settings until settings user interface has been implemented
+                //TODO implement user interface for settings
         settings = new Settings(this);
         settings.setAutomaticSync(true);
         settings.setSyncMethod(SyncMethod.DROPBOX);
 
-                Toast.makeText(this, settings.getSyncMethod().toString(), Toast.LENGTH_LONG).show();
-
+        //write data to text file, so when DataModel in DataAPI is changed, data can be transferred (temporary measure)
+                //TODO implement better method for migrating data
         try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir().getAbsolutePath() + "/Text.txt"));
                 bw.write(data.print());
@@ -55,18 +56,22 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
         }
 
+        //sync Button that turns a different color, if data has not been synced (i.e. because there was not internet connection)
         Button syncButton = findViewById(R.id.button_sync);
 
         if (!settings.getSynced())
                 syncButton.setBackgroundColor(Color.RED);
 
+        //sync data on click
         syncButton.setOnClickListener(v -> Synchronizer.synchronize(this, data, syncButton));
 
+        //Button for adding migraines and managing already existent data
         Button migraineButton = findViewById(R.id.button_migraine);
 
+        //sub type of an abstract data model containing methods only pertaining to ailments (in our case migraines)
         AilmentDataModel ailmentDataModel = new AilmentDataModel(data);
-        //listener for adding new Datum
 
+        //listener for adding new Datum initiating dialog where user can add migraine with Intensity
         migraineButton.setOnClickListener(v ->{
                 String[] intensities = new String[Intensity.values().length];
 
@@ -76,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Choose Intensity");
+
+                //set items and implement adding data on choosing
                 builder.setItems(intensities, (dialog, which) -> {
                         try {
                                 ailmentDataModel.addData("Migraine", Intensity.values()[which]);
@@ -89,23 +96,25 @@ public class MainActivity extends AppCompatActivity {
                 builder.show();
         });
 
+        //on long click, show existing data via EditItemDialog but leave out the add key elements (because we don't need to add ailment keys)
         migraineButton.setOnLongClickListener(v -> {
                 EditItemDialog editItemDialog = new EditItemDialog(this,"Migraine", ailmentDataModel, new AddKeyDialogListener() {
                         @Override
-                        public void addKey(String key, Boolean intensity) {
-
-                        }
+                        public void addKey(String key, Boolean intensity) {}
 
                         @Override
-                        public void updateOriginalLayout() {
-
-                        }
+                        public void updateOriginalLayout() {}
                 }, syncButton);
                 editItemDialog.show(getSupportFragmentManager(),"Edit Item Dialog");
                 return true;
         });
 
-
+        /*
+                implement button for managing data for causes, symptoms and remedies,
+                the LayoutListener is a View showing all keys in the category it is representing
+                where each Button for each key is equivalent to the migraine button listeners but includes a
+                button and methods for adding new keys
+         */
         LayoutListener causeLayoutListener = new LayoutListener(this, new CauseDataModel(data), getSupportFragmentManager(), this::activityMain);
         Button causesViewButton = findViewById(R.id.button_causes_view);
         causesViewButton.setOnClickListener(causeLayoutListener);

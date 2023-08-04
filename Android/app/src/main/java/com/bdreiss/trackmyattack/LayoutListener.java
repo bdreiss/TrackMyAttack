@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
