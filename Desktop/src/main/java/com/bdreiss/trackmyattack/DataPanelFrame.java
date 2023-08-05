@@ -9,6 +9,11 @@ import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.RemedyDataModel;
 import com.bdreiss.dataAPI.SymptomDataModel;
 
+/*
+ * 	Panel representing frame containing data panels.  
+ *
+ */
+
 public class DataPanelFrame extends JPanel{
 	
 	private static final long serialVersionUID = 1L;

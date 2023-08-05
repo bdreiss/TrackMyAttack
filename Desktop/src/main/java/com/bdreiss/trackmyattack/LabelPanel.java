@@ -44,7 +44,12 @@ public class LabelPanel extends JPanel {
 		while (it.hasNext()) {
 			c.gridy++;
 			
+			
 			JLabel label = new Label(it.next());
+			label.setMinimumSize(new Dimension(Dimensions.WIDTH.value()*10,Dimensions.HEIGHT.value()));
+			label.setMaximumSize(new Dimension(Dimensions.WIDTH.value()*10,Dimensions.HEIGHT.value()));
+			label.setPreferredSize(new Dimension(Dimensions.WIDTH.value()*10,Dimensions.HEIGHT.value()));
+			
 			add(label, c);
 
 		}

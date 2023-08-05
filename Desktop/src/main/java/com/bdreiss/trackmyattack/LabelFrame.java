@@ -26,7 +26,7 @@ public class LabelFrame extends JPanel {
 			}
 		}
 		
-		double[] modifiers = {2,0.5,0.5,1};
+		double[] modifiers = {0,0.5,0.5,6};
 		
 		setLayout(new GridBagLayout());
 		

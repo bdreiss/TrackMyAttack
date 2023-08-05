@@ -175,6 +175,5 @@ class DataRow extends JPanel{
 			
 		}
 		
-		
 	} 
 }
