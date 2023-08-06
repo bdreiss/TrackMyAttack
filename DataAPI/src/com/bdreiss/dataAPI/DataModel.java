@@ -766,6 +766,53 @@ public class DataModel implements Serializable {
 		return getIterator(remedies.get(remedy), null);
 	}
 
+	/**
+	 * Count entries for a specific ailment at given date.
+	 * 
+	 * @param ailment
+	 * @param date
+	 * @return count
+	 * @throws EntryNotFoundException
+	 */
+	public int countAilment(String ailment, LocalDate date) throws EntryNotFoundException {
+		return iteratorToInt(getIterator(ailments.get(ailment), date));
+	};
+
+	/**
+	 * Count entries for a specific symptom at given date.
+	 * 
+	 * @param symptom
+	 * @param date
+	 * @return count
+	 * @throws EntryNotFoundException
+	 */
+	public int countSymptom(String symptom, LocalDate date) throws EntryNotFoundException {
+		return iteratorToInt(getIterator(symptoms.get(symptom), date));
+	};
+
+	/**
+	 * Count entries for a specific cause at given date.
+	 * 
+	 * @param cause
+	 * @param date
+	 * @return count
+	 * @throws EntryNotFoundException
+	 */
+	public int countCause(String cause, LocalDate date) throws EntryNotFoundException {
+		return iteratorToInt(getIterator(causes.get(cause), date));
+	};
+
+	/**
+	 * Count entries for a specific remedy at given date.
+	 * 
+	 * @param remedy
+	 * @param date
+	 * @return count
+	 * @throws EntryNotFoundException
+	 */
+	public int countRemedy(String remedy, LocalDate date) throws EntryNotFoundException {
+		return iteratorToInt(getIterator(remedies.get(remedy), date));
+	};
 	// method that abstracts the task of returning an Iterator of the right kind
 	private Iterator<Datum> getIterator(List<Datum> list, LocalDate date) throws EntryNotFoundException {
 
@@ -787,6 +834,16 @@ public class DataModel implements Serializable {
 		else
 			return new DayIterator(list, date);
 
+	}
+	
+	//takes Iterator and returns count of items in it.
+	private int iteratorToInt(Iterator<?> it) {
+		int count = 0;
+		while (it.hasNext()) {
+			count++;
+			it.next();
+		}		
+		return count;
 	}
 
 	/**
