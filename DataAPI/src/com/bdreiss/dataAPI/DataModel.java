@@ -47,6 +47,8 @@ public class DataModel implements Serializable {
 
 	public LocalDate firstDate = null;
 	
+	private final int DAY_START_OFFSET = 4;
+	
 	/*
 	 * The following Maps contain all the relevant data.
 	 * 
@@ -813,6 +815,63 @@ public class DataModel implements Serializable {
 	public int countRemedy(String remedy, LocalDate date) throws EntryNotFoundException {
 		return iteratorToInt(getIterator(remedies.get(remedy), date));
 	};
+	
+	
+	/**
+	 * Returns medium occurrence of cause per day (not including days without data)
+	 * 
+	 * @param cause
+	 * @return
+	 * @throws EntryNotFoundException
+	 */
+	public float mediumCause(String cause) throws EntryNotFoundException {
+
+		//if there is no data, return 0
+		if (firstDate == null || getCausesSize() == 0)
+			return 0;
+		
+		return getMedium(getCauseData(cause));
+
+		
+	}
+
+	/**
+	 * Returns medium use of remedy per day (not including days without data)
+	 * 
+	 * @param remedy
+	 * @return
+	 * @throws EntryNotFoundException
+	 */
+	public float mediumRemedy(String remedy) throws EntryNotFoundException {
+
+		//if there is no data, return 0
+		if (firstDate == null || getRemediesSize() == 0)
+			return 0;
+
+		return getMedium(getRemedyData(remedy));
+	}
+
+	
+	private float getMedium(Iterator<Datum> it) {
+		
+		float daysCount = 0;
+		
+		float sum = 0;
+		
+		//initialize date at day before first recorded date
+		LocalDate date = firstDate.minusDays(1);
+				
+		while (it.hasNext()) {
+			Datum datum = it.next();
+			if (date.compareTo(datum.getDate().minusHours(DAY_START_OFFSET).toLocalDate())!=0) {
+				daysCount++;
+				date = datum.getDate().minusHours(DAY_START_OFFSET).toLocalDate();
+			}
+			sum++;		
+		}
+	
+		return sum/daysCount;			
+	}
 	// method that abstracts the task of returning an Iterator of the right kind
 	private Iterator<Datum> getIterator(List<Datum> list, LocalDate date) throws EntryNotFoundException {
 
@@ -915,7 +974,7 @@ public class DataModel implements Serializable {
 		private int index;
 		private List<Datum> list;
 		private LocalDate date;
-		final private int OFFSET = 4;
+		final private int OFFSET = DAY_START_OFFSET;
 
 		public DayIterator(List<Datum> list, LocalDate date) {
 			this.list = list;

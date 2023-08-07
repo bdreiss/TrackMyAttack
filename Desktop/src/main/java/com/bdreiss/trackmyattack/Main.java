@@ -1,6 +1,7 @@
 package main.java.com.bdreiss.trackmyattack;
 
 import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
 import com.bdreiss.dataAPI.network.Dropbox;
 
@@ -19,6 +20,16 @@ class Main{
 
 		DataModel data = new DataModel(System.getProperty("user.home") + "/Apps/TrackMyAttack");
 
+		try {
+			System.out.println(data.mediumCause("rauchen"));
+		} catch (EntryNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+//		System.exit(0);
+		
+		
 		if (!(new File(Dropbox.getDbxFilePath(data)).exists())) {
 			try {
 				URL url = new URL(Dropbox.getAuthorizationURL(getKey()));
