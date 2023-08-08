@@ -83,5 +83,15 @@ public class AilmentDataModel extends AbstractDataModel{
 		return data.getAilmentData(key, date);
 	}
 
+	@Override
+	public int count(String key, LocalDate date) throws EntryNotFoundException {
+		return data.countAilment(key, date);
+	}
+
+	@Override
+	public float getMedium(String key) {
+		return 0;
+	}
+
 
 }

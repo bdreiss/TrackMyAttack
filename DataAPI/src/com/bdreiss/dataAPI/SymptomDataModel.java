@@ -77,4 +77,14 @@ public class SymptomDataModel extends AbstractDataModel{
 		return data.getSymptomData(key, date);
 	}
 
+	@Override
+	public int count(String key, LocalDate date) throws EntryNotFoundException {
+		return data.countSymptom(key, date);
+	}
+
+	@Override
+	public float getMedium(String key) throws EntryNotFoundException {
+		return 0;
+	}
+
 }

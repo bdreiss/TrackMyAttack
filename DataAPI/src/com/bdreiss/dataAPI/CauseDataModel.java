@@ -78,4 +78,14 @@ public class CauseDataModel extends AbstractDataModel{
 		return data.getCauseData(key, date);
 	}
 
+	@Override
+	public int count(String key, LocalDate date) throws EntryNotFoundException {
+		return data.countCause(key, date);
+	}
+
+	@Override
+	public float getMedium(String key) throws EntryNotFoundException {
+		return data.mediumCause(key);
+	}
+
 }

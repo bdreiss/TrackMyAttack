@@ -77,4 +77,14 @@ public class RemedyDataModel extends AbstractDataModel{
 		return data.getRemedyData(key, date);
 	}
 
+	@Override
+	public int count(String key, LocalDate date) throws EntryNotFoundException {
+		return data.countRemedy(key, date);
+	}
+
+	@Override
+	public float getMedium(String key) throws EntryNotFoundException {
+		return data.mediumRemedy(key);
+	}
+
 }

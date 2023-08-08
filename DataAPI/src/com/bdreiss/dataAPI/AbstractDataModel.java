@@ -42,6 +42,8 @@ import com.bdreiss.dataAPI.util.Datum;
     public abstract void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException;
     public abstract void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException;
     public abstract int getSize();
+    public abstract int count(String key, LocalDate date) throws EntryNotFoundException;
+    public abstract float getMedium(String key) throws EntryNotFoundException;
     public LocalDate getFirstDate() {
     	return data.firstDate;
     };
