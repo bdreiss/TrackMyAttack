@@ -44,6 +44,11 @@ class DataRow extends JPanel{
 		LocalDate dateCounter = data.getFirstDate();
 		
 		
+		float mean = 0;
+		if (!(data.getData(key) instanceof IteratorWithIntensity))
+			mean = data.getMedium(key);
+		
+		
 		while (dateCounter.compareTo(LocalDate.now()) <= 0) {
 
 			final LocalDate currentDate = dateCounter;
@@ -54,19 +59,33 @@ class DataRow extends JPanel{
 			
 			
 			Intensity intensity = Intensity.NO_INTENSITY;
-			while (it.hasNext()) {
-				
+					
 				if (it instanceof IteratorWithIntensity) {
+					while (it.hasNext()) {
+						
 					DatumWithIntensity datum = (DatumWithIntensity) it.next();
 					if (datum.getIntensity().compareTo(intensity)>0)
 						intensity = datum.getIntensity();
+				
+					}
 				}
 				else {
-					intensity = Intensity.MEDIUM;
-					it.next();
+					int countToday = data.count(key, currentDate);
+					
+					float intensityCount = countToday/mean;
+					
+					if (countToday > 0) {
+						if (intensityCount > 2)
+							intensity=Intensity.HIGH;
+						else if (intensityCount < 0.5)
+							intensity = Intensity.LOW;
+						else 
+							intensity = Intensity.MEDIUM;
+					}
+					
 				}
 				
-			}
+			
 
 			if (intensity == Intensity.LOW)
 				colorToSet = colorSet[0];
