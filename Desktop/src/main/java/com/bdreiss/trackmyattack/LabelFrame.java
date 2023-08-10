@@ -1,9 +1,12 @@
 package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import com.bdreiss.dataAPI.CauseDataModel;
 import com.bdreiss.dataAPI.DataModel;
@@ -22,11 +25,11 @@ public class LabelFrame extends JPanel {
 			public FillPanel(double heightModifier) {
 				Dimension fillPanelDimension = new Dimension(Dimensions.LABEL_WIDTH.value(), (int) (Dimensions.HEIGHT.value()*heightModifier));				
 				setPreferredSize(fillPanelDimension);
-			
+				
 			}
 		}
 		
-		double[] modifiers = {0,0.5,0.5,6};
+		double[] modifiers = {0,1.2,1.2,5.2};
 		
 		setLayout(new GridBagLayout());
 		

@@ -1,6 +1,7 @@
 package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -27,35 +28,30 @@ class MainFrame extends JFrame{
 			
 		setSize(screenSize);
 
-		setLayout(new GridBagLayout());
-		GridBagSettings c = new GridBagSettings();
-		
-		c.gridx=0;
-		c.gridy=0;
+		setLayout(new FlowLayout());
+//		setLayout(new GridBagLayout());
+//		GridBagSettings c = new GridBagSettings();
+//		
+//		c.gridx=0;
+//		c.gridy=0;
 		
 	
-		c.ipady = scrollSize.height;		
-		c.ipadx = Dimensions.LABEL_WIDTH.value();
+//		c.ipady = scrollSize.height;		
+//		c.ipadx = Dimensions.LABEL_WIDTH.value();
 		
 		LabelFrame labelFrame = new LabelFrame(data);
 		
 		labelFrame.setPreferredSize(new Dimension(Dimensions.LABEL_WIDTH.value(), scrollSize.height));
 		
-		add(labelFrame,c);
-
-
-		c.ipadx = scrollSize.width+20;
+		add(labelFrame);
 
 		DataPanelFrame dataFrame = new DataPanelFrame(data);
 				
-		JScrollPane scrollPane = new JScrollPane(dataFrame,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		JScrollPane scrollPane = new JScrollPane(dataFrame,ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 
 		scrollPane.setPreferredSize(scrollSize);
-		c.gridx=1;
-
-		System.out.println(scrollSize);
-		add(scrollPane,c);
+		add(scrollPane);
 
 		addWindowListener(new WindowAdapter(){
 		
