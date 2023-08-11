@@ -24,12 +24,13 @@ public class LabelFrame extends JPanel {
 
 			public FillPanel(double heightModifier) {
 				Dimension fillPanelDimension = new Dimension(Dimensions.LABEL_WIDTH.value(), (int) (Dimensions.HEIGHT.value()*heightModifier));				
+				setMinimumSize(fillPanelDimension);
 				setPreferredSize(fillPanelDimension);
-				
+				setMaximumSize(fillPanelDimension);
 			}
 		}
 		
-		double[] modifiers = {0,1.2,1.2,5.2};
+		double[] modifiers = {0.6,1,1,1};
 		
 		setLayout(new GridBagLayout());
 		
@@ -38,6 +39,10 @@ public class LabelFrame extends JPanel {
 		
 		c.gridx = 0;
 		c.gridy = 0;
+
+		add(new FillPanel(modifiers[0]),c);
+		
+		c.gridy++;
 
 		LabelPanel causeLabels = new LabelPanel(new CauseDataModel(data));
 
