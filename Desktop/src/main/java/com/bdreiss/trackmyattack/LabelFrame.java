@@ -1,12 +1,9 @@
 package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 import com.bdreiss.dataAPI.CauseDataModel;
 import com.bdreiss.dataAPI.DataModel;

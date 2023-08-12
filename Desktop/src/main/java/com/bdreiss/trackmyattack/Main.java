@@ -1,7 +1,6 @@
 package main.java.com.bdreiss.trackmyattack;
 
 import com.bdreiss.dataAPI.DataModel;
-import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
 import com.bdreiss.dataAPI.network.Dropbox;
 
@@ -51,25 +50,17 @@ class Main{
 			Dropbox.download(data);
 		} catch (NetworkException e) {
 			e.printStackTrace();
-//			System.out.println(e.toString());
 		}
 
-//		System.out.println(data.print());
 		
 		MainFrame frame = new MainFrame(data);	
 
 		frame.setVisible(true);
 	
-//	
-//		data.deleteSaveFile();
-//		System.out.println(data.print());
 
-//		int days = 4;
-//		
-//		GeoData gd = new GeoData(LocalDate.now().minusDays(days),null);
-//		
-//		gd.print();
-//		
+		
+		GeoData gd = new GeoData(data.firstDate,null);
+				
 	}
 	private static String getKey() throws NetworkException{
 
