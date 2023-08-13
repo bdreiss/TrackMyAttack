@@ -4,6 +4,7 @@ import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
 import com.bdreiss.dataAPI.network.Dropbox;
 
+import GeoData.GeoData;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -60,6 +61,8 @@ class Main{
 
 		
 		GeoData gd = new GeoData(data.firstDate,null);
+		
+		System.out.println("DONE");
 				
 	}
 	private static String getKey() throws NetworkException{

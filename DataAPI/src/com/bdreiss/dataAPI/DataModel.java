@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.util.Datum;
@@ -84,14 +85,23 @@ public class DataModel implements Serializable {
 	/**
 	 * Creates an instance of DataModel
 	 * 
-	 * @param savePath String absolute path where the DataModel will be stored
+	 * @param savePath String absolute path where the DataModel will be stored, if the value is null there will be no safe file and changes are not made persistent
 	 */
 	public DataModel(String savePath) {
-		saveFile = new File(savePath + "/" + saveFileName);
-		load();
-		save();//creates file in case it doesn't exist
+		
+		//initialize and create save file if savePath is given, go into non persistent mode otherwise
+		if (savePath != null) {
+			saveFile = new File(savePath + "/" + saveFileName);
+			load();
+			save();//creates file in case it doesn't exist
+		} else {
+			savePath = null;
+		}
 	}
 
+	public DataModel() {
+		this(null);
+	}
 	/**
 	 * Adds new ailment without data if it does not exist.
 	 * 
@@ -910,6 +920,9 @@ public class DataModel implements Serializable {
 	 */
 	private void save() {
 
+		if (saveFile == null)
+			return;
+		
 		if (!saveFile.exists()) {
 			try {
 				saveFile.createNewFile();
@@ -940,7 +953,7 @@ public class DataModel implements Serializable {
 		DataModel data = null;
 
 		// abort if it does not exist
-		if (!saveFile.exists())
+		if (saveFile == null || !saveFile.exists())
 			return;
 
 		try {
@@ -968,6 +981,43 @@ public class DataModel implements Serializable {
 		saveFile.delete();
 	}
 
+	/**
+	 * Adds datum directly to key.
+	 * @param category Category for which datum should be added.
+	 * @param key Key for which Datum should be added.
+	 * @param datum Datum that ought to be added.
+	 */
+	public void addDatumDirectly(Category category, String key, Datum datum) {
+		Map<String, List<Datum>> map = null;
+		switch(category) {
+			case AILMENT: 	map = ailments;
+						  	break;
+			case CAUSE: 	map = causes;
+						  	break;
+			case SYMPTOM:	map = symptoms;
+							break;
+			case REMEDY:	map = remedies;
+		}
+		
+		if (map == null) {
+			System.out.println("Category not found.");
+			System.exit(0);
+		}
+				
+		if (!map.containsKey(key)) {
+			if (datum instanceof DatumWithIntensity)
+				map.put(key, new ListWithIntensity());
+			else
+				map.put(key, new ArrayList<Datum>());
+		}
+		
+		List<Datum> list = map.get(key);
+		
+		list.add(datum);
+		
+	}
+	
+	
 	// Iterator that iterates over all data in a List<Datum> for one date
 	private class DayIterator implements Iterator<Datum> {
 
