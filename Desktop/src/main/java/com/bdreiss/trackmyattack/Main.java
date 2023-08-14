@@ -4,7 +4,7 @@ import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
 import com.bdreiss.dataAPI.network.Dropbox;
 
-import GeoData.GeoData;
+import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 
 import java.net.MalformedURLException;
 import java.net.URL;

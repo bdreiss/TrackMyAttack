@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.trackmyattack;
+package main.java.com.bdreiss.trackmyattack.GeoData;
 
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
@@ -14,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
@@ -34,7 +37,6 @@ import com.bdreiss.dataAPI.util.Datum;
 public class GeoData extends AbstractDataModel implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	private static final String JSONPATH = "data/JSON.txt";
 	private static final String SAVEPATH = "data/";
 	private String PREFIX = "https://dataset.api.hub.zamg.ac.at/v1/station/historical/klima-v1-1d?parameters=t,tmax,tmin,druckmit,rel,dampfmit&start=";
 	private String INFIX1 = "T00:00&end=";
@@ -42,17 +44,19 @@ public class GeoData extends AbstractDataModel implements Serializable{
 	
 	private LocalDate startDate;
 	
-	private ArrayList<GeoDay> data;
+	private DataModel data;
+	private Category CATEGORY = Category.CAUSE;
 	
 	private Point2D.Double coordinates;
 	
+	
 	public GeoData(LocalDate startDate, Point2D.Double coordinates) throws MalformedURLException {
 		this.startDate = startDate;
+		System.out.println(JSONQuery(LocalDate.now().minusDays(4),LocalDate.now().minusDays(1)));	
+		data = new DataModel();
 		
 		this.coordinates = new Point2D.Double(48.1553234784118, 16.347233789433627);
-		
-		data = new ArrayList<>();
-		
+				
 		File saveFile = new File(SAVEPATH + this.coordinates.x + this.coordinates.y);
 		
 		if (saveFile.exists())
@@ -63,9 +67,7 @@ public class GeoData extends AbstractDataModel implements Serializable{
 	}
 
 	public void print() {
-		for (GeoDay gd : data) 
-			if (gd.date.compareTo(startDate) >=0)
-				System.out.println("\n" + gd.date + ": \nDampf: " + gd.dampf + "\nLuftdruck: " + gd.druck + "\nFeuchtigkeit: " + gd.rel);
+		data.print();
 	}
 	
 	private void load(File saveFile) {
@@ -74,7 +76,7 @@ public class GeoData extends AbstractDataModel implements Serializable{
 			
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			
-			data = (ArrayList<GeoDay>) ois.readObject();
+			data = (DataModel) ois.readObject();
 			
 			ois.close();
 			fis.close();
@@ -90,46 +92,14 @@ public class GeoData extends AbstractDataModel implements Serializable{
 		}
 		
 	}
-	public Iterator<String> getKeys(){
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("humidity");
-		return list.iterator();
-	}
 	
 	
-	public Intensity getHumdity(LocalDate ld) throws EntryNotFoundException {
-		if (data.size() == 0)
-			return Intensity.NO_INTENSITY;
-		GeoDay geoDay = data.get(getIndex(ld,0,data.size()));
-		
-		Intensity intensity = Intensity.MEDIUM;
 				
-		if (geoDay.rel < 40)
-			intensity = Intensity.LOW;
-		if (geoDay.rel > 70)
-			intensity = Intensity.HIGH;
-		return intensity;
-	}
+//		if (geoDay.rel < 40)
+//			intensity = Intensity.LOW;
+//		if (geoDay.rel > 70)
+//			intensity = Intensity.HIGH;
 	
-	private int getIndex(LocalDate ld, int b, int e) {
-					
-		int index = -1;
-		
-		if (b>e)
-			return index;
-		
-		int mid = (b+e)/2;
-		
-		if (data.get(mid).date.compareTo(ld)==0)
-			return mid;
-		
-		if (data.get(mid).date.compareTo(ld) > 0)
-			index = getIndex(ld, mid+1, e);
-		else
-			index = getIndex(ld, b, mid-1);
-		
-		return index;
-	}
 	
 	
 	private static ArrayList<Float> extractData(JSONObject jso){
@@ -148,14 +118,29 @@ public class GeoData extends AbstractDataModel implements Serializable{
 	
 	private void update() {
 			
-		if (data.size() == 0)
+		if (data.getCausesSize() == 0)
 			parseJSON(JSONQuery(startDate, LocalDate.now().minusDays(1)));
 		else { 
-			if (data.get(0).date.compareTo(startDate)>0)
-				parseJSON(JSONQuery(startDate, data.get(0).date.minusDays(1)));
 			
-			if (data.get(data.size()-1).date.compareTo(LocalDate.now().minusDays(1)) != 0)
-				parseJSON(JSONQuery(data.get(data.size()-1).date.plusDays(1), LocalDate.now().minusDays(1)));
+			if (data.firstDate.compareTo(startDate)>0)
+				parseJSON(JSONQuery(startDate, data.firstDate.minusDays(1)));
+			
+			LocalDate lastDate = null;
+			
+			Iterator<Datum> it;
+			try {
+				it = data.getCauseData(GeoDataType.HUMIDITY.toString());
+				while (it.hasNext())
+					lastDate = it.next().getDate().toLocalDate();
+				if (lastDate.compareTo(LocalDate.now().minusDays(1)) != 0)
+					parseJSON(JSONQuery(lastDate.plusDays(1), LocalDate.now().minusDays(1)));
+
+			} catch (EntryNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 			
 			
 		}
@@ -229,11 +214,22 @@ public class GeoData extends AbstractDataModel implements Serializable{
 			float druck = druckData.get(i); 
 			float dampf = dampfData.get(i); 
 			float rel = relData.get(i);
+
+			System.out.println(timestamps.get(i));
 			
-			if (data.size() != 0 && date.compareTo(data.get(0).date)<0)
-				data.add(i, new GeoDay(date, temperatureMedian, temperatureMax, temperatureMin, druck, dampf, rel));
-			else
-				data.add(new GeoDay(date, temperatureMedian, temperatureMax, temperatureMin, druck, dampf, rel));
+			GeoDataType temperatureMedianE = GeoDataType.TEMPERATURE_MEDIAN;
+			GeoDataType temperatureMinE = GeoDataType.TEMPERATURE_MIN;
+			GeoDataType temperatureMaxE = GeoDataType.TEMPERATURE_MAX;
+			GeoDataType pressureE = GeoDataType.PRESSURE;
+			GeoDataType vaporE = GeoDataType.VAPOR;
+			GeoDataType humidityE = GeoDataType.HUMIDITY;
+
+			data.addDatumDirectly(CATEGORY, temperatureMedianE.toString(), new GeoDatum(date.atStartOfDay(), temperatureMedian, temperatureMedianE.lowerBound, temperatureMedianE.upperBound));
+			data.addDatumDirectly(CATEGORY, temperatureMinE.toString(), new GeoDatum(date.atStartOfDay(), temperatureMin, temperatureMinE.lowerBound, temperatureMinE.upperBound));
+			data.addDatumDirectly(CATEGORY, temperatureMaxE.toString(), new GeoDatum(date.atStartOfDay(), temperatureMax, temperatureMaxE.lowerBound, temperatureMaxE.upperBound));
+			data.addDatumDirectly(CATEGORY, pressureE.toString(), new GeoDatum(date.atStartOfDay(), druck, pressureE.lowerBound, pressureE.upperBound));
+			data.addDatumDirectly(CATEGORY, vaporE.toString(), new GeoDatum(date.atStartOfDay(), dampf, vaporE.lowerBound, vaporE.upperBound));
+			data.addDatumDirectly(CATEGORY, humidityE.toString(), new GeoDatum(date.atStartOfDay(), rel, humidityE.lowerBound, humidityE.upperBound));
 		}
 		
 		
@@ -248,29 +244,35 @@ public class GeoData extends AbstractDataModel implements Serializable{
 		System.out.println("Fetching data...");
 		
 		try {
+//			query = "https://dataset.api.hub.zamg.ac.at";
 			URL url = new URL(query);
-		
-		
-			
-			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-			
-				
-			InputStream is = connection.getInputStream();
+			URLConnection connection = url.openConnection();
+			System.out.println("HERE");
 
-			InputStreamReader isr = new InputStreamReader(is);
+			InputStreamReader isr = new InputStreamReader(connection.getInputStream());
+			
+			System.out.println("HERE");
+			
 			BufferedReader br = new BufferedReader(isr);
 			
-			jsonString = br.readLine();
+			System.out.println("HERE");
+			
 
+			StringBuilder sb = new StringBuilder();
+			
+			String inputLine;
+			while ((inputLine = br.readLine())!=null)
+				sb.append(inputLine);
+
+				
+			jsonString = sb.toString();
+			
 			if (jsonString.isEmpty()) {
 				System.out.println("Got no data");
 				System.exit(0);
 			}
 			System.out.println("Got data for " + startDate + " to " + endDate);
 			br.close();
-			isr.close();
-			is.close();
-			connection.disconnect();
 			
 		} catch (MalformedURLException e) {
 			System.out.println("Something wrong with the URL.");
@@ -285,104 +287,60 @@ public class GeoData extends AbstractDataModel implements Serializable{
 		return jsonString;
 	}
 	
-	private LocalDate getQueryStartDate() {
-		return startDate;
-	}
 	
 	private String getNearestStation() {
 		return "5802";
 	}
 	
-	private class GeoDay implements Serializable{
-		private static final long serialVersionUID = 1L;
-		final LocalDate date;
-		final float temperatureMedian;
-		final float temperatureMax;
-		final float temperatureMin;
-		final float druck;
-		final float dampf;
-		final float rel;
-	
-		
-		GeoDay(LocalDate date, float temperatureMedian, float temperatureMax, float temperatureMin, float druck, float dampf, float rel){
-			this.date = date;
-			this.temperatureMedian = temperatureMedian;
-			this.temperatureMax = temperatureMax;
-			this.temperatureMin = temperatureMin;
-			this.druck = druck;
-			this.dampf = dampf;
-			this.rel = rel;
-		}
-		
-	}
-
 	@Override
 	public void addKey(String key, boolean intensity) {}
 
 	@Override
 	public Iterator<Datum> getData(String key) throws EntryNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		return data.getCauseData(key);
 	}
 
 	@Override
 	public Iterator<Datum> getData(String key, LocalDate date) throws EntryNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		return data.getCauseData(key, date);
 	}
 
 	@Override
-	public void addData(String key) throws TypeMismatchException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void addData(String key) throws TypeMismatchException {}
 
 	@Override
-	public void addData(String key, Intensity intensity) throws TypeMismatchException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void addData(String key, Intensity intensity) throws TypeMismatchException {}
 
 	@Override
-	public void removeItem(String key, LocalDateTime date) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void removeItem(String key, LocalDateTime date) {}
 
 	@Override
-	public void removeKey(String key) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void removeKey(String key) {}
 
 	@Override
-	public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {}
 
 	@Override
-	public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {}
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return data.getCausesSize();
 	}
 
 	@Override
 	public int count(String key, LocalDate date) throws EntryNotFoundException {
-		// TODO Auto-generated method stub
-		return 0;
+		return data.countCause(key, date);
 	}
 
 	@Override
 	public float getMedium(String key) throws EntryNotFoundException {
-		// TODO Auto-generated method stub
-		return 0;
+		return data.mediumCause(key);
+	}
+
+	@Override
+	public Iterator<String> getKeys() {
+		return data.getCauses();
 	}
 	
 }
