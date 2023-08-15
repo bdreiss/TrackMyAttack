@@ -988,6 +988,10 @@ public class DataModel implements Serializable {
 	 * @param datum Datum that ought to be added.
 	 */
 	public void addDatumDirectly(Category category, String key, Datum datum) {
+		
+		if (firstDate == null)
+			firstDate = datum.getDate().toLocalDate();
+		
 		Map<String, List<Datum>> map = null;
 		switch(category) {
 			case AILMENT: 	map = ailments;
@@ -1014,6 +1018,7 @@ public class DataModel implements Serializable {
 		List<Datum> list = map.get(key);
 		
 		list.add(datum);
+		save();
 		
 	}
 	
