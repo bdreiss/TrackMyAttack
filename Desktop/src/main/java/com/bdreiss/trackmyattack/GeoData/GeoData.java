@@ -44,17 +44,15 @@ public class GeoData extends AbstractDataModel implements Serializable{
 	
 	private LocalDate startDate;
 	
-	private DataModel data;
-	private Category CATEGORY = Category.CAUSE;
 	
 	private Point2D.Double coordinates;
 	
 	
 	public GeoData(LocalDate startDate, Point2D.Double coordinates) throws MalformedURLException {
 		this.startDate = startDate;
-		System.out.println(JSONQuery(LocalDate.now().minusDays(4),LocalDate.now().minusDays(1)));	
+
 		data = new DataModel();
-		
+		category = Category.CAUSE;
 		this.coordinates = new Point2D.Double(48.1553234784118, 16.347233789433627);
 				
 		File saveFile = new File(SAVEPATH + this.coordinates.x + this.coordinates.y);
@@ -71,6 +69,7 @@ public class GeoData extends AbstractDataModel implements Serializable{
 	}
 	
 	private void load(File saveFile) {
+
 		try {
 			FileInputStream fis = new FileInputStream(saveFile);
 			
@@ -118,7 +117,7 @@ public class GeoData extends AbstractDataModel implements Serializable{
 	
 	private void update() {
 			
-		if (data.getCausesSize() == 0)
+		if (data.firstDate == null)
 			parseJSON(JSONQuery(startDate, LocalDate.now().minusDays(1)));
 		else { 
 			
@@ -214,8 +213,6 @@ public class GeoData extends AbstractDataModel implements Serializable{
 			float druck = druckData.get(i); 
 			float dampf = dampfData.get(i); 
 			float rel = relData.get(i);
-
-			System.out.println(timestamps.get(i));
 			
 			GeoDataType temperatureMedianE = GeoDataType.TEMPERATURE_MEDIAN;
 			GeoDataType temperatureMinE = GeoDataType.TEMPERATURE_MIN;
@@ -224,12 +221,12 @@ public class GeoData extends AbstractDataModel implements Serializable{
 			GeoDataType vaporE = GeoDataType.VAPOR;
 			GeoDataType humidityE = GeoDataType.HUMIDITY;
 
-			data.addDatumDirectly(CATEGORY, temperatureMedianE.toString(), new GeoDatum(date.atStartOfDay(), temperatureMedian, temperatureMedianE.lowerBound, temperatureMedianE.upperBound));
-			data.addDatumDirectly(CATEGORY, temperatureMinE.toString(), new GeoDatum(date.atStartOfDay(), temperatureMin, temperatureMinE.lowerBound, temperatureMinE.upperBound));
-			data.addDatumDirectly(CATEGORY, temperatureMaxE.toString(), new GeoDatum(date.atStartOfDay(), temperatureMax, temperatureMaxE.lowerBound, temperatureMaxE.upperBound));
-			data.addDatumDirectly(CATEGORY, pressureE.toString(), new GeoDatum(date.atStartOfDay(), druck, pressureE.lowerBound, pressureE.upperBound));
-			data.addDatumDirectly(CATEGORY, vaporE.toString(), new GeoDatum(date.atStartOfDay(), dampf, vaporE.lowerBound, vaporE.upperBound));
-			data.addDatumDirectly(CATEGORY, humidityE.toString(), new GeoDatum(date.atStartOfDay(), rel, humidityE.lowerBound, humidityE.upperBound));
+			data.addDatumDirectly(category, temperatureMedianE.toString(), new GeoDatum(date.atStartOfDay(), temperatureMedian, temperatureMedianE.lowerBound, temperatureMedianE.upperBound));
+			data.addDatumDirectly(category, temperatureMinE.toString(), new GeoDatum(date.atStartOfDay(), temperatureMin, temperatureMinE.lowerBound, temperatureMinE.upperBound));
+			data.addDatumDirectly(category, temperatureMaxE.toString(), new GeoDatum(date.atStartOfDay(), temperatureMax, temperatureMaxE.lowerBound, temperatureMaxE.upperBound));
+			data.addDatumDirectly(category, pressureE.toString(), new GeoDatum(date.atStartOfDay(), druck, pressureE.lowerBound, pressureE.upperBound));
+			data.addDatumDirectly(category, vaporE.toString(), new GeoDatum(date.atStartOfDay(), dampf, vaporE.lowerBound, vaporE.upperBound));
+			data.addDatumDirectly(category, humidityE.toString(), new GeoDatum(date.atStartOfDay(), rel, humidityE.lowerBound, humidityE.upperBound));
 		}
 		
 		
@@ -244,28 +241,21 @@ public class GeoData extends AbstractDataModel implements Serializable{
 		System.out.println("Fetching data...");
 		
 		try {
-//			query = "https://dataset.api.hub.zamg.ac.at";
 			URL url = new URL(query);
-			URLConnection connection = url.openConnection();
-			System.out.println("HERE");
-
+			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 			InputStreamReader isr = new InputStreamReader(connection.getInputStream());
-			
-			System.out.println("HERE");
 			
 			BufferedReader br = new BufferedReader(isr);
 			
-			System.out.println("HERE");
-			
-
 			StringBuilder sb = new StringBuilder();
-			
+
 			String inputLine;
 			while ((inputLine = br.readLine())!=null)
 				sb.append(inputLine);
 
 				
 			jsonString = sb.toString();
+			
 			
 			if (jsonString.isEmpty()) {
 				System.out.println("Got no data");
@@ -329,13 +319,27 @@ public class GeoData extends AbstractDataModel implements Serializable{
 	}
 
 	@Override
-	public int count(String key, LocalDate date) throws EntryNotFoundException {
-		return data.countCause(key, date);
+	public float count(String key, LocalDate date) throws EntryNotFoundException {
+		Iterator<Datum> it = data.getCauseData(key, date);
+		
+				
+		return it.hasNext() ? ((GeoDatum) it.next()).getValue() : 0;
 	}
 
 	@Override
 	public float getMedium(String key) throws EntryNotFoundException {
-		return data.mediumCause(key);
+		int days = 0;
+		
+		float total = 0;
+		Iterator<Datum> it = data.getCauseData(key);
+		
+		while (it.hasNext()) {
+			days++;
+			total += ((GeoDatum) it.next()).getValue();
+		}
+		
+		return days == 0 ? 0 : total/days;
+		
 	}
 
 	@Override
