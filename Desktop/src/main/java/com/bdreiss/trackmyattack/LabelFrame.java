@@ -10,11 +10,13 @@ import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.RemedyDataModel;
 import com.bdreiss.dataAPI.SymptomDataModel;
 
+import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
+
 public class LabelFrame extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public LabelFrame(DataModel data) {
+	public LabelFrame(DataModel data, GeoData geoData) {
 
 		class FillPanel extends JPanel{
 			private static final long serialVersionUID = 1L;
@@ -65,7 +67,16 @@ public class LabelFrame extends JPanel {
 
 		c.gridy++;
 		add(new FillPanel(modifiers[3]),c);
-	
+
+		c.gridy++;
+
+		LabelPanel geoLabels = new LabelPanel(geoData);
+		
+		add(geoLabels, c);
+
+		c.gridy++;
+		add(new FillPanel(modifiers[3]),c);
+
 	}
 
 }

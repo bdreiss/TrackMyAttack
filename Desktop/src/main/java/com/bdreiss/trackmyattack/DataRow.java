@@ -70,7 +70,7 @@ class DataRow extends JPanel{
 					}
 				}
 				else {
-					int countToday = data.count(key, currentDate);
+					float countToday = data.count(key, currentDate);
 					
 					float intensityCount = countToday/mean;
 					

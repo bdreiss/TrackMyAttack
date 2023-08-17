@@ -9,6 +9,8 @@ import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.RemedyDataModel;
 import com.bdreiss.dataAPI.SymptomDataModel;
 
+import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
+
 /*
  * 	Panel representing frame containing data panels.  
  *
@@ -18,7 +20,7 @@ public class DataPanelFrame extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 
-	public DataPanelFrame(DataModel data) {
+	public DataPanelFrame(DataModel data, GeoData geoData) {
 		
 		setLayout(new GridBagLayout());
 		
@@ -28,18 +30,24 @@ public class DataPanelFrame extends JPanel{
 		c.gridx = 0;
 		c.gridy = 0;
 		
-		DataPanel causeData = new DataPanel(new CauseDataModel(data)); 
-		add(causeData, c);
+		DataPanel causeDataPanel = new DataPanel(new CauseDataModel(data)); 
+		add(causeDataPanel, c);
 		
 		c.gridy++;
 		
-		DataPanel symptomData = new DataPanel(new SymptomDataModel(data));
-		add(symptomData,c);
+		DataPanel symptomDataPanel = new DataPanel(new SymptomDataModel(data));
+		add(symptomDataPanel,c);
 		
 		c.gridy++;
 			
-		DataPanel remedyData = new DataPanel(new RemedyDataModel(data)); 
-		add(remedyData,c);
+		DataPanel remedyDataPanel = new DataPanel(new RemedyDataModel(data)); 
+		add(remedyDataPanel,c);
+
+		c.gridy++;
+		
+		DataPanel geoDataPanel = new DataPanel(geoData); 
+		add(geoDataPanel,c);
+
 	}
 
 	

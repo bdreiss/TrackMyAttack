@@ -79,7 +79,7 @@ public class CauseDataModel extends AbstractDataModel{
 	}
 
 	@Override
-	public int count(String key, LocalDate date) throws EntryNotFoundException {
+	public float count(String key, LocalDate date) throws EntryNotFoundException {
 		return data.countCause(key, date);
 	}
 

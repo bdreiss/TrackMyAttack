@@ -54,15 +54,12 @@ class Main{
 		}
 
 		
-		MainFrame frame = new MainFrame(data);	
+		MainFrame frame = new MainFrame(data, new GeoData(data.firstDate,null));	
 
 		frame.setVisible(true);
 	
 
 		
-		GeoData gd = new GeoData(data.firstDate,null);
-		
-		System.out.println("DONE");
 				
 	}
 	private static String getKey() throws NetworkException{
