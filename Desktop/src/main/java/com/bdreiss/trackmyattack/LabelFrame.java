@@ -29,7 +29,7 @@ public class LabelFrame extends JPanel {
 			}
 		}
 		
-		double[] modifiers = {0.6,1,1,1};
+		double[] modifiers = {0.25,1,1,1,1};
 		
 		setLayout(new GridBagLayout());
 		
@@ -75,7 +75,7 @@ public class LabelFrame extends JPanel {
 		add(geoLabels, c);
 
 		c.gridy++;
-		add(new FillPanel(modifiers[3]),c);
+		add(new FillPanel(modifiers[4]),c);
 
 	}
 
