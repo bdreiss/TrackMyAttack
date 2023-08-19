@@ -1,13 +1,21 @@
 package main.java.com.bdreiss.trackmyattack;
 
+import com.bdreiss.dataAPI.AilmentDataModel;
 import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
+import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.network.Dropbox;
+import com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.util.DatumWithIntensity;
+import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.Iterator;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -53,8 +61,10 @@ class Main{
 			e.printStackTrace();
 		}
 
-		
-		MainFrame frame = new MainFrame(data, new GeoData(data.firstDate,null));	
+		GeoData geoData = new GeoData(data, null);
+	
+				
+		MainFrame frame = new MainFrame(data, geoData);	
 
 		frame.setVisible(true);
 	
