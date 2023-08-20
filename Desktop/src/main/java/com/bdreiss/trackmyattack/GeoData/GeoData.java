@@ -32,6 +32,7 @@ import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.util.DatumWithIntensity;
 
 
 public class GeoData extends AbstractDataModel implements Serializable{
@@ -42,16 +43,26 @@ public class GeoData extends AbstractDataModel implements Serializable{
 	private String INFIX1 = "T00:00&end=";
 	private String INFIX2 = "T00:01&station_ids=";
 	
+	private GeoDataType[] TYPES_TO_USE = {
+			GeoDataType.TEMPERATURE_MAX, 
+			GeoDataType.TEMPERATURE_MEDIAN, 
+			GeoDataType.TEMPERATURE_MIN, 
+			GeoDataType.VAPOR
+			};
+	
 	private LocalDate startDate;
 	
+	private DataModel originalData;
 	
 	private Point2D.Double coordinates;
 	
 	
-	public GeoData(LocalDate startDate, Point2D.Double coordinates) throws MalformedURLException {
-		this.startDate = startDate;
+	public GeoData(DataModel originalData, Point2D.Double coordinates) throws MalformedURLException {
+		startDate = originalData.firstDate;
 
 		data = new DataModel();
+		this.originalData = originalData;
+		
 		category = Category.CAUSE;
 		this.coordinates = new Point2D.Double(48.1553234784118, 16.347233789433627);
 				
@@ -89,7 +100,25 @@ public class GeoData extends AbstractDataModel implements Serializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		data.addAilmentKey("Migraine");
 		
+		
+		try {
+			Iterator<Datum> it = originalData.getAilmentData("Migraine");
+			
+			while (it.hasNext()) {
+				DatumWithIntensity migraine = (DatumWithIntensity) it.next();
+				data.addAilment("Migraine", migraine.getIntensity(), migraine.getDate());
+			}
+				
+			
+		} catch (EntryNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TypeMismatchException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -315,7 +344,7 @@ public class GeoData extends AbstractDataModel implements Serializable{
 
 	@Override
 	public int getSize() {
-		return data.getCausesSize();
+		return TYPES_TO_USE.length ;
 	}
 
 	@Override
@@ -344,7 +373,11 @@ public class GeoData extends AbstractDataModel implements Serializable{
 
 	@Override
 	public Iterator<String> getKeys() {
-		return data.getCauses();
+		ArrayList<String> keys = new ArrayList<>();
+		for (GeoDataType g: TYPES_TO_USE)
+			keys.add(g.toString());
+		
+		return keys.iterator();
 	}
 	
 }

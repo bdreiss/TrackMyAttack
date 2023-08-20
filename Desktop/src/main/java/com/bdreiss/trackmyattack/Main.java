@@ -67,6 +67,7 @@ class Main{
 		MainFrame frame = new MainFrame(data, geoData);	
 
 		frame.setVisible(true);
+		data.print();
 	
 
 		
