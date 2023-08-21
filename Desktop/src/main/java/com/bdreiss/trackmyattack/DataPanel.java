@@ -28,8 +28,9 @@ public class DataPanel extends JPanel{
 		this.data = data;
 		
 		Color[] blues = {new Color(65,105,225), Color.BLUE, Color.BLUE.darker()};
-		Color[] greens = {Color.GREEN.brighter(), Color.GREEN,Color.GREEN.darker()};
-		Color[] yellows = {Color.YELLOW.brighter(), Color.YELLOW, Color.YELLOW.darker()};
+		Color[] greens = {new Color(93, 255, 54), new Color(45, 221, 12),Color.GREEN.darker()};
+//		Color[] greens = {, Color.GREEN,Color.GREEN.darker()};
+		Color[] yellows = {new Color(255, 255, 159), Color.YELLOW, Color.YELLOW.darker()};
 		
 		colorSets.add(blues);
 		colorSets.add(greens);
