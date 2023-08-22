@@ -25,7 +25,8 @@ class MainFrame extends JFrame{
 		
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension scrollSize = new Dimension((int) (screenSize.width*0.8),(data.getSize()+geoData.getSize()+8)*Dimensions.HEIGHT.value());
+		Dimension scrollSize = new Dimension(
+				(int) (screenSize.width * 0.8),(data.getSize()+geoData.getSize()+8)*Dimensions.HEIGHT.value());
 			
 		setSize(screenSize);
 

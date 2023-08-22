@@ -18,74 +18,63 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Iterator;
 
-class DataRow extends JPanel{
-	
+class DataRow extends JPanel {
+
 	private static final long serialVersionUID = 1L;
 	final int CIRCLE_OFFSET_LOW = 8;
 	final int CIRCLE_OFFSET_MEDIUM = 6;
 	final int CIRCLE_OFFSET_HIGH = 2;
 
-	
-	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments, Color[] colorSet) throws EntryNotFoundException{
+	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments, Color[] colorSet)
+			throws EntryNotFoundException {
 
-		
-//		setMinimumSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
-		setPreferredSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
-				
-				
-		
+		setPreferredSize(new Dimension(super.getWidth(), Dimensions.HEIGHT.value()));
+
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		layout.setVgap(0);
 		layout.setHgap(0);
 
 		setLayout(layout);
-						
-		
+
 		LocalDate dateCounter = data.getFirstDate();
-		
-		
+
 		float mean = 0;
 		if (!(data.getData(key) instanceof IteratorWithIntensity))
 			mean = data.getMedium(key);
-		
-		
+
 		while (dateCounter.compareTo(LocalDate.now()) <= 0) {
 
 			final LocalDate currentDate = dateCounter;
-			
+
 			Color colorToSet = Colors.EMPTY_COLOR.value();
-			
+
 			Iterator<Datum> it = data.getData(key, currentDate);
-			
-			
+
 			Intensity intensity = Intensity.NO_INTENSITY;
-					
-				if (it instanceof IteratorWithIntensity) {
-					while (it.hasNext()) {
-						
+
+			if (it instanceof IteratorWithIntensity) {
+				while (it.hasNext()) {
+
 					DatumWithIntensity datum = (DatumWithIntensity) it.next();
-					if (datum.getIntensity().compareTo(intensity)>0)
+					if (datum.getIntensity().compareTo(intensity) > 0)
 						intensity = datum.getIntensity();
-				
-					}
+
 				}
-				else {
-					float countToday = data.count(key, currentDate);
-					
-					float intensityCount = countToday/mean;
-					
-					if (countToday > 0) {
-						if (intensityCount > 2)
-							intensity=Intensity.HIGH;
-						else if (intensityCount < 0.5)
-							intensity = Intensity.LOW;
-						else 
-							intensity = Intensity.MEDIUM;
-					}
-					
+			} else {
+				float countToday = data.count(key, currentDate);
+
+				float intensityCount = countToday / mean;
+
+				if (countToday > 0) {
+					if (intensityCount > 2)
+						intensity = Intensity.HIGH;
+					else if (intensityCount < 0.5)
+						intensity = Intensity.LOW;
+					else
+						intensity = Intensity.MEDIUM;
 				}
-				
-			
+
+			}
 
 			if (intensity == Intensity.LOW)
 				colorToSet = colorSet[0];
@@ -94,105 +83,101 @@ class DataRow extends JPanel{
 			else if (intensity == Intensity.HIGH)
 				colorToSet = colorSet[2];
 
-
 			final Color colorToSetFinal = colorToSet;
 
-			JPanel box = new JPanel(){
-			
-				
+			JPanel box = new JPanel() {
+
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void paint(Graphics graphics){
-			
+				public void paint(Graphics graphics) {
+
 					graphics.setColor(colorToSetFinal);
-					
-					graphics.fillRect(0,0,Dimensions.WIDTH.value(),Dimensions.HEIGHT.value());
-					
+
+					graphics.fillRect(0, 0, Dimensions.WIDTH.value(), Dimensions.HEIGHT.value());
+
 					graphics.setColor(Colors.GRID_COLOR.value());
-					
-					graphics.drawRect(0, 0, Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()+20);
-					
+
+					graphics.drawRect(0, 0, Dimensions.WIDTH.value(), Dimensions.HEIGHT.value() + 20);
+
 					try {
 						if (ailments.getEntry(currentDate).hasNext()) {
-							
+
 							IteratorWithIntensity it = ailments.getEntry(currentDate);
-							
+
 							Intensity intensity = Intensity.NO_INTENSITY;
-							
+
 							while (it.hasNext()) {
 								DatumWithIntensity datum = (DatumWithIntensity) it.next();
 								if (datum.getIntensity().ordinal() > intensity.ordinal())
 									intensity = datum.getIntensity();
 							}
 							graphics.setColor(Color.RED);
-							
-							int offset;
-							
-							switch (intensity) {
-							case LOW: offset = CIRCLE_OFFSET_LOW;
-									   break;
-							case MEDIUM: offset = CIRCLE_OFFSET_MEDIUM;
-							   break;
-							case HIGH: offset = CIRCLE_OFFSET_HIGH;
-							   break;
-							 default: offset = 0;
 
+							int offset;
+
+							switch (intensity) {
+							case LOW:
+								offset = CIRCLE_OFFSET_LOW;
+								break;
+							case MEDIUM:
+								offset = CIRCLE_OFFSET_MEDIUM;
+								break;
+							case HIGH:
+								offset = CIRCLE_OFFSET_HIGH;
+								break;
+							default:
+								offset = 0;
 
 							}
-							graphics.fillOval(offset,offset,Dimensions.WIDTH.value()-2*offset,Dimensions.WIDTH.value()-2*offset);
+							graphics.fillOval(offset, offset, Dimensions.WIDTH.value() - 2 * offset,
+									Dimensions.WIDTH.value() - 2 * offset);
 						}
 					} catch (EntryNotFoundException e) {
 						e.printStackTrace();
 					}
-					
+
 				}
 
-				
 			};
 
-			
-			box.setMinimumSize(new Dimension(Dimensions.WIDTH.value(),Dimensions.HEIGHT.value()));
-			box.setMaximumSize(new Dimension(Dimensions.WIDTH.value(),Dimensions.HEIGHT.value()));
-			box.setPreferredSize(new Dimension(Dimensions.WIDTH.value(),Dimensions.HEIGHT.value()));
-			
-			add(box);	
+			box.setMinimumSize(new Dimension(Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()));
+			box.setMaximumSize(new Dimension(Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()));
+			box.setPreferredSize(new Dimension(Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()));
+
+			add(box);
 			dateCounter = dateCounter.plusDays(1);
+
 		}
 
+	}
 
-		
-	} 
+	public DataRow(LocalDate startDate) {
 
-	public DataRow(LocalDate startDate){
-		
-		setPreferredSize(new Dimension(super.getWidth(),Dimensions.HEIGHT.value()));
-				
-		
+		setPreferredSize(new Dimension(super.getWidth(), Dimensions.HEIGHT.value()));
+
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		layout.setVgap(0);
 		layout.setHgap(0);
 
 		setLayout(layout);
-			
+
 		LocalDate dateCounter = startDate;
-				
-		while (dateCounter.compareTo(LocalDate.now())<=0) {
-			
-			
-			
+
+		while (dateCounter.compareTo(LocalDate.now()) <= 0) {
+
 			int month = dateCounter.getMonthValue();
 			int day = dateCounter.getDayOfMonth();
 			JLabel dateLabel = new JLabel(month + "-" + day);
-			dateLabel.setMinimumSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
-			dateLabel.setMaximumSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
-			dateLabel.setPreferredSize(new Dimension(Dimensions.WIDTH.value()*7,Dimensions.HEIGHT.value()));
-			
+			dateLabel.setMinimumSize(new Dimension(Dimensions.WIDTH.value() * 7, Dimensions.HEIGHT.value()));
+			dateLabel.setMaximumSize(new Dimension(Dimensions.WIDTH.value() * 7, Dimensions.HEIGHT.value()));
+			dateLabel.setPreferredSize(new Dimension(Dimensions.WIDTH.value() * 7, Dimensions.HEIGHT.value()));
+
 			add(dateLabel);
-			
+
 			dateCounter = dateCounter.plusWeeks(1);
-			
+
 		}
-		
-	} 
+
+	}
 }

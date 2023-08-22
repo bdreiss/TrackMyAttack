@@ -45,7 +45,7 @@ public class DataPanelFrame extends JPanel{
 
 		c.gridy++;
 		
-		DataPanel geoDataPanel = new DataPanel(geoData); 
+		DataPanel geoDataPanel = new DataPanel(geoData);
 		add(geoDataPanel,c);
 
 	}
