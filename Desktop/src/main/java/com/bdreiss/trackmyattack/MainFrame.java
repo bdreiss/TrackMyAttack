@@ -20,20 +20,27 @@ class MainFrame extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 
+	private int DATA_PANELS_OFFSET = 8;
+	private double SCREENSIZE_MODIFIER = 0.8;
+	
 	public MainFrame(DataModel data, GeoData geoData) throws MalformedURLException{
 		super("TrackMyAttack");
 		
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		//dimension of ScrollPanel that holds the data
+		//width is defined by screenSize * SCREENSIZE_MODIFIER
+		//height is defined by (items in (data + geoData + DATA_PANELS_OFFSET) * (height of data row)
 		Dimension scrollSize = new Dimension(
-				(int) (screenSize.width * 0.8),(data.getSize()+geoData.getSize()+8)*Dimensions.HEIGHT.value());
+				(int) (screenSize.width * SCREENSIZE_MODIFIER),(data.getSize()+geoData.getSize()+DATA_PANELS_OFFSET)*Dimensions.DATA_ROW_HEIGHT.value());
 			
 		setSize(screenSize);
 
 		setLayout(new FlowLayout());
 		
+		//Frame that holds all labels -> it is in a separate frame from data as not to move with scroll bar
 		LabelFrame labelFrame = new LabelFrame(data, geoData);
-		
 		labelFrame.setPreferredSize(new Dimension(Dimensions.LABEL_WIDTH.value(), scrollSize.height));
 		
 		add(labelFrame);
@@ -42,10 +49,10 @@ class MainFrame extends JFrame{
 				
 		JScrollPane scrollPane = new JScrollPane(dataFrame,ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-
 		scrollPane.setPreferredSize(scrollSize);
 		add(scrollPane);
 
+		//close program when x is pressed
 		addWindowListener(new WindowAdapter(){
 		
 			@Override

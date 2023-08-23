@@ -28,7 +28,7 @@ class DataRow extends JPanel {
 	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments, Color[] colorSet)
 			throws EntryNotFoundException {
 
-		setPreferredSize(new Dimension(super.getWidth(), Dimensions.HEIGHT.value()));
+		setPreferredSize(new Dimension(super.getWidth(), Dimensions.DATA_ROW_HEIGHT.value()));
 
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		layout.setVgap(0);
@@ -94,11 +94,11 @@ class DataRow extends JPanel {
 
 					graphics.setColor(colorToSetFinal);
 
-					graphics.fillRect(0, 0, Dimensions.WIDTH.value(), Dimensions.HEIGHT.value());
+					graphics.fillRect(0, 0, Dimensions.DATA_ROW_WIDTH.value(), Dimensions.DATA_ROW_HEIGHT.value());
 
 					graphics.setColor(Colors.GRID_COLOR.value());
 
-					graphics.drawRect(0, 0, Dimensions.WIDTH.value(), Dimensions.HEIGHT.value() + 20);
+					graphics.drawRect(0, 0, Dimensions.DATA_ROW_WIDTH.value(), Dimensions.DATA_ROW_HEIGHT.value() + 20);
 
 					try {
 						if (ailments.getEntry(currentDate).hasNext()) {
@@ -130,8 +130,8 @@ class DataRow extends JPanel {
 								offset = 0;
 
 							}
-							graphics.fillOval(offset, offset, Dimensions.WIDTH.value() - 2 * offset,
-									Dimensions.WIDTH.value() - 2 * offset);
+							graphics.fillOval(offset, offset, Dimensions.DATA_ROW_WIDTH.value() - 2 * offset,
+									Dimensions.DATA_ROW_WIDTH.value() - 2 * offset);
 						}
 					} catch (EntryNotFoundException e) {
 						e.printStackTrace();
@@ -141,9 +141,9 @@ class DataRow extends JPanel {
 
 			};
 
-			box.setMinimumSize(new Dimension(Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()));
-			box.setMaximumSize(new Dimension(Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()));
-			box.setPreferredSize(new Dimension(Dimensions.WIDTH.value(), Dimensions.HEIGHT.value()));
+			box.setMinimumSize(new Dimension(Dimensions.DATA_ROW_WIDTH.value(), Dimensions.DATA_ROW_HEIGHT.value()));
+			box.setMaximumSize(new Dimension(Dimensions.DATA_ROW_WIDTH.value(), Dimensions.DATA_ROW_HEIGHT.value()));
+			box.setPreferredSize(new Dimension(Dimensions.DATA_ROW_WIDTH.value(), Dimensions.DATA_ROW_HEIGHT.value()));
 
 			add(box);
 			dateCounter = dateCounter.plusDays(1);
@@ -154,7 +154,7 @@ class DataRow extends JPanel {
 
 	public DataRow(LocalDate startDate) {
 
-		setPreferredSize(new Dimension(super.getWidth(), Dimensions.HEIGHT.value()));
+		setPreferredSize(new Dimension(super.getWidth(), Dimensions.DATA_ROW_HEIGHT.value()));
 
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		layout.setVgap(0);
@@ -169,9 +169,9 @@ class DataRow extends JPanel {
 			int month = dateCounter.getMonthValue();
 			int day = dateCounter.getDayOfMonth();
 			JLabel dateLabel = new JLabel(month + "-" + day);
-			dateLabel.setMinimumSize(new Dimension(Dimensions.WIDTH.value() * 7, Dimensions.HEIGHT.value()));
-			dateLabel.setMaximumSize(new Dimension(Dimensions.WIDTH.value() * 7, Dimensions.HEIGHT.value()));
-			dateLabel.setPreferredSize(new Dimension(Dimensions.WIDTH.value() * 7, Dimensions.HEIGHT.value()));
+			dateLabel.setMinimumSize(new Dimension(Dimensions.DATA_ROW_WIDTH.value() * 7, Dimensions.DATA_ROW_HEIGHT.value()));
+			dateLabel.setMaximumSize(new Dimension(Dimensions.DATA_ROW_WIDTH.value() * 7, Dimensions.DATA_ROW_HEIGHT.value()));
+			dateLabel.setPreferredSize(new Dimension(Dimensions.DATA_ROW_WIDTH.value() * 7, Dimensions.DATA_ROW_HEIGHT.value()));
 
 			add(dateLabel);
 
