@@ -12,11 +12,15 @@ import com.bdreiss.dataAPI.SymptomDataModel;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 
-public class LabelFrame extends JPanel {
+/*
+ * Panel 
+ */
+
+public class LabelMainPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public LabelFrame(DataModel data, GeoData geoData) {
+	public LabelMainPanel(DataModel data, GeoData geoData) {
 
 		class FillPanel extends JPanel {
 			private static final long serialVersionUID = 1L;

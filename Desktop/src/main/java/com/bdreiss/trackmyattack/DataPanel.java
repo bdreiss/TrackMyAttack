@@ -14,12 +14,19 @@ import java.awt.GridBagLayout;
 import java.time.Duration;
 import java.time.LocalDate;
 
+/*
+ * DataPanel representing data for one specific category.
+ */
+
 public class DataPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	//set of alternating colors that make single rows more readable
+	//Color[3] consists of a light color, standard color and dark color e.g. light blue, blue, dark blue
 	private ArrayList<Color[]> colorSets = new ArrayList<>();
 
+	//AbstractDataModel containing methods for category
 	private AbstractDataModel data;
 
 	public DataPanel(AbstractDataModel data) {
@@ -45,16 +52,20 @@ public class DataPanel extends JPanel {
 
 		GridBagSettings c = new GridBagSettings();
 
+		//TODO: why do I need this?
 		c.setIPadX(daysSinceStartDate);
 		c.gridx = 0;
 		c.gridy = 0;
 
+		//keys from category
 		Iterator<String> it = data.getKeys();
 
+		//add row with dates
 		add(new DataRow(data.getFirstDate()), c);
 
 		c.gridy++;
 
+		//for every key in category add a data row
 		while (it.hasNext()) {
 			String key = it.next();
 			try {

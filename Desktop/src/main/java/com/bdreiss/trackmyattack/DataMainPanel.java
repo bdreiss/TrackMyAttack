@@ -16,11 +16,11 @@ import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
  *
  */
 
-public class DataPanelFrame extends JPanel{
+public class DataMainPanel extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 
-	public DataPanelFrame(DataModel data, GeoData geoData) {
+	public DataMainPanel(DataModel data, GeoData geoData) {
 		
 		setLayout(new GridBagLayout());
 		
