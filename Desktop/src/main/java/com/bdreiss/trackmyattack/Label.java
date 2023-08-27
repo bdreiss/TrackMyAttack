@@ -19,9 +19,9 @@ public class Label extends JLabel {
 		super.paint(graphics);
 		setOpaque(true);
 		setBackground(Color.WHITE);
-		setPreferredSize(new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.DATA_ROW_HEIGHT.value()));
+		setPreferredSize(new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value()));
 		graphics.setColor(Colors.GRID_COLOR.value());
-		graphics.drawRect(0, 0, Dimensions.LABEL_WIDTH.value(), Dimensions.DATA_ROW_HEIGHT.value());
+		graphics.drawRect(0, 0, Dimensions.LABEL_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value());
 
 	}
 

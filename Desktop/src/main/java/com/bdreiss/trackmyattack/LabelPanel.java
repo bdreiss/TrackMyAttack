@@ -25,7 +25,7 @@ public class LabelPanel extends JPanel {
 		super.paint(graphics);
 		setLayout(new GridBagLayout());
 
-		Dimension labelDimension = new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.DATA_ROW_HEIGHT.value());
+		Dimension labelDimension = new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value());
 
 		JPanel emptyLabel = new JPanel();
 		emptyLabel.setPreferredSize(labelDimension);
@@ -43,9 +43,9 @@ public class LabelPanel extends JPanel {
 			c.gridy++;
 
 			JLabel label = new Label(it.next());
-			label.setMinimumSize(new Dimension(Dimensions.DATA_ROW_WIDTH.value() * 10, Dimensions.DATA_ROW_HEIGHT.value()));
-			label.setMaximumSize(new Dimension(Dimensions.DATA_ROW_WIDTH.value() * 10, Dimensions.DATA_ROW_HEIGHT.value()));
-			label.setPreferredSize(new Dimension(Dimensions.DATA_ROW_WIDTH.value() * 10, Dimensions.DATA_ROW_HEIGHT.value()));
+			label.setMinimumSize(new Dimension(Dimensions.DATA_ROW_BOX_WIDTH.value() * 10, Dimensions.DATA_ROW_BOX_HEIGHT.value()));
+			label.setMaximumSize(new Dimension(Dimensions.DATA_ROW_BOX_WIDTH.value() * 10, Dimensions.DATA_ROW_BOX_HEIGHT.value()));
+			label.setPreferredSize(new Dimension(Dimensions.DATA_ROW_BOX_WIDTH.value() * 10, Dimensions.DATA_ROW_BOX_HEIGHT.value()));
 
 			add(label, c);
 

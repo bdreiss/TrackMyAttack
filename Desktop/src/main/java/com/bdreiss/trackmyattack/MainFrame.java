@@ -37,7 +37,7 @@ class MainFrame extends JFrame{
 		//width is defined by screenSize * SCREENSIZE_MODIFIER
 		//height is defined by (items in (data + geoData + DATA_PANELS_OFFSET) * (height of data row)
 		Dimension scrollSize = new Dimension(
-				(int) (screenSize.width * SCREENSIZE_MODIFIER),(data.getSize()+geoData.getSize()+DATA_PANELS_OFFSET)*Dimensions.DATA_ROW_HEIGHT.value());
+				(int) (screenSize.width * SCREENSIZE_MODIFIER),(data.getSize()+geoData.getSize()+DATA_PANELS_OFFSET)*Dimensions.DATA_ROW_BOX_HEIGHT.value());
 			
 		setSize(screenSize);
 
