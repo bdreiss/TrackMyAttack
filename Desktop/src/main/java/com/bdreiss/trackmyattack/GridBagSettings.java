@@ -2,6 +2,10 @@ package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.GridBagConstraints;
 
+/*
+ * Standardized GridBagSettings, so that layouts look the same.
+ */
+
 public class GridBagSettings extends GridBagConstraints {
 
 	private static final long serialVersionUID = 1L;
