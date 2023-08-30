@@ -20,8 +20,8 @@ class MainFrame extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 
-	private int DATA_PANELS_OFFSET = 8;
-	private double SCREENSIZE_MODIFIER = 0.8;
+	private static final int DATA_PANELS_OFFSET = 8;
+	private static final double SCREENSIZE_MODIFIER = 0.8;
 	
 	/*
 	 * Main Frame consisting of a Panel with all labels and a ScrollPane with all the data.
@@ -37,7 +37,9 @@ class MainFrame extends JFrame{
 		//width is defined by screenSize * SCREENSIZE_MODIFIER
 		//height is defined by (items in (data + geoData + DATA_PANELS_OFFSET) * (height of data row)
 		Dimension scrollSize = new Dimension(
-				(int) (screenSize.width * SCREENSIZE_MODIFIER),(data.getSize()+geoData.getSize()+DATA_PANELS_OFFSET)*Dimensions.DATA_ROW_BOX_HEIGHT.value());
+				(int) (screenSize.width * SCREENSIZE_MODIFIER),
+				(data.getSize()+(geoData==null?0:geoData.getSize())+DATA_PANELS_OFFSET)*Dimensions.DATA_ROW_BOX_HEIGHT.value()
+				);
 			
 		setSize(screenSize);
 

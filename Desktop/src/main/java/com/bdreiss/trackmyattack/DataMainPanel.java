@@ -43,11 +43,13 @@ public class DataMainPanel extends JPanel{
 		DataPanel remedyDataPanel = new DataPanel(new RemedyDataModel(data)); 
 		add(remedyDataPanel,c);
 
-		c.gridy++;
-		
-		DataPanel geoDataPanel = new DataPanel(geoData);
-		add(geoDataPanel,c);
 
+		if (geoData != null) {
+			c.gridy++;
+		
+			DataPanel geoDataPanel = new DataPanel(geoData);
+			add(geoDataPanel,c);
+		}
 	}
 
 	
