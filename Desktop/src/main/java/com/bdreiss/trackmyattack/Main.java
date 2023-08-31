@@ -53,6 +53,7 @@ class Main {
 
 		GeoData geoData = new GeoData(data, null);
 
+		geoData = null;
 		MainFrame frame = new MainFrame(data, geoData);
 
 		frame.setVisible(true);
