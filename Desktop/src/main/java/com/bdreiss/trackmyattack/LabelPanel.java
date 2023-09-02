@@ -11,10 +11,14 @@ import javax.swing.JPanel;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
 
+/*
+ * JPanel that holds labels for all keys in Category (Causes, Symptoms, Remedies) represented by AbstractDataModel
+ */
+
 public class LabelPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private AbstractDataModel data;
+	private AbstractDataModel data;//AbstractDataModel for certain Category (see above)
 
 	public LabelPanel(AbstractDataModel data) {
 		this.data = data;
@@ -30,15 +34,18 @@ public class LabelPanel extends JPanel {
 		JPanel emptyLabel = new JPanel();
 		emptyLabel.setPreferredSize(labelDimension);
 
+		//get custom GridBagContstraints
 		GridBagConstraints c = new GridBagSettings();
 
 		c.gridx = 0;
 		c.gridy = 0;
 
+		//add empty label for date row
 		add(emptyLabel, c);
 
 		Iterator<String> it = data.getKeys();
 
+		//add all keys as labels
 		while (it.hasNext()) {
 			c.gridy++;
 
