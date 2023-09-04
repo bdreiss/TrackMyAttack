@@ -30,13 +30,12 @@ public class APIQueryAustria implements APIQuery {
 
 		dataString = dataString.substring(1, dataString.length() - 1);
 
-		System.out.println(dataString);
 		for (String s : dataString.split(","))
-			if (!s.equals("null"))
+			if (s.equals("null"))
+				data.add(null);
+			else			
 				data.add(Float.parseFloat(s));
-			else 
-				System.out.println(s);
-
+			
 		return data;
 	}
 
@@ -80,12 +79,12 @@ public class APIQueryAustria implements APIQuery {
 		for (int i = 0; i < timestamps.size(); i++) {
 
 			LocalDate date = timestamps.get(i);
-			float temperatureMedian = tempData.get(i);
-			float temperatureMax = tempMaxData.get(i);
-			float temperatureMin = tempMinData.get(i);
-			float druck = druckData.get(i);
-			float dampf = dampfData.get(i);
-			float rel = relData.get(i);
+			Float temperatureMedian = tempData.get(i);
+			Float temperatureMax = tempMaxData.get(i);
+			Float temperatureMin = tempMinData.get(i);
+			Float druck = druckData.get(i);
+			Float dampf = dampfData.get(i);
+			Float rel = relData.get(i);
 
 			GeoDataType temperatureMedianE = GeoDataType.TEMPERATURE_MEDIAN;
 			GeoDataType temperatureMinE = GeoDataType.TEMPERATURE_MIN;
@@ -94,17 +93,23 @@ public class APIQueryAustria implements APIQuery {
 			GeoDataType vaporE = GeoDataType.VAPOR;
 			GeoDataType humidityE = GeoDataType.HUMIDITY;
 
-			data.addDatumDirectly(category, temperatureMedianE.toString(), new GeoDatum(date.atStartOfDay(),
-					temperatureMedian, temperatureMedianE.lowerBound, temperatureMedianE.upperBound));
-			data.addDatumDirectly(category, temperatureMinE.toString(), new GeoDatum(date.atStartOfDay(),
-					temperatureMin, temperatureMinE.lowerBound, temperatureMinE.upperBound));
-			data.addDatumDirectly(category, temperatureMaxE.toString(), new GeoDatum(date.atStartOfDay(),
-					temperatureMax, temperatureMaxE.lowerBound, temperatureMaxE.upperBound));
-			data.addDatumDirectly(category, pressureE.toString(),
+			if (temperatureMedian != null)
+				data.addDatumDirectly(category, temperatureMedianE.toString(),
+						new GeoDatum(date.atStartOfDay(), temperatureMedian, temperatureMedianE.lowerBound, temperatureMedianE.upperBound));
+			if (temperatureMin != null)
+				data.addDatumDirectly(category, temperatureMinE.toString(), 
+					new GeoDatum(date.atStartOfDay(), temperatureMin, temperatureMinE.lowerBound, temperatureMinE.upperBound));
+			if (temperatureMax != null)
+				data.addDatumDirectly(category, temperatureMaxE.toString(), 
+						new GeoDatum(date.atStartOfDay(), temperatureMax, temperatureMaxE.lowerBound, temperatureMaxE.upperBound));
+			if (druck != null)
+				data.addDatumDirectly(category, pressureE.toString(),
 					new GeoDatum(date.atStartOfDay(), druck, pressureE.lowerBound, pressureE.upperBound));
-			data.addDatumDirectly(category, vaporE.toString(),
+			if (dampf != null)
+				data.addDatumDirectly(category, vaporE.toString(),
 					new GeoDatum(date.atStartOfDay(), dampf, vaporE.lowerBound, vaporE.upperBound));
-			data.addDatumDirectly(category, humidityE.toString(),
+			if (rel != null)
+				data.addDatumDirectly(category, humidityE.toString(),
 					new GeoDatum(date.atStartOfDay(), rel, humidityE.lowerBound, humidityE.upperBound));
 		}
 
