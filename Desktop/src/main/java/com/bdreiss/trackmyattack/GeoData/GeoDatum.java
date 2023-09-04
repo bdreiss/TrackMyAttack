@@ -8,11 +8,11 @@ public class GeoDatum extends Datum {
 
 	private static final long serialVersionUID = 1L;
 
-	float value;
+	Float value;
 	float lowerBound;
 	float upperBound;
 
-	public GeoDatum(LocalDateTime date, float value, float lowerBound, float upperBound) {
+	public GeoDatum(LocalDateTime date, Float value, float lowerBound, float upperBound) {
 		super(date);
 		this.value = value;
 		this.lowerBound = lowerBound;
