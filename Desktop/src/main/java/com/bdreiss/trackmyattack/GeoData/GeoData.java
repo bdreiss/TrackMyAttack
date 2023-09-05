@@ -31,7 +31,7 @@ import com.bdreiss.dataAPI.util.DatumWithIntensity;
 public class GeoData extends AbstractDataModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static final String SAVEPATH = "data/";
+	private static String SAVEPATH;
 	
 	private GeoDataType[] TYPES_TO_USE = { GeoDataType.TEMPERATURE_MAX, GeoDataType.TEMPERATURE_MEDIAN,
 			GeoDataType.TEMPERATURE_MIN, GeoDataType.VAPOR };
@@ -87,7 +87,8 @@ public class GeoData extends AbstractDataModel implements Serializable {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
+		data.removeAilmentKey("Migraine");
 		//add Migraine data to the loading data model -> the original data for migraines has to be transferred
 		//since otherwise migraines can not be shown in the GeoDataPanel
 		data.addAilmentKey("Migraine");
@@ -125,7 +126,7 @@ public class GeoData extends AbstractDataModel implements Serializable {
 				while (it.hasNext())
 					lastDate = it.next().getDate().toLocalDate();
 				if (lastDate.compareTo(LocalDate.now().minusDays(1)) != 0)
-					API_QUERY.parseJSON(API_QUERY.JSONQuery(startDate, LocalDate.now().minusDays(1)), data, category);
+					API_QUERY.parseJSON(API_QUERY.JSONQuery(lastDate, LocalDate.now().minusDays(1)), data, category);
 
 			} catch (EntryNotFoundException e) {
 				e.printStackTrace();
