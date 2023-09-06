@@ -48,7 +48,10 @@ public class GeoData extends AbstractDataModel implements Serializable {
 		startDate = originalData.firstDate;
 
 		data = new DataModel();
+		
 		this.originalData = originalData;
+
+		SAVEPATH = originalData.getSaveFile().getAbsolutePath() + "Geo";
 
 		category = Category.CAUSE;
 		this.coordinates = new Point2D.Double(48.1553234784118, 16.347233789433627);
