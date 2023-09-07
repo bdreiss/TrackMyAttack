@@ -74,15 +74,15 @@ class DataModelTest {
 	//tests whether Iterators are returned as right instanceof
 	@Test
 	public void rightInstanceOf() throws TypeMismatchException, EntryNotFoundException{
-		data.addAilment("Test1",Intensity.HIGH);
+		data.addAilment("Test1",Intensity.HIGH, null);
 		assert(data.getAilmentData("Test1") instanceof IteratorWithIntensity);
 		data.addAilmentKey("Test3");
 		assert(data.getAilmentData("Test3") instanceof IteratorWithIntensity);
 		assert(data.getAilmentData("Test3",LocalDate.now()) instanceof IteratorWithIntensity);
 		
-		data.addCause("Test");
+		data.addCause("Test", null);
 		assert(data.getCauseData("Test") instanceof Iterator);
-		data.addCause("Test1",Intensity.HIGH);
+		data.addCause("Test1",Intensity.HIGH, null);
 		assert(data.getCauseData("Test1") instanceof IteratorWithIntensity);
 		data.addCauseKey("Test2", false);
 		assert(data.getCauseData("Test2") instanceof Iterator);
@@ -90,15 +90,15 @@ class DataModelTest {
 		assert(data.getCauseData("Test3") instanceof IteratorWithIntensity);
 		assert(data.getCauseData("Test3",LocalDate.now()) instanceof IteratorWithIntensity);
 
-		data.addSymptom("Test1",Intensity.HIGH);
+		data.addSymptom("Test1",Intensity.HIGH, null);
 		assert(data.getSymptomData("Test1") instanceof IteratorWithIntensity);
 		data.addSymptomKey("Test3");
 		assert(data.getSymptomData("Test3") instanceof IteratorWithIntensity);
 		assert(data.getSymptomData("Test3",LocalDate.now()) instanceof IteratorWithIntensity);
 		
-		data.addRemedy("Test");
+		data.addRemedy("Test", null);
 		assert(data.getRemedyData("Test") instanceof Iterator);
-		data.addRemedy("Test1",Intensity.HIGH);
+		data.addRemedy("Test1",Intensity.HIGH, null);
 		assert(data.getRemedyData("Test1") instanceof IteratorWithIntensity);
 		data.addRemedyKey("Test2", false);
 		assert(data.getRemedyData("Test2") instanceof Iterator);
@@ -115,7 +115,7 @@ class DataModelTest {
 		data.addCauseKey("Test", true);
 		
 		try {
-			data.addCause("Test");
+			data.addCause("Test", null);
 			assert(false);
 		} catch (TypeMismatchException e) {
 			assert(true);
@@ -124,7 +124,7 @@ class DataModelTest {
 		data.addCauseKey("Test1", false);
 		
 		try {
-			data.addCause("Test1", Intensity.HIGH);
+			data.addCause("Test1", Intensity.HIGH, null);
 			assert(false);
 		} catch (TypeMismatchException e) {
 			assert(true);

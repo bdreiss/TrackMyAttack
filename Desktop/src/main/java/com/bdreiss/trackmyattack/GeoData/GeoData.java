@@ -101,7 +101,7 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 			while (it.hasNext()) {
 				DatumWithIntensity migraine = (DatumWithIntensity) it.next();
-				data.addAilment("Migraine", migraine.getIntensity(), migraine.getDate());
+				data.addAilment("Migraine", migraine.getIntensity(), migraine.getDate(), null);
 			}
 
 		} catch (EntryNotFoundException e) {
@@ -171,10 +171,10 @@ public class GeoData extends AbstractDataModel implements Serializable {
 	}
 
 	@Override
-	public void addData(String key) throws TypeMismatchException {}
+	public void addData(String key, Point2D.Double coordinates) throws TypeMismatchException {}
 
 	@Override
-	public void addData(String key, Intensity intensity) throws TypeMismatchException {}
+	public void addData(String key, Intensity intensity, Point2D.Double coordinates) throws TypeMismatchException {}
 
 	@Override
 	public void removeItem(String key, LocalDateTime date) {}

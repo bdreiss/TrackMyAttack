@@ -13,7 +13,7 @@ public class GeoDatum extends Datum {
 	float upperBound;
 
 	public GeoDatum(LocalDateTime date, Float value, float lowerBound, float upperBound) {
-		super(date);
+		super(date, null);
 		this.value = value;
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;

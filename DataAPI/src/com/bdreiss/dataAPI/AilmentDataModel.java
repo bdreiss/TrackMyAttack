@@ -1,6 +1,7 @@
 package com.bdreiss.dataAPI;
 
 
+import java.awt.geom.Point2D;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
@@ -40,13 +41,13 @@ public class AilmentDataModel extends AbstractDataModel{
     }
 
     @Override
-    public void addData(String key) throws TypeMismatchException {
+    public void addData(String key, Point2D.Double coordinates) throws TypeMismatchException {
         throw new TypeMismatchException("This exception has been thrown because there was an attempt to add an ailment without Intensity.");
     }
 
     @Override
-    public void addData(String key, Intensity intensity) throws TypeMismatchException {
-        data.addAilment(key, intensity);
+    public void addData(String key, Intensity intensity, Point2D.Double coordinates) throws TypeMismatchException {
+        data.addAilment(key, intensity, coordinates);
     }
 
     @Override

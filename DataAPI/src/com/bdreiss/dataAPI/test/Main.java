@@ -1,5 +1,7 @@
 package com.bdreiss.dataAPI.test;
 
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
@@ -50,8 +52,8 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addAilment("Migraine", ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
-				else data.addAilment("Migraine", Intensity.NO_INTENSITY,datum.getDate());
+					data.addAilment("Migraine", ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), datum.getCoordinates());
+				else data.addAilment("Migraine", Intensity.NO_INTENSITY,datum.getDate(),datum.getCoordinates());
 			}
 		}
 		check = true;
@@ -72,9 +74,9 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addCause(cause, ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
+					data.addCause(cause, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), datum.getCoordinates());
 				else
-					data.addCause(cause, datum.getDate());
+					data.addCause(cause, datum.getDate(), datum.getCoordinates());
 			} else
 				cause = line.trim();
 		}
@@ -98,7 +100,7 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addSymptom(symptom, ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
+					data.addSymptom(symptom, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), datum.getCoordinates());
 			} else
 				symptom = line.trim();
 		}
@@ -117,9 +119,9 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addRemedy(remedy, ((DatumWithIntensity) datum).getIntensity(), datum.getDate());
+					data.addRemedy(remedy, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), datum.getCoordinates());
 				else
-					data.addRemedy(remedy, datum.getDate());
+					data.addRemedy(remedy, datum.getDate(), datum.getCoordinates());
 			} else
 				remedy = line.trim();
 		}
@@ -133,10 +135,12 @@ public class Main {
 		LocalDateTime date = LocalDateTime.parse(splitLine[0]);
 
 
-		if (splitLine.length > 1) {
+		Point2D.Double coordinates = splitLine[1].trim().equals("null") ? null : new Point2D.Double(Double.parseDouble(splitLine[1].split(":")[0].trim()),Double.parseDouble(splitLine[1].split(":")[1].trim()));
+		
+		if (splitLine.length > 2) {
 			Intensity intensity = null;
 
-			switch (splitLine[1].trim()) {
+			switch (splitLine[2].trim()) {
 
 			case "low intensity":
 				intensity = Intensity.LOW;
@@ -153,12 +157,12 @@ public class Main {
 			}
 
 			if (intensity == null)
-				return new Datum(date);
+				return new Datum(date, coordinates);
 						
-			return new DatumWithIntensity(date, intensity);
+			return new DatumWithIntensity(date, coordinates, intensity);
 		}
 		
-		return new Datum(date);
+		return new Datum(date, coordinates);
 
 	}
 

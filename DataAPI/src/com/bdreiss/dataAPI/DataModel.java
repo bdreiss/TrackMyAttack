@@ -1,5 +1,6 @@
 package com.bdreiss.dataAPI;
 
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -164,9 +165,9 @@ public class DataModel implements Serializable {
 	 * @return LocalDateTime when ailment was added
 	 * @throws TypeMismatchException
 	 */
-	public LocalDateTime addAilment(String ailment, Intensity intensity) throws TypeMismatchException {
+	public LocalDateTime addAilment(String ailment, Intensity intensity, Point2D.Double coordinates) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(ailments, ailment, intensity, date);
+		addEntry(ailments, ailment, intensity, date, coordinates);
 		return date;
 	}
 
@@ -178,8 +179,8 @@ public class DataModel implements Serializable {
 	 * @param date      LocalDateTime when ailment occurred
 	 * @throws TypeMismatchException
 	 */
-	public void addAilment(String ailment, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
-		addEntry(ailments, ailment, intensity, date);
+	public void addAilment(String ailment, Intensity intensity, LocalDateTime date, Point2D.Double coordinates) throws TypeMismatchException {
+		addEntry(ailments, ailment, intensity, date, coordinates);
 	}
 
 	/**
@@ -189,9 +190,9 @@ public class DataModel implements Serializable {
 	 * @return LocalDateTime when cause was added
 	 * @throws TypeMismatchException
 	 */
-	public LocalDateTime addCause(String cause) throws TypeMismatchException {
+	public LocalDateTime addCause(String cause, Point2D.Double coordinates) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(causes, cause, null, date);
+		addEntry(causes, cause, null, date, coordinates);
 		return date;
 	}
 
@@ -202,8 +203,8 @@ public class DataModel implements Serializable {
 	 * @param date  LocalDateTime when the attack occurred
 	 * @throws TypeMismatchException
 	 */
-	public void addCause(String cause, LocalDateTime date) throws TypeMismatchException {
-		addEntry(causes, cause, null, date);
+	public void addCause(String cause, LocalDateTime date, Point2D.Double coordinates) throws TypeMismatchException {
+		addEntry(causes, cause, null, date, coordinates);
 	}
 
 	/**
@@ -214,9 +215,9 @@ public class DataModel implements Serializable {
 	 * @return LocalDateTime when cause was added
 	 * @throws TypeMismatchException
 	 */
-	public LocalDateTime addCause(String cause, Intensity intensity) throws TypeMismatchException {
+	public LocalDateTime addCause(String cause, Intensity intensity, Point2D.Double coordinates) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(causes, cause, intensity, date);
+		addEntry(causes, cause, intensity, date, coordinates);
 		return date;
 	}
 
@@ -228,8 +229,8 @@ public class DataModel implements Serializable {
 	 * @param date      LocalDateTime when the cause occurred
 	 * @throws TypeMismatchException
 	 */
-	public void addCause(String cause, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
-		addEntry(causes, cause, intensity, date);
+	public void addCause(String cause, Intensity intensity, LocalDateTime date, Point2D.Double coordinates) throws TypeMismatchException {
+		addEntry(causes, cause, intensity, date, coordinates);
 	}
 
 	/**
@@ -240,9 +241,9 @@ public class DataModel implements Serializable {
 	 * @return LocalDateTime when symptom was added
 	 * @throws TypeMismatchException
 	 */
-	public LocalDateTime addSymptom(String symptom, Intensity intensity) throws TypeMismatchException {
+	public LocalDateTime addSymptom(String symptom, Intensity intensity, Point2D.Double coordinates) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(symptoms, symptom, intensity, date);
+		addEntry(symptoms, symptom, intensity, date, coordinates);
 		return date;
 	}
 
@@ -254,8 +255,8 @@ public class DataModel implements Serializable {
 	 * @param date      LocalDateTime when the symptom occurred
 	 * @throws TypeMismatchException
 	 */
-	public void addSymptom(String symptom, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
-		addEntry(symptoms, symptom, intensity, date);
+	public void addSymptom(String symptom, Intensity intensity, LocalDateTime date, Point2D.Double coordinates) throws TypeMismatchException {
+		addEntry(symptoms, symptom, intensity, date, coordinates);
 	}
 
 	/**
@@ -266,9 +267,9 @@ public class DataModel implements Serializable {
 	 * @throws TypeMismatchException
 	 */
 
-	public LocalDateTime addRemedy(String remedy) throws TypeMismatchException {
+	public LocalDateTime addRemedy(String remedy, Point2D.Double coordinates) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(remedies, remedy, null, date);
+		addEntry(remedies, remedy, null, date, coordinates);
 		return date;
 	}
 
@@ -279,8 +280,8 @@ public class DataModel implements Serializable {
 	 * @param date   LocalDateTime when remedy was applied
 	 * @throws TypeMismatchException
 	 */
-	public void addRemedy(String remedy, LocalDateTime date) throws TypeMismatchException {
-		addEntry(remedies, remedy, null, date);
+	public void addRemedy(String remedy, LocalDateTime date, Point2D.Double coordinates) throws TypeMismatchException {
+		addEntry(remedies, remedy, null, date, coordinates);
 	}
 
 	/**
@@ -292,9 +293,9 @@ public class DataModel implements Serializable {
 	 * @throws TypeMismatchException
 	 */
 
-	public LocalDateTime addRemedy(String remedy, Intensity intensity) throws TypeMismatchException {
+	public LocalDateTime addRemedy(String remedy, Intensity intensity, Point2D.Double coordinates) throws TypeMismatchException {
 		LocalDateTime date = LocalDateTime.now();
-		addEntry(remedies, remedy, intensity, date);
+		addEntry(remedies, remedy, intensity, date, coordinates);
 		return date;
 	}
 
@@ -307,12 +308,12 @@ public class DataModel implements Serializable {
 	 * @throws TypeMismatchException
 	 */
 
-	public void addRemedy(String remedy, Intensity intensity, LocalDateTime date) throws TypeMismatchException {
-		addEntry(remedies, remedy, intensity, date);
+	public void addRemedy(String remedy, Intensity intensity, LocalDateTime date, Point2D.Double coordinates) throws TypeMismatchException {
+		addEntry(remedies, remedy, intensity, date, coordinates);
 	}
 
 	// abstracts the task of adding entries to the different ArrayLists
-	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date)
+	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date, Point2D.Double coordinates)
 			throws TypeMismatchException {
 
 		if (firstDate == null || date.toLocalDate().compareTo(firstDate) < 0)
@@ -332,9 +333,9 @@ public class DataModel implements Serializable {
 
 		// add new Datum to end of list
 		if (intensity != null)
-			list.add(new DatumWithIntensity(date, intensity));
+			list.add(new DatumWithIntensity(date, coordinates, intensity));
 		else
-			list.add(new Datum(date));
+			list.add(new Datum(date, coordinates));
 
 		// as long as the date is smaller than the date before, swap it with the
 		// previous item
@@ -566,7 +567,7 @@ public class DataModel implements Serializable {
 
 		if (map.get(key) != null && map.get(key).size() > 0)
 			if (intensity != null && !(map.get(key).get(0) instanceof DatumWithIntensity))
-				return;
+				return;//TODO TypeMismatchException?!
 
 		for (Datum d : map.get(key)) {
 			if (d.getDate().equals(date) && d.getDate().getNano() == date.getNano()) {
@@ -585,8 +586,8 @@ public class DataModel implements Serializable {
 				// via insertion sort
 				if (newDate != null) {
 					map.get(key).remove(d);
-					addEntry(map, key, intensity, newDate);
-					d.setDate(newDate);
+					addEntry(map, key, intensity, newDate, d.getCoordinates());
+					d.setDate(newDate);//TODO does this do anything?
 				}
 				break;
 			}
@@ -1101,7 +1102,8 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(ailments.get(s))) {
-				sb.append(d.getDate());
+				sb.append(d.getDate() + ", ");
+				sb.append(d.getCoordinates() == null ? "null" : (d.getCoordinates().x + ":" + d.getCoordinates().y));
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				else
@@ -1117,7 +1119,8 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(causes.get(s))) {
-				sb.append(d.getDate());
+				sb.append(d.getDate() + ", ");
+				sb.append(d.getCoordinates() == null ? "null" : (d.getCoordinates().x + ":" + d.getCoordinates().y));
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				else
@@ -1133,7 +1136,9 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(symptoms.get(s))) {
-				sb.append(d.getDate());
+				sb.append(d.getDate() + ", ");
+				sb.append(d.getCoordinates() == null ? "null" : (d.getCoordinates().x + ":" + d.getCoordinates().y));
+
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				else
@@ -1150,7 +1155,8 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(remedies.get(s))) {
-				sb.append(d.getDate());
+				sb.append(d.getDate() + ", ");
+				sb.append(d.getCoordinates() == null ? "null" : (d.getCoordinates().x + ":" + d.getCoordinates().y));
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				else
