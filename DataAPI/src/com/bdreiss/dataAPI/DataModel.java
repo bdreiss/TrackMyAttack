@@ -64,6 +64,7 @@ public class DataModel implements Serializable {
 	private Map<String, List<Datum>> causes = new TreeMap<>(TREE_COMPARATOR);
 	private Map<String, List<Datum>> symptoms = new TreeMap<>(TREE_COMPARATOR);
 	private Map<String, List<Datum>> remedies = new TreeMap<>(TREE_COMPARATOR);
+	private Map<LocalDate, List<Point2D.Double>> coordinateTree = new TreeMap<>();
 
 	public File getSaveFile() {
 		return saveFile;
@@ -316,6 +317,26 @@ public class DataModel implements Serializable {
 	private void addEntry(Map<String, List<Datum>> map, String key, Intensity intensity, LocalDateTime date, Point2D.Double coordinates)
 			throws TypeMismatchException {
 
+		
+		//if coordinates have been passed and these coordinates are not already in the tree for the specified date add them
+		if (coordinates != null) {
+			Iterator<Point2D.Double> it = getCoordinates(date.toLocalDate());
+			
+			boolean add = true;
+			while (it.hasNext()) {
+				if (it.next().equals(coordinates)) {
+					add = false;
+					break;
+				}
+			}
+			
+			if (add) {
+				if (coordinateTree.get(date.toLocalDate()) == null)
+					coordinateTree.put(date.toLocalDate(), new ArrayList<Point2D.Double>());
+				coordinateTree.get(date.toLocalDate()).add(coordinates);
+			}
+		}
+		
 		if (firstDate == null || date.toLocalDate().compareTo(firstDate) < 0)
 			firstDate = date.toLocalDate();
 
@@ -333,9 +354,9 @@ public class DataModel implements Serializable {
 
 		// add new Datum to end of list
 		if (intensity != null)
-			list.add(new DatumWithIntensity(date, coordinates, intensity));
+			list.add(new DatumWithIntensity(date, intensity));
 		else
-			list.add(new Datum(date, coordinates));
+			list.add(new Datum(date));
 
 		// as long as the date is smaller than the date before, swap it with the
 		// previous item
@@ -456,6 +477,8 @@ public class DataModel implements Serializable {
 				break;
 			}
 		}
+		
+		//TODO remove coordinates for date if no data is set for date
 		save();
 
 	}
@@ -586,7 +609,7 @@ public class DataModel implements Serializable {
 				// via insertion sort
 				if (newDate != null) {
 					map.get(key).remove(d);
-					addEntry(map, key, intensity, newDate, d.getCoordinates());
+					addEntry(map, key, intensity, newDate, null);
 					d.setDate(newDate);//TODO does this do anything?
 				}
 				break;
@@ -833,6 +856,11 @@ public class DataModel implements Serializable {
 		return iteratorToInt(getIterator(remedies.get(remedy), date));
 	};
 
+	
+	public Iterator<Point2D.Double> getCoordinates(LocalDate date){
+		return coordinateTree.get(date).iterator();
+	}
+	
 	/**
 	 * Returns medium occurrence of cause per day (not including days without data)
 	 * 
@@ -840,6 +868,7 @@ public class DataModel implements Serializable {
 	 * @return
 	 * @throws EntryNotFoundException
 	 */
+	
 	public float mediumCause(String cause) throws EntryNotFoundException {
 
 		// if there is no data, return 0
@@ -1102,8 +1131,7 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(ailments.get(s))) {
-				sb.append(d.getDate() + ", ");
-				sb.append(d.getCoordinates() == null ? "null" : (d.getCoordinates().x + ":" + d.getCoordinates().y));
+				sb.append(d.getDate());
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				else
@@ -1119,8 +1147,7 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(causes.get(s))) {
-				sb.append(d.getDate() + ", ");
-				sb.append(d.getCoordinates() == null ? "null" : (d.getCoordinates().x + ":" + d.getCoordinates().y));
+				sb.append(d.getDate());
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				else
@@ -1136,8 +1163,7 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(symptoms.get(s))) {
-				sb.append(d.getDate() + ", ");
-				sb.append(d.getCoordinates() == null ? "null" : (d.getCoordinates().x + ":" + d.getCoordinates().y));
+				sb.append(d.getDate());
 
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
@@ -1155,8 +1181,7 @@ public class DataModel implements Serializable {
 			sb.append(s);
 			sb.append("\n");
 			for (Datum d : Objects.requireNonNull(remedies.get(s))) {
-				sb.append(d.getDate() + ", ");
-				sb.append(d.getCoordinates() == null ? "null" : (d.getCoordinates().x + ":" + d.getCoordinates().y));
+				sb.append(d.getDate());
 				if (d instanceof DatumWithIntensity)
 					sb.append(", " + ((DatumWithIntensity) d).getIntensity());
 				else

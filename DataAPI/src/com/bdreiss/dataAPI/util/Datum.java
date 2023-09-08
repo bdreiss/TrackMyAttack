@@ -13,11 +13,9 @@ public class Datum implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private LocalDateTime date;
-	private Point2D.Double coordinates;
 
-	public Datum(LocalDateTime date, Point2D.Double coordinates) {
+	public Datum(LocalDateTime dates) {
 		this.date = date;
-		this.coordinates = coordinates;
 	}
 
 	public LocalDateTime getDate() {
@@ -26,10 +24,6 @@ public class Datum implements Serializable {
 
 	public void setDate(LocalDateTime date) {
 		this.date = date;
-	}
-
-	public Point2D.Double getCoordinates() {
-		return coordinates;
 	}
 
 }

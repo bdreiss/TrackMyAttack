@@ -18,6 +18,7 @@ class Main {
 
 	public static void main(String[] args) throws MalformedURLException, InterruptedException {
 
+		
 		DataModel data = new DataModel(System.getProperty("user.home") + "/Apps/TrackMyAttack");
 
 		if (!(new File(Dropbox.getDbxFilePath(data)).exists())) {

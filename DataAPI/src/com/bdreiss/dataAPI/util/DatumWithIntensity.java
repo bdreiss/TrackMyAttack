@@ -16,8 +16,8 @@ public class DatumWithIntensity extends Datum implements Serializable{
 
 	private Intensity intensity;
 	
-	public DatumWithIntensity(LocalDateTime date, Point2D.Double coordinates, Intensity intensity) {
-		super(date, coordinates);
+	public DatumWithIntensity(LocalDateTime date, Intensity intensity) {
+		super(date);
 		this.intensity = intensity;
 	}
 
