@@ -40,8 +40,6 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 	private DataModel originalData;
 
-	private Point2D.Double coordinates;
-
 	private final APIQuery API_QUERY;
 	
 	public GeoData(DataModel originalData, Point2D.Double coordinates) throws MalformedURLException {
@@ -54,16 +52,14 @@ public class GeoData extends AbstractDataModel implements Serializable {
 		SAVEPATH = originalData.getSaveFile().getAbsolutePath() + "Geo";
 
 		category = Category.CAUSE;
-		this.coordinates = new Point2D.Double(48.1553234784118, 16.347233789433627);
 
-		File saveFile = new File(SAVEPATH + this.coordinates.x + this.coordinates.y);
+		File saveFile = new File(SAVEPATH);
 
 		API_QUERY = new APIQueryAustria();
 		
 		if (saveFile.exists())
 			load(saveFile);
 
-		
 		update();
 
 	}
@@ -114,8 +110,14 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 	private void update() {
 
-		if (data.firstDate == null)
-			API_QUERY.parseJSON(API_QUERY.JSONQuery(startDate, LocalDate.now().minusDays(1)), data, category);
+		
+		
+		if (data.firstDate == null) {
+		
+		
+				API_QUERY.parseJSON(API_QUERY.JSONQuery(startDate, LocalDate.now().minusDays(1)), data, category);
+			
+		}
 		else {
 
 			if (data.firstDate.compareTo(startDate) > 0)
@@ -138,7 +140,7 @@ public class GeoData extends AbstractDataModel implements Serializable {
 		}
 
 		try {
-			FileOutputStream fos = new FileOutputStream(SAVEPATH + coordinates.x + coordinates.y);
+			FileOutputStream fos = new FileOutputStream(SAVEPATH);
 
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 

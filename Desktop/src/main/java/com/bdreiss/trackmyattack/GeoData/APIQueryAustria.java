@@ -1,5 +1,6 @@
 package main.java.com.bdreiss.trackmyattack.GeoData;
 
+import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -115,9 +116,9 @@ public class APIQueryAustria implements APIQuery {
 
 	}
 
-	public String JSONQuery(LocalDate startDate, LocalDate endDate) {
+	public String JSONQuery(LocalDate startDate, LocalDate endDate, Point2D.Double coordinates) {
 
-		String query = PREFIX_AUSTRIA + startDate + INFIX1_AUSTRIA + endDate + INFIX2_AUSTRIA + getNearestStationAustria();
+		String query = PREFIX_AUSTRIA + startDate + INFIX1_AUSTRIA + endDate + INFIX2_AUSTRIA + getNearestStationAustria(coordinates);
 
 		String jsonString = "";
 
@@ -157,7 +158,7 @@ public class APIQueryAustria implements APIQuery {
 		return jsonString;
 	}
 
-	private String getNearestStationAustria() {
+	private String getNearestStationAustria(Point2D.Double coordinates) {
 		return "5802";
 	}
 

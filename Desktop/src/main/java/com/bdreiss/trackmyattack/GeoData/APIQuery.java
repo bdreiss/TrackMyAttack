@@ -1,5 +1,6 @@
 package main.java.com.bdreiss.trackmyattack.GeoData;
 
+import java.awt.geom.Point2D;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -12,5 +13,5 @@ public interface APIQuery {
 	
 	ArrayList<Float> extractData(JSONObject jso);
 	void parseJSON(String jsonString, DataModel data, Category category);
-	String JSONQuery(LocalDate startDate, LocalDate endDate);
+	String JSONQuery(LocalDate startDate, LocalDate endDate, Point2D.Double coordinates);
 }
