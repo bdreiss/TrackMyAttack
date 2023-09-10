@@ -35,15 +35,12 @@ public class GeoData extends AbstractDataModel implements Serializable {
 	
 	private GeoDataType[] TYPES_TO_USE = { GeoDataType.TEMPERATURE_MAX, GeoDataType.TEMPERATURE_MEDIAN,
 			GeoDataType.TEMPERATURE_MIN, GeoDataType.VAPOR };
-	
-	private LocalDate startDate;
 
 	private DataModel originalData;
 
 	private final APIQuery API_QUERY;
 	
 	public GeoData(DataModel originalData, Point2D.Double coordinates) throws MalformedURLException {
-		startDate = originalData.firstDate;
 
 		data = new DataModel();
 		
@@ -110,28 +107,36 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 	private void update() {
 
+		//if there is no firstDate in the original data, there are no entries and the method returns
+		if (originalData.firstDate == null)
+			return;
+		
+		LocalDate startDate = originalData.firstDate;
 		
 		
+		//if there are no entries for GeoData, start with the first date in the original data
 		if (data.firstDate == null) {
-		
-		
-				API_QUERY.parseJSON(API_QUERY.JSONQuery(startDate, LocalDate.now().minusDays(1)), data, category);
-			
-		}
+					updateRange(startDate, LocalDate.now());
+				}
 		else {
 
-			if (data.firstDate.compareTo(startDate) > 0)
-				API_QUERY.parseJSON(API_QUERY.JSONQuery(startDate, LocalDate.now().minusDays(1)), data, category);
-			
-			LocalDate lastDate = null;
-
+			//if the first date in GeoData is bigger than the start date in the original data, get GeoData for this span
+			if (data.firstDate.compareTo(startDate) > 0) {
+				updateRange(startDate, data.firstDate.minusDays(1));
+				startDate = data.firstDate;
+			}
 			Iterator<Datum> it;
+			
+			
+			//TODO implement updateRange for last date to today and look for empty data sets in between
+			//temporary end date to get data for
+			LocalDate endDate = startDate;
 			try {
 				it = data.getCauseData(GeoDataType.HUMIDITY.toString());
 				while (it.hasNext())
-					lastDate = it.next().getDate().toLocalDate();
-				if (lastDate.compareTo(LocalDate.now().minusDays(1)) != 0)
-					API_QUERY.parseJSON(API_QUERY.JSONQuery(lastDate, LocalDate.now().minusDays(1)), data, category);
+					endDate = it.next().getDate().toLocalDate();
+				if (endDate.compareTo(LocalDate.now().minusDays(1)) != 0)
+					API_QUERY.parseJSON(API_QUERY.JSONQuery(endDate, LocalDate.now().minusDays(1)), data, category);
 
 			} catch (EntryNotFoundException e) {
 				e.printStackTrace();
@@ -157,7 +162,19 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 	}
 
+	private void updateRange(LocalDate startDate, LocalDate finalDate) {
+		LocalDate endDate = startDate;
 
+		while (startDate.compareTo(finalDate) <= 0) {
+			if (!data.getCoordinatesMean(startDate).equals(data.getCoordinatesMean(endDate))) {
+				GetDataByCountry.getData(startDate, endDate, data.getCoordinatesMean(startDate), originalData, category);
+				startDate = endDate;
+			}
+			
+			endDate = endDate.plusDays(1);
+		}
+
+	}
 
 	@Override
 	public void addKey(String key, boolean intensity) {}

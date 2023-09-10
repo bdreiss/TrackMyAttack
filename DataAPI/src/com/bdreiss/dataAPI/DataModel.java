@@ -857,10 +857,15 @@ public class DataModel implements Serializable {
 	};
 
 	
+	public Point2D.Double getCoordinatesMean(LocalDate date){
+		//TODO implement getting single coordinate even if there are several for one date
+		return coordinateTree.get(date).iterator().next();
+	}
+	
 	public Iterator<Point2D.Double> getCoordinates(LocalDate date){
 		return coordinateTree.get(date).iterator();
 	}
-	
+
 	/**
 	 * Returns medium occurrence of cause per day (not including days without data)
 	 * 
