@@ -32,18 +32,18 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static String SAVEPATH;
-	
+
 	private GeoDataType[] TYPES_TO_USE = { GeoDataType.TEMPERATURE_MAX, GeoDataType.TEMPERATURE_MEDIAN,
 			GeoDataType.TEMPERATURE_MIN, GeoDataType.VAPOR };
 
 	private DataModel originalData;
 
 	private final APIQuery API_QUERY;
-	
+
 	public GeoData(DataModel originalData, Point2D.Double coordinates) throws MalformedURLException {
 
 		data = new DataModel();
-		
+
 		this.originalData = originalData;
 
 		SAVEPATH = originalData.getSaveFile().getAbsolutePath() + "Geo";
@@ -53,7 +53,7 @@ public class GeoData extends AbstractDataModel implements Serializable {
 		File saveFile = new File(SAVEPATH);
 
 		API_QUERY = new APIQueryAustria();
-		
+
 		if (saveFile.exists())
 			load(saveFile);
 
@@ -85,8 +85,9 @@ public class GeoData extends AbstractDataModel implements Serializable {
 		}
 
 		data.removeAilmentKey("Migraine");
-		//add Migraine data to the loading data model -> the original data for migraines has to be transferred
-		//since otherwise migraines can not be shown in the GeoDataPanel
+		// add Migraine data to the loading data model -> the original data for
+		// migraines has to be transferred
+		// since otherwise migraines can not be shown in the GeoDataPanel
 		data.addAilmentKey("Migraine");
 
 		try {
@@ -104,44 +105,40 @@ public class GeoData extends AbstractDataModel implements Serializable {
 		}
 	}
 
-
 	private void update() {
 
-		//if there is no firstDate in the original data, there are no entries and the method returns
+		// if there is no firstDate in the original data, there are no entries and the
+		// method returns
 		if (originalData.firstDate == null)
 			return;
-		
-		LocalDate startDate = originalData.firstDate;
-		
-		
-		//if there are no entries for GeoData, start with the first date in the original data
-		if (data.firstDate == null) {
-					updateRange(startDate, LocalDate.now());
-				}
-		else {
 
-			//if the first date in GeoData is bigger than the start date in the original data, get GeoData for this span
+		LocalDate startDate = originalData.firstDate;
+
+		// if there are no entries for GeoData, start with the first date in the
+		// original data
+		if (data.firstDate == null) {
+			updateRange(startDate, LocalDate.now());
+		} else {
+
+			// if the first date in GeoData is bigger than the start date in the original
+			// data, get GeoData for this span
 			if (data.firstDate.compareTo(startDate) > 0) {
 				updateRange(startDate, data.firstDate.minusDays(1));
 				startDate = data.firstDate;
 			}
+
 			Iterator<Datum> it;
-			
-			
-			//TODO implement updateRange for last date to today and look for empty data sets in between
-			//temporary end date to get data for
-			LocalDate endDate = startDate;
+
 			try {
 				it = data.getCauseData(GeoDataType.HUMIDITY.toString());
 				while (it.hasNext())
-					endDate = it.next().getDate().toLocalDate();
-				if (endDate.compareTo(LocalDate.now().minusDays(1)) != 0)
-					API_QUERY.parseJSON(API_QUERY.JSONQuery(endDate, LocalDate.now().minusDays(1)), data, category);
-
+					startDate = it.next().getDate().toLocalDate();
+				
+				updateRange(startDate, LocalDate.now());
+				
 			} catch (EntryNotFoundException e) {
 				e.printStackTrace();
 			}
-
 		}
 
 		try {
@@ -165,19 +162,24 @@ public class GeoData extends AbstractDataModel implements Serializable {
 	private void updateRange(LocalDate startDate, LocalDate finalDate) {
 		LocalDate endDate = startDate;
 
+		Point2D.Double currentCoordinates = data.getCoordinatesMean(startDate);
+		
 		while (startDate.compareTo(finalDate) <= 0) {
-			if (!data.getCoordinatesMean(startDate).equals(data.getCoordinatesMean(endDate))) {
-				GetDataByCountry.getData(startDate, endDate, data.getCoordinatesMean(startDate), originalData, category);
+			if (!currentCoordinates.equals(data.getCoordinatesMean(endDate)) && !(currentCoordinates == null)) {
+				GetDataByCountry.getData(startDate, endDate, currentCoordinates, originalData,
+						category);
 				startDate = endDate;
 			}
-			
+
+			currentCoordinates = data.getCoordinatesMean(endDate);
 			endDate = endDate.plusDays(1);
 		}
 
 	}
 
 	@Override
-	public void addKey(String key, boolean intensity) {}
+	public void addKey(String key, boolean intensity) {
+	}
 
 	@Override
 	public Iterator<Datum> getData(String key) throws EntryNotFoundException {
@@ -190,22 +192,28 @@ public class GeoData extends AbstractDataModel implements Serializable {
 	}
 
 	@Override
-	public void addData(String key, Point2D.Double coordinates) throws TypeMismatchException {}
+	public void addData(String key, Point2D.Double coordinates) throws TypeMismatchException {
+	}
 
 	@Override
-	public void addData(String key, Intensity intensity, Point2D.Double coordinates) throws TypeMismatchException {}
+	public void addData(String key, Intensity intensity, Point2D.Double coordinates) throws TypeMismatchException {
+	}
 
 	@Override
-	public void removeItem(String key, LocalDateTime date) {}
+	public void removeItem(String key, LocalDateTime date) {
+	}
 
 	@Override
-	public void removeKey(String key) {}
+	public void removeKey(String key) {
+	}
 
 	@Override
-	public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {}
+	public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
+	}
 
 	@Override
-	public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {}
+	public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
+	}
 
 	@Override
 	public int getSize() {

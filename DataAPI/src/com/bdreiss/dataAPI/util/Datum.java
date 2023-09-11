@@ -1,7 +1,5 @@
 package com.bdreiss.dataAPI.util;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -14,7 +12,7 @@ public class Datum implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private LocalDateTime date;
 
-	public Datum(LocalDateTime dates) {
+	public Datum(LocalDateTime date) {
 		this.date = date;
 	}
 
