@@ -16,7 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.dataAPI.enums.Intensity;
@@ -858,8 +860,28 @@ public class DataModel implements Serializable {
 
 	
 	public Point2D.Double getCoordinatesMean(LocalDate date){
-		//TODO implement getting single coordinate even if there are several for one date
-		return coordinateTree.get(date).iterator().next();
+		Set<Point2D.Double> coordinateSet = new TreeSet<Point2D.Double>();
+		
+		Iterator<Point2D.Double> it = getCoordinates(date);
+		
+		//return null if there are no coordinates for date
+		if (!it.hasNext())
+			return null;
+		
+		while(it.hasNext()) {
+			coordinateSet.add(it.next());
+		}
+		
+		Double xSum = 0.0;
+		
+		Double ySum = 0.0;
+		
+		for (Point2D.Double p: coordinateSet) {
+			xSum += p.x;
+			ySum += p.y;
+		}
+
+		return new Point2D.Double(xSum/coordinateSet.size(),ySum/coordinateSet.size());
 	}
 	
 	public Iterator<Point2D.Double> getCoordinates(LocalDate date){
