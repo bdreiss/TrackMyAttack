@@ -472,7 +472,7 @@ public class DataModel implements Serializable {
 
 		List<Datum> list = map.get(key);
 
-		// iterate over list and remove enty if it matches date
+		// iterate over list and remove entry if it matches date
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).getDate().equals(date)) {
 				list.remove(i);
@@ -480,11 +480,39 @@ public class DataModel implements Serializable {
 			}
 		}
 		
-		//TODO remove coordinates for date if no data is set for date
+		boolean dateHasData = dateHasData(getAilments(), date);
+
+		dateHasData = dateHasData(getCauses(), date);
+
+		dateHasData = dateHasData(getSymptoms(), date);
+
+		dateHasData = dateHasData(getRemedies(), date);
+		
+		if (!dateHasData)
+			coordinateTree.remove(date.toLocalDate());
+		
 		save();
 
 	}
 
+	private boolean dateHasData(Iterator<String> it, LocalDateTime date) {
+		
+		boolean dateHasData = false;
+		
+		while (it.hasNext() && dateHasData == false) {
+			try {
+				if (getAilmentData(it.next(), date.toLocalDate()).hasNext()) {
+					dateHasData = true;
+					break;
+				}
+			} catch (EntryNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return dateHasData;
+	}
+	
 	/**
 	 * Edit date of an ailment entry;
 	 * 
