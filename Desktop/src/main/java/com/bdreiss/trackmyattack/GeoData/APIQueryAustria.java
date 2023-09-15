@@ -19,9 +19,15 @@ import com.bdreiss.dataAPI.enums.Category;
 
 public class APIQueryAustria implements APIQuery {
 
-	private static final String PREFIX_AUSTRIA = "https://dataset.api.hub.zamg.ac.at/v1/station/historical/klima-v1-1d?parameters=t,tmax,tmin,druckmit,rel,dampfmit&start=";
+	private static final String PREFIX_AUSTRIA = "https://dataset.api.hub.geosphere.at/v1/station/historical/klima-v1-1d?parameters=t,tmax,tmin,druckmit,rel,dampfmit&start=";
 	private static final String INFIX1_AUSTRIA = "T00:00&end=";
 	private static final String INFIX2_AUSTRIA = "T00:01&station_ids=";
+
+	public static void main(String args[]) {
+		APIQueryAustria apiQuery = new APIQueryAustria();
+		
+		apiQuery.getNearestStationAustria(new Point2D.Double(48.15980285249154, 16.34069433192093));
+	}
 
 	//extract data from the JSONObject retrieved from https://dataset.api.hub.zamg.ac.at 
 	public ArrayList<Float> extractData(JSONObject jso) {
@@ -118,9 +124,22 @@ public class APIQueryAustria implements APIQuery {
 
 	public String JSONQuery(LocalDate startDate, LocalDate endDate, Point2D.Double coordinates) {
 
-		String query = PREFIX_AUSTRIA + startDate + INFIX1_AUSTRIA + endDate + INFIX2_AUSTRIA + getNearestStationAustria(coordinates);
+		String jsonString = null;
+		
+		try {
+			
+			jsonString = JSONQuery(PREFIX_AUSTRIA + startDate + INFIX1_AUSTRIA + endDate + INFIX2_AUSTRIA + getNearestStationAustria(coordinates));
+			return jsonString;
+		} finally {
+			if (jsonString != null)
+				System.out.println("Got data for " + startDate + " to " + endDate);
 
-		String jsonString = "";
+		}
+	}
+	
+	public String JSONQuery(String query) {
+
+		String jsonString = null;
 
 		System.out.println("Fetching data...");
 
@@ -143,7 +162,6 @@ public class APIQueryAustria implements APIQuery {
 				System.out.println("Got no data");
 				System.exit(0);
 			}
-			System.out.println("Got data for " + startDate + " to " + endDate);
 			br.close();
 
 		} catch (MalformedURLException e) {
@@ -159,7 +177,35 @@ public class APIQueryAustria implements APIQuery {
 	}
 
 	private String getNearestStationAustria(Point2D.Double coordinates) {
-		return "5802";
+		
+		if (coordinates == null)
+			return null;
+		
+		Double offset = Double.POSITIVE_INFINITY;
+		
+		String jsonString = JSONQuery("https://dataset.api.hub.geosphere.at/v1/station/historical/klima-v1-1d/metadata");
+		JSONObject jsonObject = new  JSONObject(jsonString);
+		
+		
+		JSONArray stations = jsonObject.getJSONArray("stations");
+		
+		String nearestStation = null;
+		
+		for (Object jo : stations) {
+			
+			jsonObject = (JSONObject) jo;
+			
+			Double lat = Double.parseDouble(jsonObject.get("lat").toString());
+			Double lon = Double.parseDouble(jsonObject.get("lon").toString());
+			Double newOffset = Math.abs((coordinates.x - lat)) + Math.abs((coordinates.y - lon));
+			
+			if (newOffset < offset) {
+				nearestStation = jsonObject.get("id").toString();
+				offset = newOffset;
+			}
+		}
+			
+		return nearestStation;
 	}
 
 }
