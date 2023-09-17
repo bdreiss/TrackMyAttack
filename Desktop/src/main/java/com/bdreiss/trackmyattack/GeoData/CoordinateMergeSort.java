@@ -4,35 +4,11 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CoordinateMergeSort {
-
 	
-	public static List<Point2D.Double> sort(List<Point2D.Double> list) throws SortActionException {
-	
-		if (list.size()<=1)
-			return list;
-		
-		list = sortWithAction(list,(p1, p2)-> {
-			if (p1.x==p2.x)
-				return PointComparator.SAME;
-			if (p1.x < p2.x)
-				return PointComparator.FIRST;
-			return PointComparator.SECOND;
-		});
-		
-		list = sortWithAction(list,(p1, p2)-> {
-			if (p1.y==p2.y)
-				return PointComparator.SAME;
-			if (p1.y < p2.y)
-				return PointComparator.FIRST;
-			return PointComparator.SECOND;
-		});
-		return list;
-		
-	}
-	
-	private static List<Point2D.Double> sortWithAction(List<Point2D.Double> list,SortAction sortAction) throws SortActionException {
+	public static List<Point2D.Double> sort(List<Point2D.Double> list) {
 				
 		if (list.size()<=1)
 			return list;
@@ -42,22 +18,13 @@ public class CoordinateMergeSort {
 		List<Point2D.Double> listLeft = list.subList(0, m);
 		List<Point2D.Double> listRight = list.subList(m, list.size());
 
-//		Main.printList(list);
-//		System.out.println(m);
-//		Main.printList(listLeft);
-//		Main.printList(listRight);
-		
 		List<Point2D.Double> listReturn = 
-					 (merge(sortWithAction(listLeft,sortAction),
-					 sortWithAction(listRight, sortAction), 
-					 sortAction));
+					 (merge(sort(listLeft), sort(listRight)));
 		return listReturn;
 	}
 	
-	private static List<Point2D.Double> merge(List<Point2D.Double> list1, List<Point2D.Double> list2, SortAction sortAction) throws SortActionException{
+	private static List<Point2D.Double> merge(List<Point2D.Double> list1, List<Point2D.Double> list2){
 		
-		Main.printList(list1);
-		Main.printList(list2);
 		List<Point2D.Double> listReturn = new ArrayList<Point2D.Double>();
 
 		
@@ -74,34 +41,51 @@ public class CoordinateMergeSort {
 		Point2D.Double current1 = it1.next();
 		Point2D.Double current2 = it2.next();
 
-		do {
-
-
-			switch (sortAction.getBigger(current1, current2)) {
-			case SAME:
-				listReturn.add(current1);
-				listReturn.add(current2);
-				if (it1.hasNext())
-					current1 = it1.next();
-				if (it2.hasNext())
-					current2 = it2.next();
-				break;
-			case FIRST:
-				listReturn.add(current1);
-				if (it1.hasNext())
-					current1 = it1.next();
-				break;
-			case SECOND:
-				listReturn.add(current2);
-				if (it2.hasNext())
-					current2 = it2.next();
-				break;
-			default:
-				throw new SortActionException("SortAction was not well implemented. Must return one of PointComparators SAME, FIRST or SECOND");
-			}			
-				
-		} while (it1.hasNext() && it2.hasNext());
 		
+		while (current1 != null && current2 != null) {
+
+			Double diffX = current1.x - current2.x;
+			ItemToAdd itemToAdd = null;
+			
+			if (diffX == 0) {
+				Double diffY = current1.y - current2.y;
+				
+				if (diffY == 0) itemToAdd = ItemToAdd.BOTH;
+				
+				if (diffY < 0) itemToAdd = ItemToAdd.FIRST;						
+				
+				if (diffY > 0) itemToAdd = ItemToAdd.SECOND;
+
+			}
+			
+			if (diffX < 0) itemToAdd = ItemToAdd.FIRST;						
+			
+			if (diffX > 0) itemToAdd = ItemToAdd.SECOND;
+				
+			
+
+			switch (itemToAdd) {
+				case FIRST:
+					listReturn.add(current1);
+					current1 = it1.hasNext()? it1.next():null;		
+					break;
+				case SECOND:
+					listReturn.add(current2);
+					current2 = it2.hasNext()? it2.next():null;
+					break;
+				case BOTH:
+					listReturn.add(current1);
+					current1 = it1.hasNext()? it1.next():null;
+					listReturn.add(current2);
+					current2 = it2.hasNext()? it2.next():null;
+			}
+		} 
+		
+		if (current1 == null && current2 != null)
+			listReturn.add(current2);
+		if (current2 == null && current1 != null)
+			listReturn.add(current1);
+
 		if (!it1.hasNext()) {
 			while(it2.hasNext())
 				listReturn.add(it2.next());
@@ -112,10 +96,10 @@ public class CoordinateMergeSort {
 				listReturn.add(it1.next());
 		}
 		
-		System.out.print("Returning: ");
-		Main.printList(listReturn);
-		
 		return listReturn;
 	}
 	
+}
+enum ItemToAdd {
+	FIRST, SECOND, BOTH;
 }
