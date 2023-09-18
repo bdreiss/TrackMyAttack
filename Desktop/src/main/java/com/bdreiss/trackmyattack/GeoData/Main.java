@@ -17,6 +17,8 @@ public class Main {
 		addToList(list,3.0,2.0);
 		addToList(list,3.0,1.0);
 		addToList(list,8.0,2.0);
+		list.add(null);
+		list.add(null);
 		
 		printList(list);
 		System.out.println();
@@ -29,7 +31,10 @@ public class Main {
 	
 	public static void printList(List<Point2D.Double> list) {
 		for (Point2D.Double p : list)
-			System.out.println(p.x + ":" + p.y);
+			if (p == null)
+				System.out.println("null");
+			else
+				System.out.println(p.x + ":" + p.y);
 		System.out.println();
 	}
 }

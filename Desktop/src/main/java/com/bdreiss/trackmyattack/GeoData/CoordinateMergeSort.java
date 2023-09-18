@@ -20,6 +20,7 @@ public class CoordinateMergeSort {
 
 		List<Point2D.Double> listReturn = 
 					 (merge(sort(listLeft), sort(listRight)));
+		
 		return listReturn;
 	}
 	
@@ -42,13 +43,13 @@ public class CoordinateMergeSort {
 		Point2D.Double current2 = it2.next();
 
 		
-		while (current1 != null && current2 != null) {
+		while ((current1 == null || current1.x != Double.POSITIVE_INFINITY) && (current2== null || current2.x != Double.POSITIVE_INFINITY)) {
 
-			Double diffX = current1.x - current2.x;
-			ItemToAdd itemToAdd = null;
+			Double diffX = (current1==null?Double.MAX_VALUE:current1.x) - (current2==null?Double.MAX_VALUE:current2.x);
+			ItemToAdd itemToAdd = ItemToAdd.BOTH;
 			
 			if (diffX == 0) {
-				Double diffY = current1.y - current2.y;
+				Double diffY = (current1==null?Double.MAX_VALUE:current1.y) - (current2==null?Double.MAX_VALUE:current2.y);
 				
 				if (diffY == 0) itemToAdd = ItemToAdd.BOTH;
 				
@@ -67,24 +68,33 @@ public class CoordinateMergeSort {
 			switch (itemToAdd) {
 				case FIRST:
 					listReturn.add(current1);
-					current1 = it1.hasNext()? it1.next():null;		
+					current1 = it1.hasNext()? it1.next():new Point2D.Double(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);		
 					break;
 				case SECOND:
 					listReturn.add(current2);
-					current2 = it2.hasNext()? it2.next():null;
+					current2 = it2.hasNext()? it2.next():new Point2D.Double(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 					break;
 				case BOTH:
 					listReturn.add(current1);
-					current1 = it1.hasNext()? it1.next():null;
+					current1 = it1.hasNext()? it1.next():new Point2D.Double(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 					listReturn.add(current2);
-					current2 = it2.hasNext()? it2.next():null;
+					current2 = it2.hasNext()? it2.next():new Point2D.Double(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 			}
 		} 
+
+		if (current1 != null) {
+			if (current2 == null)
+				listReturn.add(current2);
+			else if (current1.x == Double.POSITIVE_INFINITY && current2.x < Double.POSITIVE_INFINITY)
+				listReturn.add(current2);
+		}
 		
-		if (current1 == null && current2 != null)
-			listReturn.add(current2);
-		if (current2 == null && current1 != null)
-			listReturn.add(current1);
+		if (current2 != null) {
+			if (current1 == null)
+				listReturn.add(current1);
+			else if (current2.x == Double.POSITIVE_INFINITY && current1.x < Double.POSITIVE_INFINITY)
+				listReturn.add(current1);
+		}
 
 		if (!it1.hasNext()) {
 			while(it2.hasNext())
