@@ -8,29 +8,29 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CoordinateMergeSort {
 	
-	public static List<Point2D.Double> sort(List<Point2D.Double> list) {
+	public static List<Station> sort(List<Station> list) {
 				
 		if (list.size()<=1)
 			return list;
 		
 		
 		int m = list.size()/2;
-		List<Point2D.Double> listLeft = list.subList(0, m);
-		List<Point2D.Double> listRight = list.subList(m, list.size());
+		List<Station> listLeft = list.subList(0, m);
+		List<Station> listRight = list.subList(m, list.size());
 
-		List<Point2D.Double> listReturn = 
+		List<Station> listReturn = 
 					 (merge(sort(listLeft), sort(listRight)));
 		
 		return listReturn;
 	}
 	
-	private static List<Point2D.Double> merge(List<Point2D.Double> list1, List<Point2D.Double> list2){
+	private static List<Station> merge(List<Station> list1, List<Station> list2){
 		
-		List<Point2D.Double> listReturn = new ArrayList<Point2D.Double>();
+		List<Station> listReturn = new ArrayList<Station>();
 
 		
-		Iterator<Point2D.Double> it1 = list1.iterator();
-		Iterator<Point2D.Double> it2 = list2.iterator();
+		Iterator<Station> it1 = list1.iterator();
+		Iterator<Station> it2 = list2.iterator();
 		
 		if (!it1.hasNext() && !it2.hasNext())
 			return listReturn;
@@ -39,17 +39,17 @@ public class CoordinateMergeSort {
 		if (!it2.hasNext())
 			return list1;
 		
-		Point2D.Double current1 = it1.next();
-		Point2D.Double current2 = it2.next();
+		Station current1 = it1.next();
+		Station current2 = it2.next();
 
 		
-		while ((current1 == null || current1.x != Double.POSITIVE_INFINITY) && (current2== null || current2.x != Double.POSITIVE_INFINITY)) {
+		while ((current1 == null || current1.getX() != Double.POSITIVE_INFINITY) && (current2== null || current2.getX() != Double.POSITIVE_INFINITY)) {
 
-			Double diffX = (current1==null?Double.MAX_VALUE:current1.x) - (current2==null?Double.MAX_VALUE:current2.x);
+			Double diffX = (current1==null?Double.MAX_VALUE:current1.getX()) - (current2==null?Double.MAX_VALUE:current2.getX());
 			ItemToAdd itemToAdd = ItemToAdd.BOTH;
 			
 			if (diffX == 0) {
-				Double diffY = (current1==null?Double.MAX_VALUE:current1.y) - (current2==null?Double.MAX_VALUE:current2.y);
+				Double diffY = (current1==null?Double.MAX_VALUE:current1.getY()) - (current2==null?Double.MAX_VALUE:current2.getY());
 				
 				if (diffY == 0) itemToAdd = ItemToAdd.BOTH;
 				
@@ -68,31 +68,31 @@ public class CoordinateMergeSort {
 			switch (itemToAdd) {
 				case FIRST:
 					listReturn.add(current1);
-					current1 = it1.hasNext()? it1.next():new Point2D.Double(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);		
+					current1 = it1.hasNext()? it1.next():new NullStation();		
 					break;
 				case SECOND:
 					listReturn.add(current2);
-					current2 = it2.hasNext()? it2.next():new Point2D.Double(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+					current2 = it2.hasNext()? it2.next():new NullStation();
 					break;
 				case BOTH:
 					listReturn.add(current1);
-					current1 = it1.hasNext()? it1.next():new Point2D.Double(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+					current1 = it1.hasNext()? it1.next():new NullStation();
 					listReturn.add(current2);
-					current2 = it2.hasNext()? it2.next():new Point2D.Double(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+					current2 = it2.hasNext()? it2.next():new NullStation();
 			}
 		} 
 
 		if (current1 != null) {
 			if (current2 == null)
 				listReturn.add(current2);
-			else if (current1.x == Double.POSITIVE_INFINITY && current2.x < Double.POSITIVE_INFINITY)
+			else if (current1.getX() == Double.POSITIVE_INFINITY && current2.getX() < Double.POSITIVE_INFINITY)
 				listReturn.add(current2);
 		}
 		
 		if (current2 != null) {
 			if (current1 == null)
 				listReturn.add(current1);
-			else if (current2.x == Double.POSITIVE_INFINITY && current1.x < Double.POSITIVE_INFINITY)
+			else if (current2.getX() == Double.POSITIVE_INFINITY && current1.getX() < Double.POSITIVE_INFINITY)
 				listReturn.add(current1);
 		}
 
@@ -108,8 +108,24 @@ public class CoordinateMergeSort {
 		
 		return listReturn;
 	}
-	
+
+	private static class NullStation implements Station{
+
+		@Override
+		public Double getX() {
+			return Double.POSITIVE_INFINITY;
+		}
+
+		@Override
+		public Double getY() {
+			return getX();
+		}
+		
+	}
+
 }
+
+
 enum ItemToAdd {
 	FIRST, SECOND, BOTH;
 }

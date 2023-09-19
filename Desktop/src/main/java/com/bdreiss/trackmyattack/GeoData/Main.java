@@ -10,7 +10,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		List<Point2D.Double> list = new ArrayList<>();
+		List<Station> list = new ArrayList<>();
 		addToList(list,9.0,1.0);
 		addToList(list,6.0,1.0);
 		addToList(list,6.0,4.0);
@@ -25,16 +25,16 @@ public class Main {
 		printList(CoordinateMergeSort.sort(list));
 
 	}
-	public static void addToList(List<Point2D.Double> list, Double x, Double y) {
-		list.add(new Point2D.Double(x,y));
+	public static void addToList(List<Station> list, Double x, Double y) {
+		list.add(new GeoSphereAustriaStation(0, new Point2D.Double(x,y)));
 	}
 	
-	public static void printList(List<Point2D.Double> list) {
-		for (Point2D.Double p : list)
-			if (p == null)
+	public static void printList(List<Station> list) {
+		for (Station s : list)
+			if (s == null)
 				System.out.println("null");
 			else
-				System.out.println(p.x + ":" + p.y);
+				System.out.println(s.getX() + ":" + s.getY());
 		System.out.println();
 	}
 }
