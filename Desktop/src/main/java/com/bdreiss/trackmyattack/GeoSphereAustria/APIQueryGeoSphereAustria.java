@@ -1,4 +1,4 @@
-package main.java.com.bdreiss.trackmyattack.GeoData;
+package main.java.com.bdreiss.trackmyattack.GeoSphereAustria;
 
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
@@ -14,17 +14,21 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.AbstractDataModel;
 import com.bdreiss.dataAPI.enums.Category;
 
-public class APIQueryAustria implements APIQuery {
+import main.java.com.bdreiss.trackmyattack.GeoData.APIQuery;
+import main.java.com.bdreiss.trackmyattack.GeoData.GeoDataType;
+import main.java.com.bdreiss.trackmyattack.GeoData.GeoDatum;
+
+public class APIQueryGeoSphereAustria implements APIQuery {
 
 	private static final String PREFIX_AUSTRIA = "https://dataset.api.hub.geosphere.at/v1/station/historical/klima-v1-1d?parameters=t,tmax,tmin,druckmit,rel,dampfmit&start=";
 	private static final String INFIX1_AUSTRIA = "T00:00&end=";
 	private static final String INFIX2_AUSTRIA = "T00:01&station_ids=";
 
 	public static void main(String args[]) {
-		APIQueryAustria apiQuery = new APIQueryAustria();
+		APIQueryGeoSphereAustria apiQuery = new APIQueryGeoSphereAustria();
 		
 		apiQuery.getNearestStationAustria(new Point2D.Double(48.15980285249154, 16.34069433192093));
 	}
@@ -46,7 +50,7 @@ public class APIQueryAustria implements APIQuery {
 		return data;
 	}
 
-	public void parseJSON(String jsonString, DataModel data, Category category) {
+	public void parseJSON(String jsonString, AbstractDataModel data, Category category) {
 		JSONObject jso = new JSONObject(jsonString);
 
 		ArrayList<LocalDate> timestamps = new ArrayList<LocalDate>();
