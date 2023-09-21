@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.enums.Category;
 
+import main.java.com.bdreiss.trackmyattack.GeoSphereAustria.APIQueryGeoSphereAustria;
+
 public class GetDataByCountry {
 	
 	private static APIQuery apiQuery;
@@ -17,6 +19,6 @@ public class GetDataByCountry {
 	}
 
 	private static APIQuery getAPI(Point2D.Double coordinates) {
-		return new APIQueryAustria();
+		return new APIQueryGeoSphereAustria();
 	}
 }

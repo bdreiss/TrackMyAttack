@@ -5,9 +5,9 @@ public enum GeoDataType {
 	TEMPERATURE_MIN("temperature min", 0, 100), HUMIDITY("humidity", 0, 100), VAPOR("vapor", 0, 100),
 	PRESSURE("pressure", 0, 100);
 
-	String type;
-	float lowerBound;
-	float upperBound;
+	private String type;
+	private float lowerBound;
+	private float upperBound;
 
 	GeoDataType(String type, float lowerBound, float upperBound) {
 		this.type = type;

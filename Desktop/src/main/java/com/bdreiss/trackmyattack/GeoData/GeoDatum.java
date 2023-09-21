@@ -9,8 +9,8 @@ public class GeoDatum extends Datum {
 	private static final long serialVersionUID = 1L;
 
 	Float value;
-	float lowerBound;
-	float upperBound;
+	public float lowerBound;
+	public float upperBound;
 
 	public GeoDatum(LocalDateTime date, Float value, float lowerBound, float upperBound) {
 		super(date);

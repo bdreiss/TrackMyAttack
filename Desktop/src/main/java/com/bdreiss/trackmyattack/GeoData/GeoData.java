@@ -24,6 +24,8 @@ import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.util.Datum;
 import com.bdreiss.dataAPI.util.DatumWithIntensity;
 
+import main.java.com.bdreiss.trackmyattack.GeoSphereAustria.APIQueryGeoSphereAustria;
+
 /*
  * AbstractDataModel getting data about the weather (currently only supported for Austria).
  */
@@ -52,7 +54,7 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 		File saveFile = new File(SAVEPATH);
 
-		API_QUERY = new APIQueryAustria();
+		API_QUERY = new APIQueryGeoSphereAustria();
 
 		if (saveFile.exists())
 			load(saveFile);

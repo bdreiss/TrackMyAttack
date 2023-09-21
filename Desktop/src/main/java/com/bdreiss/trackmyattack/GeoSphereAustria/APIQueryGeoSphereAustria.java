@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.enums.Category;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.APIQuery;
@@ -50,7 +51,8 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		return data;
 	}
 
-	public void parseJSON(String jsonString, AbstractDataModel data, Category category) {
+	@Override
+	public void parseJSON(String jsonString, DataModel data, Category category) {
 		JSONObject jso = new JSONObject(jsonString);
 
 		ArrayList<LocalDate> timestamps = new ArrayList<LocalDate>();
@@ -106,22 +108,22 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 
 			if (temperatureMedian != null)
 				data.addDatumDirectly(category, temperatureMedianE.toString(),
-						new GeoDatum(date.atStartOfDay(), temperatureMedian, temperatureMedianE.lowerBound, temperatureMedianE.upperBound));
+						new GeoDatum(date.atStartOfDay(), temperatureMedian, temperatureMedianE.lowerBound(), temperatureMedianE.upperBound()));
 			if (temperatureMin != null)
 				data.addDatumDirectly(category, temperatureMinE.toString(), 
-					new GeoDatum(date.atStartOfDay(), temperatureMin, temperatureMinE.lowerBound, temperatureMinE.upperBound));
+					new GeoDatum(date.atStartOfDay(), temperatureMin, temperatureMinE.lowerBound(), temperatureMinE.upperBound()));
 			if (temperatureMax != null)
 				data.addDatumDirectly(category, temperatureMaxE.toString(), 
-						new GeoDatum(date.atStartOfDay(), temperatureMax, temperatureMaxE.lowerBound, temperatureMaxE.upperBound));
+						new GeoDatum(date.atStartOfDay(), temperatureMax, temperatureMaxE.lowerBound(), temperatureMaxE.upperBound()));
 			if (druck != null)
 				data.addDatumDirectly(category, pressureE.toString(),
-					new GeoDatum(date.atStartOfDay(), druck, pressureE.lowerBound, pressureE.upperBound));
+					new GeoDatum(date.atStartOfDay(), druck, pressureE.lowerBound(), pressureE.upperBound()));
 			if (dampf != null)
 				data.addDatumDirectly(category, vaporE.toString(),
-					new GeoDatum(date.atStartOfDay(), dampf, vaporE.lowerBound, vaporE.upperBound));
+					new GeoDatum(date.atStartOfDay(), dampf, vaporE.lowerBound(), vaporE.upperBound()));
 			if (rel != null)
 				data.addDatumDirectly(category, humidityE.toString(),
-					new GeoDatum(date.atStartOfDay(), rel, humidityE.lowerBound, humidityE.upperBound));
+					new GeoDatum(date.atStartOfDay(), rel, humidityE.lowerBound(), humidityE.upperBound()));
 		}
 
 	}
@@ -211,5 +213,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			
 		return nearestStation;
 	}
+
+	
 
 }
