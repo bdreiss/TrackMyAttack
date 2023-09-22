@@ -33,6 +33,12 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		
 		apiQuery.getNearestStationAustria(new Point2D.Double(48.15980285249154, 16.34069433192093));
 	}
+	
+	
+	@Override
+	public void query(LocalDate startDate, LocalDate endDate, Point2D.Double coordinates, DataModel data, Category category) {
+		parseJSON(JSONQuery(startDate, endDate, coordinates), data, category);
+	}
 
 	//extract data from the JSONObject retrieved from https://dataset.api.hub.zamg.ac.at 
 	public ArrayList<Float> extractData(JSONObject jso) {
@@ -51,7 +57,6 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		return data;
 	}
 
-	@Override
 	public void parseJSON(String jsonString, DataModel data, Category category) {
 		JSONObject jso = new JSONObject(jsonString);
 

@@ -14,7 +14,7 @@ public class GetDataByCountry {
 	
 	public static void getData(LocalDate startDate, LocalDate endDate, Point2D.Double coordinates, DataModel data, Category category) {
 		apiQuery = getAPI(coordinates);
-		apiQuery.parseJSON(apiQuery.JSONQuery(startDate, endDate, coordinates), data, category);
+		apiQuery.query(startDate, endDate, coordinates, data, category);
 		
 	}
 

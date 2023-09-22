@@ -178,7 +178,7 @@ public class GeoData extends AbstractDataModel implements Serializable {
 		}
 
 	}
-
+	//TODO implement add methods so the whole category thing isn't necessary -> also adapt queries to take GeoData instead of GeoDataModel?
 	@Override
 	public void addKey(String key, boolean intensity) {
 	}

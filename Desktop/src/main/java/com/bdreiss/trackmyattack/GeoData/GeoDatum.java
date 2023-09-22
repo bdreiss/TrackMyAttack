@@ -4,32 +4,26 @@ import java.time.LocalDateTime;
 
 import com.bdreiss.dataAPI.util.Datum;
 
+/**
+ * Sub class of Datum representing meteorological data (i.e. temperature) for one date.
+ */
+
 public class GeoDatum extends Datum {
 
 	private static final long serialVersionUID = 1L;
 
-	Float value;
-	public float lowerBound;
-	public float upperBound;
+	private Float value;//value for date
 
 	public GeoDatum(LocalDateTime date, Float value, float lowerBound, float upperBound) {
 		super(date);
 		this.value = value;
-		this.lowerBound = lowerBound;
-		this.upperBound = upperBound;
 	}
-
-//	@Override
-//	public Intensity getIntensity() {
-//		
-//		if (value < lowerBound)
-//			return Intensity.LOW;
-//		if (value > upperBound)
-//			return Intensity.HIGH;
-//		return Intensity.MEDIUM;
-//		
-//	}
-
+	
+	/**
+	 * Returns the value for the meteorological data represented by this class.
+	 * 
+	 * @return value for meteorological data for date
+	 */
 	public float getValue() {
 		return value;
 	}
