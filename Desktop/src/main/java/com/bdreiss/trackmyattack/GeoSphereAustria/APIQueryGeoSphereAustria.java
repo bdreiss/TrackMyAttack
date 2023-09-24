@@ -102,6 +102,8 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			Float dampf = dampfData.get(i);
 			Float rel = relData.get(i);
 
+			//TODO: handle case of data not being complete
+			
 			GeoDataType temperatureMedianE = GeoDataType.TEMPERATURE_MEDIAN;
 			GeoDataType temperatureMinE = GeoDataType.TEMPERATURE_MIN;
 			GeoDataType temperatureMaxE = GeoDataType.TEMPERATURE_MAX;
