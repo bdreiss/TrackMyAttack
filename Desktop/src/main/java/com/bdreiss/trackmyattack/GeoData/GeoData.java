@@ -162,20 +162,8 @@ public class GeoData extends AbstractDataModel implements Serializable {
 	}
 
 	private void updateRange(LocalDate startDate, LocalDate finalDate) {
-		LocalDate endDate = startDate;
 
-		Point2D.Double currentCoordinates = data.getCoordinatesMean(startDate);
-		
-		while (startDate.compareTo(finalDate) <= 0) {
-			if (!currentCoordinates.equals(data.getCoordinatesMean(endDate)) && !(currentCoordinates == null)) {
-				GetDataByCountry.getData(startDate, endDate, currentCoordinates, originalData,
-						category);
-				startDate = endDate;
-			}
-
-			currentCoordinates = data.getCoordinatesMean(endDate);
-			endDate = endDate.plusDays(1);
-		}
+		GetDataByCountry.getData(startDate, finalDate, originalData, category);
 
 	}
 	//TODO implement add methods so the whole category thing isn't necessary -> also adapt queries to take GeoData instead of GeoDataModel?

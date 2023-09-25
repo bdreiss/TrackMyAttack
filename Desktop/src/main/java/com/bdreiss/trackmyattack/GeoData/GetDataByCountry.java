@@ -11,10 +11,11 @@ import main.java.com.bdreiss.trackmyattack.GeoSphereAustria.APIQueryGeoSphereAus
 public class GetDataByCountry {
 	
 	private static APIQuery apiQuery;
-	
-	public static void getData(LocalDate startDate, LocalDate endDate, Point2D.Double coordinates, DataModel data, Category category) {
-		apiQuery = getAPI(coordinates);
-		apiQuery.query(startDate, endDate, coordinates, data, category);
+
+	public static void getData(LocalDate startDate, LocalDate endDate, DataModel data, Category category) {
+		//TODO: make queries for data that belongs together by country
+		apiQuery = getAPI(null);
+		apiQuery.query(startDate, endDate, data, category);
 		
 	}
 

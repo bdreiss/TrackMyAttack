@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -32,23 +33,53 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 	private static final String INFIX1_AUSTRIA = "T00:00&end=";
 	private static final String INFIX2_AUSTRIA = "T00:01&station_ids=";
 
+	private static List<GeoSphereAustriaStation> stations;
+	
 	// Main function for testing purposes
 	public static void main(String args[]) {
 		APIQueryGeoSphereAustria apiQuery = new APIQueryGeoSphereAustria();
-		apiQuery.query(LocalDate.now().minusDays(4), LocalDate.now().minusDays(1),
-				new Point2D.Double(48.15980285249154, 16.34069433192093), new DataModel(null), Category.SYMPTOM);
 	}
 
 	@Override
-	public void query(LocalDate startDate, LocalDate endDate, Point2D.Double coordinates, DataModel data,
-			Category category) {
+	public void query(LocalDate startDate, LocalDate endDate, DataModel data, Category category) {
 
-		String jsonString = JSONQuery(startDate, endDate, coordinates);
+		initializeStations();
+		
+		//keep count of date
+		LocalDate currentDate = startDate;
+		
+		//keep track of start date for query
+		LocalDate queryStartDate = startDate;
+		
+		//keep track of current station for date
+		GeoSphereAustriaStation currentStation = getNearestStationAustria(data.getCoordinatesMean(currentDate));
+		
+		//go from startDate to endDate and make a query if nearest station changes
+		while (!(currentDate.compareTo(endDate) > 0)) {
+			currentDate.plusDays(1);
+			
+			GeoSphereAustriaStation newStation = getNearestStationAustria(data.getCoordinatesMean(currentDate));
+			
+			if (newStation.compareTo(currentStation) != 0) {
+				String jsonString = JSONQuery(queryStartDate, currentDate.minusDays(1), currentStation);
+				parseJSON(jsonString, data, category);
+
+				currentStation = newStation;
+				queryStartDate = currentDate;
+				
+			}
+			
+		}
+		
+		//make final query
+		String jsonString = JSONQuery(queryStartDate, endDate, currentStation);
 		parseJSON(jsonString, data, category);
+
+				
 	}
 
 	// parse JSON and add meteorological data to DataModel
-	public void parseJSON(String jsonString, DataModel data, Category category) {
+	public static void parseJSON(String jsonString, DataModel data, Category category) {
 		
 		JSONObject jso = new JSONObject(jsonString);
 
@@ -135,7 +166,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 
 	// extract data from the JSONObject retrieved from
 	// https://dataset.api.hub.zamg.ac.at
-	private ArrayList<Float> extractData(JSONObject jso) {
+	private static ArrayList<Float> extractData(JSONObject jso) {
 		ArrayList<Float> data = new ArrayList<Float>();
 
 		String dataString = jso.get("data").toString();
@@ -153,17 +184,17 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 
 	// make query to https://dataset.api.hub.geosphere.at for date range with
 	// regards to coordinates and return JSON-String
-	private String JSONQuery(LocalDate startDate, LocalDate endDate, Point2D.Double coordinates) {
+	private static String JSONQuery(LocalDate startDate, LocalDate endDate, GeoSphereAustriaStation station) {
 
 		String jsonString = null;
 
 		jsonString = JSONQuery(PREFIX_AUSTRIA + startDate + INFIX1_AUSTRIA + endDate + INFIX2_AUSTRIA
-				+ getNearestStationAustria(coordinates));
+				+ station.getId());
 		return jsonString;
 	}
 
 	// make an arbitrary JSONQuery and return JSON-String
-	private String JSONQuery(String query) {
+	private static String JSONQuery(String query) {
 
 		String jsonString = null;
 
@@ -209,8 +240,13 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		return jsonString;
 	}
 
+	//
+	private static void initializeStations() {
+		//TODO: implement initializeStations()
+		
+	}
 	// returns the GeoSphere Austria station nearest to coordinates
-	private String getNearestStationAustria(Point2D.Double coordinates) {
+	private static GeoSphereAustriaStation getNearestStationAustria(Point2D.Double coordinates) {
 
 		// TODO: get stations as objects, sort and implement Voronoi-Diagram via
 		// Fortune's algorithm: https://en.wikipedia.org/wiki/Fortune's_algorithm
@@ -244,7 +280,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			}
 		}
 
-		return "105";
+		return null;
 //		return nearestStation;
 	}
 

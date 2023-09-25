@@ -13,7 +13,7 @@ import main.java.com.bdreiss.trackmyattack.GeoData.Station;
  *
  */
 
-public class GeoSphereAustriaStation implements Station {
+public class GeoSphereAustriaStation implements Station, Comparable<GeoSphereAustriaStation> {
 
 	private int id;
 	private Point2D.Double coordinates;
@@ -56,6 +56,14 @@ public class GeoSphereAustriaStation implements Station {
 	@Override
 	public Double getY() {
 		return coordinates.y;
+	}
+
+	@Override
+	public int compareTo(GeoSphereAustriaStation o) {
+		if (this.id == o.id)
+			return 0;
+		
+		return this.id-o.id;
 	}
 
 }
