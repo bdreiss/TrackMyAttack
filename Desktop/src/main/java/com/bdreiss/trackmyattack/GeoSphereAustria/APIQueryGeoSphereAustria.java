@@ -19,8 +19,10 @@ import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.enums.Category;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.APIQuery;
+import main.java.com.bdreiss.trackmyattack.GeoData.CoordinateMergeSort;
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoDataType;
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoDatum;
+import main.java.com.bdreiss.trackmyattack.GeoData.Station;
 
 /**
  * Class implementing the APIQuery interface, containing methods for retrieving
@@ -32,18 +34,24 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 	private static final String PREFIX_AUSTRIA = "https://dataset.api.hub.geosphere.at/v1/station/historical/klima-v1-1d?parameters=t,tmax,tmin,druckmit,rel,dampfmit&start=";
 	private static final String INFIX1_AUSTRIA = "T00:00&end=";
 	private static final String INFIX2_AUSTRIA = "T00:01&station_ids=";
+	private static final String STATION_LIST_QUERY = "https://dataset.api.hub.geosphere.at/v1/station/historical/klima-v1-1d/metadata";
 
-	private static List<GeoSphereAustriaStation> stations;
+	private static GeoSphereAustriaStation[] stations;
 	
 	// Main function for testing purposes
 	public static void main(String args[]) {
 		APIQueryGeoSphereAustria apiQuery = new APIQueryGeoSphereAustria();
 	}
 
+	public APIQueryGeoSphereAustria() {
+		initializeStations();
+		
+		for (GeoSphereAustriaStation s : stations)
+			s.print();
+	}
+	
 	@Override
 	public void query(LocalDate startDate, LocalDate endDate, DataModel data, Category category) {
-
-		initializeStations();
 		
 		//keep count of date
 		LocalDate currentDate = startDate;
@@ -240,9 +248,28 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		return jsonString;
 	}
 
-	//
+	//query stations from GeoSphere Austria and add them to the stations array
 	private static void initializeStations() {
-		//TODO: implement initializeStations()
+		String jsonString = JSONQuery(STATION_LIST_QUERY);
+		JSONObject jsonObject = new JSONObject(jsonString);
+
+		JSONArray jsonStations = jsonObject.getJSONArray("stations");
+		
+
+		List<Station> stationsArrayList = new ArrayList<Station>();
+		
+		for (Object jo : jsonStations) {
+
+			jsonObject = (JSONObject) jo;
+			Double lat = Double.parseDouble(jsonObject.get("lat").toString());
+			Double lon = Double.parseDouble(jsonObject.get("lon").toString());
+			int id = Integer.parseInt(jsonObject.get("id").toString());
+			stationsArrayList.add(new GeoSphereAustriaStation(id, new Point2D.Double(lat,lon)));
+		}
+		
+		stationsArrayList = CoordinateMergeSort.sort(stationsArrayList);
+		stations = new GeoSphereAustriaStation[stationsArrayList.size()];
+		stations = stationsArrayList.toArray(stations);
 		
 	}
 	// returns the GeoSphere Austria station nearest to coordinates

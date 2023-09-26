@@ -38,25 +38,16 @@ public class GeoSphereAustriaStation implements Station, Comparable<GeoSphereAus
 		return id;
 	}
 
-	/**
-	 * Returns X coordinate of station.
-	 * 
-	 * @return X coordinate of station
-	 */
 	@Override
 	public Double getX() {
 		return coordinates.x;
 	}
 
-	/**
-	 * Returns Y coordinate of station.
-	 * 
-	 * @return Y coordinate of station
-	 */
 	@Override
 	public Double getY() {
 		return coordinates.y;
 	}
+
 
 	@Override
 	public int compareTo(GeoSphereAustriaStation o) {
@@ -66,4 +57,11 @@ public class GeoSphereAustriaStation implements Station, Comparable<GeoSphereAus
 		return this.id-o.id;
 	}
 
+	
+	/**
+	 * Prints station as "int: Point2D.Double" representing "id: coordinates".
+	 */
+	public void print(){
+		System.out.println(id + ": " + coordinates);
+	}
 }
