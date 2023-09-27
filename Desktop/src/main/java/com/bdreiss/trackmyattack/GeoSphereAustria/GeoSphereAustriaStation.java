@@ -39,12 +39,12 @@ public class GeoSphereAustriaStation implements Station, Comparable<GeoSphereAus
 	}
 
 	@Override
-	public Double getX() {
+	public Double getLatitude() {
 		return coordinates.x;
 	}
 
 	@Override
-	public Double getY() {
+	public Double getLongitude() {
 		return coordinates.y;
 	}
 

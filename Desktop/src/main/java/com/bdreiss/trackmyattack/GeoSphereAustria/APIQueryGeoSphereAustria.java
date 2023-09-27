@@ -19,7 +19,6 @@ import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.enums.Category;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.APIQuery;
-import main.java.com.bdreiss.trackmyattack.GeoData.CoordinateMergeSort;
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoDataType;
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoDatum;
 import main.java.com.bdreiss.trackmyattack.GeoData.Station;
@@ -36,18 +35,14 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 	private static final String INFIX2_AUSTRIA = "T00:01&station_ids=";
 	private static final String STATION_LIST_QUERY = "https://dataset.api.hub.geosphere.at/v1/station/historical/klima-v1-1d/metadata";
 
-	private static GeoSphereAustriaStation[] stations;
-	
-	// Main function for testing purposes
-	public static void main(String args[]) {
-		APIQueryGeoSphereAustria apiQuery = new APIQueryGeoSphereAustria();
-	}
+	private static List<Station> stations;
 
+	/**
+	 * Creates a new instance and initializes list of GeoSphere Austria weather stations.
+	 */
 	public APIQueryGeoSphereAustria() {
 		initializeStations();
 		
-		for (GeoSphereAustriaStation s : stations)
-			s.print();
 	}
 	
 	@Override
@@ -266,49 +261,38 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			int id = Integer.parseInt(jsonObject.get("id").toString());
 			stationsArrayList.add(new GeoSphereAustriaStation(id, new Point2D.Double(lat,lon)));
 		}
-		
-		stationsArrayList = CoordinateMergeSort.sort(stationsArrayList);
-		stations = new GeoSphereAustriaStation[stationsArrayList.size()];
-		stations = stationsArrayList.toArray(stations);
-		
+	
+		//at the moment sorting is not necessary, since getNearestStationAustria() looks through the whole list
+		//stations = CoordinateMergeSort.sort(stationsArrayList);
+			
+		stations = stationsArrayList;
 	}
+	
 	// returns the GeoSphere Austria station nearest to coordinates
 	private static GeoSphereAustriaStation getNearestStationAustria(Point2D.Double coordinates) {
 
-		// TODO: get stations as objects, sort and implement Voronoi-Diagram via
-		// Fortune's algorithm: https://en.wikipedia.org/wiki/Fortune's_algorithm
-		// TODO: save stations as data structure or query every time? How often to
-		// update?
+		// TODO:implement Voronoi-Diagram via Fortune's algorithm: https://en.wikipedia.org/wiki/Fortune's_algorithm?
 
 		if (coordinates == null)
 			return null;
 
-		Double offset = Double.POSITIVE_INFINITY;
+		Double distance = Double.POSITIVE_INFINITY;
 
-		String jsonString = JSONQuery(
-				"https://dataset.api.hub.geosphere.at/v1/station/historical/klima-v1-1d/metadata");
-		JSONObject jsonObject = new JSONObject(jsonString);
+		GeoSphereAustriaStation nearestStation = null;
 
-		JSONArray stations = jsonObject.getJSONArray("stations");
+		for (Station s: stations) {
 
-		String nearestStation = null;
+			Double lat = s.getLatitude();
+			Double lon = s.getLongitude();
+			Double newDistance = Math.abs((coordinates.x - lat)) + Math.abs((coordinates.y - lon));
 
-		for (Object jo : stations) {
-
-			jsonObject = (JSONObject) jo;
-			System.out.println(jo);
-			Double lat = Double.parseDouble(jsonObject.get("lat").toString());
-			Double lon = Double.parseDouble(jsonObject.get("lon").toString());
-			Double newOffset = Math.abs((coordinates.x - lat)) + Math.abs((coordinates.y - lon));
-
-			if (newOffset < offset) {
-				nearestStation = jsonObject.get("id").toString();
-				offset = newOffset;
+			if (newDistance < distance) {
+				nearestStation = (GeoSphereAustriaStation) s;
+				distance = newDistance;
 			}
 		}
 
-		return null;
-//		return nearestStation;
+		return nearestStation;
 	}
 
 }

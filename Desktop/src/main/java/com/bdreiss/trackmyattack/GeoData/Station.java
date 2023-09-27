@@ -7,18 +7,18 @@ package main.java.com.bdreiss.trackmyattack.GeoData;
 public interface Station {
 
 	/**
-	 * Returns X coordinate of station.
+	 * Returns value of latitude of station.
 	 * 
-	 * @return X coordinate of station
+	 * @return latitude
 	 */
-	Double getX();
+	Double getLatitude();
 	
 	/**
-	 * Returns Y coordinate of station.
+	 * Returns value of longitude of station.
 	 * 
-	 * @return Y coordinate of station
+	 * @return longitude
 	 */
 
-	Double getY();
+	Double getLongitude();
 	
 }

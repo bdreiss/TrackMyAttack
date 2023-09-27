@@ -66,16 +66,16 @@ public class CoordinateMergeSort {
 
 			// compare X values: if stations are null -> assign MAX_VALUE to put them at the
 			// end
-			Double diffX = (current1 == null ? Double.MAX_VALUE : current1.getX())
-					- (current2 == null ? Double.MAX_VALUE : current2.getX());
+			Double diffX = (current1 == null ? Double.MAX_VALUE : current1.getLatitude())
+					- (current2 == null ? Double.MAX_VALUE : current2.getLatitude());
 
 			// keep track of how many items are to be added
 			ItemToAdd itemToAdd = ItemToAdd.BOTH;
 
 			if (diffX == 0) {
 				// if X values are the same, compare Y values
-				Double diffY = (current1 == null ? Double.MAX_VALUE : current1.getY())
-						- (current2 == null ? Double.MAX_VALUE : current2.getY());
+				Double diffY = (current1 == null ? Double.MAX_VALUE : current1.getLongitude())
+						- (current2 == null ? Double.MAX_VALUE : current2.getLongitude());
 
 				// if Y values are the same add both stations to return list
 				if (diffY == 0)
@@ -140,12 +140,12 @@ public class CoordinateMergeSort {
 	private static class NullStation implements Station {
 
 		@Override
-		public Double getX() {
+		public Double getLatitude() {
 			return null;
 		}
 
 		@Override
-		public Double getY() {
+		public Double getLongitude() {
 			return null;
 		}
 

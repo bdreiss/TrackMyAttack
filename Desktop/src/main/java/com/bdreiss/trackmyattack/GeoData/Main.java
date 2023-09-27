@@ -36,7 +36,7 @@ public class Main {
 			if (s == null)
 				System.out.println("null");
 			else
-				System.out.println(s.getX() + ":" + s.getY());
+				System.out.println(s.getLatitude() + ":" + s.getLongitude());
 		System.out.println();
 	}
 }
