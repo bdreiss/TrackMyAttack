@@ -11,8 +11,8 @@ import com.bdreiss.dataAPI.SymptomDataModel;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 
-/*
- * 	Panel representing frame containing data panels.  
+/**
+ * 	JPanel representing frame containing data panels.  
  *
  */
 
