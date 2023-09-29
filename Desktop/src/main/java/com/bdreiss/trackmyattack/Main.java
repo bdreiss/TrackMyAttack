@@ -52,7 +52,7 @@ class Main {
 			e.printStackTrace();
 		}
 
-		GeoData geoData = new GeoData(data, null);
+		GeoData geoData = new GeoData(data);
 
 		MainFrame frame = new MainFrame(data, geoData);
 

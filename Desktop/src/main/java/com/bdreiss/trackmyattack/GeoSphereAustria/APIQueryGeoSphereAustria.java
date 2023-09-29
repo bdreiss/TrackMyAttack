@@ -1,6 +1,5 @@
 package main.java.com.bdreiss.trackmyattack.GeoSphereAustria;
 
-import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +16,7 @@ import org.json.JSONObject;
 
 import com.bdreiss.dataAPI.DataModel;
 import com.bdreiss.dataAPI.enums.Category;
+import com.bdreiss.dataAPI.util.Coordinate;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.APIQuery;
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoDataType;
@@ -57,21 +57,27 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		//keep track of current station for date
 		GeoSphereAustriaStation currentStation = getNearestStationAustria(data.getCoordinatesMean(currentDate));
 		
+		
+		//TODO: get date regardless of whether there is data or not
 		//go from startDate to endDate and make a query if nearest station changes
 		while (!(currentDate.compareTo(endDate) > 0)) {
-			currentDate.plusDays(1);
-			
 			GeoSphereAustriaStation newStation = getNearestStationAustria(data.getCoordinatesMean(currentDate));
+			
+			if (newStation == null)
+				newStation = currentStation;
 			
 			if (newStation.compareTo(currentStation) != 0) {
 				String jsonString = JSONQuery(queryStartDate, currentDate.minusDays(1), currentStation);
+				
 				parseJSON(jsonString, data, category);
 
 				currentStation = newStation;
 				queryStartDate = currentDate;
 				
 			}
-			
+
+			currentDate = currentDate.plusDays(1);
+
 		}
 		
 		//make final query
@@ -92,9 +98,11 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		String timestampsString = jso.get("timestamps").toString();
 		timestampsString = timestampsString.substring(1, timestampsString.length() - 1);
 
+		if (timestampsString.isEmpty())
+			return;
+		
 		//split string, get single dates and add them to timestamps
 		for (String s : timestampsString.split(",")) {
-
 			String dateString = s.substring(1, s.length() - 1).split("T")[0];
 
 			int year = Integer.parseInt(dateString.split("-")[0]);
@@ -190,6 +198,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 	private static String JSONQuery(LocalDate startDate, LocalDate endDate, GeoSphereAustriaStation station) {
 
 		String jsonString = null;
+		System.out.println("Fetching data for " + startDate + " to " + endDate);
 
 		jsonString = JSONQuery(PREFIX_AUSTRIA + startDate + INFIX1_AUSTRIA + endDate + INFIX2_AUSTRIA
 				+ station.getId());
@@ -200,8 +209,6 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 	private static String JSONQuery(String query) {
 
 		String jsonString = null;
-
-		System.out.println("Fetching data...");
 
 		// open connection and build string
 		try {
@@ -222,24 +229,21 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			if (jsonString.isEmpty()) {
 				System.out.println("Got no data");
 				// TODO: how to handle not getting data?
-				System.exit(0);
 			}
 			br.close();
+
 
 		} catch (MalformedURLException e) {
 			System.out.println("Something wrong with the URL.");
 			e.printStackTrace();
 			// TODO: how to handle wrong URL?
-			System.exit(0);
 
 		} catch (IOException e) {
 			System.out.println("Something wrong with the connection.");
 			e.printStackTrace();
 			// TODO: how to handle IOException?
-			System.exit(0);
 
 		}
-
 		return jsonString;
 	}
 
@@ -259,7 +263,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			Double lat = Double.parseDouble(jsonObject.get("lat").toString());
 			Double lon = Double.parseDouble(jsonObject.get("lon").toString());
 			int id = Integer.parseInt(jsonObject.get("id").toString());
-			stationsArrayList.add(new GeoSphereAustriaStation(id, new Point2D.Double(lat,lon)));
+			stationsArrayList.add(new GeoSphereAustriaStation(id, new Coordinate(lat,lon)));
 		}
 	
 		//at the moment sorting is not necessary, since getNearestStationAustria() looks through the whole list
@@ -269,9 +273,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 	}
 	
 	// returns the GeoSphere Austria station nearest to coordinates
-	private static GeoSphereAustriaStation getNearestStationAustria(Point2D.Double coordinates) {
-
-		// TODO:implement Voronoi-Diagram via Fortune's algorithm: https://en.wikipedia.org/wiki/Fortune's_algorithm?
+	private static GeoSphereAustriaStation getNearestStationAustria(Coordinate coordinates) {
 
 		if (coordinates == null)
 			return null;
@@ -284,7 +286,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 
 			Double lat = s.getLatitude();
 			Double lon = s.getLongitude();
-			Double newDistance = Math.abs((coordinates.x - lat)) + Math.abs((coordinates.y - lon));
+			Double newDistance = Math.abs((coordinates.getLatitude() - lat)) + Math.abs((coordinates.getLongitude() - lon));
 
 			if (newDistance < distance) {
 				nearestStation = (GeoSphereAustriaStation) s;

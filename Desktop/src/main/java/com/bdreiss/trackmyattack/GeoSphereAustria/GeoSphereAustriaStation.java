@@ -1,6 +1,6 @@
 package main.java.com.bdreiss.trackmyattack.GeoSphereAustria;
 
-import java.awt.geom.Point2D;
+import com.bdreiss.dataAPI.util.Coordinate;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.Station;
 
@@ -16,7 +16,7 @@ import main.java.com.bdreiss.trackmyattack.GeoData.Station;
 public class GeoSphereAustriaStation implements Station, Comparable<GeoSphereAustriaStation> {
 
 	private int id;
-	private Point2D.Double coordinates;
+	private Coordinate coordinates;
 
 	/**
 	 * Creates new instance of GeoSphere Austria station.
@@ -24,7 +24,7 @@ public class GeoSphereAustriaStation implements Station, Comparable<GeoSphereAus
 	 * @param id The id representing the station
 	 * @param coordinates Point2D.Double representing longtitude and latitude.
 	 */
-	public GeoSphereAustriaStation(int id, Point2D.Double coordinates) {
+	public GeoSphereAustriaStation(int id, Coordinate coordinates) {
 		this.id = id;
 		this.coordinates = coordinates;
 	}
@@ -40,12 +40,12 @@ public class GeoSphereAustriaStation implements Station, Comparable<GeoSphereAus
 
 	@Override
 	public Double getLatitude() {
-		return coordinates.x;
+		return coordinates.getLatitude();
 	}
 
 	@Override
 	public Double getLongitude() {
-		return coordinates.y;
+		return coordinates.getLongitude();
 	}
 
 
@@ -59,9 +59,9 @@ public class GeoSphereAustriaStation implements Station, Comparable<GeoSphereAus
 
 	
 	/**
-	 * Prints station as "int: Point2D.Double" representing "id: coordinates".
+	 * Prints station as "int: latitude, longitude" representing "id: coordinates".
 	 */
 	public void print(){
-		System.out.println(id + ": " + coordinates);
+		System.out.println(id + ": " + coordinates.getLatitude()+ ", " + coordinates.getLongitude());
 	}
 }

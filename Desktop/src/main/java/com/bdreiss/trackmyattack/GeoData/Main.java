@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bdreiss.dataAPI.util.Coordinate;
+
 import main.java.com.bdreiss.trackmyattack.GeoSphereAustria.GeoSphereAustriaStation;
 
 public class Main {
@@ -28,7 +30,7 @@ public class Main {
 
 	}
 	public static void addToList(List<Station> list, Double x, Double y) {
-		list.add(new GeoSphereAustriaStation(0, new Point2D.Double(x,y)));
+		list.add(new GeoSphereAustriaStation(0, new Coordinate(x,y)));
 	}
 	
 	public static void printList(List<Station> list) {

@@ -16,7 +16,6 @@ public class GetDataByCountry {
 		//TODO: make queries for data that belongs together by country
 		apiQuery = getAPI(null);
 		apiQuery.query(startDate, endDate, data, category);
-		
 	}
 
 	private static APIQuery getAPI(Point2D.Double coordinates) {

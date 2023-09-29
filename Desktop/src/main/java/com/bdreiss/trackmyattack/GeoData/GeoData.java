@@ -1,6 +1,5 @@
 package main.java.com.bdreiss.trackmyattack.GeoData;
 
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,6 +19,7 @@ import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.dataAPI.util.Datum;
 import com.bdreiss.dataAPI.util.DatumWithIntensity;
 
@@ -40,24 +39,50 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 	private DataModel originalData;
 
-	private final APIQuery API_QUERY;
+	public static void main(String[] args) throws TypeMismatchException {
+		DataModel data = new DataModel();
 
-	public GeoData(DataModel originalData, Point2D.Double coordinates) throws MalformedURLException {
+		class TestCase {
+
+			public LocalDateTime date;
+			public Coordinate coords;
+
+			public TestCase(LocalDateTime date, Double x, Double y) {
+				this.date = date;
+				this.coords = new Coordinate(x, y);
+			}
+		}
+
+		TestCase[] testCases = { new TestCase(LocalDateTime.now(), 48.187028431591635, 16.313893863502347),//Wien Schönbrunn
+				new TestCase(LocalDateTime.now().minusDays(1), 48.187028431591635, 16.313893863502347),//Wien Schönbrunn
+				new TestCase(LocalDateTime.now().minusDays(2), 47.07678064842626, 15.42400131089504),//Graz
+				new TestCase(LocalDateTime.now().minusDays(3), 47.07678064842626, 15.42400131089504),//Graz
+				new TestCase(LocalDateTime.now().minusDays(4), 47.26349950302004, 11.386525823183192),//Innsbruck
+				new TestCase(LocalDateTime.now().minusDays(5), 47.26349950302004, 11.386525823183192),//Innsrbruck
+				new TestCase(LocalDateTime.now().minusDays(7), 47.26349950302004, 11.386525823183192), };//Innsbruck
+
+		for (int i = 0; i < testCases.length; i++) {
+			data.addCause("test", testCases[i].date, testCases[i].coords);
+		}
+
+		GeoData geoData = new GeoData(data);
+	}
+
+	public GeoData(DataModel originalData) {
 
 		data = new DataModel();
 
 		this.originalData = originalData;
 
-		SAVEPATH = originalData.getSaveFile().getAbsolutePath() + "Geo";
+		if (SAVEPATH != null) {
+			SAVEPATH = originalData.getSaveFile().getAbsolutePath() + "Geo";
+			File saveFile = new File(SAVEPATH);
 
+			if (saveFile.exists())
+				load(saveFile);
+
+		}
 		category = Category.CAUSE;
-
-		File saveFile = new File(SAVEPATH);
-
-		API_QUERY = new APIQueryGeoSphereAustria();
-
-		if (saveFile.exists())
-			load(saveFile);
 
 		update();
 
@@ -135,14 +160,20 @@ public class GeoData extends AbstractDataModel implements Serializable {
 				it = data.getCauseData(GeoDataType.HUMIDITY.toString());
 				while (it.hasNext())
 					startDate = it.next().getDate().toLocalDate();
-				
+
 				updateRange(startDate, LocalDate.now());
-				
+
 			} catch (EntryNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
 
+		System.out.println("Test");
+		if (SAVEPATH != null)
+			save();
+	}
+	
+	private void save() {
 		try {
 			FileOutputStream fos = new FileOutputStream(SAVEPATH);
 
@@ -166,7 +197,9 @@ public class GeoData extends AbstractDataModel implements Serializable {
 		GetDataByCountry.getData(startDate, finalDate, originalData, category);
 
 	}
-	//TODO implement add methods so the whole category thing isn't necessary -> also adapt queries to take GeoData instead of GeoDataModel?
+
+	// TODO implement add methods so the whole category thing isn't necessary ->
+	// also adapt queries to take GeoData instead of GeoDataModel?
 	@Override
 	public void addKey(String key, boolean intensity) {
 	}
@@ -182,11 +215,11 @@ public class GeoData extends AbstractDataModel implements Serializable {
 	}
 
 	@Override
-	public void addData(String key, Point2D.Double coordinates) throws TypeMismatchException {
+	public void addData(String key, Coordinate coordinates) throws TypeMismatchException {
 	}
 
 	@Override
-	public void addData(String key, Intensity intensity, Point2D.Double coordinates) throws TypeMismatchException {
+	public void addData(String key, Intensity intensity, Coordinate coordinates) throws TypeMismatchException {
 	}
 
 	@Override
