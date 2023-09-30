@@ -48,4 +48,7 @@ import com.bdreiss.dataAPI.util.Datum;
     public LocalDate getFirstDate() {
     	return data.firstDate;
     };
+	public void addDatumDirectly(Category category, String string, Datum datum) {
+		data.addDatumDirectly(category, string, datum);
+	}
 }

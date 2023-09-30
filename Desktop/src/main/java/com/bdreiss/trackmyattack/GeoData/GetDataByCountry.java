@@ -12,10 +12,10 @@ public class GetDataByCountry {
 	
 	private static APIQuery apiQuery;
 
-	public static void getData(LocalDate startDate, LocalDate endDate, DataModel data, Category category) {
+	public static void getData(LocalDate startDate, LocalDate endDate, GeoData geoData, Category category) {
 		//TODO: make queries for data that belongs together by country
 		apiQuery = getAPI(null);
-		apiQuery.query(startDate, endDate, data, category);
+		apiQuery.query(startDate, endDate, geoData, category);
 	}
 
 	private static APIQuery getAPI(Point2D.Double coordinates) {

@@ -16,9 +16,9 @@ public interface APIQuery {
 	 * 
 	 * @param startDate first date in range for which to look up data
 	 * @param endDate last date in range for which to look up data
-	 * @param data DataModel in which data should be added 
+	 * @param GeoData AbstractDataModel in which data should be added 
 	 * @param category Category that is used for storing data
 	 */
-	void query(LocalDate startDate, LocalDate endDate, DataModel data, Category category);
+	void query(LocalDate startDate, LocalDate endDate, GeoData geoData, Category category);
 
 }

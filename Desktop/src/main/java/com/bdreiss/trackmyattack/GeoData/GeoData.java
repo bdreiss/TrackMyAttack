@@ -194,7 +194,7 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 	private void updateRange(LocalDate startDate, LocalDate finalDate) {
 
-		GetDataByCountry.getData(startDate, finalDate, originalData, category);
+		GetDataByCountry.getData(startDate, finalDate, this, category);
 
 	}
 
@@ -202,6 +202,11 @@ public class GeoData extends AbstractDataModel implements Serializable {
 	// also adapt queries to take GeoData instead of GeoDataModel?
 	@Override
 	public void addKey(String key, boolean intensity) {
+	}
+	
+	@Override
+	public DataModel getData() {
+		return originalData;
 	}
 
 	@Override
@@ -274,5 +279,6 @@ public class GeoData extends AbstractDataModel implements Serializable {
 
 		return keys.iterator();
 	}
+
 
 }

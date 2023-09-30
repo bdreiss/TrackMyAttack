@@ -19,6 +19,7 @@ import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.dataAPI.util.Coordinate;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.APIQuery;
+import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoDataType;
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoDatum;
 import main.java.com.bdreiss.trackmyattack.GeoData.Station;
@@ -37,6 +38,9 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 
 	private static List<Station> stations;
 
+	private GeoData geoData;
+	private DataModel originalData;
+	
 	/**
 	 * Creates a new instance and initializes list of GeoSphere Austria weather stations.
 	 */
@@ -46,7 +50,10 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 	}
 	
 	@Override
-	public void query(LocalDate startDate, LocalDate endDate, DataModel data, Category category) {
+	public void query(LocalDate startDate, LocalDate endDate, GeoData geoData, Category category) {
+		
+		this.geoData = geoData;
+		this.originalData = geoData.getData();
 		
 		//keep count of date
 		LocalDate currentDate = startDate;
@@ -55,13 +62,13 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		LocalDate queryStartDate = startDate;
 		
 		//keep track of current station for date
-		GeoSphereAustriaStation currentStation = getNearestStationAustria(data.getCoordinatesMean(currentDate));
+		GeoSphereAustriaStation currentStation = getNearestStationAustria(originalData.getCoordinatesMean(currentDate));
 		
 		
 		//TODO: get date regardless of whether there is data or not
 		//go from startDate to endDate and make a query if nearest station changes
 		while (!(currentDate.compareTo(endDate) > 0)) {
-			GeoSphereAustriaStation newStation = getNearestStationAustria(data.getCoordinatesMean(currentDate));
+			GeoSphereAustriaStation newStation = getNearestStationAustria(originalData.getCoordinatesMean(currentDate));
 			
 			if (newStation == null)
 				newStation = currentStation;
@@ -69,7 +76,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			if (newStation.compareTo(currentStation) != 0) {
 				String jsonString = JSONQuery(queryStartDate, currentDate.minusDays(1), currentStation);
 				
-				parseJSON(jsonString, data, category);
+				parseJSON(jsonString, category);
 
 				currentStation = newStation;
 				queryStartDate = currentDate;
@@ -82,13 +89,13 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		
 		//make final query
 		String jsonString = JSONQuery(queryStartDate, endDate, currentStation);
-		parseJSON(jsonString, data, category);
+		parseJSON(jsonString, category);
 
 				
 	}
 
 	// parse JSON and add meteorological data to DataModel
-	public static void parseJSON(String jsonString, DataModel data, Category category) {
+	public void parseJSON(String jsonString, Category category) {
 		
 		JSONObject jso = new JSONObject(jsonString);
 
@@ -132,7 +139,6 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		ArrayList<Float> relData = extractData(jsoRel);
 		ArrayList<Float> dampfData = extractData(jsoDampf);
 
-		
 		//for every timestamp add data from ArrayLists extracted above
 		for (int i = 0; i < timestamps.size(); i++) {
 
@@ -144,7 +150,8 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			Float dampf = dampfData.get(i);
 			Float rel = relData.get(i);
 
-			//TODO: handle case of data not being complete
+			System.out.println(date);
+			//TODO: handle case of data not being complete: first case all values are null -> remove station and make new query (make function boolean?), make nearestStation take List of Nonos -> make inner class query 
 			
 			GeoDataType temperatureMedianE = GeoDataType.TEMPERATURE_MEDIAN;
 			GeoDataType temperatureMinE = GeoDataType.TEMPERATURE_MIN;
@@ -154,22 +161,22 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			GeoDataType humidityE = GeoDataType.HUMIDITY;
 
 			if (temperatureMedian != null)
-				data.addDatumDirectly(category, temperatureMedianE.toString(), new GeoDatum(date.atStartOfDay(),
+				geoData.addDatumDirectly(category, temperatureMedianE.toString(), new GeoDatum(date.atStartOfDay(),
 						temperatureMedian, temperatureMedianE.lowerBound(), temperatureMedianE.upperBound()));
 			if (temperatureMin != null)
-				data.addDatumDirectly(category, temperatureMinE.toString(), new GeoDatum(date.atStartOfDay(),
+				geoData.addDatumDirectly(category, temperatureMinE.toString(), new GeoDatum(date.atStartOfDay(),
 						temperatureMin, temperatureMinE.lowerBound(), temperatureMinE.upperBound()));
 			if (temperatureMax != null)
-				data.addDatumDirectly(category, temperatureMaxE.toString(), new GeoDatum(date.atStartOfDay(),
+				geoData.addDatumDirectly(category, temperatureMaxE.toString(), new GeoDatum(date.atStartOfDay(),
 						temperatureMax, temperatureMaxE.lowerBound(), temperatureMaxE.upperBound()));
 			if (druck != null)
-				data.addDatumDirectly(category, pressureE.toString(),
+				geoData.addDatumDirectly(category, pressureE.toString(),
 						new GeoDatum(date.atStartOfDay(), druck, pressureE.lowerBound(), pressureE.upperBound()));
 			if (dampf != null)
-				data.addDatumDirectly(category, vaporE.toString(),
+				geoData.addDatumDirectly(category, vaporE.toString(),
 						new GeoDatum(date.atStartOfDay(), dampf, vaporE.lowerBound(), vaporE.upperBound()));
 			if (rel != null)
-				data.addDatumDirectly(category, humidityE.toString(),
+				geoData.addDatumDirectly(category, humidityE.toString(),
 						new GeoDatum(date.atStartOfDay(), rel, humidityE.lowerBound(), humidityE.upperBound()));
 		}
 
@@ -294,6 +301,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			}
 		}
 
+		System.out.println(nearestStation.getId());
 		return nearestStation;
 	}
 
