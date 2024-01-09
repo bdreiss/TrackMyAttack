@@ -49,6 +49,9 @@ public class DataModel implements Serializable {
 	private File saveFile;
 	private String saveFileName = "DataModel";
 
+	/**
+	 * 
+	 */
 	public LocalDate firstDate = null;
 
 	private final int DAY_START_OFFSET = 4;
@@ -68,19 +71,35 @@ public class DataModel implements Serializable {
 	private Map<String, List<Datum>> remedies = new TreeMap<>(TREE_COMPARATOR);
 	private Map<LocalDate, List<Coordinate>> coordinateTree = new TreeMap<>();
 
+	/**
+	 * 
+	 * @return
+	 */
 	public File getSaveFile() {
 		return saveFile;
 	}
 
+	/**
+	 * 
+	 * @param saveFile
+	 */
 	public void setSaveFile(File saveFile) {
 		this.saveFile = saveFile;
 		save();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getSaveFileName() {
 		return saveFileName;
 	}
 
+	/**
+	 * 
+	 * @param saveFileName
+	 */
 	public void setSaveFileName(String saveFileName) {
 		this.saveFileName = saveFileName;
 		save();
@@ -106,6 +125,9 @@ public class DataModel implements Serializable {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public DataModel() {
 		this(null);
 	}
@@ -698,6 +720,10 @@ public class DataModel implements Serializable {
 		return remedies.keySet().iterator();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getSize() {
 		return getCausesSize() + getSymptomsSize() + getRemediesSize();
 	}
@@ -898,6 +924,21 @@ public class DataModel implements Serializable {
 		return iteratorToInt(getIterator(remedies.get(remedy), date));
 	};
 
+	/**
+	 * 
+	 * @param datum
+	 * @return
+	 */
+	public Coordinate getCoordinate(Datum datum) {
+		// TODO implement
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public Coordinate getCoordinatesMean(LocalDate date) {
 		Set<Coordinate> coordinateSet = new TreeSet<Coordinate>();
 
@@ -925,6 +966,11 @@ public class DataModel implements Serializable {
 		return new Coordinate(xSum / coordinateSet.size(), ySum / coordinateSet.size());
 	}
 
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public Iterator<Coordinate> getCoordinates(LocalDate date) {
 		
 		return coordinateTree.get(date) == null ? null : coordinateTree.get(date).iterator();

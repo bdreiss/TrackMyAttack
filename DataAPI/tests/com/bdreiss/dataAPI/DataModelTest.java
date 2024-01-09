@@ -406,7 +406,7 @@ class DataModelTest {
 
 			@Override
 			public LocalDateTime add(String s, Intensity i) throws TypeMismatchException {
-				return data.addAilment(s, i);
+				return data.addAilment(s, i, null);
 			}
 
 			@Override
@@ -441,7 +441,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, Intensity i, LocalDateTime d) throws TypeMismatchException {
-				data.addAilment(s, i, d);
+				data.addAilment(s, i, d, null);
 			}
 
 			@Override
@@ -484,7 +484,7 @@ class DataModelTest {
 
 			@Override
 			public LocalDateTime add(String s) throws TypeMismatchException {
-				return data.addCause(s);
+				return data.addCause(s, null);
 			}
 
 			@Override
@@ -516,7 +516,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, LocalDateTime d) throws TypeMismatchException {
-				data.addCause(s, d);
+				data.addCause(s, d, null);
 			}
 
 			@Override
@@ -547,7 +547,7 @@ class DataModelTest {
 
 			@Override
 			public LocalDateTime add(String s, Intensity i) throws TypeMismatchException {
-				return data.addCause(s, i);
+				return data.addCause(s, i, null);
 			}
 
 			@Override
@@ -579,7 +579,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, Intensity i, LocalDateTime d) throws TypeMismatchException {
-				data.addCause(s, i, d);
+				data.addCause(s, i, d, null);
 			}
 
 			@Override
@@ -610,7 +610,7 @@ class DataModelTest {
 
 			@Override
 			public LocalDateTime add(String s, Intensity i) throws TypeMismatchException {
-				return data.addSymptom(s, i);
+				return data.addSymptom(s, i, null);
 			}
 
 			@Override
@@ -642,7 +642,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, Intensity i, LocalDateTime d) throws TypeMismatchException {
-				data.addSymptom(s, i, d);
+				data.addSymptom(s, i, d, null);
 			}
 
 			@Override
@@ -663,7 +663,7 @@ class DataModelTest {
 
 			@Override
 			public LocalDateTime add(String s) throws TypeMismatchException {
-				return data.addRemedy(s);
+				return data.addRemedy(s, null);
 			}
 
 			@Override
@@ -706,7 +706,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, LocalDateTime d) throws TypeMismatchException {
-				data.addRemedy(s, d);
+				data.addRemedy(s, d, null);
 			}
 
 			@Override
@@ -738,7 +738,7 @@ class DataModelTest {
 
 			@Override
 			public LocalDateTime add(String s, Intensity i) throws TypeMismatchException {
-				return data.addRemedy(s, i);
+				return data.addRemedy(s, i, null);
 			}
 
 			@Override
@@ -770,7 +770,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, Intensity i, LocalDateTime d) throws TypeMismatchException {
-				data.addRemedy(s, i, d);
+				data.addRemedy(s, i, d, null);
 			}
 
 			@Override
@@ -1032,7 +1032,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException {
-				data.addAilment(s, intensity, ldt);
+				data.addAilment(s, intensity, ldt, null);
 			}
 
 			@Override
@@ -1070,7 +1070,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException {
-				data.addCause(s, intensity, ldt);
+				data.addCause(s, intensity, ldt, null);
 			}
 
 			@Override
@@ -1106,7 +1106,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException {
-				data.addSymptom(s, intensity, ldt);
+				data.addSymptom(s, intensity, ldt, null);
 			}
 
 			@Override
@@ -1142,7 +1142,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, Intensity intensity, LocalDateTime ldt) throws TypeMismatchException {
-				data.addRemedy(s, intensity, ldt);
+				data.addRemedy(s, intensity, ldt, null);
 			}
 
 			@Override
@@ -1182,7 +1182,7 @@ class DataModelTest {
 
 		// add test data
 		for (String s : testStrings)
-			data.addAilment(s, null);
+			data.addAilment(s, null, null);
 
 		// keep count of items
 		int i = 0;
@@ -1207,7 +1207,7 @@ class DataModelTest {
 
 		// add test data
 		for (String s : testStrings)
-			data.addCause(s);
+			data.addCause(s, null);
 
 		// keep count of items
 		int i = 0;
@@ -1231,7 +1231,7 @@ class DataModelTest {
 
 		// add test data
 		for (String s : testStrings)
-			data.addSymptom(s, null);
+			data.addSymptom(s, null, null);
 
 		// keep count of items
 		int i = 0;
@@ -1255,7 +1255,7 @@ class DataModelTest {
 
 		// add test data
 		for (String s : testStrings)
-			data.addRemedy(s);
+			data.addRemedy(s, null);
 
 		// keep count of items
 		int i = 0;
@@ -1277,7 +1277,7 @@ class DataModelTest {
 
 		// add test data
 		for (String s : testStrings)
-			data.addAilment(s, null);
+			data.addAilment(s, null, null);
 
 		// assert returned value equals size of testStrings
 		assert (data.getAilmentsSize() == testStrings.length);
@@ -1291,7 +1291,7 @@ class DataModelTest {
 
 		// add test data
 		for (String s : testStrings)
-			data.addCause(s);
+			data.addCause(s, null);
 
 		// assert returned value equals size of testStrings
 		assert (data.getCausesSize() == testStrings.length);
@@ -1305,7 +1305,7 @@ class DataModelTest {
 
 		// add test data
 		for (String s : testStrings)
-			data.addSymptom(s, null);
+			data.addSymptom(s, null, null);
 
 		// assert returned value equals size of testStrings
 		assert (data.getSymptomsSize() == testStrings.length);
@@ -1319,7 +1319,7 @@ class DataModelTest {
 
 		// add test data
 		for (String s : testStrings)
-			data.addRemedy(s);
+			data.addRemedy(s, null);
 
 		// assert returned value equals size of testStrings
 		assert (data.getRemediesSize() == testStrings.length);
@@ -1405,7 +1405,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, LocalDateTime d) throws TypeMismatchException {
-				data.addAilment(s, Intensity.NO_INTENSITY, d);
+				data.addAilment(s, Intensity.NO_INTENSITY, d, null);
 			}
 
 			@Override
@@ -1433,7 +1433,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, LocalDateTime d) throws TypeMismatchException {
-				data.addCause(s, d);
+				data.addCause(s, d, null);
 			}
 		});
 	}
@@ -1455,7 +1455,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, LocalDateTime d) throws TypeMismatchException {
-				data.addSymptom(s, Intensity.NO_INTENSITY, d);
+				data.addSymptom(s, Intensity.NO_INTENSITY, d, null);
 			}
 		});
 	}
@@ -1477,7 +1477,7 @@ class DataModelTest {
 
 			@Override
 			public void add(String s, LocalDateTime d) throws TypeMismatchException {
-				data.addRemedy(s, d);
+				data.addRemedy(s, d, null);
 			}
 		});
 	}

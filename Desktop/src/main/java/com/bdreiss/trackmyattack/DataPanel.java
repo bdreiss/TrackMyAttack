@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.AbstractCategoryDataModel;
 import com.bdreiss.dataAPI.AilmentDataModel;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 
@@ -27,9 +27,9 @@ public class DataPanel extends JPanel {
 	private ArrayList<Color[]> colorSets = new ArrayList<>();
 
 	//AbstractDataModel containing methods for category
-	private AbstractDataModel data;
+	private AbstractCategoryDataModel data;
 
-	public DataPanel(AbstractDataModel data) {
+	public DataPanel(AbstractCategoryDataModel data) {
 		super(new GridBagLayout());
 
 		this.data = data;

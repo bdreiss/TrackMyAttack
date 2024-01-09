@@ -2,7 +2,7 @@ package main.java.com.bdreiss.trackmyattack;
 
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.AbstractCategoryDataModel;
 import com.bdreiss.dataAPI.AilmentDataModel;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
@@ -40,7 +40,7 @@ class DataRow extends JPanel {
 	
 	
 
-	public DataRow(String key, AbstractDataModel data, AilmentDataModel ailments, Color[] colorSet)
+	public DataRow(String key, AbstractCategoryDataModel data, AilmentDataModel ailments, Color[] colorSet)
 			throws EntryNotFoundException {
 
 		setPreferredSize(new Dimension(super.getWidth(), Dimensions.DATA_ROW_BOX_HEIGHT.value()));

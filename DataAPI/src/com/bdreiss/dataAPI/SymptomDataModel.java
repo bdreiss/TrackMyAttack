@@ -12,12 +12,16 @@ import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.dataAPI.util.Datum;
 
-/*
+/**
  * Class representing the category SYMPTOM.
  */
 
-public class SymptomDataModel extends AbstractDataModel{
+public class SymptomDataModel extends AbstractCategoryDataModel{
 
+	/**
+	 * 
+	 * @param data
+	 */
     public SymptomDataModel(DataModel data){
         this.data = data;
         category = Category.SYMPTOM;

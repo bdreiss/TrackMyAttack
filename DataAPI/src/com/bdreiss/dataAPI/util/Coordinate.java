@@ -2,20 +2,36 @@ package com.bdreiss.dataAPI.util;
 
 import java.util.Iterator;
 
+/**
+ * 
+ */
 public class Coordinate implements Comparable<Coordinate>{
 	
 	private Double latitude;
 	private Double longitude;
 	
+	/**
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 */
 	public Coordinate(Double latitude, Double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Double getLatitude() {
 		return latitude;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Double getLongitude() {
 		return longitude;
 	}
@@ -34,6 +50,11 @@ public class Coordinate implements Comparable<Coordinate>{
 		return 1;
 	}
 	
+	/**
+	 * 
+	 * @param it
+	 * @return
+	 */
 	public static String printArray(Iterator<Coordinate> it) {
 		
 		StringBuilder sb = new StringBuilder();

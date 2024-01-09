@@ -14,12 +14,16 @@ import com.bdreiss.dataAPI.util.Datum;
 import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 
 
-/*
+/**
  * Class representing the category AILMENT.
  */
 
-public class AilmentDataModel extends AbstractDataModel{
+public class AilmentDataModel extends AbstractCategoryDataModel{
 
+	/**
+	 * 
+	 * @param data
+	 */
     public AilmentDataModel(DataModel data){
         this.data = data;
         category = Category.AILMENT;
@@ -75,6 +79,12 @@ public class AilmentDataModel extends AbstractDataModel{
 		return data.getAilmentsSize();
 	}
 	
+	/**
+	 * 
+	 * @param ld
+	 * @return
+	 * @throws EntryNotFoundException
+	 */
 	public IteratorWithIntensity getEntry(LocalDate ld) throws EntryNotFoundException {
 		return (IteratorWithIntensity) data.getAilmentData("Migraine", ld);
 	}

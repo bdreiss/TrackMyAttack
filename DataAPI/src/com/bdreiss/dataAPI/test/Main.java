@@ -15,10 +15,21 @@ import com.bdreiss.dataAPI.util.Datum;
 import com.bdreiss.dataAPI.util.DatumWithIntensity;
 import com.dropbox.core.oauth.DbxCredential;
 
+/**
+ * 
+ */
 public class Main {
 
 	final static String PATH = System.getProperty("user.home") + "/Apps/TrackMyAttack";
 
+	/**
+	 * 
+	 * @param args
+	 * @throws FileNotFoundException
+	 * @throws InterruptedException
+	 * @throws EntryNotFoundException
+	 * @throws TypeMismatchException
+	 */
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException, EntryNotFoundException, TypeMismatchException {
 		
 		DataModel data = new DataModel(PATH);
@@ -52,8 +63,8 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addAilment("Migraine", ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), datum.getCoordinates());
-				else data.addAilment("Migraine", Intensity.NO_INTENSITY,datum.getDate(),datum.getCoordinates());
+					data.addAilment("Migraine", ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum));
+				else data.addAilment("Migraine", Intensity.NO_INTENSITY,datum.getDate(),data.getCoordinate(datum));
 			}
 		}
 		check = true;
@@ -74,9 +85,9 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addCause(cause, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), datum.getCoordinates());
+					data.addCause(cause, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum));
 				else
-					data.addCause(cause, datum.getDate(), datum.getCoordinates());
+					data.addCause(cause, datum.getDate(), data.getCoordinate(datum));
 			} else
 				cause = line.trim();
 		}
@@ -100,7 +111,7 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addSymptom(symptom, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), datum.getCoordinates());
+					data.addSymptom(symptom, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum));
 			} else
 				symptom = line.trim();
 		}
@@ -119,9 +130,9 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addRemedy(remedy, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), datum.getCoordinates());
+					data.addRemedy(remedy, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum));
 				else
-					data.addRemedy(remedy, datum.getDate(), datum.getCoordinates());
+					data.addRemedy(remedy, datum.getDate(), data.getCoordinate(datum));
 			} else
 				remedy = line.trim();
 		}
@@ -157,12 +168,12 @@ public class Main {
 			}
 
 			if (intensity == null)
-				return new Datum(date, coordinates);
+				return new Datum(date);
 						
-			return new DatumWithIntensity(date, coordinates, intensity);
+			return new DatumWithIntensity(date, intensity);
 		}
 		
-		return new Datum(date, coordinates);
+		return new Datum(date);
 
 	}
 

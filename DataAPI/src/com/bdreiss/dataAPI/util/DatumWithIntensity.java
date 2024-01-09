@@ -16,6 +16,11 @@ public class DatumWithIntensity extends Datum implements Serializable{
 
 	private Intensity intensity;
 	
+	/**
+	 * 
+	 * @param date
+	 * @param intensity
+	 */
 	public DatumWithIntensity(LocalDateTime date, Intensity intensity) {
 		super(date);
 		this.intensity = intensity;
@@ -23,10 +28,18 @@ public class DatumWithIntensity extends Datum implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Intensity getIntensity() {
 		return intensity;
 	}
 
+	/**
+	 * 
+	 * @param intensity
+	 */
 	public void setIntensity(Intensity intensity) {
 		this.intensity = intensity;
 	}

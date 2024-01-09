@@ -18,7 +18,7 @@ import com.bdreiss.dataAPI.util.Datum;
  * housing information about the given category being used in DataModel (Cause, Symptom, Remedy).
  * Each type has their own sub-type.
  */
- public abstract class AbstractDataModel {
+ public abstract class AbstractCategoryDataModel {
 
     protected DataModel data;
     protected Category category; //CAUSE, SYMPTOM, REMEDY

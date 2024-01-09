@@ -1,1 +1,6 @@
-main.java.com.bdreiss.dataAPI
+com.bdreiss.dataAPI
+com.bdreiss.dataAPI.enums
+com.bdreiss.dataAPI.exceptions
+com.bdreiss.dataAPI.network
+com.bdreiss.dataAPI.test
+com.bdreiss.dataAPI.util

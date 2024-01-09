@@ -13,6 +13,10 @@ public class IteratorWithIntensity implements Iterator<Datum>{
 
 	private Iterator<Datum> originalIterator;
 	
+	/**
+	 * 
+	 * @param originalIterator
+	 */
 	public IteratorWithIntensity(Iterator<Datum> originalIterator){
 		this.originalIterator = originalIterator;
 	}

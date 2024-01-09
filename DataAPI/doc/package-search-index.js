@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"main.java.com.bdreiss.dataAPI"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.bdreiss.dataAPI"},{"l":"com.bdreiss.dataAPI.enums"},{"l":"com.bdreiss.dataAPI.exceptions"},{"l":"com.bdreiss.dataAPI.network"},{"l":"com.bdreiss.dataAPI.test"},{"l":"com.bdreiss.dataAPI.util"}];updateSearchResults();
