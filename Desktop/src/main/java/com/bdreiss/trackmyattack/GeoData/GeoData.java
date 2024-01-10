@@ -25,8 +25,8 @@ import com.bdreiss.dataAPI.util.DatumWithIntensity;
 
 import main.java.com.bdreiss.trackmyattack.GeoSphereAustria.APIQueryGeoSphereAustria;
 
-/*
- * AbstractDataModel getting data about the weather (currently only supported for Austria).
+/**
+ * AbstractCategoryDataModel getting data about the weather (currently only supported for Austria).
  */
 
 public class GeoData extends AbstractCategoryDataModel implements Serializable {
@@ -39,6 +39,11 @@ public class GeoData extends AbstractCategoryDataModel implements Serializable {
 
 	private DataModel originalData;
 
+	/**
+	 * 
+	 * @param args
+	 * @throws TypeMismatchException
+	 */
 	public static void main(String[] args) throws TypeMismatchException {
 		DataModel data = new DataModel();
 
@@ -68,6 +73,10 @@ public class GeoData extends AbstractCategoryDataModel implements Serializable {
 		GeoData geoData = new GeoData(data);
 	}
 
+	/**
+	 * 
+	 * @param originalData
+	 */
 	public GeoData(DataModel originalData) {
 
 		data = new DataModel();
@@ -88,6 +97,9 @@ public class GeoData extends AbstractCategoryDataModel implements Serializable {
 
 	}
 
+	/**
+	 * 
+	 */
 	public void print() {
 		data.print();
 	}

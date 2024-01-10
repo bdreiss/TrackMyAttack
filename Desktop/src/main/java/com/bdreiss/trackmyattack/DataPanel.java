@@ -14,7 +14,7 @@ import java.awt.GridBagLayout;
 import java.time.Duration;
 import java.time.LocalDate;
 
-/*
+/**
  * DataPanel representing data for one specific category.
  */
 
@@ -26,9 +26,13 @@ public class DataPanel extends JPanel {
 	//Color[3] consists of a light color, standard color and dark color e.g. light blue, blue, dark blue
 	private ArrayList<Color[]> colorSets = new ArrayList<>();
 
-	//AbstractDataModel containing methods for category
+	//AbstractCategoryDataModel containing methods for category
 	private AbstractCategoryDataModel data;
 
+	/**
+	 * 
+	 * @param data
+	 */
 	public DataPanel(AbstractCategoryDataModel data) {
 		super(new GridBagLayout());
 
@@ -46,6 +50,9 @@ public class DataPanel extends JPanel {
 
 	}
 
+	/**
+	 * 
+	 */
 	public void setData() {
 		int daysSinceStartDate = (int) Duration
 				.between(data.getFirstDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();

@@ -12,7 +12,7 @@ import com.bdreiss.dataAPI.SymptomDataModel;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 
-/*
+/**
  * Panel that holds all labels, consisting of CAUSES, SYMPTOMS, REMEDIES and GEO_DATA 
  */
 
@@ -20,6 +20,11 @@ public class LabelMainPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 * @param data
+	 * @param geoData
+	 */
 	public LabelMainPanel(DataModel data, GeoData geoData) {
 
 		// filler Panel for spacing groups

@@ -5,8 +5,29 @@ package main.java.com.bdreiss.trackmyattack.GeoData;
  */
 public enum GeoDataType {
 	//TODO: multilingual support?
-	TEMPERATURE_MEDIAN("temperature median", 0, 100), TEMPERATURE_MAX("temperature max", 0, 100),
-	TEMPERATURE_MIN("temperature min", 0, 100), HUMIDITY("humidity", 0, 100), VAPOR("vapor", 0, 100),
+	/**
+	 * 
+	 */
+	TEMPERATURE_MEDIAN("temperature median", 0, 100), 
+	/**
+	 * 
+	 */
+	TEMPERATURE_MAX("temperature max", 0, 100),
+	/**
+	 * 
+	 */
+	TEMPERATURE_MIN("temperature min", 0, 100), 
+	/**
+	 * 
+	 */
+	HUMIDITY("humidity", 0, 100), 
+	/**
+	 * 
+	 */
+	VAPOR("vapor", 0, 100),
+	/**
+	 * 
+	 */
 	PRESSURE("pressure", 0, 100);
 
 	private String label;

@@ -10,8 +10,16 @@ import com.bdreiss.dataAPI.util.Coordinate;
 
 import main.java.com.bdreiss.trackmyattack.GeoSphereAustria.GeoSphereAustriaStation;
 
+/**
+ * 
+ */
 public class Main {
 
+	/**
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 
 		List<Station> list = new ArrayList<>();
@@ -29,10 +37,21 @@ public class Main {
 		printList(CoordinateMergeSort.sort(list));
 
 	}
+	
+	/**
+	 * 
+	 * @param list
+	 * @param x
+	 * @param y
+	 */
 	public static void addToList(List<Station> list, Double x, Double y) {
 		list.add(new GeoSphereAustriaStation(0, new Coordinate(x,y)));
 	}
 	
+	/**
+	 * 
+	 * @param list
+	 */
 	public static void printList(List<Station> list) {
 		for (Station s : list)
 			if (s == null)

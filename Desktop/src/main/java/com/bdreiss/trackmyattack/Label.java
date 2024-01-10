@@ -6,14 +6,17 @@ import java.awt.Graphics;
 
 import javax.swing.JLabel;
 
-/*
+/**
  * Standard container for labels.
  */
 
 public class Label extends JLabel {
 
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * 
+	 * @param text
+	 */
 	public Label(String text) {
 		super(text);
 	}

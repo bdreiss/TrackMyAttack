@@ -14,6 +14,13 @@ public class GeoDatum extends Datum {
 
 	private Float value;//value for date
 
+	/**
+	 * 
+	 * @param date
+	 * @param value
+	 * @param lowerBound
+	 * @param upperBound
+	 */
 	public GeoDatum(LocalDateTime date, Float value, float lowerBound, float upperBound) {
 		super(date);
 		this.value = value;

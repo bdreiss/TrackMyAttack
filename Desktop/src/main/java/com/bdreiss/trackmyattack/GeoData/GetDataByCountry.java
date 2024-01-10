@@ -8,10 +8,20 @@ import com.bdreiss.dataAPI.enums.Category;
 
 import main.java.com.bdreiss.trackmyattack.GeoSphereAustria.APIQueryGeoSphereAustria;
 
+/**
+ * 
+ */
 public class GetDataByCountry {
 	
 	private static APIQuery apiQuery;
 
+	/**
+	 * 
+	 * @param startDate
+	 * @param endDate
+	 * @param geoData
+	 * @param category
+	 */
 	public static void getData(LocalDate startDate, LocalDate endDate, GeoData geoData, Category category) {
 		//TODO: make queries for data that belongs together by country
 		apiQuery = getAPI(null);

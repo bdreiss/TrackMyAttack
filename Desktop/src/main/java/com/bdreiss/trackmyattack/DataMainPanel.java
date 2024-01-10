@@ -20,6 +20,11 @@ public class DataMainPanel extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 * @param data
+	 * @param geoData
+	 */
 	public DataMainPanel(DataModel data, GeoData geoData) {
 		
 		setLayout(new GridBagLayout());

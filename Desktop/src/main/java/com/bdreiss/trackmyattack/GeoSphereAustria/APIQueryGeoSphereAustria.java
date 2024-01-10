@@ -94,7 +94,11 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 				
 	}
 
-	// parse JSON and add meteorological data to DataModel
+	/**
+	 * parse JSON and add meteorological data to DataModel
+	 * @param jsonString
+	 * @param category
+	 */
 	public void parseJSON(String jsonString, Category category) {
 		
 		JSONObject jso = new JSONObject(jsonString);
