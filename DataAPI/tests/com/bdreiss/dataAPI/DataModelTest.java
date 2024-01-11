@@ -73,7 +73,7 @@ class DataModelTest {
 	
 	//tests whether Iterators are returned as right instanceof
 	@Test
-	public void rightInstanceOf() throws TypeMismatchException, EntryNotFoundException{
+	public void correctInstanceOf() throws TypeMismatchException, EntryNotFoundException{
 		data.addAilment("Test1",Intensity.HIGH, null);
 		assert(data.getAilmentData("Test1") instanceof IteratorWithIntensity);
 		data.addAilmentKey("Test3");
