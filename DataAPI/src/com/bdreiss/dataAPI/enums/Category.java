@@ -1,24 +1,28 @@
 package com.bdreiss.dataAPI.enums;
 
 /**
- * Categories being supported by the DataModel
+ * Categories being supported by the DataModel.
  */
 
 public enum Category {
 	/**
-	 * Data representing ailemnts. //TODO add attributes
+	 * Data representing ailemnts. Always has the attribute intensity (see
+	 * {@link Intensity}.
 	 */
-	AILMENT, 
+	AILMENT,
 	/**
-	 * Data representing causes. //TODO add attributes
+	 * Data representing causes. Can have the attribute intensity (see
+	 * {@link Intensity}.
 	 */
-	CAUSE, 
+	CAUSE,
 	/**
-	 * Data representing symptoms. //TODO add attributes
+	 * Data representing symptoms. Always has the attribute intensity (see
+	 * {@link Intensity}.
 	 */
-	SYMPTOM, 
+	SYMPTOM,
 	/**
-	 * Data representing remedies. //TODO add attributes
+	 * Data representing remedies. Can have the attribute intensity (see
+	 * {@link Intensity}.
 	 */
 	REMEDY
 }
