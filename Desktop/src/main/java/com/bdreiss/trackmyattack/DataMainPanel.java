@@ -4,10 +4,10 @@ import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.bdreiss.dataAPI.CauseDataModel;
-import com.bdreiss.dataAPI.DataModel;
-import com.bdreiss.dataAPI.RemedyDataModel;
-import com.bdreiss.dataAPI.SymptomDataModel;
+import com.bdreiss.dataAPI.core.CauseDataModel;
+import com.bdreiss.dataAPI.core.DataModel;
+import com.bdreiss.dataAPI.core.RemedyDataModel;
+import com.bdreiss.dataAPI.core.SymptomDataModel;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 

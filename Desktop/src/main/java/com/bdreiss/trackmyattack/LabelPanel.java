@@ -9,7 +9,7 @@ import java.util.Iterator;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.AbstractCategoryDataModel;
+import com.bdreiss.dataAPI.core.AbstractCategoryDataModel;
 
 /**
  * JPanel that holds labels for all keys in Category (Causes, Symptoms, Remedies) represented by AbstractDataModel

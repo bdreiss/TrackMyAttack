@@ -3,7 +3,7 @@ package main.java.com.bdreiss.trackmyattack.GeoData;
 import java.awt.geom.Point2D;
 import java.time.LocalDate;
 
-import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.enums.Category;
 
 import main.java.com.bdreiss.trackmyattack.GeoSphereAustria.APIQueryGeoSphereAustria;

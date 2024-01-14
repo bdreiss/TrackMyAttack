@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;

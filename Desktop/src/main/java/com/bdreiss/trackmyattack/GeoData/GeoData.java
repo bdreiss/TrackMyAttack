@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.bdreiss.dataAPI.AbstractCategoryDataModel;
-import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.core.AbstractCategoryDataModel;
+import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;

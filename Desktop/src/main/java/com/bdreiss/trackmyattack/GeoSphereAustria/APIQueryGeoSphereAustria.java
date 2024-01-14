@@ -14,7 +14,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.dataAPI.util.Coordinate;
 

@@ -2,8 +2,8 @@ package main.java.com.bdreiss.trackmyattack;
 
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.AbstractCategoryDataModel;
-import com.bdreiss.dataAPI.AilmentDataModel;
+import com.bdreiss.dataAPI.core.AbstractCategoryDataModel;
+import com.bdreiss.dataAPI.core.AilmentDataModel;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.util.Datum;

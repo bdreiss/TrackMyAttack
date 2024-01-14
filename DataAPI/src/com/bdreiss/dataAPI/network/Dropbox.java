@@ -18,8 +18,7 @@ import com.dropbox.core.json.JsonReader.FileLoadException;
 import com.dropbox.core.oauth.DbxCredential;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.WriteMode;
-
-import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
 
 /**

@@ -1,6 +1,6 @@
 package main.java.com.bdreiss.trackmyattack;
 
-import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
 import com.bdreiss.dataAPI.network.Dropbox;
 

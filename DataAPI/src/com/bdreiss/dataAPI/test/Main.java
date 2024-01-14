@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
-import com.bdreiss.dataAPI.DataModel;
+import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;

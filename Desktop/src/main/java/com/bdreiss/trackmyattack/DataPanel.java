@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.AbstractCategoryDataModel;
-import com.bdreiss.dataAPI.AilmentDataModel;
+import com.bdreiss.dataAPI.core.AbstractCategoryDataModel;
+import com.bdreiss.dataAPI.core.AilmentDataModel;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 
 import java.awt.GridBagLayout;

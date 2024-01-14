@@ -1,4 +1,4 @@
-package com.bdreiss.dataAPI;
+package com.bdreiss.dataAPI.core;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

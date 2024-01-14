@@ -1,4 +1,4 @@
-package com.bdreiss.dataAPI;
+package com.bdreiss.dataAPI.core;
 
 
 import java.time.LocalDate;
@@ -53,8 +53,8 @@ import com.bdreiss.dataAPI.util.Datum;
     public abstract void addKey(String key, boolean intensity);
     /**
      * 
-     * @param key
-     * @return
+     * @param key Key to be added
+     * @return the data for the key.
      * @throws EntryNotFoundException
      */
     public abstract Iterator<Datum> getData(String key) throws EntryNotFoundException;

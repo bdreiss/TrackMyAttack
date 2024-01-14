@@ -1,4 +1,4 @@
-package com.bdreiss.dataAPI;
+package com.bdreiss.dataAPI.core;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,10 +50,11 @@ public class DataModel implements Serializable {
 	private String saveFileName = "DataModel";
 
 	/**
-	 * 
+	 * First date for which data exists.
 	 */
 	public LocalDate firstDate = null;
 
+	// Offset for new day to start (if value is 4, new day starts at 4:00).
 	private final int DAY_START_OFFSET = 4;
 
 	/*
@@ -72,16 +73,16 @@ public class DataModel implements Serializable {
 	private Map<LocalDate, List<Coordinate>> coordinateTree = new TreeMap<>();
 
 	/**
-	 * 
-	 * @return
+	 * Gets the save file.
+	 * @return the save file
 	 */
 	public File getSaveFile() {
 		return saveFile;
 	}
 
 	/**
-	 * 
-	 * @param saveFile
+	 * Sets the save file.
+	 * @param saveFile file to be saved to.
 	 */
 	public void setSaveFile(File saveFile) {
 		this.saveFile = saveFile;
@@ -89,16 +90,16 @@ public class DataModel implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the name of the save file.
+	 * @return the save file name
 	 */
 	public String getSaveFileName() {
 		return saveFileName;
 	}
 
 	/**
-	 * 
-	 * @param saveFileName
+	 * Sets the save file name.
+	 * @param saveFileName the new name for the save file
 	 */
 	public void setSaveFileName(String saveFileName) {
 		this.saveFileName = saveFileName;
