@@ -74,6 +74,7 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Gets the save file.
+	 * 
 	 * @return the save file
 	 */
 	public File getSaveFile() {
@@ -82,6 +83,7 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Sets the save file.
+	 * 
 	 * @param saveFile file to be saved to.
 	 */
 	public void setSaveFile(File saveFile) {
@@ -91,6 +93,7 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Gets the name of the save file.
+	 * 
 	 * @return the save file name
 	 */
 	public String getSaveFileName() {
@@ -99,6 +102,7 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Sets the save file name.
+	 * 
 	 * @param saveFileName the new name for the save file
 	 */
 	public void setSaveFileName(String saveFileName) {
@@ -109,9 +113,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Creates an instance of DataModel
 	 * 
-	 * @param savePath String absolute path where the DataModel will be stored, if
-	 *                 the value is null there will be no safe file and changes are
-	 *                 not made persistent
+	 * @param savePath absolute path where the DataModel will be stored, if the
+	 *                 value is null there will be no safe file and changes are not
+	 *                 made persistent
 	 */
 	public DataModel(String savePath) {
 
@@ -127,34 +131,35 @@ public class DataModel implements Serializable {
 	}
 
 	/**
-	 * 
+	 * Instantiates a new instance of DataModel without a save file.
 	 */
 	public DataModel() {
 		this(null);
 	}
 
 	/**
-	 * Adds new ailment without data if it does not exist.
+	 * Adds new ailment key without data if it does not exist.
 	 * 
-	 * @param ailment Ailment to be added as key
+	 * @param ailment ailment to be added as key
 	 */
 	public void addAilmentKey(String ailment) {
 		addKey(ailments, ailment, true);
 	}
 
 	/**
-	 * Adds new cause without data if it does not exist.
+	 * Adds new cause key without data if it does not exist.
 	 * 
-	 * @param cause Cause to be added as key
+	 * @param cause     cause to be added as key
+	 * @param intensity if true, key has intensity as an attribute
 	 */
 	public void addCauseKey(String cause, boolean intensity) {
 		addKey(causes, cause, intensity);
 	}
 
 	/**
-	 * Adds new symptom without data if it does not exist.
+	 * Adds new symptom key without data if it does not exist.
 	 * 
-	 * @param symptom Symptom to be added as key
+	 * @param symptom symptom to be added as key
 	 */
 	public void addSymptomKey(String symptom) {
 		addKey(symptoms, symptom, true);
@@ -163,7 +168,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds new remedy without data if it does not exist.
 	 * 
-	 * @param remedy Remedy to be added as key
+	 * @param remedy remedy to be added as key
+	 * @param intensity if true, key has intensity as an attribute
 	 */
 	public void addRemedyKey(String remedy, boolean intensity) {
 		addKey(remedies, remedy, intensity);
@@ -186,9 +192,10 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds an ailment with current time stamp and intensity to the data model.
 	 * 
-	 * @param ailment   String ailment to be added
-	 * @param intensity Intensity of ailment
-	 * @return LocalDateTime when ailment was added
+	 * @param ailment   ailment to be added
+	 * @param intensity intensity of ailment
+	 * @param coordinates coordinates where ailment occurred
+	 * @return LocalDateTime time when ailment was added
 	 * @throws TypeMismatchException
 	 */
 	public LocalDateTime addAilment(String ailment, Intensity intensity, Coordinate coordinates)
@@ -201,9 +208,10 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds an ailment with custom time stamp to the data model.
 	 * 
-	 * @param ailment   String ailment to be added
-	 * @param intensity Intensity of ailment
-	 * @param date      LocalDateTime when ailment occurred
+	 * @param ailment     ailment to be added
+	 * @param intensity   Intensity of ailment
+	 * @param date        time when ailment occurred
+	 * @param coordinates coordinates where ailment occurred
 	 * @throws TypeMismatchException
 	 */
 	public void addAilment(String ailment, Intensity intensity, LocalDateTime date, Coordinate coordinates)
@@ -214,7 +222,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds a cause with current time stamp to the data model.
 	 * 
-	 * @param cause String description of the cause
+	 * @param cause       String description of the cause
+	 * @param coordinates coordinates where cause occurred
 	 * @return LocalDateTime when cause was added
 	 * @throws TypeMismatchException
 	 */
@@ -227,8 +236,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds a cause with custom time stamp to the data model.
 	 * 
-	 * @param cause String description of the cause
-	 * @param date  LocalDateTime when the attack occurred
+	 * @param cause       String description of the cause
+	 * @param date        LocalDateTime when the attack occurred
+	 * @param coordinates coordinates where cause occurred
 	 * @throws TypeMismatchException
 	 */
 	public void addCause(String cause, LocalDateTime date, Coordinate coordinates) throws TypeMismatchException {
@@ -517,17 +527,16 @@ public class DataModel implements Serializable {
 
 		boolean dateHasData = false;
 		try {
-		dateHasData = dateHasData(getAilments(), date);
+			dateHasData = dateHasData(getAilments(), date);
 
-		dateHasData = dateHasData(getCauses(), date);
+			dateHasData = dateHasData(getCauses(), date);
 
-		dateHasData = dateHasData(getSymptoms(), date);
+			dateHasData = dateHasData(getSymptoms(), date);
 
-		dateHasData = dateHasData(getRemedies(), date);
-		}
-		catch (EntryNotFoundException e) {
+			dateHasData = dateHasData(getRemedies(), date);
+		} catch (EntryNotFoundException e) {
 			e.printStackTrace();
-		
+
 		}
 		if (!dateHasData)
 			coordinateTree.remove(date.toLocalDate());
@@ -934,7 +943,7 @@ public class DataModel implements Serializable {
 		// TODO implement
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 * @param date
@@ -973,10 +982,10 @@ public class DataModel implements Serializable {
 	 * @return
 	 */
 	public Iterator<Coordinate> getCoordinates(LocalDate date) {
-		
+
 		return coordinateTree.get(date) == null ? null : coordinateTree.get(date).iterator();
 	}
-	
+
 	/**
 	 * Returns medium occurrence of cause per day (not including days without data)
 	 * 
@@ -1066,7 +1075,8 @@ public class DataModel implements Serializable {
 	}
 
 	/**
-	 * Saves data in save path provided in constructor.
+	 * Saves data in save path provided in constructor. Does not save data when save
+	 * file is not specified (==null).
 	 */
 	private void save() {
 
@@ -1309,10 +1319,10 @@ public class DataModel implements Serializable {
 		sb.append("\n");
 
 		System.out.println(sb.toString());
-		//TODO: also printCoordinates
+		// TODO: also printCoordinates
 		for (LocalDate d : coordinateTree.keySet())
 			System.out.println(d + ": " + Coordinate.printArray(getCoordinates(d)));
-		
+
 		return sb.toString();
 
 	}
@@ -1327,5 +1337,4 @@ public class DataModel implements Serializable {
 
 	}
 
-	
 }
