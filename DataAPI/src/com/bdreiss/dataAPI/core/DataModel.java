@@ -663,10 +663,10 @@ public class DataModel implements Serializable {
 		if (date == null)
 			return;
 
-		if (map.get(key) != null && map.get(key).size() > 0)
-			if (intensity == null && map.get(key).get(0) instanceof DatumWithIntensity)
-				throw new TypeMismatchException();
-
+		// nothing to do
+		if (newDate == null && intensity == null)
+			return;
+		
 		for (Datum d : map.get(key)) {
 			if (d.getDate().equals(date) && d.getDate().getNano() == date.getNano()) {
 				if (intensity != null) {

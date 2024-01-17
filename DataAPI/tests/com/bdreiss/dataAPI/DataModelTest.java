@@ -1192,7 +1192,7 @@ class DataModelTest {
 		 */
 
 		String[] testKeys = { "String1", "String2" };
-
+		
 		int numberOfTestDates = 5;
 
 		ArrayList<LocalDateTime> datesAdded = new ArrayList<>();
@@ -1209,6 +1209,8 @@ class DataModelTest {
 				}
 
 		LocalDateTime now = LocalDateTime.now();
+
+		System.out.println(edit.getData("String1").next() instanceof DatumWithIntensity);
 
 		int minuteOffset = 0;
 
@@ -1228,9 +1230,6 @@ class DataModelTest {
 		minuteOffset--;
 		while (it.hasNext()) {
 			Datum datum = it.next();
-			System.out.println(datum.getDate());
-			System.out.println(now.minusMinutes(minuteOffset));
-			System.out.println();
 			assert (datum.getDate().compareTo(now.minusMinutes(minuteOffset)) == 0);
 			minuteOffset--;
 		}
