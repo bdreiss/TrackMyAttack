@@ -1210,8 +1210,6 @@ class DataModelTest {
 
 		LocalDateTime now = LocalDateTime.now();
 
-		System.out.println(edit.getData("String1").next() instanceof DatumWithIntensity);
-
 		int minuteOffset = 0;
 
 		// change all dates to now + 1 minute per iteration but only for first testKey
@@ -1324,8 +1322,7 @@ class DataModelTest {
 				try {
 					data.editAilmentEntry(s, ldt, ldtNew);
 				} catch (TypeMismatchException e) {
-					System.out.println(e);
-
+					handleException(e);
 				}
 			}
 
@@ -1343,9 +1340,7 @@ class DataModelTest {
 				try {
 					return data.getAilmentData(s);
 				} catch (EntryNotFoundException e) {
-
-					System.out.println("Entry not found.");
-					e.printStackTrace();
+					handleException(e);
 					assert (false);
 					return null;
 				}
@@ -1391,9 +1386,7 @@ class DataModelTest {
 				try {
 					return data.getCauseData(s);
 				} catch (EntryNotFoundException e) {
-
-					System.out.println("Entry not found.");
-					e.printStackTrace();
+					handleException(e);
 					assert (false);
 					return null;
 				}
@@ -1439,9 +1432,7 @@ class DataModelTest {
 				try {
 					return data.getSymptomData(s);
 				} catch (EntryNotFoundException e) {
-
-					System.out.println("Entry not found.");
-					e.printStackTrace();
+					handleException(e);
 					assert (false);
 					return null;
 				}
@@ -1487,9 +1478,7 @@ class DataModelTest {
 				try {
 					return data.getRemedyData(s);
 				} catch (EntryNotFoundException e) {
-
-					System.out.println("Entry not found.");
-					e.printStackTrace();
+					handleException(e);
 					assert (false);
 					return null;
 				}
