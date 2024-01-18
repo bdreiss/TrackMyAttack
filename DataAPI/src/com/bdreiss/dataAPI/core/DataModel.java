@@ -936,20 +936,10 @@ public class DataModel implements Serializable {
 
 	/**
 	 * 
-	 * @param datum
-	 * @return
-	 */
-	public Coordinate getCoordinate(Datum datum) {
-		// TODO implement
-		return null;
-	}
-
-	/**
-	 * 
 	 * @param date
 	 * @return
 	 */
-	public Coordinate getCoordinatesMean(LocalDate date) {
+	public Coordinate getCoordinate(LocalDate date) {
 		Set<Coordinate> coordinateSet = new TreeSet<Coordinate>();
 
 		Iterator<Coordinate> it = getCoordinates(date);
@@ -1139,7 +1129,8 @@ public class DataModel implements Serializable {
 	 * Deletes the file in save path provided in constructor.
 	 */
 	public void deleteSaveFile() {
-		saveFile.delete();
+		if (saveFile != null)
+			saveFile.delete();
 	}
 
 	/**

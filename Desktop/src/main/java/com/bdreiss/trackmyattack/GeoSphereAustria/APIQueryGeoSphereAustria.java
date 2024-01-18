@@ -62,13 +62,13 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 		LocalDate queryStartDate = startDate;
 		
 		//keep track of current station for date
-		GeoSphereAustriaStation currentStation = getNearestStationAustria(originalData.getCoordinatesMean(currentDate));
+		GeoSphereAustriaStation currentStation = getNearestStationAustria(originalData.getCoordinate(currentDate));
 		
 		
 		//TODO: get date regardless of whether there is data or not
 		//go from startDate to endDate and make a query if nearest station changes
 		while (!(currentDate.compareTo(endDate) > 0)) {
-			GeoSphereAustriaStation newStation = getNearestStationAustria(originalData.getCoordinatesMean(currentDate));
+			GeoSphereAustriaStation newStation = getNearestStationAustria(originalData.getCoordinate(currentDate));
 			
 			if (newStation == null)
 				newStation = currentStation;

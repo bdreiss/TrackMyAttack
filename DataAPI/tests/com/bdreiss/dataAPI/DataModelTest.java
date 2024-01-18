@@ -16,6 +16,7 @@ import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.dataAPI.util.Datum;
 import com.bdreiss.dataAPI.util.DatumWithIntensity;
 import com.bdreiss.dataAPI.util.IteratorWithIntensity;
@@ -185,7 +186,7 @@ class DataModelTest {
 			// get data for all dates and iterate over it
 			try {
 				it = addInterface.getAllData(testStrings[i]);
-			
+
 				int k = 0;
 
 				while (it.hasNext()) {
@@ -199,8 +200,7 @@ class DataModelTest {
 			} catch (EntryNotFoundException e) {
 				handleException(e);
 			}
-			
-			
+
 		}
 
 		// Test whether Iterators are returned as the correct type
@@ -300,7 +300,7 @@ class DataModelTest {
 			} catch (EntryNotFoundException e) {
 				handleException(e);
 			}
-	
+
 		}
 
 		// test whether Iterators are returned as the right type
@@ -361,7 +361,6 @@ class DataModelTest {
 				handleException(e);
 			}
 
-			
 			// get data for all dates and iterate over it
 			try {
 				it = addInterface.getAllData(testStrings[i]);
@@ -412,7 +411,8 @@ class DataModelTest {
 			// add string with custom date and loop through intensities
 			for (int j = 0; j < testDates[i].length; j++)
 				try {
-					addInterface.add(testStrings[i], Intensity.values()[j % Intensity.values().length], testDates[i][j]);
+					addInterface.add(testStrings[i], Intensity.values()[j % Intensity.values().length],
+							testDates[i][j]);
 				} catch (TypeMismatchException e) {
 					handleException(e);
 				}
@@ -448,7 +448,6 @@ class DataModelTest {
 				} catch (EntryNotFoundException e) {
 					handleException(e);
 				}
-
 
 			}
 
@@ -1192,7 +1191,7 @@ class DataModelTest {
 		 */
 
 		String[] testKeys = { "String1", "String2" };
-		
+
 		int numberOfTestDates = 5;
 
 		ArrayList<LocalDateTime> datesAdded = new ArrayList<>();
@@ -1873,6 +1872,65 @@ class DataModelTest {
 				}
 			}
 		});
+	}
+
+	@Test
+	public void getCoordinateReturnsNull() {
+		Coordinate[] coordinates = { null, null, null, null, null, null };
+
+		String[] testStrings = getTestStrings();
+
+//		String[] expectedResults = testStrings.clone();
+//		Arrays.sort(expectedResults, COMPARATOR);
+
+		// add test data for ailments
+		for (int i = 0; i < testStrings.length; i++)
+			try {
+				data.addAilment(testStrings[i], null, coordinates[i]);
+			} catch (TypeMismatchException e) {
+				handleException(e);
+			}
+
+		assert (data.getCoordinate(LocalDate.now()) == null);
+
+		data = new DataModel();
+
+		// add test data for causes
+		for (int i = 0; i < testStrings.length; i++)
+			try {
+				data.addCause(testStrings[i], coordinates[i]);
+			} catch (TypeMismatchException e) {
+				handleException(e);
+			}
+
+		assert (data.getCoordinate(LocalDate.now()) == null);
+
+		data = new DataModel();
+
+		// add test data for symptoms
+		for (int i = 0; i < testStrings.length; i++)
+			try {
+				data.addSymptom(testStrings[i], null, coordinates[i]);
+			} catch (TypeMismatchException e) {
+				handleException(e);
+			}
+		
+		assert (data.getCoordinate(LocalDate.now())==null);
+		
+		data = new DataModel();
+
+		// add test data for remedies
+		for (int i = 0; i < testStrings.length; i++)
+			try {
+				data.addRemedy(testStrings[i], coordinates[i]);
+			} catch (TypeMismatchException e) {
+				handleException(e);
+			}
+		
+		assert (data.getCoordinate(LocalDate.now())==null);
+		
+		data = new DataModel();
+
 	}
 
 	private void handleException(Exception e) {
