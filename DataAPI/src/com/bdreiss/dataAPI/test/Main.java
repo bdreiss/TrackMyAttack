@@ -63,8 +63,8 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addAilment("Migraine", ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum));
-				else data.addAilment("Migraine", Intensity.NO_INTENSITY,datum.getDate(),data.getCoordinate(datum));
+					data.addAilment("Migraine", ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum.getDate().toLocalDate()));
+				else data.addAilment("Migraine", Intensity.NO_INTENSITY,datum.getDate(),data.getCoordinate(datum.getDate().toLocalDate()));
 			}
 		}
 		check = true;
@@ -85,9 +85,9 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addCause(cause, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum));
+					data.addCause(cause, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum.getDate().toLocalDate()));
 				else
-					data.addCause(cause, datum.getDate(), data.getCoordinate(datum));
+					data.addCause(cause, datum.getDate(), data.getCoordinate(datum.getDate().toLocalDate()));
 			} else
 				cause = line.trim();
 		}
@@ -111,7 +111,7 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addSymptom(symptom, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum));
+					data.addSymptom(symptom, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum.getDate().toLocalDate()));
 			} else
 				symptom = line.trim();
 		}
@@ -130,9 +130,9 @@ public class Main {
 			if (line.contains(",")) {
 				Datum datum = getDatum(line);
 				if (datum instanceof DatumWithIntensity)
-					data.addRemedy(remedy, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum));
+					data.addRemedy(remedy, ((DatumWithIntensity) datum).getIntensity(), datum.getDate(), data.getCoordinate(datum.getDate().toLocalDate()));
 				else
-					data.addRemedy(remedy, datum.getDate(), data.getCoordinate(datum));
+					data.addRemedy(remedy, datum.getDate(), data.getCoordinate(datum.getDate().toLocalDate()));
 			} else
 				remedy = line.trim();
 		}
