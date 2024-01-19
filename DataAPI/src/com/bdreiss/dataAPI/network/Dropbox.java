@@ -22,7 +22,7 @@ import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.exceptions.NetworkException;
 
 /**
- * 
+ * Class representing interaction with a Dropbox account. Contains methods for authentication, uploads and downloads.
  */
 public class Dropbox {
 
