@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.bdreiss.dataAPI.core.AbstractCategoryDataModel;
+import com.bdreiss.dataAPI.core.AbstractData;
 import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.dataAPI.enums.Intensity;
@@ -29,7 +29,7 @@ import main.java.com.bdreiss.trackmyattack.GeoSphereAustria.APIQueryGeoSphereAus
  * AbstractCategoryDataModel getting data about the weather (currently only supported for Austria).
  */
 
-public class GeoData extends AbstractCategoryDataModel implements Serializable {
+public class GeoData extends AbstractData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static String SAVEPATH;

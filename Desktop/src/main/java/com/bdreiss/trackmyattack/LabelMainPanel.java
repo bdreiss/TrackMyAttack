@@ -5,10 +5,10 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.core.CauseDataModel;
+import com.bdreiss.dataAPI.core.CauseData;
 import com.bdreiss.dataAPI.core.DataModel;
-import com.bdreiss.dataAPI.core.RemedyDataModel;
-import com.bdreiss.dataAPI.core.SymptomDataModel;
+import com.bdreiss.dataAPI.core.RemedyData;
+import com.bdreiss.dataAPI.core.SymptomData;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 
@@ -58,21 +58,21 @@ public class LabelMainPanel extends JPanel {
 		// add filler and CAUSES
 		add(new FillPanel(modifiers[0]), c);
 		c.gridy++;
-		LabelPanel causeLabels = new LabelPanel(new CauseDataModel(data));
+		LabelPanel causeLabels = new LabelPanel(new CauseData(data));
 		add(causeLabels, c);
 		c.gridy++;
 
 		// add filler and SYMPTOMS
 		add(new FillPanel(modifiers[1]), c);
 		c.gridy++;
-		LabelPanel symptomLabels = new LabelPanel(new SymptomDataModel(data));
+		LabelPanel symptomLabels = new LabelPanel(new SymptomData(data));
 		add(symptomLabels, c);
 		c.gridy++;
 
 		// add filler and REMEDIES
 		add(new FillPanel(modifiers[2]), c);
 		c.gridy++;
-		LabelPanel remedyLabels = new LabelPanel(new RemedyDataModel(data));
+		LabelPanel remedyLabels = new LabelPanel(new RemedyData(data));
 		add(remedyLabels, c);
 		// add filler
 		c.gridy++;

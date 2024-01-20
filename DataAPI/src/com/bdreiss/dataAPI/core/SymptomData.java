@@ -13,84 +13,83 @@ import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.dataAPI.util.Datum;
 
 /**
- * Class representing the category CAUSE.
+ * Class representing the category SYMPTOM.
  */
 
-public class CauseDataModel extends AbstractCategoryDataModel{
+public class SymptomData extends AbstractData{
 
 	/**
 	 * 
 	 * @param data
 	 */
-    public CauseDataModel(DataModel data){
+    public SymptomData(DataModel data){
         this.data = data;
-        category = Category.CAUSE;
+        category = Category.SYMPTOM;
     }
 
     @Override
     public Iterator<String> getKeys() {
-        return data.getCauses();
+        return data.getSymptoms();
     }
 
     @Override
     public void addKey(String key, boolean intensity) {
-        data.addCauseKey(key, intensity);
+        data.addSymptomKey(key);
     }
 
     @Override
     public Iterator<Datum> getData(String key) throws EntryNotFoundException {
-        return data.getCauseData(key);
+        return data.getSymptomData(key);
     }
 
     @Override
     public void addData(String key, Coordinate coordinates) throws TypeMismatchException {
-        data.addCause(key, coordinates);
+        throw new TypeMismatchException("This exception has been thrown because there was an attempt to add a symptom without Intensity.");
     }
 
     @Override
     public void addData(String key, Intensity intensity, Coordinate coordinates) throws TypeMismatchException {
-        data.addCause(key, intensity, coordinates);
+        data.addSymptom(key, intensity, coordinates);
     }
 
     @Override
     public void removeItem(String key, LocalDateTime date) {
-        data.removeCause(key, date);
+        data.removeSymptom(key, date);
     }
 
     @Override
     public void removeKey(String key) {
-        data.removeCauseKey(key);
+        data.removeSymptomKey(key);
     }
 
     @Override
     public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
-        data.editCauseEntry(key, dateOriginal, dateNew);
+        data.editSymptomEntry(key, dateOriginal, dateNew);
     }
 
     @Override
     public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
-        data.editCauseEntry(key, date, intensity);
+        data.editSymptomEntry(key, date, intensity);
     }
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return data.getCausesSize();
+		return data.getSymptomsSize();
 	}
 
 	@Override
 	public Iterator<Datum> getData(String key, LocalDate date) throws EntryNotFoundException {
-		return data.getCauseData(key, date);
+		return data.getSymptomData(key, date);
 	}
 
 	@Override
 	public float count(String key, LocalDate date) throws EntryNotFoundException {
-		return data.countCause(key, date);
+		return data.countSymptom(key, date);
 	}
 
 	@Override
 	public float getMedium(String key) throws EntryNotFoundException {
-		return data.mediumCause(key);
+		return 0;
 	}
 
 }

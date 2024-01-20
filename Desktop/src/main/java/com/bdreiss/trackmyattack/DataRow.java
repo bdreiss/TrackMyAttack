@@ -2,8 +2,8 @@ package main.java.com.bdreiss.trackmyattack;
 
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.core.AbstractCategoryDataModel;
-import com.bdreiss.dataAPI.core.AilmentDataModel;
+import com.bdreiss.dataAPI.core.AbstractData;
+import com.bdreiss.dataAPI.core.AilmentData;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.util.Datum;
@@ -40,7 +40,7 @@ class DataRow extends JPanel {
 	
 	
 
-	public DataRow(String key, AbstractCategoryDataModel data, AilmentDataModel ailments, Color[] colorSet)
+	public DataRow(String key, AbstractData data, AilmentData ailments, Color[] colorSet)
 			throws EntryNotFoundException {
 
 		setPreferredSize(new Dimension(super.getWidth(), Dimensions.DATA_ROW_BOX_HEIGHT.value()));

@@ -15,13 +15,13 @@ import com.bdreiss.dataAPI.util.Datum;
  * Class representing the category REMEDY.
  */
 
-public class RemedyDataModel extends AbstractCategoryDataModel {
+public class RemedyData extends AbstractData {
 
 	/**
 	 * 
 	 * @param data
 	 */
-	public RemedyDataModel(DataModel data) {
+	public RemedyData(DataModel data) {
 		this.data = data;
 		category = Category.REMEDY;
 	}

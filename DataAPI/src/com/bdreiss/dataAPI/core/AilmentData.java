@@ -11,85 +11,98 @@ import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.dataAPI.util.IteratorWithIntensity;
+
 
 /**
- * Class representing the category SYMPTOM.
+ * Class representing the category AILMENT.
  */
 
-public class SymptomDataModel extends AbstractCategoryDataModel{
+public class AilmentData extends AbstractData{
 
 	/**
 	 * 
 	 * @param data
 	 */
-    public SymptomDataModel(DataModel data){
+    public AilmentData(DataModel data){
         this.data = data;
-        category = Category.SYMPTOM;
+        category = Category.AILMENT;
     }
 
     @Override
     public Iterator<String> getKeys() {
-        return data.getSymptoms();
+        return data.getAilments();
     }
 
     @Override
     public void addKey(String key, boolean intensity) {
-        data.addSymptomKey(key);
+        data.addAilmentKey(key);
     }
 
     @Override
     public Iterator<Datum> getData(String key) throws EntryNotFoundException {
-        return data.getSymptomData(key);
+        return data.getAilmentData(key);
     }
 
     @Override
     public void addData(String key, Coordinate coordinates) throws TypeMismatchException {
-        throw new TypeMismatchException("This exception has been thrown because there was an attempt to add a symptom without Intensity.");
+        throw new TypeMismatchException("This exception has been thrown because there was an attempt to add an ailment without Intensity.");
     }
 
     @Override
     public void addData(String key, Intensity intensity, Coordinate coordinates) throws TypeMismatchException {
-        data.addSymptom(key, intensity, coordinates);
+        data.addAilment(key, intensity, coordinates);
     }
 
     @Override
     public void removeItem(String key, LocalDateTime date) {
-        data.removeSymptom(key, date);
+        data.removeAilment(key, date);
     }
 
     @Override
     public void removeKey(String key) {
-        data.removeSymptomKey(key);
+        data.removeAilmentKey(key);
     }
 
     @Override
     public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
-        data.editSymptomEntry(key, dateOriginal, dateNew);
+        data.editAilmentEntry(key, dateOriginal, dateNew);
     }
 
     @Override
     public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
-        data.editSymptomEntry(key, date, intensity);
+        data.editAilmentEntry(key, date, intensity);
     }
 
 	@Override
 	public int getSize() {
-		return data.getSymptomsSize();
+		return data.getAilmentsSize();
+	}
+	
+	/**
+	 * 
+	 * @param ld
+	 * @return
+	 * @throws EntryNotFoundException
+	 */
+	public IteratorWithIntensity getEntry(LocalDate ld) throws EntryNotFoundException {
+		return (IteratorWithIntensity) data.getAilmentData("Migraine", ld);
 	}
 
 	@Override
 	public Iterator<Datum> getData(String key, LocalDate date) throws EntryNotFoundException {
-		return data.getSymptomData(key, date);
+		return data.getAilmentData(key, date);
 	}
 
 	@Override
 	public float count(String key, LocalDate date) throws EntryNotFoundException {
-		return data.countSymptom(key, date);
+		return data.countAilment(key, date);
 	}
 
 	@Override
-	public float getMedium(String key) throws EntryNotFoundException {
+	public float getMedium(String key) {
 		return 0;
 	}
+
 
 }

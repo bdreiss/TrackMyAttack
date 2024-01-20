@@ -4,10 +4,10 @@ import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.bdreiss.dataAPI.core.CauseDataModel;
+import com.bdreiss.dataAPI.core.CauseData;
 import com.bdreiss.dataAPI.core.DataModel;
-import com.bdreiss.dataAPI.core.RemedyDataModel;
-import com.bdreiss.dataAPI.core.SymptomDataModel;
+import com.bdreiss.dataAPI.core.RemedyData;
+import com.bdreiss.dataAPI.core.SymptomData;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 
@@ -35,17 +35,17 @@ public class DataMainPanel extends JPanel{
 		c.gridx = 0;
 		c.gridy = 0;
 		
-		DataPanel causeDataPanel = new DataPanel(new CauseDataModel(data)); 
+		DataPanel causeDataPanel = new DataPanel(new CauseData(data)); 
 		add(causeDataPanel, c);
 		
 		c.gridy++;
 		
-		DataPanel symptomDataPanel = new DataPanel(new SymptomDataModel(data));
+		DataPanel symptomDataPanel = new DataPanel(new SymptomData(data));
 		add(symptomDataPanel,c);
 		
 		c.gridy++;
 			
-		DataPanel remedyDataPanel = new DataPanel(new RemedyDataModel(data)); 
+		DataPanel remedyDataPanel = new DataPanel(new RemedyData(data)); 
 		add(remedyDataPanel,c);
 
 

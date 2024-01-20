@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.core.AbstractCategoryDataModel;
-import com.bdreiss.dataAPI.core.AilmentDataModel;
+import com.bdreiss.dataAPI.core.AbstractData;
+import com.bdreiss.dataAPI.core.AilmentData;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 
 import java.awt.GridBagLayout;
@@ -27,13 +27,13 @@ public class DataPanel extends JPanel {
 	private ArrayList<Color[]> colorSets = new ArrayList<>();
 
 	//AbstractCategoryDataModel containing methods for category
-	private AbstractCategoryDataModel data;
+	private AbstractData data;
 
 	/**
 	 * 
 	 * @param data
 	 */
-	public DataPanel(AbstractCategoryDataModel data) {
+	public DataPanel(AbstractData data) {
 		super(new GridBagLayout());
 
 		this.data = data;
@@ -77,7 +77,7 @@ public class DataPanel extends JPanel {
 			String key = it.next();
 			try {
 				Color[] colorSet = colorSets.get(c.gridy % (colorSets.size()));
-				add(new DataRow(key, data, new AilmentDataModel(data.getData()), colorSet), c);
+				add(new DataRow(key, data, new AilmentData(data.getData()), colorSet), c);
 			} catch (EntryNotFoundException e) {
 				e.printStackTrace();
 			}

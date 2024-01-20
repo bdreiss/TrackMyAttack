@@ -18,13 +18,13 @@ import com.bdreiss.dataAPI.util.Datum;
  * housing information about the given category being used in DataModel (Cause, Symptom, Remedy).
  * Each type has their own sub-type.
  */
- public abstract class AbstractCategoryDataModel {
+ public abstract class AbstractData {
 
     protected DataModel data;
     protected Category category; //CAUSE, SYMPTOM, REMEDY
 
     /**
-     * 
+     * Gets the original {@link DataModel}.
      * @return
      */
     public DataModel getData(){
@@ -32,21 +32,21 @@ import com.bdreiss.dataAPI.util.Datum;
     }
 
     /**
-     * 
+     * Gets the {@link Category}.
      * @return
      */
     public Category getCategory(){
         return category;
     }
 
-    //for documentation of these methods look into DataAPI
     /**
-     * 
-     * @return
+     * Gets keys the data model holds.
+     * @return the keys
      */
     public abstract Iterator<String> getKeys();
+    
     /**
-     * 
+     * Adds a key to the data model.
      * @param key
      * @param intensity
      */
