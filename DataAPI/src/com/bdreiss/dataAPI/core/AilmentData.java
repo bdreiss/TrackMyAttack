@@ -21,8 +21,8 @@ import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 public class AilmentData extends AbstractData{
 
 	/**
-	 * 
-	 * @param data
+	 * Instantiates a new instance of AilmentData.
+	 * @param data original data model
 	 */
     public AilmentData(DataModel data){
         this.data = data;

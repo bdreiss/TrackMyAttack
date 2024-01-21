@@ -18,8 +18,8 @@ import com.bdreiss.dataAPI.util.Datum;
 public class RemedyData extends AbstractData {
 
 	/**
-	 * 
-	 * @param data
+	 * Instantiates a new instance of remedy data.
+	 * @param data orginial data model
 	 */
 	public RemedyData(DataModel data) {
 		this.data = data;

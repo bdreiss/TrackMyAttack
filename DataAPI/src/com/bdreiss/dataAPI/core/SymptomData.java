@@ -19,8 +19,8 @@ import com.bdreiss.dataAPI.util.Datum;
 public class SymptomData extends AbstractData{
 
 	/**
-	 * 
-	 * @param data
+	 * Instantiates a new instance of SymptomData.
+	 * @param data original data model
 	 */
     public SymptomData(DataModel data){
         this.data = data;

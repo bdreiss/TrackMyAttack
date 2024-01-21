@@ -19,8 +19,8 @@ import com.bdreiss.dataAPI.util.Datum;
 public class CauseData extends AbstractData{
 
 	/**
-	 * 
-	 * @param data
+	 * Instantiates a new instance of CauseData.
+	 * @param data original data model
 	 */
     public CauseData(DataModel data){
         this.data = data;
