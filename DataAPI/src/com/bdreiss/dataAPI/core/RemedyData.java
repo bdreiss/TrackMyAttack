@@ -52,7 +52,7 @@ public class RemedyData extends AbstractData {
 	}
 
 	@Override
-	public void removeItem(String key, LocalDateTime date) {
+	public void removeEntry(String key, LocalDateTime date) {
 		data.removeRemedy(key, date);
 	}
 

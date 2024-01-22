@@ -53,7 +53,7 @@ public class SymptomData extends AbstractData{
     }
 
     @Override
-    public void removeItem(String key, LocalDateTime date) {
+    public void removeEntry(String key, LocalDateTime date) {
         data.removeSymptom(key, date);
     }
 

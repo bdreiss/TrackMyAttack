@@ -55,7 +55,7 @@ public class AilmentData extends AbstractData{
     }
 
     @Override
-    public void removeItem(String key, LocalDateTime date) {
+    public void removeEntry(String key, LocalDateTime date) {
         data.removeAilment(key, date);
     }
 

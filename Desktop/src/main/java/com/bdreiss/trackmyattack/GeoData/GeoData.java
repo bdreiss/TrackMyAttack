@@ -240,7 +240,7 @@ public class GeoData extends AbstractData implements Serializable {
 	}
 
 	@Override
-	public void removeItem(String key, LocalDateTime date) {
+	public void removeEntry(String key, LocalDateTime date) {
 	}
 
 	@Override
