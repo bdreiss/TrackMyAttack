@@ -27,7 +27,7 @@ import com.bdreiss.dataAPI.exceptions.NetworkException;
 public class Dropbox {
 
 	/**
-	 * 
+	 * Message being shown to the user for authentication.
 	 */
 	public static String message = "Go to the following address and click \"Allow\" (you might have to log in first).\nCopy the authorization code and enter it here.";
 
