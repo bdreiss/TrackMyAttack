@@ -84,7 +84,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Sets the save file.
 	 * 
-	 * @param saveFile file to be saved to.
+	 * @param saveFile file to be saved to
 	 */
 	public void setSaveFile(File saveFile) {
 		this.saveFile = saveFile;
@@ -168,7 +168,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds new remedy without data if it does not exist.
 	 * 
-	 * @param remedy remedy to be added as key
+	 * @param remedy    remedy to be added as key
 	 * @param intensity if true, key has intensity as an attribute
 	 */
 	public void addRemedyKey(String remedy, boolean intensity) {
@@ -192,8 +192,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds an ailment with current time stamp and intensity to the data model.
 	 * 
-	 * @param ailment   ailment to be added
-	 * @param intensity intensity of ailment
+	 * @param ailment     ailment to be added
+	 * @param intensity   intensity of ailment
 	 * @param coordinates coordinates where ailment occurred
 	 * @return LocalDateTime time when ailment was added
 	 * @throws TypeMismatchException
@@ -222,7 +222,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds a cause with current time stamp to the data model.
 	 * 
-	 * @param cause       String description of the cause
+	 * @param cause       description of the cause
 	 * @param coordinates coordinates where cause occurred
 	 * @return LocalDateTime when cause was added
 	 * @throws TypeMismatchException
@@ -236,7 +236,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds a cause with custom time stamp to the data model.
 	 * 
-	 * @param cause       String description of the cause
+	 * @param cause       description of the cause
 	 * @param date        LocalDateTime when the attack occurred
 	 * @param coordinates coordinates where cause occurred
 	 * @throws TypeMismatchException
@@ -248,7 +248,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds a cause with current time stamp and intensity to the data model.
 	 * 
-	 * @param cause     String description of the cause
+	 * @param cause     description of the cause
 	 * @param intensity Intensity of the cause
 	 * @return LocalDateTime when cause was added
 	 * @throws TypeMismatchException
@@ -263,7 +263,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds a cause with custom timestamp and intensity to the data model
 	 * 
-	 * @param cause     String description of the cause
+	 * @param cause     description of the cause
 	 * @param intensity Intensity of the cause
 	 * @param date      LocalDateTime when the cause occurred
 	 * @throws TypeMismatchException
@@ -276,7 +276,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds a sympton with current time stamp to the data model.
 	 * 
-	 * @param symptom   String description of the symptom
+	 * @param symptom   description of the symptom
 	 * @param intensity Intensity of the symptom
 	 * @return LocalDateTime when symptom was added
 	 * @throws TypeMismatchException
@@ -291,7 +291,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds a sympton with custom time stamp to the data model.
 	 * 
-	 * @param symptom   String description of the symptom
+	 * @param symptom   description of the symptom
 	 * @param intensity Intensity of the symptom
 	 * @param date      LocalDateTime when the symptom occurred
 	 * @throws TypeMismatchException
@@ -304,7 +304,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds remedy with current time stamp to the data model.
 	 * 
-	 * @param remedy String description of the remedy
+	 * @param remedy description of the remedy
 	 * @return LocalDateTime when remedy was added
 	 * @throws TypeMismatchException
 	 */
@@ -318,8 +318,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds remedy with custom time stamp to the data model.
 	 * 
-	 * @param remedy String description of the remedy
-	 * @param date   LocalDateTime when remedy was applied
+	 * @param remedy description of the remedy
+	 * @param date   time when remedy was applied
 	 * @throws TypeMismatchException
 	 */
 	public void addRemedy(String remedy, LocalDateTime date, Coordinate coordinates) throws TypeMismatchException {
@@ -329,7 +329,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds remedy with current time stamp and intensity to the data model.
 	 * 
-	 * @param remedy    String description of the remedy
+	 * @param remedy    description of the remedy
 	 * @param intensity Intensity with which remedy was applied
 	 * @return LocalDateTime when remedy was added
 	 * @throws TypeMismatchException
@@ -345,9 +345,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Adds remedy with custom time stamp and intensity to the data model.
 	 * 
-	 * @param remedy    String description of the remedy
+	 * @param remedy    description of the remedy
 	 * @param intensity Intensity with which remedy was applied
-	 * @param date      LocalDateTime when remedy was applied
+	 * @param date      time when remedy was applied
 	 * @throws TypeMismatchException
 	 */
 
@@ -423,7 +423,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Removes a key in ailments.
 	 * 
-	 * @param key Ailment which is to be removed.
+	 * @param key ailment which is to be removed
 	 */
 	public void removeAilmentKey(String key) {
 		removeKey(ailments, key);
@@ -432,7 +432,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Removes a key in causes.
 	 * 
-	 * @param key Cause which is to be removed.
+	 * @param key cause which is to be removed
 	 */
 	public void removeCauseKey(String key) {
 		removeKey(causes, key);
@@ -441,7 +441,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Removes a key in symptoms.
 	 * 
-	 * @param key Symptom which is to be removed.
+	 * @param key symptom which is to be removed
 	 */
 	public void removeSymptomKey(String key) {
 		removeKey(symptoms, key);
@@ -450,7 +450,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Removes a key in remedies.
 	 * 
-	 * @param key Remedy which is to be removed.
+	 * @param key remedy which is to be removed
 	 */
 	public void removeRemedyKey(String key) {
 		removeKey(remedies, key);
@@ -471,8 +471,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Removes an entry in ailments.
 	 * 
-	 * @param ailment Ailment for which entry is to be removed.
-	 * @param date    Date of entry which is to be removed.
+	 * @param ailment ailment for which entry is to be removed
+	 * @param date    date of entry which is to be removed
 	 */
 	public void removeAilment(String ailment, LocalDateTime date) {
 		removeEntry(ailments, ailment, date);
@@ -481,8 +481,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Removes an entry in causes.
 	 * 
-	 * @param cause Cause for which entry is to be removed.
-	 * @param date  Date of entry which is to be removed.
+	 * @param cause cause for which entry is to be removed
+	 * @param date  date of entry which is to be removed
 	 */
 	public void removeCause(String cause, LocalDateTime date) {
 		removeEntry(causes, cause, date);
@@ -491,8 +491,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Removes an entry in symptoms.
 	 * 
-	 * @param symptom Symptom for which entry is to be removed.
-	 * @param date    Date of entry which is to be removed.
+	 * @param symptom symptom for which entry is to be removed
+	 * @param date    date of entry which is to be removed
 	 */
 	public void removeSymptom(String symptom, LocalDateTime date) {
 		removeEntry(symptoms, symptom, date);
@@ -501,8 +501,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Removes an entry in remedies.
 	 * 
-	 * @param remedy Remedy for which entry is to be removed.
-	 * @param date   Date of entry which is to be removed.
+	 * @param remedy remedy for which entry is to be removed
+	 * @param date   date of entry which is to be removed
 	 */
 	public void removeRemedy(String remedy, LocalDateTime date) {
 		removeEntry(remedies, remedy, date);
@@ -545,6 +545,7 @@ public class DataModel implements Serializable {
 
 	}
 
+	// return true if there is data for the date provided, false otherwise
 	private boolean dateHasData(Iterator<String> it, LocalDateTime date) throws EntryNotFoundException {
 
 		boolean dateHasData = false;
@@ -559,11 +560,11 @@ public class DataModel implements Serializable {
 	}
 
 	/**
-	 * Edit date of an ailment entry;
+	 * Edit date of an ailment entry.
 	 * 
-	 * @param ailment Ailment String for which entry shall be changed
-	 * @param date    LocalDateTime of entry
-	 * @param newDate New LocalDateTime entry should be changed to
+	 * @param ailment ailment for which entry shall be changed
+	 * @param date    time of entry
+	 * @param newDate new time entry should be changed to
 	 * @throws TypeMismatchException
 	 */
 	public void editAilmentEntry(String ailment, LocalDateTime date, LocalDateTime newDate)
@@ -574,10 +575,10 @@ public class DataModel implements Serializable {
 	/**
 	 * Edit intensity of an ailment entry
 	 * 
-	 * @param ailment   Ailment String for which entry shall be changed
-	 * @param date      LocalDateTime of entry
-	 * @param intensity New Intensity entry should be changed to
-	 * @throws TypeMismatchException
+	 * @param ailment   ailment for which entry shall be changed
+	 * @param date      time of entry
+	 * @param intensity new intensity entry should be changed to
+	 * @throws TypeMismatchException 
 	 */
 	public void editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
 		editEntry(ailments, ailment, date, intensity, null);
@@ -587,9 +588,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Edit date of a cause entry;
 	 * 
-	 * @param cause   Cause String for which entry shall be changed
-	 * @param date    LocalDateTime of entry
-	 * @param newDate New LocalDateTime entry should be changed to
+	 * @param cause   cause for which entry shall be changed
+	 * @param date    time of entry
+	 * @param newDate new time entry should be changed to
 	 * @throws TypeMismatchException
 	 */
 	public void editCauseEntry(String cause, LocalDateTime date, LocalDateTime newDate) throws TypeMismatchException {
@@ -599,9 +600,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Edit intensity of a cause entry
 	 * 
-	 * @param cause     Cause String for which entry shall be changed
-	 * @param date      LocalDateTime of entry
-	 * @param intensity New Intensity entry should be changed to
+	 * @param cause     cause for which entry shall be changed
+	 * @param date      time of entry
+	 * @param intensity new intensity entry should be changed to
 	 * @throws TypeMismatchException
 	 */
 	public void editCauseEntry(String cause, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
@@ -611,9 +612,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Edit date of a symptom entry;
 	 * 
-	 * @param symptom Symptom String for which entry shall be changed
-	 * @param date    LocalDateTime of entry
-	 * @param newDate New LocalDateTime entry should be changed to
+	 * @param symptom symptom for which entry shall be changed
+	 * @param date    time of entry
+	 * @param newDate new time entry should be changed to
 	 * @throws TypeMismatchException
 	 */
 	public void editSymptomEntry(String symptom, LocalDateTime date, LocalDateTime newDate)
@@ -624,9 +625,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Edit intensity of a symptom entry
 	 * 
-	 * @param symptom   Symptom String for which entry shall be changed
-	 * @param date      LocalDateTime of entry
-	 * @param intensity New Intensity entry should be changed to
+	 * @param symptom   symptom for which entry shall be changed
+	 * @param date      time of entry
+	 * @param intensity new intensity entry should be changed to
 	 * @throws TypeMismatchException
 	 */
 	public void editSymptomEntry(String symptom, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
@@ -636,9 +637,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Edit date of a remedy entry;
 	 * 
-	 * @param remedy  Remedy String for which entry shall be changed
-	 * @param date    LocalDateTime of entry
-	 * @param newDate New LocalDateTime entry should be changed to
+	 * @param remedy  remedy for which entry shall be changed
+	 * @param date    time of entry
+	 * @param newDate new time entry should be changed to
 	 * @throws TypeMismatchException
 	 */
 	public void editRemedyEntry(String remedy, LocalDateTime date, LocalDateTime newDate) throws TypeMismatchException {
@@ -648,9 +649,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Edit intensity of a remedy entry
 	 * 
-	 * @param remedy    Remedy String for which entry shall be changed
-	 * @param date      LocalDateTime of entry
-	 * @param intensity New Intensity entry should be changed to
+	 * @param remedy    remedy for which entry shall be changed
+	 * @param date      time of entry
+	 * @param intensity new intensity entry should be changed to
 	 * @throws TypeMismatchException
 	 */
 	public void editRemedyEntry(String remedy, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
@@ -666,7 +667,7 @@ public class DataModel implements Serializable {
 		// nothing to do
 		if (newDate == null && intensity == null)
 			return;
-		
+
 		for (Datum d : map.get(key)) {
 			if (d.getDate().equals(date) && d.getDate().getNano() == date.getNano()) {
 				if (intensity != null) {
@@ -697,7 +698,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns ailments as list iterator.
 	 * 
-	 * @return Iterator containing ailments as String
+	 * @return iterator containing ailments as String
 	 */
 	public Iterator<String> getAilments() {
 		return ailments.keySet().iterator();
@@ -706,7 +707,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns all causes as list iterator.
 	 *
-	 * @return Iterator containing causes as String
+	 * @return iterator containing causes as String
 	 */
 	public Iterator<String> getCauses() {
 		return causes.keySet().iterator();
@@ -715,7 +716,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns all symptoms as list iterator.
 	 *
-	 * @return Iterator containing symptoms as String
+	 * @return iterator containing symptoms as String
 	 */
 	public Iterator<String> getSymptoms() {
 		return symptoms.keySet().iterator();
@@ -724,7 +725,7 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns all remedies as list iterator.
 	 *
-	 * @return Iterator containing remedies as String
+	 * @return iterator containing remedies as String
 	 */
 	public Iterator<String> getRemedies() {
 		return remedies.keySet().iterator();
@@ -780,7 +781,7 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param ailment String describing ailment
 	 * @param date    Day for which data should be retrieved
-	 * @return Iterator containing data when and how intense ailment occurred as
+	 * @return iterator containing data when and how intense ailment occurred as
 	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
@@ -794,7 +795,7 @@ public class DataModel implements Serializable {
 	 * Iterator for all dates.
 	 * 
 	 * @param ailment String describing ailment
-	 * @return Iterator containing data when and how intense ailment occurred as
+	 * @return iterator containing data when and how intense ailment occurred as
 	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
@@ -810,7 +811,7 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause String describing cause
 	 * @param date  Day for which data should be retrieved
-	 * @return Iterator containing data when and how intense cause occurred as
+	 * @return iterator containing data when and how intense cause occurred as
 	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
@@ -823,7 +824,7 @@ public class DataModel implements Serializable {
 	 * Iterator for all dates.
 	 * 
 	 * @param cause String describing cause
-	 * @return Iterator containing data when and how intense cause occurred as
+	 * @return iterator containing data when and how intense cause occurred as
 	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
@@ -837,7 +838,7 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param symptom String describing symptom
 	 * @param date    Day for which data should be retrieved
-	 * @return Iterator containing data when and how intense symptom occurred as
+	 * @return iterator containing data when and how intense symptom occurred as
 	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
@@ -850,7 +851,7 @@ public class DataModel implements Serializable {
 	 * Iterator for all dates.
 	 * 
 	 * @param symptom String describing symptom
-	 * @return Iterator containing data when and how intense symptom occurred as
+	 * @return iterator containing data when and how intense symptom occurred as
 	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
@@ -864,7 +865,7 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy String describing remedy.
 	 * @param date   Day for which data should be retrieved
-	 * @return Iterator containing data when and how intense remedy was used as
+	 * @return iterator containing data when and how intense remedy was used as
 	 *         Datum. If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
@@ -878,7 +879,7 @@ public class DataModel implements Serializable {
 	 * Iterator for all dates.
 	 * 
 	 * @param remedy String describing remedy.
-	 * @return Iterator containing data when and how intense remedy was used as
+	 * @return iterator containing data when and how intense remedy was used as
 	 *         Datum- If data contains intensity returns an IteratorWithIntensity
 	 * @throws EntryNotFoundException
 	 */
@@ -889,9 +890,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Count entries for a specific ailment at given date.
 	 * 
-	 * @param ailment
-	 * @param date
-	 * @return count
+	 * @param ailment ailment to get count for
+	 * @param date date to get count for
+	 * @return the count of the entry for the date
 	 * @throws EntryNotFoundException
 	 */
 	public int countAilment(String ailment, LocalDate date) throws EntryNotFoundException {
@@ -901,9 +902,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Count entries for a specific symptom at given date.
 	 * 
-	 * @param symptom
-	 * @param date
-	 * @return count
+	 * @param symptom symptom to get count for
+	 * @param date date to get count for
+	 * @return the count of the entry for the date
 	 * @throws EntryNotFoundException
 	 */
 	public int countSymptom(String symptom, LocalDate date) throws EntryNotFoundException {
@@ -913,9 +914,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Count entries for a specific cause at given date.
 	 * 
-	 * @param cause
-	 * @param date
-	 * @return count
+	 * @param cause cause to get count for
+	 * @param date date to get count for
+	 * @return the count of the entry for the date
 	 * @throws EntryNotFoundException
 	 */
 	public int countCause(String cause, LocalDate date) throws EntryNotFoundException {
@@ -925,9 +926,9 @@ public class DataModel implements Serializable {
 	/**
 	 * Count entries for a specific remedy at given date.
 	 * 
-	 * @param remedy
-	 * @param date
-	 * @return count
+	 * @param remedy remedy to get count for
+	 * @param date date to get count for
+	 * @return the count of the entry for the date
 	 * @throws EntryNotFoundException
 	 */
 	public int countRemedy(String remedy, LocalDate date) throws EntryNotFoundException {
@@ -935,9 +936,9 @@ public class DataModel implements Serializable {
 	};
 
 	/**
-	 * 
-	 * @param date
-	 * @return
+	 * Gets the coordinate for a specific date. Returns the medium of all coordinates recorded for that date.
+	 * @param date date for which to get the coordinate
+	 * @return the mean of all coordinates recorded for the date
 	 */
 	public Coordinate getCoordinate(LocalDate date) {
 		Set<Coordinate> coordinateSet = new TreeSet<Coordinate>();
@@ -967,9 +968,9 @@ public class DataModel implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @param date
-	 * @return
+	 * Gets all coordinates for a date as an iterator.
+	 * @param date date for which to get coordinates
+	 * @return iterator with coordinates for the date
 	 */
 	public Iterator<Coordinate> getCoordinates(LocalDate date) {
 
@@ -979,8 +980,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns medium occurrence of cause per day (not including days without data)
 	 * 
-	 * @param cause
-	 * @return
+	 * @param cause cause for which to get medium count for
+	 * @return count of medium occurrences of the cause
 	 * @throws EntryNotFoundException
 	 */
 
@@ -997,8 +998,8 @@ public class DataModel implements Serializable {
 	/**
 	 * Returns medium use of remedy per day (not including days without data)
 	 * 
-	 * @param remedy
-	 * @return
+	 * @param remedy remedy for which to get medium count for
+	 * @return count of medium occurrences of the remedy
 	 * @throws EntryNotFoundException
 	 */
 	public float mediumRemedy(String remedy) throws EntryNotFoundException {
@@ -1010,6 +1011,7 @@ public class DataModel implements Serializable {
 		return getMedium(getRemedyData(remedy));
 	}
 
+	// returns the medium count of occurrences per day
 	private float getMedium(Iterator<Datum> it) {
 
 		float daysCount = 0;
