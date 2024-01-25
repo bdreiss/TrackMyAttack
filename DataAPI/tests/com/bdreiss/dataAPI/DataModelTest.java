@@ -1718,9 +1718,11 @@ class DataModelTest {
 		}
 
 		for (String s : tests) {
+
 			for (int i = 0; i < datesToBeRemoved.length; i++) {
 
 				removeInterface.remove(s, datesToBeRemoved[i]);
+
 				Iterator<Datum> it;
 				try {
 					it = removeInterface.getData(s);

@@ -41,7 +41,7 @@ import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
  */
 
 public class DataModel implements Serializable {
-
+	
 	private static final long serialVersionUID = 1L;
 
 	private static final Comparator<String> TREE_COMPARATOR = String.CASE_INSENSITIVE_ORDER;
@@ -525,39 +525,10 @@ public class DataModel implements Serializable {
 			}
 		}
 
-		boolean dateHasData = false;
-		try {
-			dateHasData = dateHasData(getAilments(), date);
-
-			dateHasData = dateHasData(getCauses(), date);
-
-			dateHasData = dateHasData(getSymptoms(), date);
-
-			dateHasData = dateHasData(getRemedies(), date);
-		} catch (EntryNotFoundException e) {
-			e.printStackTrace();
-
-		}
-		if (!dateHasData)
-			coordinateTree.remove(date.toLocalDate());
-
 		save();
 
 	}
 
-	// return true if there is data for the date provided, false otherwise
-	private boolean dateHasData(Iterator<String> it, LocalDateTime date) throws EntryNotFoundException {
-
-		boolean dateHasData = false;
-
-		while (it.hasNext() && dateHasData == false) {
-			if (getAilmentData(it.next(), date.toLocalDate()).hasNext()) {
-				dateHasData = true;
-				break;
-			}
-		}
-		return dateHasData;
-	}
 
 	/**
 	 * Edit date of an ailment entry.
@@ -578,7 +549,7 @@ public class DataModel implements Serializable {
 	 * @param ailment   ailment for which entry shall be changed
 	 * @param date      time of entry
 	 * @param intensity new intensity entry should be changed to
-	 * @throws TypeMismatchException 
+	 * @throws TypeMismatchException
 	 */
 	public void editAilmentEntry(String ailment, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
 		editEntry(ailments, ailment, date, intensity, null);
@@ -891,7 +862,7 @@ public class DataModel implements Serializable {
 	 * Count entries for a specific ailment at given date.
 	 * 
 	 * @param ailment ailment to get count for
-	 * @param date date to get count for
+	 * @param date    date to get count for
 	 * @return the count of the entry for the date
 	 * @throws EntryNotFoundException
 	 */
@@ -903,7 +874,7 @@ public class DataModel implements Serializable {
 	 * Count entries for a specific symptom at given date.
 	 * 
 	 * @param symptom symptom to get count for
-	 * @param date date to get count for
+	 * @param date    date to get count for
 	 * @return the count of the entry for the date
 	 * @throws EntryNotFoundException
 	 */
@@ -915,7 +886,7 @@ public class DataModel implements Serializable {
 	 * Count entries for a specific cause at given date.
 	 * 
 	 * @param cause cause to get count for
-	 * @param date date to get count for
+	 * @param date  date to get count for
 	 * @return the count of the entry for the date
 	 * @throws EntryNotFoundException
 	 */
@@ -927,7 +898,7 @@ public class DataModel implements Serializable {
 	 * Count entries for a specific remedy at given date.
 	 * 
 	 * @param remedy remedy to get count for
-	 * @param date date to get count for
+	 * @param date   date to get count for
 	 * @return the count of the entry for the date
 	 * @throws EntryNotFoundException
 	 */
@@ -936,7 +907,9 @@ public class DataModel implements Serializable {
 	};
 
 	/**
-	 * Gets the coordinate for a specific date. Returns the medium of all coordinates recorded for that date.
+	 * Gets the coordinate for a specific date. Returns the medium of all
+	 * coordinates recorded for that date.
+	 * 
 	 * @param date date for which to get the coordinate
 	 * @return the mean of all coordinates recorded for the date
 	 */
@@ -969,6 +942,7 @@ public class DataModel implements Serializable {
 
 	/**
 	 * Gets all coordinates for a date as an iterator.
+	 * 
 	 * @param date date for which to get coordinates
 	 * @return iterator with coordinates for the date
 	 */
@@ -1192,7 +1166,11 @@ public class DataModel implements Serializable {
 		public DayIterator(List<Datum> list, LocalDate date) {
 			this.list = list;
 			this.date = date;
-			index = getStartingIndex(list, 0, list.size() - 1, this.date);
+			
+			if (list.size() == 0)
+				index = 0;
+			else
+				index = getStartingIndex(list, 0, list.size() - 1, this.date);
 		}
 
 		// returns the starting index by finding the lowest entry for the given date
@@ -1216,7 +1194,7 @@ public class DataModel implements Serializable {
 		// if did not reach end of list and date is still in range return true
 		@Override
 		public boolean hasNext() {
-			if (index == list.size())
+			if (index >= list.size())
 				return false;
 			if (list.get(index).getDate().minusHours(OFFSET).toLocalDate().compareTo(date) > 0)
 				return false;
