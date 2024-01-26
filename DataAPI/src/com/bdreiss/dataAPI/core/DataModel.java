@@ -250,6 +250,7 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param cause     description of the cause
 	 * @param intensity Intensity of the cause
+	 * @param coordinates coordinates where person is
 	 * @return LocalDateTime when cause was added
 	 * @throws TypeMismatchException
 	 */
@@ -266,6 +267,7 @@ public class DataModel implements Serializable {
 	 * @param cause     description of the cause
 	 * @param intensity Intensity of the cause
 	 * @param date      LocalDateTime when the cause occurred
+	 * @param coordinates coordinates where person is
 	 * @throws TypeMismatchException
 	 */
 	public void addCause(String cause, Intensity intensity, LocalDateTime date, Coordinate coordinates)
@@ -278,6 +280,7 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param symptom   description of the symptom
 	 * @param intensity Intensity of the symptom
+	 * @param coordinates coordinates where person is
 	 * @return LocalDateTime when symptom was added
 	 * @throws TypeMismatchException
 	 */
@@ -294,6 +297,7 @@ public class DataModel implements Serializable {
 	 * @param symptom   description of the symptom
 	 * @param intensity Intensity of the symptom
 	 * @param date      LocalDateTime when the symptom occurred
+	 * @param coordinates coordinates where person is
 	 * @throws TypeMismatchException
 	 */
 	public void addSymptom(String symptom, Intensity intensity, LocalDateTime date, Coordinate coordinates)
@@ -305,6 +309,7 @@ public class DataModel implements Serializable {
 	 * Adds remedy with current time stamp to the data model.
 	 * 
 	 * @param remedy description of the remedy
+	 * @param coordinates coordinates where person is
 	 * @return LocalDateTime when remedy was added
 	 * @throws TypeMismatchException
 	 */
@@ -320,6 +325,7 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy description of the remedy
 	 * @param date   time when remedy was applied
+	 * @param coordinates coordinates where person is
 	 * @throws TypeMismatchException
 	 */
 	public void addRemedy(String remedy, LocalDateTime date, Coordinate coordinates) throws TypeMismatchException {
@@ -331,6 +337,7 @@ public class DataModel implements Serializable {
 	 * 
 	 * @param remedy    description of the remedy
 	 * @param intensity Intensity with which remedy was applied
+	 * @param coordinates coordinates where person is
 	 * @return LocalDateTime when remedy was added
 	 * @throws TypeMismatchException
 	 */
@@ -348,6 +355,7 @@ public class DataModel implements Serializable {
 	 * @param remedy    description of the remedy
 	 * @param intensity Intensity with which remedy was applied
 	 * @param date      time when remedy was applied
+	 * @param coordinates coordinates where person is
 	 * @throws TypeMismatchException
 	 */
 
@@ -703,8 +711,8 @@ public class DataModel implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the size of the causes, symptoms and remedies combined.
+	 * @return the size of cause, symptoms and remedies
 	 */
 	public int getSize() {
 		return getCausesSize() + getSymptomsSize() + getRemediesSize();

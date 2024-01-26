@@ -1,4 +1,5 @@
 com.bdreiss.dataAPI
+com.bdreiss.dataAPI.core
 com.bdreiss.dataAPI.enums
 com.bdreiss.dataAPI.exceptions
 com.bdreiss.dataAPI.network
