@@ -25,7 +25,7 @@ import com.bdreiss.dataAPI.util.Datum;
 
     /**
      * Gets the original {@link DataModel}.
-     * @return
+     * @return the original data model containing data
      */
     public DataModel getData(){
         return data;
@@ -33,7 +33,7 @@ import com.bdreiss.dataAPI.util.Datum;
 
     /**
      * Gets the {@link Category}.
-     * @return
+     * @return the category
      */
     public Category getCategory(){
         return category;

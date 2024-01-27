@@ -80,11 +80,12 @@ public class AilmentData extends AbstractData{
 	}
 	
 	/**
-	 * 
-	 * @param ld
-	 * @return
+	 * Get data for entry for specific date as iterator.
+	 * @param ld the date to get data for
+	 * @return the iterator with data for the date
 	 * @throws EntryNotFoundException
 	 */
+	//TODO substitute "Migraine"
 	public IteratorWithIntensity getEntry(LocalDate ld) throws EntryNotFoundException {
 		return (IteratorWithIntensity) data.getAilmentData("Migraine", ld);
 	}
