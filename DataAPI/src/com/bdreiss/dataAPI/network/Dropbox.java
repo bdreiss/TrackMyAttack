@@ -36,18 +36,18 @@ public class Dropbox {
 	private static DbxPKCEWebAuth PKCE_WEB_AUTH;
 
 	/**
-	 * 
-	 * @param data
-	 * @return
+	 * Gets the file path for the authentication token.
+	 * @param data the data model used
+	 * @return the file path for the authentication token
 	 */
 	public static String getDbxFilePath(DataModel data) {
 		return data.getSaveFile().getParent() + "/DropboxAuth";
 	};
 
 	/**
-	 * 
-	 * @param key
-	 * @return
+	 * Gets an URL for authorizing user.
+	 * @param key key for accessing Dropbox APIs
+	 * @return URL for authorizing user
 	 */
 	public static String getAuthorizationURL(String key) {
 		// Run through Dropbox API authorization process without client secret
@@ -62,10 +62,10 @@ public class Dropbox {
 	}
 
 	/**
-	 * 
-	 * @param key
-	 * @param authorizationToken
-	 * @param data
+	 * Authorize user to use Dropbox.
+	 * @param key key for accessing Dropbox API
+	 * @param authorizationToken user authorization token
+	 * @param data data model being used
 	 * @throws NetworkException
 	 */
 	public static void authorize(String key, String authorizationToken, DataModel data) throws NetworkException {
@@ -91,8 +91,8 @@ public class Dropbox {
 	}
 
 	/**
-	 * 
-	 * @param data
+	 * Upload a save file from Dropbox.
+	 * @param data data model being used
 	 * @throws NetworkException
 	 */
 	public static void upload(DataModel data) throws NetworkException {
@@ -112,8 +112,8 @@ public class Dropbox {
 	}
 
 	/**
-	 * 
-	 * @param data
+	 * Download save file from Dropbox.
+	 * @param data data model being used
 	 * @throws NetworkException
 	 */
 	public static void download(DataModel data) throws NetworkException {
