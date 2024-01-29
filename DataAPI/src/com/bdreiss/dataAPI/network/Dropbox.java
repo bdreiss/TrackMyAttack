@@ -47,7 +47,7 @@ public class Dropbox {
 	/**
 	 * Gets an URL for authorizing user.
 	 * @param key key for accessing Dropbox APIs
-	 * @return URL for authorizing user
+	 * @return URL for authorizing usgi
 	 */
 	public static String getAuthorizationURL(String key) {
 		// Run through Dropbox API authorization process without client secret

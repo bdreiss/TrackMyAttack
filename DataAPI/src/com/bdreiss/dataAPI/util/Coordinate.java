@@ -3,17 +3,18 @@ package com.bdreiss.dataAPI.util;
 import java.util.Iterator;
 
 /**
- * 
+ * Class representing coordinates.
  */
-public class Coordinate implements Comparable<Coordinate>{
-	
+public class Coordinate implements Comparable<Coordinate> {
+
 	private Double latitude;
 	private Double longitude;
-	
+
 	/**
+	 * Instantiates a new instance of coordinate.
 	 * 
-	 * @param latitude
-	 * @param longitude
+	 * @param latitude  latitude value
+	 * @param longitude longitude value
 	 */
 	public Coordinate(Double latitude, Double longitude) {
 		this.latitude = latitude;
@@ -21,16 +22,18 @@ public class Coordinate implements Comparable<Coordinate>{
 	}
 
 	/**
+	 * Gets the latitude.
 	 * 
-	 * @return
+	 * @return the latitude
 	 */
 	public Double getLatitude() {
 		return latitude;
 	}
-	
+
 	/**
+	 * Gets the longitude.
 	 * 
-	 * @return
+	 * @return the longitude
 	 */
 	public Double getLongitude() {
 		return longitude;
@@ -40,32 +43,31 @@ public class Coordinate implements Comparable<Coordinate>{
 	public String toString() {
 		return String.valueOf(latitude) + ", " + longitude;
 	}
-	
+
 	@Override
 	public int compareTo(Coordinate o) {
 
-		if (o.latitude == latitude && o.longitude == longitude)	
+		if (o.latitude == latitude && o.longitude == longitude)
 			return 0;
-		
+
 		return 1;
 	}
-	
+
 	/**
+	 * Print the iterator passed to the function to the command line as an array.
 	 * 
-	 * @param it
-	 * @return
+	 * @param it the iterator to be printed as array
+	 * @return the string being printed
 	 */
 	public static String printArray(Iterator<Coordinate> it) {
-		
+
 		StringBuilder sb = new StringBuilder();
 
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			sb.append("[" + it.next() + "],");
 		}
-		
-		return "[" +  sb.toString() + "]";
-	}
-	
-}
 
-	
+		return "[" + sb.toString() + "]";
+	}
+
+}
