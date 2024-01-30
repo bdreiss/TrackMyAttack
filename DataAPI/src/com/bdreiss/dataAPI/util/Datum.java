@@ -13,24 +13,24 @@ public class Datum implements Serializable {
 	private LocalDateTime date;
 
 	/**
-	 * 
-	 * @param date
+	 * Instantiates a new instance of datum.
+	 * @param date the date of the datum
 	 */
 	public Datum(LocalDateTime date) {
 		this.date = date;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the date.
+	 * @return the date
 	 */
 	public LocalDateTime getDate() {
 		return date;
 	}
 
 	/**
-	 * 
-	 * @param date
+	 * Sets the date.
+	 * @param date the new date
 	 */
 	public void setDate(LocalDateTime date) {
 		this.date = date;
