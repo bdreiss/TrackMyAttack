@@ -1,7 +1,5 @@
 package com.bdreiss.dataAPI.util;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -17,9 +15,9 @@ public class DatumWithIntensity extends Datum implements Serializable{
 	private Intensity intensity;
 	
 	/**
-	 * 
-	 * @param date
-	 * @param intensity
+	 * Instantiates new instance of datum with intensity.
+	 * @param date the date of the datum
+	 * @param intensity the intensity of the datum
 	 */
 	public DatumWithIntensity(LocalDateTime date, Intensity intensity) {
 		super(date);
@@ -29,16 +27,16 @@ public class DatumWithIntensity extends Datum implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
-	 * @return
+	 * Gets the intensity.
+	 * @return the intensity
 	 */
 	public Intensity getIntensity() {
 		return intensity;
 	}
 
 	/**
-	 * 
-	 * @param intensity
+	 * Sets the intensity.
+	 * @param intensity the new intensity
 	 */
 	public void setIntensity(Intensity intensity) {
 		this.intensity = intensity;
