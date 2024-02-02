@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
-import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.core.AbstractData;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
@@ -21,11 +21,11 @@ public class AddDatumListener implements View.OnClickListener {
 
     private final Context context;
     private String key;
-    AbstractDataModel dataModel;
+    AbstractData data;
 
-    public AddDatumListener(Context context, AbstractDataModel dataModel){
+    public AddDatumListener(Context context, AbstractData data){
         this.context = context;
-        this.dataModel = dataModel;
+        this.data = data;
     }
 
     public void setKey(String key){
@@ -54,10 +54,10 @@ public class AddDatumListener implements View.OnClickListener {
 
         try {
             //check whether key has Intensity and show Intensity dialog if so, add Datum without Intensity otherwise
-            if (dataModel.getData(key) instanceof IteratorWithIntensity){
+            if (data.getData(key) instanceof IteratorWithIntensity){
                 chooseIntensity(context, (dialogInterface, i) -> {
                     try {
-                        dataModel.addData(key, Intensity.values()[i+1]);
+                        data.addData(key, Intensity.values()[i+1], null);//TODO implement add coordinates
 
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
@@ -66,10 +66,10 @@ public class AddDatumListener implements View.OnClickListener {
                 });
             }
             else{
-                dataModel.addData(key);
+                data.addData(key, null);//TODO implement add coordinates
             }
 
-            Synchronizer.autoSynchronize(context, dataModel.getData());
+            Synchronizer.autoSynchronize(context, data.getData());
 
         } catch (EntryNotFoundException | TypeMismatchException e) {
             e.printStackTrace();

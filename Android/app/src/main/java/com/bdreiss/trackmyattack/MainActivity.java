@@ -12,11 +12,11 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.bdreiss.dataAPI.AilmentDataModel;
-import com.bdreiss.dataAPI.CauseDataModel;
-import com.bdreiss.dataAPI.DataModel;
-import com.bdreiss.dataAPI.RemedyDataModel;
-import com.bdreiss.dataAPI.SymptomDataModel;
+import com.bdreiss.dataAPI.core.DataModel;
+import com.bdreiss.dataAPI.core.AilmentData;
+import com.bdreiss.dataAPI.core.CauseData;
+import com.bdreiss.dataAPI.core.RemedyData;
+import com.bdreiss.dataAPI.core.SymptomData;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         Button migraineButton = findViewById(R.id.button_migraine);
 
         //sub type of an abstract data model containing methods only pertaining to ailments (in our case migraines)
-        AilmentDataModel ailmentDataModel = new AilmentDataModel(data);
+        AilmentData ailmentData = new AilmentData(data);
 
         //listener for adding new Datum initiating dialog where user can add migraine with Intensity
         migraineButton.setOnClickListener(v ->{
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 //set items and implement adding data on choosing
                 builder.setItems(intensities, (dialog, which) -> {
                         try {
-                                ailmentDataModel.addData("Migraine", Intensity.values()[which]);
+                                ailmentData.addData("Migraine", Intensity.values()[which], null);//TODO add coordinates
                                 Synchronizer.autoSynchronize(this,data, syncButton);
                         } catch (TypeMismatchException e) {
                                 e.printStackTrace();
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         //on long click, show existing data via EditItemDialog but leave out the add key elements (because we don't need to add ailment keys)
         migraineButton.setOnLongClickListener(v -> {
-                EditItemDialog editItemDialog = new EditItemDialog(this,"Migraine", ailmentDataModel, new AddKeyDialogListener() {
+                EditItemDialog editItemDialog = new EditItemDialog(this,"Migraine", ailmentData, new AddKeyDialogListener() {
                         @Override
                         public void addKey(String key, Boolean intensity) {}
 
@@ -115,15 +115,15 @@ public class MainActivity extends AppCompatActivity {
                 where each Button for each key is equivalent to the migraine button listeners but includes a
                 button and methods for adding new keys
          */
-        LayoutListener causeLayoutListener = new LayoutListener(this, new CauseDataModel(data), getSupportFragmentManager(), this::activityMain);
+        LayoutListener causeLayoutListener = new LayoutListener(this, new CauseData(data), getSupportFragmentManager(), this::activityMain);
         Button causesViewButton = findViewById(R.id.button_causes_view);
         causesViewButton.setOnClickListener(causeLayoutListener);
 
-        LayoutListener symptomLayoutListener = new LayoutListener(this, new SymptomDataModel(data), getSupportFragmentManager(), this::activityMain);
+        LayoutListener symptomLayoutListener = new LayoutListener(this, new SymptomData(data), getSupportFragmentManager(), this::activityMain);
         Button symptomsViewButton = findViewById(R.id.button_symptoms_view);
         symptomsViewButton.setOnClickListener(symptomLayoutListener);
 
-        LayoutListener remedyLayoutListener = new LayoutListener(this, new RemedyDataModel(data), getSupportFragmentManager(), this::activityMain);
+        LayoutListener remedyLayoutListener = new LayoutListener(this, new RemedyData(data), getSupportFragmentManager(), this::activityMain);
         Button remedyViewButton = findViewById(R.id.button_remedies_view);
         remedyViewButton.setOnClickListener(remedyLayoutListener);
         }

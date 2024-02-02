@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.Iterator;
 
-import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.core.AbstractData;
 import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.trackmyattack.datamanipulation.AddDatumListener;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialog;
@@ -26,13 +26,13 @@ import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;
 public class LayoutListener implements View.OnClickListener {
 
     Context context;//context of main activity
-    AbstractDataModel dataModel;
+    AbstractData data;
     FragmentManager fragmentManager;
     LayoutListenerInterface layoutListenerInterface;//includes functions for getting data and returning to main activity
 
-    public LayoutListener(Context context, AbstractDataModel dataModel, FragmentManager fragmentManager, LayoutListenerInterface layoutListenerInterface){
+    public LayoutListener(Context context, AbstractData data, FragmentManager fragmentManager, LayoutListenerInterface layoutListenerInterface){
         this.context = context;
-        this.dataModel = dataModel;
+        this.data = data;
         this.fragmentManager = fragmentManager;
         this.layoutListenerInterface = layoutListenerInterface;
     }
@@ -49,7 +49,7 @@ public class LayoutListener implements View.OnClickListener {
         ((Activity) context).setContentView(R.layout.data_interface);
 
         //iterator for keys in category
-        Iterator<String> iterator = dataModel.getKeys();
+        Iterator<String> iterator = data.getKeys();
 
         LinearLayout linearLayout = ((Activity) context).findViewById(R.id.linear_layout_data_interface);
 
@@ -65,7 +65,7 @@ public class LayoutListener implements View.OnClickListener {
             itemButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
             //listener for adding new Datum
-            AddDatumListener listener = new AddDatumListener(context, dataModel);
+            AddDatumListener listener = new AddDatumListener(context, data);
 
             //add the button to the linear layout
             linearLayout.addView(itemButton);
@@ -74,7 +74,7 @@ public class LayoutListener implements View.OnClickListener {
             itemButton.setOnClickListener(listener);
 
             itemButton.setOnLongClickListener(v -> {
-                EditItemDialog editItemDialog = new EditItemDialog(context, item, dataModel, new AddKeyDialogListener() {
+                EditItemDialog editItemDialog = new EditItemDialog(context, item, data, new AddKeyDialogListener() {
                     @Override
                     public void addKey(String key, Boolean intensity) {}
 
@@ -104,13 +104,13 @@ public class LayoutListener implements View.OnClickListener {
 
         //set listener for addButton that adds new key to given category (see AddItemDialog.java)
         addButton.setOnClickListener(view -> {
-            AddKeyDialog addItemDialog = new AddKeyDialog(context, dataModel, new AddKeyDialogListener() {
+            AddKeyDialog addItemDialog = new AddKeyDialog(context, data, new AddKeyDialogListener() {
                 @Override
                 public void addKey(String key, Boolean intensity) {
-                    if (dataModel.getCategory() == Category.AILMENT || dataModel.getCategory() == Category.SYMPTOM)
-                        dataModel.addKey(key, false);
+                    if (data.getCategory() == Category.AILMENT || data.getCategory() == Category.SYMPTOM)
+                        data.addKey(key, false);
                     else
-                        dataModel.addKey(key, intensity);
+                        data.addKey(key, intensity);
                 }
 
                 @Override

@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.Objects;
 
-import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.core.AbstractData;
 import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.trackmyattack.R;
 import com.bdreiss.trackmyattack.sync.Synchronizer;
@@ -27,12 +27,12 @@ import com.bdreiss.trackmyattack.sync.Synchronizer;
 public class AddKeyDialog extends DialogFragment {
 
     private final Context context;
-    private final AbstractDataModel dataModel;
+    private final AbstractData data;
     private final AddKeyDialogListener listener;
 
-    public AddKeyDialog(Context context, AbstractDataModel dataModel, AddKeyDialogListener listener){
+    public AddKeyDialog(Context context, AbstractData data, AddKeyDialogListener listener){
         this.context = context;
-        this.dataModel = dataModel;
+        this.data = data;
         this.listener = listener;
     }
 
@@ -50,7 +50,7 @@ public class AddKeyDialog extends DialogFragment {
         ToggleButton chooseIntensityButton = view.findViewById(R.id.choose_intensity_button);
         Button addItemButton = view.findViewById(R.id.add_key_button);
 
-        if (dataModel.getCategory() == Category.SYMPTOM) {
+        if (data.getCategory() == Category.SYMPTOM) {
             chooseIntensityButton.setChecked(true);
             chooseIntensityButton.setEnabled(false);
 
@@ -62,7 +62,7 @@ public class AddKeyDialog extends DialogFragment {
             Boolean intensity = chooseIntensityButton.isChecked();
 
             listener.addKey(item, intensity);
-            Synchronizer.autoSynchronize(context, dataModel.getData());
+            Synchronizer.autoSynchronize(context, data.getData());
             listener.updateOriginalLayout();
 
             dismiss();

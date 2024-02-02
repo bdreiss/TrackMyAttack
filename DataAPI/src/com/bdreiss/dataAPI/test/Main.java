@@ -144,9 +144,6 @@ public class Main {
 		String[] splitLine = line.split(",");
 
 		LocalDateTime date = LocalDateTime.parse(splitLine[0]);
-
-
-		Point2D.Double coordinates = splitLine[1].trim().equals("null") ? null : new Point2D.Double(Double.parseDouble(splitLine[1].split(":")[0].trim()),Double.parseDouble(splitLine[1].split(":")[1].trim()));
 		
 		if (splitLine.length > 2) {
 			Intensity intensity = null;

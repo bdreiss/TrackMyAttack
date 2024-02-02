@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Stack;
 
-import com.bdreiss.dataAPI.AbstractDataModel;
+import com.bdreiss.dataAPI.core.AbstractData;
 import com.bdreiss.dataAPI.enums.Category;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
@@ -59,23 +59,23 @@ public class EditItemDialog extends DialogFragment {
     //method for removing items
     //methods for editing date and intensity
     //this is necessary, so that the dialog can support different types of data (Causes, Symptoms and Remedies)
-    private final AbstractDataModel dataModel;
+    private final AbstractData data;
 
     //contains method to update original layout in case key is removed from data
     private final AddKeyDialogListener addKeyDialogListener;
 
     private final Button syncButton;
 
-    public EditItemDialog(Context context, String key, AbstractDataModel dataModel, AddKeyDialogListener addKeyDialogListener, Button syncButton) {
+    public EditItemDialog(Context context, String key, AbstractData data, AddKeyDialogListener addKeyDialogListener, Button syncButton) {
         this.context = context;
         this.key = key;
-        this.dataModel = dataModel;
+        this.data = data;
         this.addKeyDialogListener = addKeyDialogListener;
         this.syncButton = syncButton;
     }
 
-    public EditItemDialog(Context context, String key, AbstractDataModel dataModel, AddKeyDialogListener addKeyDialogListener) {
-        this(context, key, dataModel, addKeyDialogListener, null);
+    public EditItemDialog(Context context, String key, AbstractData data, AddKeyDialogListener addKeyDialogListener) {
+        this(context, key, data, addKeyDialogListener, null);
     }
 
     @Nullable
@@ -90,7 +90,7 @@ public class EditItemDialog extends DialogFragment {
         //get Iterator for data and handle entry not found
         Iterator<Datum> entries;
         try {
-            entries = dataModel.getData(key);
+            entries = data.getData(key);
         } catch (EntryNotFoundException e){
             e.printStackTrace();
             Toast.makeText(getContext(),"Entry not found", Toast.LENGTH_LONG).show();
@@ -113,8 +113,8 @@ public class EditItemDialog extends DialogFragment {
         builder.setMessage("Erase all data for '" + key + "'?");
         builder.setTitle("Confirm deletion");
         builder.setPositiveButton("YES", (dialog, which) -> {
-            dataModel.removeKey(key);
-            Synchronizer.autoSynchronize(context, dataModel.getData(),syncButton);
+            data.removeKey(key);
+            Synchronizer.autoSynchronize(context, data.getData(),syncButton);
             addKeyDialogListener.updateOriginalLayout();
             dismiss();
         });
@@ -125,7 +125,7 @@ public class EditItemDialog extends DialogFragment {
 
         deleteButton.setOnClickListener(v->deleteKeyConfirmationDialog.show());
 
-        if (dataModel.getCategory() == Category.AILMENT){
+        if (data.getCategory() == Category.AILMENT){
             deleteButton.setOnClickListener(v->{});
             deleteButton.setVisibility(View.GONE);
         }
@@ -180,8 +180,8 @@ public class EditItemDialog extends DialogFragment {
                     LocalDateTime newDate = date.withYear(year).withMonth(month+1).withDayOfMonth(dayOfMonth);
 
                     try {
-                        dataModel.editDate(key, date, newDate);
-                        Synchronizer.autoSynchronize(context, dataModel.getData(), syncButton);
+                        data.editDate(key, date, newDate);
+                        Synchronizer.autoSynchronize(context, data.getData(), syncButton);
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }
@@ -206,8 +206,8 @@ public class EditItemDialog extends DialogFragment {
                 TimePickerDialog.OnTimeSetListener timeListener = (view, hourOfDay, minute) -> {
                     LocalDateTime newDate = date.withHour(hourOfDay).withMinute(minute);
                     try {
-                        dataModel.editDate(key, date, newDate);
-                        Synchronizer.autoSynchronize(context,dataModel.getData(), syncButton);
+                        data.editDate(key, date, newDate);
+                        Synchronizer.autoSynchronize(context, data.getData(), syncButton);
                     } catch (TypeMismatchException e) {
                         e.printStackTrace();
                     }
@@ -242,8 +242,8 @@ public class EditItemDialog extends DialogFragment {
                         Intensity newIntensity = Intensity.values()[which+1];
 
                         try {
-                            dataModel.editIntensity(key,date, newIntensity);
-                            Synchronizer.autoSynchronize(context,dataModel.getData(),syncButton);
+                            data.editIntensity(key,date, newIntensity);
+                            Synchronizer.autoSynchronize(context, data.getData(),syncButton);
                         } catch (TypeMismatchException e) {
                             e.printStackTrace();
                         }
@@ -277,8 +277,8 @@ public class EditItemDialog extends DialogFragment {
 
             //delete item on click and remove it from linearLayout
             deleteItemButton.setOnClickListener(v -> {
-                dataModel.removeItem(key, entry.getDate());
-                Synchronizer.autoSynchronize(context,dataModel.getData(), syncButton);
+                data.removeEntry(key, entry.getDate());
+                Synchronizer.autoSynchronize(context, data.getData(), syncButton);
                 //remove separation line
                 linearLayout.removeViewAt(linearLayout.indexOfChild(linearLayoutForEntry)+1);
                 linearLayout.removeView(linearLayoutForEntry);
