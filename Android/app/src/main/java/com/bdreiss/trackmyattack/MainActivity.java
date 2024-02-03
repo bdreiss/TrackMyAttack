@@ -19,6 +19,7 @@ import com.bdreiss.dataAPI.core.RemedyData;
 import com.bdreiss.dataAPI.core.SymptomData;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
 import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;
 import com.bdreiss.trackmyattack.sync.SyncMethod;
@@ -82,10 +83,11 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Choose Intensity");
 
+                Coordinate coordinate = CurrentLocation.getCurrentLocation(this);
                 //set items and implement adding data on choosing
                 builder.setItems(intensities, (dialog, which) -> {
                         try {
-                                ailmentData.addData("Migraine", Intensity.values()[which], null);//TODO add coordinates
+                                ailmentData.addData("Migraine", Intensity.values()[which], coordinate);//TODO add coordinates
                                 Synchronizer.autoSynchronize(this,data, syncButton);
                         } catch (TypeMismatchException e) {
                                 e.printStackTrace();
