@@ -62,30 +62,33 @@ public class AddDatumListener implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        Coordinate coordinate = CurrentLocation.getCurrentLocation(context);
+        CurrentLocation.getCurrentLocation(context, location -> {
 
-        try {
-            //check whether key has Intensity and show Intensity dialog if so, add Datum without Intensity otherwise
-            if (data.getData(key) instanceof IteratorWithIntensity){
-                chooseIntensity(context, (dialogInterface, i) -> {
-                    try {
-                        data.addData(key, Intensity.values()[i+1], coordinate);
+            Coordinate coordinate = new Coordinate(location.getLongitude(), location.getLatitude());
+            try {
+                //check whether key has Intensity and show Intensity dialog if so, add Datum without Intensity otherwise
+                if (data.getData(key) instanceof IteratorWithIntensity){
+                    chooseIntensity(context, (dialogInterface, i) -> {
+                        try {
+                            data.addData(key, Intensity.values()[i+1], coordinate);
 
-                    } catch (TypeMismatchException e) {
-                        e.printStackTrace();
-                    }
+                        } catch (TypeMismatchException e) {
+                            e.printStackTrace();
+                        }
 
-                });
+                    });
+                }
+                else{
+                    data.addData(key, coordinate);
+                }
+
+                Synchronizer.autoSynchronize(context, data.getData());
+
+            } catch (EntryNotFoundException | TypeMismatchException e) {
+                e.printStackTrace();
             }
-            else{
-                data.addData(key, coordinate);
-            }
+        });
 
-            Synchronizer.autoSynchronize(context, data.getData());
-
-        } catch (EntryNotFoundException | TypeMismatchException e) {
-            e.printStackTrace();
-        }
 
     }
 }

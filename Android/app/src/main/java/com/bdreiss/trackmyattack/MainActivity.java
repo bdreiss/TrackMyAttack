@@ -4,13 +4,16 @@ package com.bdreiss.trackmyattack;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 
 import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.core.AilmentData;
@@ -83,19 +86,26 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Choose Intensity");
 
-                Coordinate coordinate = CurrentLocation.getCurrentLocation(this);
-                //set items and implement adding data on choosing
-                builder.setItems(intensities, (dialog, which) -> {
-                        try {
-                                ailmentData.addData("Migraine", Intensity.values()[which], coordinate);//TODO add coordinates
-                                Synchronizer.autoSynchronize(this,data, syncButton);
-                        } catch (TypeMismatchException e) {
-                                e.printStackTrace();
-                        }
+                CurrentLocation.getCurrentLocation(this, location ->{
+
+                        //set items and implement adding data on choosing
+                        builder.setItems(intensities, (dialog, which) -> {
+                                try {
+                                        ailmentData.addData("Migraine", Intensity.values()[which], location == null ? null: new Coordinate(location.getLongitude(), location.getLatitude()));//TODO add coordinates
+                                        Synchronizer.autoSynchronize(this,data, syncButton);
+                                        Log.d("XXX", data.print());
+                                        Log.d("XXX", String.valueOf(location == null));
+                                        Log.d("XXX",String.valueOf(data.getCoordinate(LocalDate.now())));
+                                } catch (TypeMismatchException e) {
+                                        e.printStackTrace();
+                                }
+                        });
+                        builder.setNegativeButton("Cancel", null);
+                        builder.create();
+                        builder.show();
                 });
-                builder.setNegativeButton("Cancel", null);
-                builder.create();
-                builder.show();
+
+
         });
 
         //on long click, show existing data via EditItemDialog but leave out the add key elements (because we don't need to add ailment keys)
