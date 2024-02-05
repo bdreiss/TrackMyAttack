@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         //set items and implement adding data on choosing
                         builder.setItems(intensities, (dialog, which) -> {
                                 try {
-                                        ailmentData.addData("Migraine", Intensity.values()[which], location == null ? null: new Coordinate(location.getLongitude(), location.getLatitude()));//TODO add coordinates
+                                        ailmentData.addData("Migraine", Intensity.values()[which], location == null ? null: new Coordinate(location.getLatitude(), location.getLongitude()));//TODO add coordinates
                                         Synchronizer.autoSynchronize(this,data, syncButton);
                                         Log.d("XXX", data.print());
                                         Log.d("XXX", String.valueOf(location == null));
