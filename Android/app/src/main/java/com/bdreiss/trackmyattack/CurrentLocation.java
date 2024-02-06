@@ -5,8 +5,25 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
 import android.widget.Toast;
+import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
+import android.provider.Settings;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResult;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
+
 
 import androidx.core.app.ActivityCompat;
 
@@ -24,7 +41,34 @@ public class CurrentLocation {
     }
 
 
-    public static void getLocation(Context context, LocationResultCallback callback) {
+    public static void getLocation(Context context, LocationResultCallback callback,  ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
+
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsEnabled = false;
+
+        try {
+            gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+
+        if(!gpsEnabled) {
+
+            // GPS not enabled, prompt user to enable GPS
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                locationSettingsResultLauncher.launch(intent);
+            });
+
+            builder.setNegativeButton("No", (dialogInterface, i) -> {finishGettingLocation(context, callback);});
+            builder.show();
+
+        } else
+            finishGettingLocation(context, callback);
+    }
+
+    public static void finishGettingLocation(Context context, LocationResultCallback callback){
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -48,6 +92,10 @@ public class CurrentLocation {
                     callback.onLocationResult(null);
                 });
 
-    }
 
+    }
+    private boolean isGpsEnabled(Context context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
 }

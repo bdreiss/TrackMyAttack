@@ -2,11 +2,13 @@ package com.bdreiss.trackmyattack;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
@@ -30,11 +32,16 @@ public class LayoutListener implements View.OnClickListener {
     FragmentManager fragmentManager;
     LayoutListenerInterface layoutListenerInterface;//includes functions for getting data and returning to main activity
 
-    public LayoutListener(Context context, AbstractData data, FragmentManager fragmentManager, LayoutListenerInterface layoutListenerInterface){
+    private CurrentLocation.LocationResultCallback callback;
+
+    private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
+    public LayoutListener(Context context, AbstractData data, FragmentManager fragmentManager, LayoutListenerInterface layoutListenerInterface, CurrentLocation.LocationResultCallback callback, ActivityResultLauncher<Intent> locationSettingsResultLauncher){
         this.context = context;
         this.data = data;
         this.fragmentManager = fragmentManager;
         this.layoutListenerInterface = layoutListenerInterface;
+        this.callback = callback;
+        this.locationSettingsResultLauncher = locationSettingsResultLauncher;
     }
 
     @Override
@@ -65,7 +72,7 @@ public class LayoutListener implements View.OnClickListener {
             itemButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
             //listener for adding new Datum
-            AddDatumListener listener = new AddDatumListener(context, data);
+            AddDatumListener listener = new AddDatumListener(context, data, callback, locationSettingsResultLauncher);
 
             //add the button to the linear layout
             linearLayout.addView(itemButton);

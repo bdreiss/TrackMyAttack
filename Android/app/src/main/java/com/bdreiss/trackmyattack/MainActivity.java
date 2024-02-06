@@ -1,13 +1,17 @@
 package com.bdreiss.trackmyattack;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedWriter;
@@ -32,10 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
         public static DataModel data;
         public Settings settings;
+
+        private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
+
+        private CurrentLocation.LocationResultCallback callback;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
             activityMain();
             }
 
@@ -75,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
         //sub type of an abstract data model containing methods only pertaining to ailments (in our case migraines)
         AilmentData ailmentData = new AilmentData(data);
 
-        //listener for adding new Datum initiating dialog where user can add migraine with Intensity
-        migraineButton.setOnClickListener(v ->{
+
                 String[] intensities = new String[Intensity.values().length];
 
                 //get all intensities
@@ -86,16 +93,12 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Choose Intensity");
 
-                CurrentLocation.getLocation(this, location ->{
-
+                callback = location -> {
                         //set items and implement adding data on choosing
                         builder.setItems(intensities, (dialog, which) -> {
                                 try {
                                         ailmentData.addData("Migraine", Intensity.values()[which], location == null ? null: new Coordinate(location.getLatitude(), location.getLongitude()));//TODO add coordinates
-                                        Synchronizer.autoSynchronize(this,data, syncButton);
-                                        Log.d("XXX", data.print());
-                                        Log.d("XXX", String.valueOf(location == null));
-                                        Log.d("XXX",String.valueOf(data.getCoordinate(LocalDate.now())));
+                                        Synchronizer.autoSynchronize(MainActivity.this,data, syncButton);
                                 } catch (TypeMismatchException e) {
                                         e.printStackTrace();
                                 }
@@ -103,7 +106,21 @@ public class MainActivity extends AppCompatActivity {
                         builder.setNegativeButton("Cancel", null);
                         builder.create();
                         builder.show();
-                });
+
+                };
+                locationSettingsResultLauncher = registerForActivityResult(
+                        new ActivityResultContracts.StartActivityForResult(),
+                        result -> {
+                                // Your logic after returning from settings
+                                CurrentLocation.finishGettingLocation(this, callback);
+                        });
+
+
+                //listener for adding new Datum initiating dialog where user can add migraine with Intensity
+        migraineButton.setOnClickListener(v ->{
+
+
+                CurrentLocation.getLocation(this, callback, locationSettingsResultLauncher);
 
 
         });
@@ -127,15 +144,15 @@ public class MainActivity extends AppCompatActivity {
                 where each Button for each key is equivalent to the migraine button listeners but includes a
                 button and methods for adding new keys
          */
-        LayoutListener causeLayoutListener = new LayoutListener(this, new CauseData(data), getSupportFragmentManager(), this::activityMain);
+        LayoutListener causeLayoutListener = new LayoutListener(this, new CauseData(data), getSupportFragmentManager(), this::activityMain, callback, locationSettingsResultLauncher);
         Button causesViewButton = findViewById(R.id.button_causes_view);
         causesViewButton.setOnClickListener(causeLayoutListener);
 
-        LayoutListener symptomLayoutListener = new LayoutListener(this, new SymptomData(data), getSupportFragmentManager(), this::activityMain);
+        LayoutListener symptomLayoutListener = new LayoutListener(this, new SymptomData(data), getSupportFragmentManager(), this::activityMain, callback, locationSettingsResultLauncher);
         Button symptomsViewButton = findViewById(R.id.button_symptoms_view);
         symptomsViewButton.setOnClickListener(symptomLayoutListener);
 
-        LayoutListener remedyLayoutListener = new LayoutListener(this, new RemedyData(data), getSupportFragmentManager(), this::activityMain);
+        LayoutListener remedyLayoutListener = new LayoutListener(this, new RemedyData(data), getSupportFragmentManager(), this::activityMain, callback, locationSettingsResultLauncher);
         Button remedyViewButton = findViewById(R.id.button_remedies_view);
         remedyViewButton.setOnClickListener(remedyLayoutListener);
         }
