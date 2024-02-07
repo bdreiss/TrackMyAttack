@@ -27,6 +27,7 @@ import com.bdreiss.dataAPI.core.SymptomData;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.util.Coordinate;
+import com.bdreiss.trackmyattack.datamanipulation.AddDatumListener;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
 import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;
 import com.bdreiss.trackmyattack.sync.SyncMethod;
@@ -83,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         //sub type of an abstract data model containing methods only pertaining to ailments (in our case migraines)
         AilmentData ailmentData = new AilmentData(data);
 
-
                 String[] intensities = new String[Intensity.values().length];
 
                 //get all intensities
@@ -108,22 +108,21 @@ public class MainActivity extends AppCompatActivity {
                         builder.show();
 
                 };
+
+                CurrentLocation.context = this;
+
+                CurrentLocation.callback = callback;
+
                 locationSettingsResultLauncher = registerForActivityResult(
                         new ActivityResultContracts.StartActivityForResult(),
                         result -> {
-                                // Your logic after returning from settings
-                                CurrentLocation.finishGettingLocation(this, callback);
+                                // returning from settings
+                                CurrentLocation.finishGettingLocation();
                         });
 
 
                 //listener for adding new Datum initiating dialog where user can add migraine with Intensity
-        migraineButton.setOnClickListener(v ->{
-
-
-                CurrentLocation.getLocation(this, callback, locationSettingsResultLauncher);
-
-
-        });
+        migraineButton.setOnClickListener(new AddDatumListener(this, ailmentData, locationSettingsResultLauncher));
 
         //on long click, show existing data via EditItemDialog but leave out the add key elements (because we don't need to add ailment keys)
         migraineButton.setOnLongClickListener(v -> {
@@ -144,15 +143,15 @@ public class MainActivity extends AppCompatActivity {
                 where each Button for each key is equivalent to the migraine button listeners but includes a
                 button and methods for adding new keys
          */
-        LayoutListener causeLayoutListener = new LayoutListener(this, new CauseData(data), getSupportFragmentManager(), this::activityMain, callback, locationSettingsResultLauncher);
+        LayoutListener causeLayoutListener = new LayoutListener(this, new CauseData(data), getSupportFragmentManager(), this::activityMain, locationSettingsResultLauncher);
         Button causesViewButton = findViewById(R.id.button_causes_view);
         causesViewButton.setOnClickListener(causeLayoutListener);
 
-        LayoutListener symptomLayoutListener = new LayoutListener(this, new SymptomData(data), getSupportFragmentManager(), this::activityMain, callback, locationSettingsResultLauncher);
+        LayoutListener symptomLayoutListener = new LayoutListener(this, new SymptomData(data), getSupportFragmentManager(), this::activityMain, locationSettingsResultLauncher);
         Button symptomsViewButton = findViewById(R.id.button_symptoms_view);
         symptomsViewButton.setOnClickListener(symptomLayoutListener);
 
-        LayoutListener remedyLayoutListener = new LayoutListener(this, new RemedyData(data), getSupportFragmentManager(), this::activityMain, callback, locationSettingsResultLauncher);
+        LayoutListener remedyLayoutListener = new LayoutListener(this, new RemedyData(data), getSupportFragmentManager(), this::activityMain, locationSettingsResultLauncher);
         Button remedyViewButton = findViewById(R.id.button_remedies_view);
         remedyViewButton.setOnClickListener(remedyLayoutListener);
         }

@@ -35,14 +35,11 @@ public class AddDatumListener implements View.OnClickListener {
     private String key;
     AbstractData data;
 
-    private CurrentLocation.LocationResultCallback callback;
-
     private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
 
-    public AddDatumListener(Context context, AbstractData datam, CurrentLocation.LocationResultCallback callback,  ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
+    public AddDatumListener(Context context, AbstractData data,  ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
         this.context = context;
         this.data = data;
-        this.callback = callback;
         this.locationSettingsResultLauncher = locationSettingsResultLauncher;
     }
 
@@ -70,8 +67,35 @@ public class AddDatumListener implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
+        CurrentLocation.LocationResultCallback callback = location -> {
+            Coordinate coordinate = new Coordinate(location == null ? null : location.getLongitude(), location == null ? null : location.getLatitude());
 
-        CurrentLocation.getLocation(context, callback, locationSettingsResultLauncher);
+            try {
+                //check whether key has Intensity and show Intensity dialog if so, add Datum without Intensity otherwise
+                if (data.getData(key) instanceof IteratorWithIntensity){
+                    chooseIntensity(context, (dialogInterface, i) -> {
+                        try {
+                            data.addData(key, Intensity.values()[i+1], coordinate);
+
+                        } catch (TypeMismatchException e) {
+                            e.printStackTrace();
+                        }
+
+                    });
+                }
+                else{
+                    data.addData(key, coordinate);
+                }
+
+                Synchronizer.autoSynchronize(context, data.getData());
+
+            } catch (EntryNotFoundException | TypeMismatchException e) {
+                e.printStackTrace();
+            }
+        };
+
+        CurrentLocation.callback = callback;
+        CurrentLocation.getLocation(locationSettingsResultLauncher);
 
     }
 }

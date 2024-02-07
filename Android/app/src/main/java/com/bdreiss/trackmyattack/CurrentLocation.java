@@ -40,8 +40,13 @@ public class CurrentLocation {
 
     }
 
+    public static Context context;
+    public static LocationResultCallback callback;
 
-    public static void getLocation(Context context, LocationResultCallback callback,  ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
+
+
+
+    public static void getLocation(ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
 
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean gpsEnabled = false;
@@ -61,14 +66,14 @@ public class CurrentLocation {
                 locationSettingsResultLauncher.launch(intent);
             });
 
-            builder.setNegativeButton("No", (dialogInterface, i) -> {finishGettingLocation(context, callback);});
+            builder.setNegativeButton("No", (dialogInterface, i) -> {finishGettingLocation();});
             builder.show();
 
         } else
-            finishGettingLocation(context, callback);
+            finishGettingLocation();
     }
 
-    public static void finishGettingLocation(Context context, LocationResultCallback callback){
+    public static void finishGettingLocation(){
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
