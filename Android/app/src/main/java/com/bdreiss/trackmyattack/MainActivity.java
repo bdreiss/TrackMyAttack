@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Choose Intensity");
 
-                CurrentLocation.getCurrentLocation(this, location ->{
+                CurrentLocation.getLocation(this, location ->{
 
                         //set items and implement adding data on choosing
                         builder.setItems(intensities, (dialog, which) -> {

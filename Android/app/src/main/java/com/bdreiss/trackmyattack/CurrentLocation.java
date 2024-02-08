@@ -23,7 +23,8 @@ public class CurrentLocation {
 
     }
 
-    public static void getCurrentLocation(Context context, LocationResultCallback callback) {
+
+    public static void getLocation(Context context, LocationResultCallback callback) {
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -32,7 +33,7 @@ public class CurrentLocation {
             return;
         }
 
-        fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
+        fusedLocationProviderClient.getLastLocation()
                 .addOnSuccessListener(location -> {
                     if (location != null) {
                         Coordinate coordinate = new Coordinate(location.getLatitude(), location.getLongitude());
@@ -46,29 +47,6 @@ public class CurrentLocation {
                     // Handle failure case
                     callback.onLocationResult(null);
                 });
-    }
-    private static Coordinate getLastLocation(Context context) {
-        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
-
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return null;
-        }
-
-        Coordinate[] coordinate = new Coordinate[1];
-        coordinate[0] = null;
-
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-
-        task.addOnSuccessListener(location ->{
-            coordinate[0] = new Coordinate(location.getLatitude(), location.getLatitude());
-
-        });
-
-        while (!task.isComplete()){
-
-        }
-
-        return coordinate[0];
 
     }
 
