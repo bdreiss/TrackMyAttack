@@ -1,37 +1,20 @@
 package com.bdreiss.trackmyattack;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
-import android.widget.Toast;
-import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.provider.Settings;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResult;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
-
 
 import androidx.core.app.ActivityCompat;
 
 import com.bdreiss.dataAPI.util.Coordinate;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.Task;
 
 public class CurrentLocation {
 
@@ -40,20 +23,19 @@ public class CurrentLocation {
 
     }
 
-    public static Context context;
     public static LocationResultCallback callback;
 
 
 
 
-    public static void getLocation(ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
+    public static void getLocation(Context context, ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
 
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean gpsEnabled = false;
 
         try {
             gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch(Exception ex) {}
+        } catch(Exception ignored) {}
 
 
         if(!gpsEnabled) {
@@ -66,14 +48,14 @@ public class CurrentLocation {
                 locationSettingsResultLauncher.launch(intent);
             });
 
-            builder.setNegativeButton("No", (dialogInterface, i) -> {finishGettingLocation();});
+            builder.setNegativeButton("No", (dialogInterface, i) -> {finishGettingLocation(context);});
             builder.show();
 
         } else
-            finishGettingLocation();
+            finishGettingLocation(context);
     }
 
-    public static void finishGettingLocation(){
+    public static void finishGettingLocation(Context context){
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -99,8 +81,5 @@ public class CurrentLocation {
 
 
     }
-    private boolean isGpsEnabled(Context context) {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
+
 }

@@ -33,7 +33,7 @@ public class LayoutListener implements View.OnClickListener {
     LayoutListenerInterface layoutListenerInterface;//includes functions for getting data and returning to main activity
 
 
-    private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
+    private final ActivityResultLauncher<Intent> locationSettingsResultLauncher;
     public LayoutListener(Context context, AbstractData data, FragmentManager fragmentManager, LayoutListenerInterface layoutListenerInterface, ActivityResultLauncher<Intent> locationSettingsResultLauncher){
         this.context = context;
         this.data = data;

@@ -1,16 +1,12 @@
 package com.bdreiss.trackmyattack.datamanipulation;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.core.app.ActivityCompat;
 
 import com.bdreiss.dataAPI.core.AbstractData;
 import com.bdreiss.dataAPI.enums.Intensity;
@@ -20,9 +16,6 @@ import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.dataAPI.util.IteratorWithIntensity;
 import com.bdreiss.trackmyattack.CurrentLocation;
 import com.bdreiss.trackmyattack.sync.Synchronizer;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.Task;
 
 
 /*
@@ -35,7 +28,7 @@ public class AddDatumListener implements View.OnClickListener {
     private String key;
     AbstractData data;
 
-    private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
+    final private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
 
     public AddDatumListener(Context context, AbstractData data,  ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
         this.context = context;
@@ -67,7 +60,7 @@ public class AddDatumListener implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        CurrentLocation.LocationResultCallback callback = location -> {
+        CurrentLocation.callback = location -> {
             Coordinate coordinate = new Coordinate(location == null ? null : location.getLongitude(), location == null ? null : location.getLatitude());
 
             try {
@@ -93,9 +86,7 @@ public class AddDatumListener implements View.OnClickListener {
                 e.printStackTrace();
             }
         };
-
-        CurrentLocation.callback = callback;
-        CurrentLocation.getLocation(locationSettingsResultLauncher);
+        CurrentLocation.getLocation(context, locationSettingsResultLauncher);
 
     }
 }

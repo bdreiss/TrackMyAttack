@@ -1,14 +1,11 @@
 package com.bdreiss.trackmyattack;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -17,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 
 import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.core.AilmentData;
@@ -37,10 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
         public static DataModel data;
         public Settings settings;
-
-        private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
-
-        private CurrentLocation.LocationResultCallback callback;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +85,15 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Choose Intensity");
 
-                callback = location -> {
+                //set items and implement adding data on choosing
+                //TODO add coordinates
+
+                CurrentLocation.callback = location -> {
                         //set items and implement adding data on choosing
                         builder.setItems(intensities, (dialog, which) -> {
                                 try {
-                                        ailmentData.addData("Migraine", Intensity.values()[which], location == null ? null: new Coordinate(location.getLatitude(), location.getLongitude()));//TODO add coordinates
-                                        Synchronizer.autoSynchronize(MainActivity.this,data, syncButton);
+                                        ailmentData.addData("Migraine", Intensity.values()[which], location == null ? null : new Coordinate(location.getLatitude(), location.getLongitude()));//TODO add coordinates
+                                        Synchronizer.autoSynchronize(this, data, syncButton);
                                 } catch (TypeMismatchException e) {
                                         e.printStackTrace();
                                 }
@@ -109,15 +104,12 @@ public class MainActivity extends AppCompatActivity {
 
                 };
 
-                CurrentLocation.context = this;
-
-                CurrentLocation.callback = callback;
-
-                locationSettingsResultLauncher = registerForActivityResult(
+                // returning from settings
+                ActivityResultLauncher<Intent> locationSettingsResultLauncher = registerForActivityResult(
                         new ActivityResultContracts.StartActivityForResult(),
                         result -> {
                                 // returning from settings
-                                CurrentLocation.finishGettingLocation();
+                                CurrentLocation.finishGettingLocation(this);
                         });
 
 
