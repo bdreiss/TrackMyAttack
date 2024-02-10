@@ -31,41 +31,41 @@ import com.bdreiss.trackmyattack.sync.Synchronizer;
 
 public class MainActivity extends AppCompatActivity {
 
-        public static DataModel data;
-        public Settings settings;
+    public static DataModel data;
+    public Settings settings;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            activityMain();
-            }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activityMain();
+    }
 
-        private void activityMain(){
+    private void activityMain() {
         setContentView(R.layout.activity_main);
 
         data = new DataModel(getFilesDir().getAbsolutePath());
 
         //temporary settings until settings user interface has been implemented
-                //TODO implement user interface for settings
+        //TODO implement user interface for settings
         settings = new Settings(this);
         settings.setAutomaticSync(true);
         settings.setSyncMethod(SyncMethod.DROPBOX);
 
         //write data to text file, so when DataModel in DataAPI is changed, data can be transferred (temporary measure)
-                //TODO implement better method for migrating data
+        //TODO implement better method for migrating data
         try {
-                BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir().getAbsolutePath() + "/Text.txt"));
-                bw.write(data.print());
-                bw.close();
+            BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir().getAbsolutePath() + "/Text.txt"));
+            bw.write(data.print());
+            bw.close();
         } catch (IOException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
 
         //sync Button that turns a different color, if data has not been synced (i.e. because there was not internet connection)
         Button syncButton = findViewById(R.id.button_sync);
 
         if (!settings.getSynced())
-                syncButton.setBackgroundColor(Color.RED);
+            syncButton.setBackgroundColor(Color.RED);
 
         //sync data on click
         syncButton.setOnClickListener(v -> Synchronizer.synchronize(this, data, syncButton));
@@ -76,57 +76,32 @@ public class MainActivity extends AppCompatActivity {
         //sub type of an abstract data model containing methods only pertaining to ailments (in our case migraines)
         AilmentData ailmentData = new AilmentData(data);
 
-                String[] intensities = new String[Intensity.values().length];
+        // returning from settings
+        ActivityResultLauncher<Intent> locationSettingsResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    CurrentLocation.finishGettingLocation(this);
+                });
 
-                //get all intensities
-                for (int i=0;i <Intensity.values().length;i++)
-                        intensities[i] = Intensity.values()[i].toString();
+        AddDatumListener addDatumListener = new AddDatumListener(this, ailmentData, locationSettingsResultLauncher);
+        addDatumListener.setKey("Migraine");
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Choose Intensity");
-
-                //set items and implement adding data on choosing
-                //TODO add coordinates
-
-                CurrentLocation.callback = location -> {
-                        //set items and implement adding data on choosing
-                        builder.setItems(intensities, (dialog, which) -> {
-                                try {
-                                        ailmentData.addData("Migraine", Intensity.values()[which], location == null ? null : new Coordinate(location.getLatitude(), location.getLongitude()));//TODO add coordinates
-                                        Synchronizer.autoSynchronize(this, data, syncButton);
-                                } catch (TypeMismatchException e) {
-                                        e.printStackTrace();
-                                }
-                        });
-                        builder.setNegativeButton("Cancel", null);
-                        builder.create();
-                        builder.show();
-
-                };
-
-                // returning from settings
-                ActivityResultLauncher<Intent> locationSettingsResultLauncher = registerForActivityResult(
-                        new ActivityResultContracts.StartActivityForResult(),
-                        result -> {
-                                // returning from settings
-                                CurrentLocation.finishGettingLocation(this);
-                        });
-
-
-                //listener for adding new Datum initiating dialog where user can add migraine with Intensity
-        migraineButton.setOnClickListener(new AddDatumListener(this, ailmentData, locationSettingsResultLauncher));
+        //listener for adding new Datum initiating dialog where user can add migraine with Intensity
+        migraineButton.setOnClickListener(addDatumListener);
 
         //on long click, show existing data via EditItemDialog but leave out the add key elements (because we don't need to add ailment keys)
         migraineButton.setOnLongClickListener(v -> {
-                EditItemDialog editItemDialog = new EditItemDialog(this,"Migraine", ailmentData, new AddKeyDialogListener() {
-                        @Override
-                        public void addKey(String key, Boolean intensity) {}
+            EditItemDialog editItemDialog = new EditItemDialog(this, "Migraine", ailmentData, new AddKeyDialogListener() {
+                @Override
+                public void addKey(String key, Boolean intensity) {
+                }
 
-                        @Override
-                        public void updateOriginalLayout() {}
-                }, syncButton);
-                editItemDialog.show(getSupportFragmentManager(),"Edit Item Dialog");
-                return true;
+                @Override
+                public void updateOriginalLayout() {
+                }
+            }, syncButton);
+            editItemDialog.show(getSupportFragmentManager(), "Edit Item Dialog");
+            return true;
         });
 
         /*
@@ -146,6 +121,6 @@ public class MainActivity extends AppCompatActivity {
         LayoutListener remedyLayoutListener = new LayoutListener(this, new RemedyData(data), getSupportFragmentManager(), this::activityMain, locationSettingsResultLauncher);
         Button remedyViewButton = findViewById(R.id.button_remedies_view);
         remedyViewButton.setOnClickListener(remedyLayoutListener);
-        }
+    }
 
 }
