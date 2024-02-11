@@ -34,8 +34,17 @@ public class MainActivity extends AppCompatActivity {
     public static DataModel data;
     public Settings settings;
 
+    private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // returning from settings
+        locationSettingsResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    CurrentLocation.finishGettingLocation(this);
+                });
+
         super.onCreate(savedInstanceState);
         activityMain();
     }
@@ -76,12 +85,6 @@ public class MainActivity extends AppCompatActivity {
         //sub type of an abstract data model containing methods only pertaining to ailments (in our case migraines)
         AilmentData ailmentData = new AilmentData(data);
 
-        // returning from settings
-        ActivityResultLauncher<Intent> locationSettingsResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    CurrentLocation.finishGettingLocation(this);
-                });
 
         AddDatumListener addDatumListener = new AddDatumListener(this, ailmentData, locationSettingsResultLauncher);
         addDatumListener.setKey("Migraine");
