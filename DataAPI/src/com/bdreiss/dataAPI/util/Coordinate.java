@@ -1,12 +1,14 @@
 package com.bdreiss.dataAPI.util;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  * Class representing coordinates.
  */
-public class Coordinate implements Comparable<Coordinate> {
+public class Coordinate implements Comparable<Coordinate>, Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private Double latitude;
 	private Double longitude;
 
