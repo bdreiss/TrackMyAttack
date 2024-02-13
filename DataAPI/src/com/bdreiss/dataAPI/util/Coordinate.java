@@ -49,7 +49,7 @@ public class Coordinate implements Comparable<Coordinate>, Serializable {
 	@Override
 	public int compareTo(Coordinate o) {
 
-		if (o.latitude == latitude && o.longitude == longitude)
+		if (o.latitude.equals(latitude) && o.longitude.equals(longitude))
 			return 0;
 
 		return 1;

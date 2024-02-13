@@ -379,7 +379,7 @@ public class DataModel implements Serializable {
 			}
 			boolean add = true;
 			while (it.hasNext()) {
-				if (it.next().equals(coordinates)) {
+				if (it.next().compareTo(coordinates)==0) {
 					add = false;
 					break;
 				}
@@ -1100,7 +1100,7 @@ public class DataModel implements Serializable {
 			this.remedies = data.remedies;
 			this.symptoms = data.symptoms;
 			this.firstDate = data.firstDate;
-
+			this.coordinateTree = data.coordinateTree;
 			ois.close();
 
 		} catch (IOException | ClassNotFoundException e) {
