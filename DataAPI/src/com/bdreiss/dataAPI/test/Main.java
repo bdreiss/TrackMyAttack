@@ -1,7 +1,5 @@
 package com.bdreiss.dataAPI.test;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
@@ -13,7 +11,6 @@ import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
 import com.bdreiss.dataAPI.util.Datum;
 import com.bdreiss.dataAPI.util.DatumWithIntensity;
-import com.dropbox.core.oauth.DbxCredential;
 
 /**
  * 
@@ -33,7 +30,7 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException, EntryNotFoundException, TypeMismatchException {
 		
 		DataModel data = new DataModel(PATH);
-
+				
 		if (data.getSaveFile() != null)
 			data.getSaveFile().delete();
 		
@@ -48,7 +45,6 @@ public class Main {
 		Scanner scanner = new Scanner(new File(file));
 
 		String lastLine = "";
-		String nextLine = "";
 		boolean check = true;
 		while (scanner.hasNextLine() && check) {
 			String line = scanner.nextLine();

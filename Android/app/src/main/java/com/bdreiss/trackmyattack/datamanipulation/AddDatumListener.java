@@ -4,13 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 
 import com.bdreiss.dataAPI.core.AbstractData;
-import com.bdreiss.dataAPI.core.AilmentData;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
@@ -65,10 +63,7 @@ public class AddDatumListener implements View.OnClickListener {
         try {
             data.getData(key);
         } catch (EntryNotFoundException e) {
-            if (data instanceof AilmentData)
-                data.addKey(key, true);
-            else
-                throw new RuntimeException("Entry could not be found!");
+            throw new RuntimeException("Entry could not be found!");
         }
 
         CurrentLocation.callback = location -> {
@@ -97,6 +92,7 @@ public class AddDatumListener implements View.OnClickListener {
                 e.printStackTrace();
             }
         };
+
         CurrentLocation.getLocation(context, locationSettingsResultLauncher);
 
     }

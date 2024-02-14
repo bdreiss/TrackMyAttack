@@ -1,7 +1,5 @@
 package com.bdreiss.trackmyattack;
 
-
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,9 +18,6 @@ import com.bdreiss.dataAPI.core.AilmentData;
 import com.bdreiss.dataAPI.core.CauseData;
 import com.bdreiss.dataAPI.core.RemedyData;
 import com.bdreiss.dataAPI.core.SymptomData;
-import com.bdreiss.dataAPI.enums.Intensity;
-import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.trackmyattack.datamanipulation.AddDatumListener;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
 import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;
@@ -41,9 +36,7 @@ public class MainActivity extends AppCompatActivity {
         // returning from settings
         locationSettingsResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    CurrentLocation.finishGettingLocation(this);
-                });
+                result -> CurrentLocation.finishGettingLocation(this));
 
         super.onCreate(savedInstanceState);
         activityMain();
@@ -53,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         data = new DataModel(getFilesDir().getAbsolutePath());
+
+        //add "Migraine" in case it hasn't been added before
+        //avoids EntryNotFoundException in AddDatumListener
+        data.addAilmentKey("Migraine");
 
         //temporary settings until settings user interface has been implemented
         //TODO implement user interface for settings
