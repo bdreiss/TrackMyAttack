@@ -26,9 +26,13 @@ import com.bdreiss.trackmyattack.sync.Synchronizer;
 
 public class MainActivity extends AppCompatActivity {
 
+    //data model containing data (see DataAPI)
     public static DataModel data;
+
+    //settings for synchronization
     public Settings settings;
 
+    //used for returning from settings when asked to turn on GPS when adding data
     private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
 
     @Override
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         //sync Button that turns a different color, if data has not been synced (i.e. because there was not internet connection)
         Button syncButton = findViewById(R.id.button_sync);
 
+        //if data has not been synced turn sync button red
         if (!settings.getSynced())
             syncButton.setBackgroundColor(Color.RED);
 
@@ -82,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         //sub type of an abstract data model containing methods only pertaining to ailments (in our case migraines)
         AilmentData ailmentData = new AilmentData(data);
 
-
+        //listener for migraine button
         AddDatumListener addDatumListener = new AddDatumListener(this, ailmentData, locationSettingsResultLauncher);
         addDatumListener.setKey("Migraine");
 
@@ -92,10 +97,12 @@ public class MainActivity extends AppCompatActivity {
         //on long click, show existing data via EditItemDialog but leave out the add key elements (because we don't need to add ailment keys)
         migraineButton.setOnLongClickListener(v -> {
             EditItemDialog editItemDialog = new EditItemDialog(this, "Migraine", ailmentData, new AddKeyDialogListener() {
+                //nothing to do here
                 @Override
                 public void addKey(String key, Boolean intensity) {
                 }
 
+                //nothing to do here
                 @Override
                 public void updateOriginalLayout() {
                 }

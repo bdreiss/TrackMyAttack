@@ -16,31 +16,34 @@ import com.bdreiss.dataAPI.util.Coordinate;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+//class implementing methods for getting current location from user
 public class CurrentLocation {
 
+    //interface used for determining what to do with location
     public interface LocationResultCallback {
         void onLocationResult(Coordinate location);
 
     }
 
+    //callback used for determining what to do when returning from settings
     public static LocationResultCallback callback;
 
-
-
-
+    //gets the location
     public static void getLocation(Context context, ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
 
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean gpsEnabled = false;
 
+        //try whether GPS is enabled and ignore exceptions
         try {
             gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch(Exception ignored) {}
 
-
+        //prompt user to turn on GPS if not enabled finish getting location otherwise
         if(!gpsEnabled) {
 
-            // GPS not enabled, prompt user to enable GPS
+            // show alert dialog -> if user decides to turn on GPS use the lcoationSettingsResultLauncher
+            // finish getting location otherwise
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("GPS is not enabled. Do you want to go to settings menu?");
             builder.setPositiveButton("Yes", (dialogInterface, i) -> {
@@ -48,22 +51,26 @@ public class CurrentLocation {
                 locationSettingsResultLauncher.launch(intent);
             });
 
-            builder.setNegativeButton("No", (dialogInterface, i) -> {finishGettingLocation(context);});
+            builder.setNegativeButton("No", (dialogInterface, i) -> finishGettingLocation(context));
             builder.show();
 
         } else
             finishGettingLocation(context);
     }
 
+    //finishes getting location
     public static void finishGettingLocation(Context context){
+
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
 
+        // if no permission has been granted pass null to the callback and return
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Permissions not granted, consider requesting here and handling asynchronously
             callback.onLocationResult(null);
             return;
         }
 
+        //get the last location and pass it to the callback, if location is null, pass null
         fusedLocationProviderClient.getLastLocation()
                 .addOnSuccessListener(location -> {
                     if (location != null) {
