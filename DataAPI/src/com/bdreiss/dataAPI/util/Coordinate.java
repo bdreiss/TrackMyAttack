@@ -43,12 +43,18 @@ public class Coordinate implements Comparable<Coordinate>, Serializable {
 
 	@Override
 	public String toString() {
-		return String.valueOf(latitude) + ", " + longitude;
+		
+		String latitudeString = latitude == null? "null": String.valueOf(latitude);
+		String longitudeString = longitude == null? "null": String.valueOf(longitude);
+		return latitudeString + ", " + longitudeString;
 	}
 
 	@Override
 	public int compareTo(Coordinate o) {
 
+		if (o==null)
+			return -1;
+		
 		if (o.latitude.equals(latitude) && o.longitude.equals(longitude))
 			return 0;
 

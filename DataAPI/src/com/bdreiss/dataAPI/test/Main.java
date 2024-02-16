@@ -2,6 +2,7 @@ package com.bdreiss.dataAPI.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
@@ -9,6 +10,7 @@ import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.enums.Intensity;
 import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
 import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
+import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.dataAPI.util.Datum;
 import com.bdreiss.dataAPI.util.DatumWithIntensity;
 
@@ -36,7 +38,11 @@ public class Main {
 		
 		data = new DataModel(PATH);
 		
-		processTextFile(data, PATH + "/Text.txt");
+//		processTextFile(data, PATH + "/Text.txt");
+		
+		data.addSymptom("TEST", Intensity.HIGH, new Coordinate(16.342576203872817, 48.16216216216216));
+		
+		data.getCoordinate(LocalDate.now());
 		
 		data.print();
 	}
