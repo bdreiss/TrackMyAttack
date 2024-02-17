@@ -3,7 +3,9 @@ package com.bdreiss.trackmyattack;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -12,12 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 
 import com.bdreiss.dataAPI.core.DataModel;
 import com.bdreiss.dataAPI.core.AilmentData;
 import com.bdreiss.dataAPI.core.CauseData;
 import com.bdreiss.dataAPI.core.RemedyData;
 import com.bdreiss.dataAPI.core.SymptomData;
+import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.trackmyattack.datamanipulation.AddDatumListener;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
 import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;
@@ -128,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
         LayoutListener remedyLayoutListener = new LayoutListener(this, new RemedyData(data), getSupportFragmentManager(), this::activityMain, locationSettingsResultLauncher);
         Button remedyViewButton = findViewById(R.id.button_remedies_view);
         remedyViewButton.setOnClickListener(remedyLayoutListener);
+
+        TextView textView = findViewById(R.id.text_view);
+        textView.setText(String.valueOf(data.getCoordinate(LocalDate.now())));
     }
 
 }

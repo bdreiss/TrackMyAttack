@@ -6,15 +6,21 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.content.Intent;
 import android.provider.Settings;
+import android.util.Log;
+
 import androidx.activity.result.ActivityResultLauncher;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import androidx.core.app.ActivityCompat;
 
 import com.bdreiss.dataAPI.util.Coordinate;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.CancellationToken;
+import com.google.android.gms.tasks.OnTokenCanceledListener;
 
 //class implementing methods for getting current location from user
 public class CurrentLocation {
@@ -71,20 +77,57 @@ public class CurrentLocation {
         }
 
         //get the last location and pass it to the callback, if location is null, pass null
-        fusedLocationProviderClient.getLastLocation()
-                .addOnSuccessListener(location -> {
-                    if (location != null) {
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
+
+                if (location == null){
+                    Log.d("XXX", "GET CURRENT");
+                    //get the last location and pass it to the callback, if location is null, pass null
+                    fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
+                                @Override
+                                public boolean isCancellationRequested() {
+                                    return false;
+                                }
+
+                                @NonNull
+                                @Override
+                                public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+                                    return null;
+                                }
+                            }).addOnSuccessListener(location1 -> {
+
+                                    if (location1 != null) {
+                                        Coordinate coordinate = new Coordinate(location1.getLatitude(), location1.getLongitude());
+                                        callback.onLocationResult(coordinate);
+                                    } else {
+                                        // Handle null location, possibly by using getLastLocation or notifying the callback
+                                        callback.onLocationResult(null);
+                                    }
+                            })
+                            .addOnFailureListener(e -> {
+                                        // Handle failure case
+                                        callback.onLocationResult(null);
+                                    }
+                            );
+
+
+                }
+
+                else{
+                    Log.d("XXX", "GOT LAST");
+                if (location != null) {
                         Coordinate coordinate = new Coordinate(location.getLatitude(), location.getLongitude());
                         callback.onLocationResult(coordinate);
                     } else {
                         // Handle null location, possibly by using getLastLocation or notifying the callback
                         callback.onLocationResult(null);
                     }
-                })
+                }
+        })
                 .addOnFailureListener(e -> {
                     // Handle failure case
                     callback.onLocationResult(null);
-                });
+                }
+                );
 
 
     }

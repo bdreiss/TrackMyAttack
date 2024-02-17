@@ -38,12 +38,8 @@ public class Main {
 		
 		data = new DataModel(PATH);
 		
-//		processTextFile(data, PATH + "/Text.txt");
-		
-		data.addSymptom("TEST", Intensity.HIGH, new Coordinate(16.342576203872817, 48.16216216216216));
-		
-		data.getCoordinate(LocalDate.now());
-		
+		processTextFile(data, PATH + "/Text.txt");
+				
 		data.print();
 	}
 

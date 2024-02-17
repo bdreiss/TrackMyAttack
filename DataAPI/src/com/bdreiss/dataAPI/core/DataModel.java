@@ -370,7 +370,7 @@ public class DataModel implements Serializable {
 
 		// if coordinates have been passed and these coordinates are not already in the
 		// tree for the specified date add them
-		if (coordinates != null) {
+		if (coordinates != null && coordinates.getLatitude() != null && coordinates.getLongitude() != null) {
 			Iterator<Coordinate> it = getCoordinates(date.toLocalDate());
 
 			if (it == null) {
@@ -941,11 +941,16 @@ public class DataModel implements Serializable {
 		Double ySum = 0.0;
 
 		for (Coordinate p : coordinateSet) {
-			xSum += p.getLatitude();
-			ySum += p.getLongitude();
+			xSum += p.getLatitude() == null ? 0 : p.getLatitude();
+			ySum += p.getLongitude()==null? 0 : p.getLongitude();
 		}
 
-		return new Coordinate(xSum / coordinateSet.size(), ySum / coordinateSet.size());
+		try {
+			return new Coordinate(xSum / coordinateSet.size(), ySum / coordinateSet.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**

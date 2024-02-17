@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -67,8 +68,14 @@ public class AddDatumListener implements View.OnClickListener {
         }
 
         CurrentLocation.callback = location -> {
+
+
             Coordinate coordinate = new Coordinate(location == null ? null : location.getLongitude(), location == null ? null : location.getLatitude());
 
+            if (location != null) {
+                Log.d("XXX", String.valueOf(location.getLatitude()));
+                Log.d("XXX", String.valueOf(location.getLongitude()));
+            }
             try {
                 //check whether key has Intensity and show Intensity dialog if so, add Datum without Intensity otherwise
                 if (data.getData(key) instanceof IteratorWithIntensity){
@@ -91,6 +98,7 @@ public class AddDatumListener implements View.OnClickListener {
             } catch (EntryNotFoundException | TypeMismatchException e) {
                 e.printStackTrace();
             }
+
         };
 
         CurrentLocation.getLocation(context, locationSettingsResultLauncher);
