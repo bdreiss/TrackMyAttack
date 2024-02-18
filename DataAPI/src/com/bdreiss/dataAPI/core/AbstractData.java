@@ -145,4 +145,13 @@ import com.bdreiss.dataAPI.util.Datum;
 	public void addDatumDirectly(Category category, String string, Datum datum) {
 		data.addDatumDirectly(category, string, datum);
 	}
+	
+	/**
+	 * Print data for debugging purposes.
+	 * @return printable data
+	 * 
+	 */
+	public String print() {
+		return data.print();
+	}
 }

@@ -93,6 +93,8 @@ public class AddDatumListener implements View.OnClickListener {
                     data.addData(key, coordinate);
                 }
 
+                Log.d("XXX", data.print());
+
                 Synchronizer.autoSynchronize(context, data.getData());
 
             } catch (EntryNotFoundException | TypeMismatchException e) {
