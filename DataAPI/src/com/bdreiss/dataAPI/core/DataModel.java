@@ -1301,12 +1301,14 @@ public class DataModel implements Serializable {
 
 		}
 		sb.append("\n");
-
-		System.out.println(sb.toString());
+		sb.append(header("Coordinates"));
+		sb.append("\n");		
+		
 		// TODO: also printCoordinates
 		for (LocalDate d : coordinateTree.keySet())
-			System.out.println(d + ": " + Coordinate.printArray(getCoordinates(d)));
-
+			sb.append(d + ": " + Coordinate.printArray(getCoordinates(d)) + "\n");
+		
+		System.out.println(sb.toString());
 		return sb.toString();
 
 	}
