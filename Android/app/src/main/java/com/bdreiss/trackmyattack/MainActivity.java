@@ -3,7 +3,6 @@ package com.bdreiss.trackmyattack;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,7 +20,6 @@ import com.bdreiss.dataAPI.core.AilmentData;
 import com.bdreiss.dataAPI.core.CauseData;
 import com.bdreiss.dataAPI.core.RemedyData;
 import com.bdreiss.dataAPI.core.SymptomData;
-import com.bdreiss.dataAPI.util.Coordinate;
 import com.bdreiss.trackmyattack.datamanipulation.AddDatumListener;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
 import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;

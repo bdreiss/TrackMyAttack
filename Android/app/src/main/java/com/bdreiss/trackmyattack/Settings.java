@@ -18,13 +18,13 @@ import java.io.Serializable;
 
 public class Settings implements Serializable {
 
-    private final String SETTINGS_FILE_NAME = "settings";
     private final File SAVE_FILE;
     private boolean synced = true;//denotes whether changes have been synced or not
     private boolean automaticSync = false;//denotes whether automatic synchronization is turned on
     private SyncMethod syncMethod;//denotes the sync Method, that has been selected (DROPBOX, GOOGLE etc)
 
     public Settings(Context context){
+        String SETTINGS_FILE_NAME = "settings";
         this.SAVE_FILE = new File(context.getFilesDir() + "/" + SETTINGS_FILE_NAME);
         load();
     }

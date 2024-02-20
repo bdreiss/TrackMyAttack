@@ -77,7 +77,7 @@ public class AddKeyDialog extends DialogFragment {
         super.onStart();
 
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.85);
-        Objects.requireNonNull(getDialog()).getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Objects.requireNonNull(Objects.requireNonNull(getDialog()).getWindow()).setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
 

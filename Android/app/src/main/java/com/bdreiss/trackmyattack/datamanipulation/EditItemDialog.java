@@ -24,6 +24,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Stack;
 
 import com.bdreiss.dataAPI.core.AbstractData;
@@ -172,7 +173,7 @@ public class EditItemDialog extends DialogFragment {
             textViewDate.setOnLongClickListener(v -> {
 
                 //open DatePickerDialog, write back data and call setup again because order of items might have changed due to new date
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext());
+                DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext());
 
                 datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
 
@@ -346,7 +347,7 @@ public class EditItemDialog extends DialogFragment {
         {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
-            dialog.getWindow().setLayout(width, height);
+            Objects.requireNonNull(dialog.getWindow()).setLayout(width, height);
         }
     }
 }

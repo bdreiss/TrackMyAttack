@@ -43,12 +43,13 @@ public class CurrentLocation {
         //try whether GPS is enabled and ignore exceptions
         try {
             gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch(Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         //prompt user to turn on GPS if not enabled finish getting location otherwise
-        if(!gpsEnabled) {
+        if (!gpsEnabled) {
 
-            // show alert dialog -> if user decides to turn on GPS use the lcoationSettingsResultLauncher
+            // show alert dialog -> if user decides to turn on GPS use the locationSettingsResultLauncher
             // finish getting location otherwise
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("GPS is not enabled. Do you want to go to settings menu?");
@@ -65,7 +66,7 @@ public class CurrentLocation {
     }
 
     //finishes getting location
-    public static void finishGettingLocation(Context context){
+    public static void finishGettingLocation(Context context) {
 
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
 
@@ -79,21 +80,21 @@ public class CurrentLocation {
         //get the last location and pass it to the callback, if location is null, pass null
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
 
-                if (location == null){
-                    Log.d("XXX", "GET CURRENT");
-                    //get the last location and pass it to the callback, if location is null, pass null
-                    fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
-                                @Override
-                                public boolean isCancellationRequested() {
-                                    return false;
-                                }
+                    if (location == null) {
+                        Log.d("XXX", "GET CURRENT");
+                        //get the last location and pass it to the callback, if location is null, pass null
+                        fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
+                                    @Override
+                                    public boolean isCancellationRequested() {
+                                        return false;
+                                    }
 
-                                @NonNull
-                                @Override
-                                public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
-                                    return null;
-                                }
-                            }).addOnSuccessListener(location1 -> {
+                                    @NonNull
+                                    @Override
+                                    public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+                                        return null;
+                                    }
+                                }).addOnSuccessListener(location1 -> {
 
                                     if (location1 != null) {
                                         Coordinate coordinate = new Coordinate(location1.getLatitude(), location1.getLongitude());
@@ -102,31 +103,25 @@ public class CurrentLocation {
                                         // Handle null location, possibly by using getLastLocation or notifying the callback
                                         callback.onLocationResult(null);
                                     }
-                            })
-                            .addOnFailureListener(e -> {
-                                        // Handle failure case
-                                        callback.onLocationResult(null);
-                                    }
-                            );
+                                })
+                                .addOnFailureListener(e -> {
+                                            // Handle failure case
+                                            callback.onLocationResult(null);
+                                        }
+                                );
 
 
-                }
-
-                else{
-                    Log.d("XXX", "GOT LAST");
-                if (location != null) {
-                        Coordinate coordinate = new Coordinate(location.getLatitude(), location.getLongitude());
-                        callback.onLocationResult(coordinate);
                     } else {
-                        // Handle null location, possibly by using getLastLocation or notifying the callback
-                        callback.onLocationResult(null);
+
+                            Coordinate coordinate = new Coordinate(location.getLatitude(), location.getLongitude());
+                            callback.onLocationResult(coordinate);
+                            // Handle null location, possibly by using getLastLocation or notifying the callback
                     }
-                }
-        })
+                })
                 .addOnFailureListener(e -> {
-                    // Handle failure case
-                    callback.onLocationResult(null);
-                }
+                            // Handle failure case
+                            callback.onLocationResult(null);
+                        }
                 );
 
 
