@@ -69,13 +69,8 @@ public class AddDatumListener implements View.OnClickListener {
 
         CurrentLocation.callback = location -> {
 
-
             Coordinate coordinate = new Coordinate(location == null ? null : location.getLongitude(), location == null ? null : location.getLatitude());
 
-            if (location != null) {
-                Log.d("XXX", String.valueOf(location.getLatitude()));
-                Log.d("XXX", String.valueOf(location.getLongitude()));
-            }
             try {
                 //check whether key has Intensity and show Intensity dialog if so, add Datum without Intensity otherwise
                 if (data.getData(key) instanceof IteratorWithIntensity){

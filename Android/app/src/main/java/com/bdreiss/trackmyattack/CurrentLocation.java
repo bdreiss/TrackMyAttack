@@ -2,9 +2,12 @@ package com.bdreiss.trackmyattack;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -21,6 +24,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnTokenCanceledListener;
+
+import javax.security.auth.callback.Callback;
 
 //class implementing methods for getting current location from user
 public class CurrentLocation {
@@ -77,11 +82,49 @@ public class CurrentLocation {
             return;
         }
 
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        com.bdreiss.trackmyattack.Settings settings = new com.bdreiss.trackmyattack.Settings(context);
+
+        //check whether device is online, if it is not, set synced in settings to false
+        // and mark the sync button, synchronize otherwise
+        if (netInfo == null || !netInfo.isConnected()) {
+
+            showInternetPrompt(context, result -> {
+                if (result) {
+                    ConnectivityManager cm1 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo netInfo1 = cm1.getActiveNetworkInfo();
+
+                    if (netInfo1 != null && netInfo1.isConnected()) {
+                        goToFused(context, fusedLocationProviderClient);
+
+                    }
+
+                }
+            });
+
+        }
+
+        goToFused(context, fusedLocationProviderClient);
+
+
+    }
+
+    public static void goToFused(Context context, FusedLocationProviderClient fusedLocationProviderClient) {
         //get the last location and pass it to the callback, if location is null, pass null
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
 
                     if (location == null) {
-                        Log.d("XXX", "GET CURRENT");
                         //get the last location and pass it to the callback, if location is null, pass null
                         fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
                                     @Override
@@ -113,9 +156,9 @@ public class CurrentLocation {
 
                     } else {
 
-                            Coordinate coordinate = new Coordinate(location.getLatitude(), location.getLongitude());
-                            callback.onLocationResult(coordinate);
-                            // Handle null location, possibly by using getLastLocation or notifying the callback
+                        Coordinate coordinate = new Coordinate(location.getLatitude(), location.getLongitude());
+                        callback.onLocationResult(coordinate);
+                        // Handle null location, possibly by using getLastLocation or notifying the callback
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -123,8 +166,31 @@ public class CurrentLocation {
                             callback.onLocationResult(null);
                         }
                 );
+    }
 
+    public static void showInternetPrompt(final Context context, Callback callback) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Internet Connection Required");
+        builder.setMessage("This app requires an internet connection. Please turn on mobile network or Wi-Fi in Settings.");
+        builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                context.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                callback.onResult(true);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                callback.onResult(false);
+            }
+        });
+        builder.show();
+    }
 
+    public interface Callback {
+        void onResult(boolean result);
     }
 
 }
