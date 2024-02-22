@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.util.Log;
@@ -19,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
 import com.bdreiss.dataAPI.util.Coordinate;
+import com.bdreiss.trackmyattack.sync.Synchronizer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -82,20 +85,16 @@ public class CurrentLocation {
             return;
         }
 
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        com.bdreiss.trackmyattack.Settings settings = new com.bdreiss.trackmyattack.Settings(context);
-
         //check whether device is online, if it is not, set synced in settings to false
         // and mark the sync button, synchronize otherwise
-        if (netInfo == null || !netInfo.isConnected()) {
+        if (Synchronizer.isNetworkAvailable(context)) {
 
             showInternetPrompt(context, result -> {
                 if (result) {
                     ConnectivityManager cm1 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
                     NetworkInfo netInfo1 = cm1.getActiveNetworkInfo();
 
-                    if (netInfo1 != null && netInfo1.isConnected()) {
+                    if (Synchronizer.isNetworkAvailable(context)) {
                         goToFused(context, fusedLocationProviderClient);
 
                     }
@@ -192,5 +191,6 @@ public class CurrentLocation {
     public interface Callback {
         void onResult(boolean result);
     }
+
 
 }
