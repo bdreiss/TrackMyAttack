@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 result -> CurrentLocation.finishGettingLocation(this));
 
         super.onCreate(savedInstanceState);
+
         activityMain();
     }
 

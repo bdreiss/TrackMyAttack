@@ -87,28 +87,16 @@ public class CurrentLocation {
 
         //check whether device is online, if it is not, set synced in settings to false
         // and mark the sync button, synchronize otherwise
-        if (Synchronizer.isNetworkAvailable(context)) {
-
+        if (!Synchronizer.isNetworkAvailable(context))
             showInternetPrompt(context, result -> {
-                if (result) {
-                    ConnectivityManager cm1 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo netInfo1 = cm1.getActiveNetworkInfo();
-
-                    if (Synchronizer.isNetworkAvailable(context)) {
+                if (result)
+                    if (Synchronizer.isNetworkAvailable(context))
                         goToFused(context, fusedLocationProviderClient);
-
-                    }
-
-                }
             });
-
-        }
 
         goToFused(context, fusedLocationProviderClient);
 
-
     }
-
     public static void goToFused(Context context, FusedLocationProviderClient fusedLocationProviderClient) {
         //get the last location and pass it to the callback, if location is null, pass null
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
