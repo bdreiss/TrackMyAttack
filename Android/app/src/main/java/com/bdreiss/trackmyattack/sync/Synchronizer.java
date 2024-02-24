@@ -40,7 +40,7 @@ public abstract class Synchronizer extends Thread{
 
         //check whether device is online, if it is not, set synced in settings to false
         // and mark the sync button, synchronize otherwise
-        if (isNetworkAvailable(context)) {
+        if (!isNetworkAvailable(context)) {
 
             settings.setSynced(false);
             setSyncButton(context, syncButton, true);
