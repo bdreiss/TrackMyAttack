@@ -70,6 +70,9 @@ public class Dropbox {
 	 */
 	public static void authorize(String key, String authorizationToken, DataModel data) throws NetworkException {
 
+		if (key == null)
+			throw new NetworkException(new Exception("Key is null."));
+		
 		try {
 			if (authorizationToken == null)
 				throw new NetworkException(new NullPointerException(
