@@ -48,8 +48,13 @@ public class Dropbox {
 	 * Gets an URL for authorizing user.
 	 * @param key key for accessing Dropbox APIs
 	 * @return URL for authorizing usgi
+	 * @throws NetworkException thrown if key is null or empty
 	 */
-	public static String getAuthorizationURL(String key) {
+	public static String getAuthorizationURL(String key) throws NetworkException{
+		
+		if (key == null || key.isEmpty())
+			throw new NetworkException(new Exception("Key is null or empty."));
+		
 		// Run through Dropbox API authorization process without client secret
 		DbxRequestConfig requestConfig = new DbxRequestConfig("TrackMyAttack");
 		DbxAppInfo appInfoWithoutSecret = new DbxAppInfo(key);
@@ -70,8 +75,8 @@ public class Dropbox {
 	 */
 	public static void authorize(String key, String authorizationToken, DataModel data) throws NetworkException {
 
-		if (key == null)
-			throw new NetworkException(new Exception("Key is null."));
+		if (key == null || key.isEmpty())
+			throw new NetworkException(new Exception("Key is null or empty."));
 		
 		try {
 			if (authorizationToken == null)

@@ -44,6 +44,9 @@ public class DropboxSynchronizer extends Synchronizer {
         @SuppressLint("SetTextI18n") Thread authorizationThread = new Thread(() -> {
             try {
 
+                if (getKey() == null || getKey().isEmpty())
+                    retrieveKey();
+
                 //if there are no Dropbox credentials, initialize authentication process
                 if (!(new File(Dropbox.getDbxFilePath(data)).exists())) {
                     URL url = new URL(Dropbox.getAuthorizationURL(getKey()));
@@ -96,6 +99,8 @@ public class DropboxSynchronizer extends Synchronizer {
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
+            } catch (NetworkException e) {
+                e.printStackTrace();
             }
 
 
@@ -114,9 +119,7 @@ public class DropboxSynchronizer extends Synchronizer {
 
             if ((new File(Dropbox.getDbxFilePath(data)).exists())) {
                 try {
-
                     Dropbox.upload(data);
-
                 } catch (NetworkException e) {
                     e.printStackTrace();
                 }
@@ -150,6 +153,10 @@ public class DropboxSynchronizer extends Synchronizer {
             e.printStackTrace();
         }
         return key;
+    }
+
+    private void retrieveKey(){
+        //TODO implement retrieve key
     }
 
 }
