@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -97,9 +98,7 @@ public class DropboxSynchronizer extends Synchronizer {
                     });
                 }
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (NetworkException e) {
+            } catch (MalformedURLException | NetworkException e) {
                 e.printStackTrace();
             }
 
@@ -142,7 +141,8 @@ public class DropboxSynchronizer extends Synchronizer {
         String key = "";
         try {
 
-            FileReader is = new FileReader(context.getFilesDir() + "/TrackMyAttackKey");
+            File keyFile = new File(context.getFilesDir() + "/TrackMyAttackKey");
+            FileReader is = new FileReader(keyFile);
             BufferedReader bis = new BufferedReader(is);
 
             key = bis.readLine();
@@ -152,11 +152,12 @@ public class DropboxSynchronizer extends Synchronizer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return key;
     }
 
     private void retrieveKey(){
-        //TODO implement retrieve key
+
     }
 
 }
