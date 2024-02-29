@@ -23,6 +23,8 @@ public class Settings implements Serializable {
     private boolean automaticSync = false;//denotes whether automatic synchronization is turned on
     private SyncMethod syncMethod;//denotes the sync Method, that has been selected (DROPBOX, GOOGLE etc)
 
+    private boolean deniedLocationAccess = false;
+
     public Settings(Context context){
         String SETTINGS_FILE_NAME = "settings";
         this.SAVE_FILE = new File(context.getFilesDir() + "/" + SETTINGS_FILE_NAME);
@@ -55,6 +57,7 @@ public class Settings implements Serializable {
         this.synced = settings.synced;
         this.automaticSync = settings.automaticSync;
         this.syncMethod = settings.syncMethod;
+        this.deniedLocationAccess = settings.deniedLocationAccess;
     }
 
     //save changes to settings file
@@ -110,6 +113,16 @@ public class Settings implements Serializable {
     public boolean getAutomaticSync(){
         load();
         return this.automaticSync;
+    }
+
+    public boolean getDeniedLocationAccess(){
+        load();
+        return this.deniedLocationAccess;
+    }
+
+    public void setDeniedLocationAccess(boolean use){
+        this.deniedLocationAccess = use;
+        save();
     }
 
 }
