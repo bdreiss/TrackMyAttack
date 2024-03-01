@@ -1,6 +1,7 @@
 package com.bdreiss.trackmyattack;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -39,11 +40,21 @@ public class CurrentLocation {
 
     }
 
+    private static int requestCode = 0;
+
     //callback used for determining what to do when returning from settings
     public static LocationResultCallback callback;
 
     //gets the location
     public static void getLocation(Context context, ActivityResultLauncher<Intent> locationSettingsResultLauncher) {
+
+        // if no permission has been granted pass null to the callback and return
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && !(new com.bdreiss.trackmyattack.Settings(context).getDeniedLocationAccess())) {
+            ActivityCompat.requestPermissions((Activity) context, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+            callback.onLocationResult(null);
+            return;
+        }
+
 
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean gpsEnabled = false;
@@ -80,7 +91,6 @@ public class CurrentLocation {
 
         // if no permission has been granted pass null to the callback and return
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Permissions not granted, consider requesting here and handling asynchronously
             callback.onLocationResult(null);
             return;
         }
@@ -179,6 +189,5 @@ public class CurrentLocation {
     public interface Callback {
         void onResult(boolean result);
     }
-
 
 }

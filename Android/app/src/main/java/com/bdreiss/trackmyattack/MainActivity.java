@@ -1,14 +1,20 @@
 package com.bdreiss.trackmyattack;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     //used for returning from settings when asked to turn on GPS when adding data
     private ActivityResultLauncher<Intent> locationSettingsResultLauncher;
 
+    public final static int MY_PERMISSIONS_REQUEST_LOCATION = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // returning from settings
@@ -63,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
         settings = new Settings(this);
         settings.setAutomaticSync(true);
         settings.setSyncMethod(SyncMethod.DROPBOX);
+
+        // if no permission has been granted pass null to the callback and return
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && !settings.getDeniedLocationAccess()) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+        }
 
         //write data to text file, so when DataModel in DataAPI is changed, data can be transferred (temporary measure)
         //TODO implement better method for migrating data
@@ -135,5 +148,18 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.text_view);
         textView.setText(String.valueOf(data.getCoordinate(LocalDate.now())));
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+                } else {
+                    new Settings(this).setDeniedLocationAccess(true);
+                }
+            }
+        }
+    }
 }
