@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // returning from settings
         locationSettingsResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> CurrentLocation.finishGettingLocation(this));
+                result -> CurrentLocation.finishGettingLocation(this, true));
 
         super.onCreate(savedInstanceState);
 

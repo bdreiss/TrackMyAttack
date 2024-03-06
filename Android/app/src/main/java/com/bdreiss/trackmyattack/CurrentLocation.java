@@ -55,18 +55,8 @@ public class CurrentLocation {
             return;
         }
 
-
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        boolean gpsEnabled = false;
-
-        //try whether GPS is enabled and ignore exceptions
-        try {
-            gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch (Exception ignored) {
-        }
-
         //prompt user to turn on GPS if not enabled finish getting location otherwise
-        if (!gpsEnabled) {
+        if (!gpsEnabled(context)) {
 
             // show alert dialog -> if user decides to turn on GPS use the locationSettingsResultLauncher
             // finish getting location otherwise
@@ -77,16 +67,20 @@ public class CurrentLocation {
                 locationSettingsResultLauncher.launch(intent);
             });
 
-            builder.setNegativeButton("No", (dialogInterface, i) -> finishGettingLocation(context));
+            builder.setNegativeButton("No", (dialogInterface, i) -> finishGettingLocation(context, false));
             builder.show();
 
         } else
-            finishGettingLocation(context);
+            finishGettingLocation(context, true);
     }
 
     //finishes getting location
-    public static void finishGettingLocation(Context context) {
+    public static void finishGettingLocation(Context context, boolean getLocation) {
 
+        if (!gpsEnabled(context)) {
+            callback.onLocationResult(null);
+            return;
+        }
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
 
         // if no permission has been granted pass null to the callback and return
@@ -97,7 +91,7 @@ public class CurrentLocation {
 
         //check whether device is online, if it is not, set synced in settings to false
         // and mark the sync button, synchronize otherwise
-        if (!Synchronizer.isNetworkAvailable(context))
+        if (!Synchronizer.isNetworkAvailable(context) && getLocation)
             showInternetPrompt(context, result -> {
                 if (result)
                     if (Synchronizer.isNetworkAvailable(context))
@@ -108,6 +102,12 @@ public class CurrentLocation {
 
     }
     public static void goToFused(Context context, FusedLocationProviderClient fusedLocationProviderClient) {
+
+        if (!Synchronizer.isNetworkAvailable(context)){
+            callback.onLocationResult(null);
+            return;
+        }
+
         //get the last location and pass it to the callback, if location is null, pass null
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -188,6 +188,19 @@ public class CurrentLocation {
 
     public interface Callback {
         void onResult(boolean result);
+    }
+
+    private static boolean gpsEnabled(Context context){
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        boolean gpsEnabled = false;
+
+        //try whether GPS is enabled and ignore exceptions
+        try {
+            gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ignored) {
+        }
+        return gpsEnabled;
     }
 
 }
