@@ -168,11 +168,10 @@ public class CurrentLocation {
     public static void showInternetPrompt(final Context context, Callback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Internet Connection Required");
-        builder.setMessage("This app requires an internet connection. Please turn on mobile network or Wi-Fi in Settings.");
-        builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+        builder.setMessage("This app requires an internet connection to access your location. Please turn on mobile network or Wi-Fi in Settings.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                context.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
                 callback.onResult(true);
             }
         });
