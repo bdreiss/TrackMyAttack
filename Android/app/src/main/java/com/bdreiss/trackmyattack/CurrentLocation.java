@@ -3,16 +3,10 @@ package com.bdreiss.trackmyattack;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 
@@ -29,8 +23,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnTokenCanceledListener;
 
-import javax.security.auth.callback.Callback;
-
 //class implementing methods for getting current location from user
 public class CurrentLocation {
 
@@ -39,8 +31,6 @@ public class CurrentLocation {
         void onLocationResult(Coordinate location);
 
     }
-
-    private static int requestCode = 0;
 
     //callback used for determining what to do when returning from settings
     public static LocationResultCallback callback;
@@ -56,7 +46,7 @@ public class CurrentLocation {
         }
 
         //prompt user to turn on GPS if not enabled finish getting location otherwise
-        if (!gpsEnabled(context)) {
+        if (gpsNotEnabled(context)) {
 
             // show alert dialog -> if user decides to turn on GPS use the locationSettingsResultLauncher
             // finish getting location otherwise
@@ -77,7 +67,7 @@ public class CurrentLocation {
     //finishes getting location
     public static void finishGettingLocation(Context context, boolean getLocation) {
 
-        if (!gpsEnabled(context)) {
+        if (gpsNotEnabled(context)) {
             callback.onLocationResult(null);
             return;
         }
@@ -110,13 +100,6 @@ public class CurrentLocation {
 
         //get the last location and pass it to the callback, if location is null, pass null
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
@@ -169,18 +152,10 @@ public class CurrentLocation {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Internet Connection Required");
         builder.setMessage("This app requires an internet connection to access your location. Please turn on mobile network or Wi-Fi in Settings.");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                callback.onResult(true);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                callback.onResult(false);
-            }
+        builder.setPositiveButton("OK", (dialog, which) -> callback.onResult(true));
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.dismiss();
+            callback.onResult(false);
         });
         builder.show();
     }
@@ -189,7 +164,7 @@ public class CurrentLocation {
         void onResult(boolean result);
     }
 
-    private static boolean gpsEnabled(Context context){
+    private static boolean gpsNotEnabled(Context context){
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         boolean gpsEnabled = false;
@@ -199,7 +174,7 @@ public class CurrentLocation {
             gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch (Exception ignored) {
         }
-        return gpsEnabled;
+        return !gpsEnabled;
     }
 
 }
