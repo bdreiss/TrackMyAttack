@@ -100,8 +100,8 @@ public class GeoData extends AbstractData implements Serializable {
 	/**
 	 * 
 	 */
-	public void print() {
-		data.print();
+	public String print() {
+		return data.print();
 	}
 
 	private void load(File saveFile) {
