@@ -1,5 +1,6 @@
 package main.java.com.bdreiss.trackmyattack;
 
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -43,7 +44,7 @@ class MainFrame extends JFrame{
 			
 		setSize(screenSize);
 
-		setLayout(new FlowLayout());
+		setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		//Panel that holds all labels -> it is in a separate frame from data as not to move with scroll bar
 		LabelMainPanel labelMainPanel = new LabelMainPanel(data, geoData);
