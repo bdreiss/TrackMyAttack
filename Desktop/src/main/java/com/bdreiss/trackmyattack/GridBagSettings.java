@@ -21,6 +21,8 @@ public class GridBagSettings extends GridBagConstraints {
 		insets.top = 0;
 		insets.bottom = 0;
 
+		weightx = 1.0; 
+		weighty = 1.0; 
 	}
 
 	/**
