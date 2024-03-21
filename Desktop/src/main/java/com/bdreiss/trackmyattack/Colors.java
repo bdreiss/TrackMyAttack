@@ -8,11 +8,11 @@ import java.awt.Color;
 
 public enum Colors {
 	/**
-	 * 
+	 * Color used for empty cells.
 	 */
 	EMPTY_COLOR(Color.WHITE), 
 	/**
-	 * 
+	 * Color used for the grid.
 	 */
 	GRID_COLOR(new Color(240, 240, 240));
 
@@ -23,8 +23,9 @@ public enum Colors {
 	}
 
 	/**
+	 * Returns the color.
 	 * 
-	 * @return
+	 * @return the color
 	 */
 	public Color value() {
 		return color;
