@@ -32,8 +32,8 @@ public class LabelMainPanel extends JPanel {
 			private static final long serialVersionUID = 1L;
 
 			public FillPanel(double heightModifier) {
-				Dimension fillPanelDimension = new Dimension(Dimensions.LABEL_WIDTH.value(),
-						(int) (Dimensions.DATA_ROW_BOX_HEIGHT.value() * heightModifier));
+				Dimension fillPanelDimension = new Dimension(Units.LABEL_WIDTH.value(),
+						(int) (Units.DATA_ROW_BOX_HEIGHT.value() * heightModifier));
 				setMinimumSize(fillPanelDimension);
 				setPreferredSize(fillPanelDimension);
 				setMaximumSize(fillPanelDimension);

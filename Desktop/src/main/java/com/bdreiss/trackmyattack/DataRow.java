@@ -43,7 +43,7 @@ class DataRow extends JPanel {
 	public DataRow(String key, AbstractData data, AilmentData ailments, Color[] colorSet)
 			throws EntryNotFoundException {
 
-		setPreferredSize(new Dimension(super.getWidth(), Dimensions.DATA_ROW_BOX_HEIGHT.value()));
+		setPreferredSize(new Dimension(super.getWidth(), Units.DATA_ROW_BOX_HEIGHT.value()));
 
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 
@@ -121,11 +121,11 @@ class DataRow extends JPanel {
 
 					//set box to designated color
 					graphics.setColor(colorToSetFinal);
-					graphics.fillRect(0, 0, Dimensions.DATA_ROW_BOX_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value());
+					graphics.fillRect(0, 0, Units.DATA_ROW_BOX_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value());
 
 					//add grid border
 					graphics.setColor(Colors.GRID_COLOR.value());
-					graphics.drawRect(0, 0, Dimensions.DATA_ROW_BOX_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value() + 20);
+					graphics.drawRect(0, 0, Units.DATA_ROW_BOX_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value() + 20);
 
 					//check if attack occurred and paint circle according to intensity if so
 					try {
@@ -163,8 +163,8 @@ class DataRow extends JPanel {
 							}
 							
 							//paint circle
-							graphics.fillOval(offset, offset, Dimensions.DATA_ROW_BOX_WIDTH.value() - 2 * offset,
-									Dimensions.DATA_ROW_BOX_WIDTH.value() - 2 * offset);
+							graphics.fillOval(offset, offset, Units.DATA_ROW_BOX_WIDTH.value() - 2 * offset,
+									Units.DATA_ROW_BOX_WIDTH.value() - 2 * offset);
 						}
 					} catch (EntryNotFoundException e) {
 						e.printStackTrace();
@@ -175,9 +175,9 @@ class DataRow extends JPanel {
 			};
 
 			//set box to fixed size and add it
-			box.setMinimumSize(new Dimension(Dimensions.DATA_ROW_BOX_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value()));
-			box.setMaximumSize(new Dimension(Dimensions.DATA_ROW_BOX_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value()));
-			box.setPreferredSize(new Dimension(Dimensions.DATA_ROW_BOX_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value()));
+			box.setMinimumSize(new Dimension(Units.DATA_ROW_BOX_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value()));
+			box.setMaximumSize(new Dimension(Units.DATA_ROW_BOX_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value()));
+			box.setPreferredSize(new Dimension(Units.DATA_ROW_BOX_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value()));
 			add(box);
 			
 			//date++
@@ -190,7 +190,7 @@ class DataRow extends JPanel {
 	//if only date is passed to the constructor create a date row
 	public DataRow(LocalDate startDate) {
 
-		setPreferredSize(new Dimension(super.getWidth(), Dimensions.DATA_ROW_BOX_HEIGHT.value()));
+		setPreferredSize(new Dimension(super.getWidth(), Units.DATA_ROW_BOX_HEIGHT.value()));
 
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		
@@ -212,11 +212,11 @@ class DataRow extends JPanel {
 
 			//set label to fixed size
 			dateLabel.setMinimumSize(
-					new Dimension(Dimensions.DATA_ROW_BOX_WIDTH.value() * 7, Dimensions.DATA_ROW_BOX_HEIGHT.value()));
+					new Dimension(Units.DATA_ROW_BOX_WIDTH.value() * 7, Units.DATA_ROW_BOX_HEIGHT.value()));
 			dateLabel.setMaximumSize(
-					new Dimension(Dimensions.DATA_ROW_BOX_WIDTH.value() * 7, Dimensions.DATA_ROW_BOX_HEIGHT.value()));
+					new Dimension(Units.DATA_ROW_BOX_WIDTH.value() * 7, Units.DATA_ROW_BOX_HEIGHT.value()));
 			dateLabel.setPreferredSize(
-					new Dimension(Dimensions.DATA_ROW_BOX_WIDTH.value() * 7, Dimensions.DATA_ROW_BOX_HEIGHT.value()));
+					new Dimension(Units.DATA_ROW_BOX_WIDTH.value() * 7, Units.DATA_ROW_BOX_HEIGHT.value()));
 
 			add(dateLabel);
 

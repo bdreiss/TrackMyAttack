@@ -39,7 +39,7 @@ class MainFrame extends JFrame{
 		//height is defined by (items in (data + geoData + DATA_PANELS_OFFSET) * (height of data row)
 		Dimension scrollSize = new Dimension(
 				(int) (screenSize.width * SCREENSIZE_MODIFIER),
-				(data.getSize()+(geoData==null?0:geoData.getSize())+DATA_PANELS_OFFSET)*Dimensions.DATA_ROW_BOX_HEIGHT.value()
+				(data.getSize()+(geoData==null?0:geoData.getSize())+DATA_PANELS_OFFSET)*Units.DATA_ROW_BOX_HEIGHT.value()
 				);
 			
 		setSize(screenSize);
@@ -48,7 +48,7 @@ class MainFrame extends JFrame{
 		
 		//Panel that holds all labels -> it is in a separate frame from data as not to move with scroll bar
 		LabelMainPanel labelMainPanel = new LabelMainPanel(data, geoData);
-		labelMainPanel.setPreferredSize(new Dimension(Dimensions.LABEL_WIDTH.value(), scrollSize.height));
+		labelMainPanel.setPreferredSize(new Dimension(Units.LABEL_WIDTH.value(), scrollSize.height));
 		
 		add(labelMainPanel);
 

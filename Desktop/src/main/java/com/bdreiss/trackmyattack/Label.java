@@ -26,11 +26,11 @@ public class Label extends JLabel {
 		super.paint(graphics);
 		setOpaque(true);//so background color is shown
 		setBackground(Color.WHITE);
-		setPreferredSize(new Dimension(Dimensions.LABEL_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value()));//labels always have to be the same height as boxes
+		setPreferredSize(new Dimension(Units.LABEL_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value()));//labels always have to be the same height as boxes
 		
 		//draw the grid
 		graphics.setColor(Colors.GRID_COLOR.value());
-		graphics.drawRect(0, 0, Dimensions.LABEL_WIDTH.value(), Dimensions.DATA_ROW_BOX_HEIGHT.value());
+		graphics.drawRect(0, 0, Units.LABEL_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value());
 
 	}
 
