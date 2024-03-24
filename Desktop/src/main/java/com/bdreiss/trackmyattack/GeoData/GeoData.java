@@ -206,7 +206,7 @@ public class GeoData extends AbstractData implements Serializable {
 
 	private void updateRange(LocalDate startDate, LocalDate finalDate) {
 
-		GetDataByCountry.getData(startDate, finalDate, this, category);
+		DataByCountry.getData(startDate, finalDate, this, category);
 
 	}
 
