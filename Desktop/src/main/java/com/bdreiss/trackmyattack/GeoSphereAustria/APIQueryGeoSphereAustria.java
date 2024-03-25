@@ -157,31 +157,25 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 			System.out.println(date);
 			//TODO: handle case of data not being complete: first case all values are null -> remove station and make new query (make function boolean?), make nearestStation take List of Nonos -> make inner class query 
 			
-			GeoDataType temperatureMedianE = GeoDataType.TEMPERATURE_MEDIAN;
-			GeoDataType temperatureMinE = GeoDataType.TEMPERATURE_MIN;
-			GeoDataType temperatureMaxE = GeoDataType.TEMPERATURE_MAX;
-			GeoDataType pressureE = GeoDataType.PRESSURE;
-			GeoDataType vaporE = GeoDataType.VAPOR;
-			GeoDataType humidityE = GeoDataType.HUMIDITY;
 
 			if (temperatureMedian != null)
-				geoData.addDatumDirectly(category, temperatureMedianE.toString(), new GeoDatum(date.atStartOfDay(),
-						temperatureMedian, temperatureMedianE.lowerBound(), temperatureMedianE.upperBound()));
+				geoData.addDatumDirectly(category, GeoDataType.TEMPERATURE_MEDIAN.toString(), new GeoDatum(date.atStartOfDay(),
+						temperatureMedian, GeoDataType.TEMPERATURE_MEDIAN));
 			if (temperatureMin != null)
-				geoData.addDatumDirectly(category, temperatureMinE.toString(), new GeoDatum(date.atStartOfDay(),
-						temperatureMin, temperatureMinE.lowerBound(), temperatureMinE.upperBound()));
+				geoData.addDatumDirectly(category, GeoDataType.TEMPERATURE_MIN.toString(), new GeoDatum(date.atStartOfDay(),
+						temperatureMin, GeoDataType.TEMPERATURE_MIN));
 			if (temperatureMax != null)
-				geoData.addDatumDirectly(category, temperatureMaxE.toString(), new GeoDatum(date.atStartOfDay(),
-						temperatureMax, temperatureMaxE.lowerBound(), temperatureMaxE.upperBound()));
+				geoData.addDatumDirectly(category, GeoDataType.TEMPERATURE_MAX.toString(), new GeoDatum(date.atStartOfDay(),
+						temperatureMax, GeoDataType.TEMPERATURE_MAX));
 			if (druck != null)
-				geoData.addDatumDirectly(category, pressureE.toString(),
-						new GeoDatum(date.atStartOfDay(), druck, pressureE.lowerBound(), pressureE.upperBound()));
+				geoData.addDatumDirectly(category, GeoDataType.PRESSURE.toString(),
+						new GeoDatum(date.atStartOfDay(), druck, GeoDataType.PRESSURE));
 			if (dampf != null)
-				geoData.addDatumDirectly(category, vaporE.toString(),
-						new GeoDatum(date.atStartOfDay(), dampf, vaporE.lowerBound(), vaporE.upperBound()));
+				geoData.addDatumDirectly(category, GeoDataType.VAPOR.toString(),
+						new GeoDatum(date.atStartOfDay(), dampf, GeoDataType.VAPOR));
 			if (rel != null)
-				geoData.addDatumDirectly(category, humidityE.toString(),
-						new GeoDatum(date.atStartOfDay(), rel, humidityE.lowerBound(), humidityE.upperBound()));
+				geoData.addDatumDirectly(category, GeoDataType.HUMIDITY.toString(),
+						new GeoDatum(date.atStartOfDay(), rel, GeoDataType.HUMIDITY));
 		}
 
 	}
