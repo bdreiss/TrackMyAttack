@@ -1,6 +1,5 @@
 package main.java.com.bdreiss.trackmyattack;
 
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
