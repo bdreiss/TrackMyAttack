@@ -1,9 +1,11 @@
 package main.java.com.bdreiss.trackmyattack;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import com.bdreiss.dataAPI.core.CauseData;
 import com.bdreiss.dataAPI.core.DataModel;
@@ -18,7 +20,7 @@ import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
  */
 
 public class LabelMainPanel extends JPanel {
-
+	
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -29,12 +31,17 @@ public class LabelMainPanel extends JPanel {
 	 */
 	public LabelMainPanel(DataModel data, GeoData geoData) {
 
+		
 		setLayout(new GridBagLayout());
 
+		setBorder(new EmptyBorder(10, 10, 10, 10));
+		
 		GridBagSettings c = new GridBagSettings();
 
 		c.gridx = 0;
 		c.gridy = 0;
+		
+//		c.fill = GridBagConstraints.VERTICAL;
 
 		// add filler and CAUSES
 		c.gridy++;
@@ -52,8 +59,9 @@ public class LabelMainPanel extends JPanel {
 		c.gridy++;
 		LabelPanel remedyLabels = new LabelPanel(new RemedyData(data));
 		add(remedyLabels, c);
-		// add filler
 		c.gridy++;
+
+		// add filler
 
 		// add GEO_DATA and final filler
 		if (geoData != null) {
@@ -61,6 +69,7 @@ public class LabelMainPanel extends JPanel {
 			LabelPanel geoLabels = new LabelPanel(geoData);
 			add(geoLabels, c);
 			c.gridy++;
+
 		}
 	}
 
