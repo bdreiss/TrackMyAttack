@@ -11,7 +11,7 @@ public class GridBagSettings extends GridBagConstraints {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 * Uniform grid bag settings for DataMainPanel and LabelMainPanel
 	 */
 	public GridBagSettings() {
 		anchor = GridBagConstraints.WEST;
@@ -26,7 +26,7 @@ public class GridBagSettings extends GridBagConstraints {
 	}
 
 	/**
-	 * 
+	 * Sets horizontal padding so that all data is shown.
 	 * @param daysSinceStartDate
 	 */
 	public void setIPadX(int daysSinceStartDate) {
