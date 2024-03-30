@@ -20,6 +20,14 @@ public class LabelPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private AbstractData data;//AbstractDataModel for certain Category (see above)
 
+	private class FillPanel extends JPanel{
+		private static final long serialVersionUID = 1L;
+
+		public FillPanel() {
+			setPreferredSize(new Dimension(Units.LABEL_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value()));
+		}
+	}
+	
 	/**
 	 * 
 	 * @param data
@@ -33,11 +41,6 @@ public class LabelPanel extends JPanel {
 		super.paint(graphics);
 		setLayout(new GridBagLayout());
 
-		Dimension labelDimension = new Dimension(Units.LABEL_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value());
-
-		JPanel emptyLabel = new JPanel();
-		emptyLabel.setPreferredSize(labelDimension);
-
 		//get custom GridBagContstraints
 		GridBagConstraints c = new GridBagSettings();
 
@@ -45,7 +48,7 @@ public class LabelPanel extends JPanel {
 		c.gridy = 0;
 
 		//add empty label for date row
-		add(emptyLabel, c);
+		add(new Label(), c);
 
 		Iterator<String> it = data.getKeys();
 

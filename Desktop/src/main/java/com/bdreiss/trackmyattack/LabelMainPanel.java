@@ -3,6 +3,7 @@ package main.java.com.bdreiss.trackmyattack;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.time.LocalDate;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -34,7 +35,7 @@ public class LabelMainPanel extends JPanel {
 		
 		setLayout(new GridBagLayout());
 
-		setBorder(new EmptyBorder(10, 10, 10, 10));
+		setBorder(new EmptyBorder(16, 10, 24, 10));
 		
 		GridBagSettings c = new GridBagSettings();
 
@@ -43,34 +44,26 @@ public class LabelMainPanel extends JPanel {
 		
 //		c.fill = GridBagConstraints.VERTICAL;
 
-		// add filler and CAUSES
-		c.gridy++;
+		// add CAUSES
 		LabelPanel causeLabels = new LabelPanel(new CauseData(data));
 		add(causeLabels, c);
 		c.gridy++;
 
-		// add filler and SYMPTOMS
-		c.gridy++;
+		// add SYMPTOMS
 		LabelPanel symptomLabels = new LabelPanel(new SymptomData(data));
 		add(symptomLabels, c);
 		c.gridy++;
 
-		// add filler and REMEDIES
-		c.gridy++;
+		//add REMEDIES
 		LabelPanel remedyLabels = new LabelPanel(new RemedyData(data));
 		add(remedyLabels, c);
 		c.gridy++;
 
-		// add filler
-
-		// add GEO_DATA and final filler
-		if (geoData != null) {
-			c.gridy++;
-			LabelPanel geoLabels = new LabelPanel(geoData);
-			add(geoLabels, c);
-			c.gridy++;
-
-		}
+		//add GEODATA
+		LabelPanel geoLabels = new LabelPanel(new GeoData(data));
+		add(geoLabels, c);
+		c.gridy++;
+		
 	}
 
 }
