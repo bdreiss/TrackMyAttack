@@ -2,7 +2,7 @@ package main.java.com.bdreiss.trackmyattack.GeoData;
 
 import java.time.LocalDateTime;
 
-import com.bdreiss.dataAPI.util.Datum;
+import com.bdreiss.data.util.Datum;
 
 /**
  * Sub class of Datum representing meteorological data (i.e. temperature) for

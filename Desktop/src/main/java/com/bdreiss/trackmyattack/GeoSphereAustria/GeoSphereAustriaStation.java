@@ -1,6 +1,6 @@
 package main.java.com.bdreiss.trackmyattack.GeoSphereAustria;
 
-import com.bdreiss.dataAPI.util.Coordinate;
+import com.bdreiss.data.util.Coordinate;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.Station;
 

@@ -2,7 +2,7 @@ package main.java.com.bdreiss.trackmyattack.GeoData;
 
 import java.time.LocalDate;
 
-import com.bdreiss.dataAPI.enums.Category;
+import com.bdreiss.data.enums.Category;
 
 /**
  * This interface represents an APIQuery.

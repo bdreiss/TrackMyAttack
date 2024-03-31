@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import com.bdreiss.dataAPI.core.DataModel;
+import com.bdreiss.data.core.DataModel;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 

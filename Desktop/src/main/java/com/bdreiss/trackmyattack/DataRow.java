@@ -2,13 +2,13 @@ package main.java.com.bdreiss.trackmyattack;
 
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.core.AbstractData;
-import com.bdreiss.dataAPI.core.AilmentData;
-import com.bdreiss.dataAPI.enums.Intensity;
-import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import com.bdreiss.dataAPI.util.Datum;
-import com.bdreiss.dataAPI.util.DatumWithIntensity;
-import com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import com.bdreiss.data.core.AbstractData;
+import com.bdreiss.data.core.AilmentData;
+import com.bdreiss.data.enums.Intensity;
+import com.bdreiss.data.exceptions.EntryNotFoundException;
+import com.bdreiss.data.util.Datum;
+import com.bdreiss.data.util.DatumWithIntensity;
+import com.bdreiss.data.util.IteratorWithIntensity;
 
 import javax.swing.JLabel;
 import java.awt.Color;

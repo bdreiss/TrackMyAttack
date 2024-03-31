@@ -14,9 +14,9 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.bdreiss.dataAPI.core.DataModel;
-import com.bdreiss.dataAPI.enums.Category;
-import com.bdreiss.dataAPI.util.Coordinate;
+import com.bdreiss.data.core.DataModel;
+import com.bdreiss.data.enums.Category;
+import com.bdreiss.data.util.Coordinate;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.APIQuery;
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;

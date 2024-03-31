@@ -1,8 +1,8 @@
 package main.java.com.bdreiss.trackmyattack;
 
-import com.bdreiss.dataAPI.core.DataModel;
-import com.bdreiss.dataAPI.exceptions.NetworkException;
-import com.bdreiss.dataAPI.network.Dropbox;
+import com.bdreiss.data.core.DataModel;
+import com.bdreiss.data.exceptions.NetworkException;
+import com.bdreiss.data.network.Dropbox;
 
 import main.java.com.bdreiss.trackmyattack.GeoData.GeoData;
 

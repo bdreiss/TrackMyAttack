@@ -6,9 +6,9 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import com.bdreiss.dataAPI.core.AbstractData;
-import com.bdreiss.dataAPI.core.AilmentData;
-import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.data.core.AbstractData;
+import com.bdreiss.data.core.AilmentData;
+import com.bdreiss.data.exceptions.EntryNotFoundException;
 
 import java.awt.GridBagLayout;
 import java.time.Duration;

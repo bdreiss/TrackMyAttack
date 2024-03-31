@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import com.bdreiss.dataAPI.core.AbstractData;
-import com.bdreiss.dataAPI.core.AilmentData;
-import com.bdreiss.dataAPI.core.DataModel;
-import com.bdreiss.dataAPI.core.RemedyData;
-import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
+import com.bdreiss.data.core.AbstractData;
+import com.bdreiss.data.core.AilmentData;
+import com.bdreiss.data.core.DataModel;
+import com.bdreiss.data.core.RemedyData;
+import com.bdreiss.data.exceptions.EntryNotFoundException;
 
 /**
  * 

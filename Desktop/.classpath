@@ -9,6 +9,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="libs/json-20230618.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/DataAPI"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Data"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
