@@ -21,11 +21,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import com.bdreiss.dataAPI.core.DataModel;
-import com.bdreiss.dataAPI.core.AilmentData;
-import com.bdreiss.dataAPI.core.CauseData;
-import com.bdreiss.dataAPI.core.RemedyData;
-import com.bdreiss.dataAPI.core.SymptomData;
+import com.bdreiss.data.core.DataModel;
+import com.bdreiss.data.core.AilmentData;
+import com.bdreiss.data.core.CauseData;
+import com.bdreiss.data.core.RemedyData;
+import com.bdreiss.data.core.SymptomData;
 import com.bdreiss.trackmyattack.datamanipulation.AddDatumListener;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;
 import com.bdreiss.trackmyattack.datamanipulation.EditItemDialog;
@@ -34,7 +34,7 @@ import com.bdreiss.trackmyattack.sync.Synchronizer;
 
 public class MainActivity extends AppCompatActivity {
 
-    //data model containing data (see DataAPI)
+    //data model containing data (see Data)
     public static DataModel data;
 
     //settings for synchronization

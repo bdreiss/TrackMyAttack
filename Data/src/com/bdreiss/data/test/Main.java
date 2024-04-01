@@ -2,7 +2,6 @@ package com.bdreiss.data.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
@@ -10,7 +9,6 @@ import com.bdreiss.data.core.DataModel;
 import com.bdreiss.data.enums.Intensity;
 import com.bdreiss.data.exceptions.EntryNotFoundException;
 import com.bdreiss.data.exceptions.TypeMismatchException;
-import com.bdreiss.data.util.Coordinate;
 import com.bdreiss.data.util.Datum;
 import com.bdreiss.data.util.DatumWithIntensity;
 

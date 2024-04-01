@@ -15,7 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import androidx.core.app.ActivityCompat;
 
-import com.bdreiss.dataAPI.util.Coordinate;
+import com.bdreiss.data.util.Coordinate;
 import com.bdreiss.trackmyattack.sync.Synchronizer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;

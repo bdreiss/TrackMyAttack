@@ -8,12 +8,12 @@ import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 
-import com.bdreiss.dataAPI.core.AbstractData;
-import com.bdreiss.dataAPI.enums.Intensity;
-import com.bdreiss.dataAPI.exceptions.EntryNotFoundException;
-import com.bdreiss.dataAPI.exceptions.TypeMismatchException;
-import com.bdreiss.dataAPI.util.Coordinate;
-import com.bdreiss.dataAPI.util.IteratorWithIntensity;
+import com.bdreiss.data.core.AbstractData;
+import com.bdreiss.data.enums.Intensity;
+import com.bdreiss.data.exceptions.EntryNotFoundException;
+import com.bdreiss.data.exceptions.TypeMismatchException;
+import com.bdreiss.data.util.Coordinate;
+import com.bdreiss.data.util.IteratorWithIntensity;
 import com.bdreiss.trackmyattack.CurrentLocation;
 import com.bdreiss.trackmyattack.sync.Synchronizer;
 

@@ -10,9 +10,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bdreiss.dataAPI.core.DataModel;
-import com.bdreiss.dataAPI.exceptions.NetworkException;
-import com.bdreiss.dataAPI.network.Dropbox;
+import com.bdreiss.data.core.DataModel;
+import com.bdreiss.data.exceptions.NetworkException;
+import com.bdreiss.data.network.Dropbox;
 import com.bdreiss.trackmyattack.R;
 
 import java.io.BufferedReader;

@@ -14,8 +14,8 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.Iterator;
 
-import com.bdreiss.dataAPI.core.AbstractData;
-import com.bdreiss.dataAPI.enums.Category;
+import com.bdreiss.data.core.AbstractData;
+import com.bdreiss.data.enums.Category;
 import com.bdreiss.trackmyattack.datamanipulation.AddDatumListener;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialog;
 import com.bdreiss.trackmyattack.datamanipulation.AddKeyDialogListener;

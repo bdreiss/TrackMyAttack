@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import androidx.core.content.ContextCompat;
 
-import com.bdreiss.dataAPI.core.DataModel;
+import com.bdreiss.data.core.DataModel;
 import com.bdreiss.trackmyattack.R;
 import com.bdreiss.trackmyattack.Settings;
 
