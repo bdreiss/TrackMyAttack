@@ -11,6 +11,8 @@ import static org.hamcrest.CoreMatchers.is;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import net.berndreiss.trackmyattack.android.MainActivity;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
