@@ -2,13 +2,11 @@ package net.berndreiss.trackmyattack.desktop;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import net.berndreiss.trackmyattack.data.core.AbstractData;
-import net.berndreiss.trackmyattack.data.core.AilmentData;
 import net.berndreiss.trackmyattack.data.core.DataModel;
 import net.berndreiss.trackmyattack.data.core.RemedyData;
 import net.berndreiss.trackmyattack.data.exceptions.EntryNotFoundException;

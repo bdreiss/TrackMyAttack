@@ -2,7 +2,6 @@ package net.berndreiss.trackmyattack.desktop;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 
 import javax.swing.JLabel;

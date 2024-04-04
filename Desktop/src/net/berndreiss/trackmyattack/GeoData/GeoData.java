@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import net.berndreiss.trackmyattack.GeoSphereAustria.APIQueryGeoSphereAustria;
 import net.berndreiss.trackmyattack.data.core.AbstractData;
 import net.berndreiss.trackmyattack.data.core.DataModel;
 import net.berndreiss.trackmyattack.data.enums.Category;
@@ -69,7 +68,7 @@ public class GeoData extends AbstractData implements Serializable {
 			data.addCause("test", testCases[i].date, testCases[i].coords);
 		}
 
-		GeoData geoData = new GeoData(data);
+//		GeoData geoData = new GeoData(data);
 	}
 
 	/**

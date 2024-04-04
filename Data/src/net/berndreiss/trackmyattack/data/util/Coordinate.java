@@ -17,7 +17,6 @@ public class Coordinate implements Comparable<Coordinate>, Serializable {
 	 * 
 	 * @param latitude  latitude value
 	 * @param longitude longitude value
-	 * @throws Exception thrown if latitude or longitue are null
 	 */
 	public Coordinate(Double latitude, Double longitude) {
 		this.latitude = latitude;

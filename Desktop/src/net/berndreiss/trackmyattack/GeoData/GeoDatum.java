@@ -39,6 +39,13 @@ public class GeoDatum extends Datum {
 		return value;
 	}
 	
-	
+	/**
+	 * Returns the datatype.
+	 * 
+	 * @return the data type
+	 */
+	public GeoDataType getDataType() {
+		return dataType;
+	}
 
 }

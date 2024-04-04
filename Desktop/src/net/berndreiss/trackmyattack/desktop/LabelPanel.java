@@ -19,14 +19,6 @@ public class LabelPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private AbstractData data;//AbstractDataModel for certain Category (see above)
-
-	private class FillPanel extends JPanel{
-		private static final long serialVersionUID = 1L;
-
-		public FillPanel() {
-			setPreferredSize(new Dimension(Units.LABEL_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value()));
-		}
-	}
 	
 	/**
 	 * 

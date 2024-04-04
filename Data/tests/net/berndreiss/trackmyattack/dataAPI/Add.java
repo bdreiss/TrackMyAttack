@@ -11,17 +11,12 @@ import net.berndreiss.trackmyattack.data.util.Datum;
 
 /**
  * Interface to pass methods to test functions.
-
- * @param s
- * @return
- * @throws EntryNotFoundException
  */
 public interface Add {
 	
 	/**
 	 * 
 	 * @param s
-	 * @return
 	 * @throws TypeMismatchException
 	 */
 	LocalDateTime add(String s) throws TypeMismatchException;
