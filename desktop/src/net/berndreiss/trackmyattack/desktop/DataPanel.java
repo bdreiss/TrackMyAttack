@@ -30,8 +30,8 @@ public class DataPanel extends JPanel {
 	private AbstractData data;
 
 	/**
-	 * 
-	 * @param data
+	 * Instantiates a new instace of DataPanel.
+	 * @param data interface to the data model
 	 */
 	public DataPanel(AbstractData data) {
 		super(new GridBagLayout());
@@ -51,7 +51,7 @@ public class DataPanel extends JPanel {
 	}
 
 	/**
-	 * 
+	 * Sets the data in the panel.
 	 */
 	public void setData() {
 		int daysSinceStartDate = (int) Duration
