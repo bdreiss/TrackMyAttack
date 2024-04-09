@@ -14,7 +14,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.bdreiss.trackmyattack"
+        applicationId "net.berndreiss.trackmyattack.android"
         minSdk 26
         targetSdk 33
         versionCode 1
