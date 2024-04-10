@@ -76,9 +76,10 @@ public class GeoData extends AbstractData implements Serializable {
 	 * @param originalData
 	 */
 	public GeoData(DataModel originalData) {
-
+		
 		data = new DataModel();
 
+		data.firstDate = originalData.firstDate;
 		this.originalData = originalData;
 
 		if (SAVEPATH != null) {

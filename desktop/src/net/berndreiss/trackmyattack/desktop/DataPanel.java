@@ -54,6 +54,7 @@ public class DataPanel extends JPanel {
 	 * Sets the data in the panel.
 	 */
 	public void setData() {
+		
 		int daysSinceStartDate = (int) Duration
 				.between(data.getFirstDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
 

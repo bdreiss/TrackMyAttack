@@ -2,6 +2,7 @@ package net.berndreiss.trackmyattack.desktop;
 
 import net.berndreiss.trackmyattack.GeoData.GeoData;
 import net.berndreiss.trackmyattack.data.core.DataModel;
+import net.berndreiss.trackmyattack.data.core.RemedyData;
 import net.berndreiss.trackmyattack.data.exceptions.NetworkException;
 import net.berndreiss.trackmyattack.data.network.Dropbox;
 
@@ -16,10 +17,9 @@ import java.io.InputStreamReader;
 class Main {
 
 	public static void main(String[] args) throws MalformedURLException, InterruptedException {
-
 		
 		DataModel data = new DataModel(System.getProperty("user.home") + "/Apps/TrackMyAttack");
-
+		
 		if (!(new File(Dropbox.getDbxFilePath(data)).exists())) {
 			try {
 				URL url = new URL(Dropbox.getAuthorizationURL(getKey()));
