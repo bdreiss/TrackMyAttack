@@ -169,17 +169,21 @@ public class GeoData extends AbstractData implements Serializable {
 
 			try {
 				it = data.getCauseData(GeoDataType.HUMIDITY.toString());
-				while (it.hasNext())
-					startDate = it.next().getDate().toLocalDate();
-
-				updateRange(startDate, LocalDate.now());
 
 			} catch (EntryNotFoundException e) {
-				e.printStackTrace();
+				data.addCauseKey(GeoDataType.HUMIDITY.toString(), false);
+				try {
+					it = data.getCauseData(GeoDataType.HUMIDITY.toString());
+				} catch (EntryNotFoundException e1) {
+					e1.printStackTrace();
+				}
 			}
+			
+
+			updateRange(startDate, LocalDate.now());
+
 		}
 
-		System.out.println("Test");
 		if (SAVEPATH != null)
 			save();
 	}
@@ -222,6 +226,10 @@ public class GeoData extends AbstractData implements Serializable {
 
 	@Override
 	public Iterator<Datum> getData(String key) throws EntryNotFoundException {
+		try {data.getCauseData(key);}
+		catch (EntryNotFoundException e){
+			data.addCauseKey(key, false);
+		}
 		return data.getCauseData(key);
 	}
 
