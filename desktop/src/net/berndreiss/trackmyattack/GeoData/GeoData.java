@@ -169,16 +169,18 @@ public class GeoData extends AbstractData implements Serializable {
 
 			try {
 				it = data.getCauseData(GeoDataType.HUMIDITY.toString());
-
+				while (it.hasNext())
+					startDate = it.next().getDate().toLocalDate();
 			} catch (EntryNotFoundException e) {
 				data.addCauseKey(GeoDataType.HUMIDITY.toString(), false);
 				try {
 					it = data.getCauseData(GeoDataType.HUMIDITY.toString());
+					while (it.hasNext())
+						startDate = it.next().getDate().toLocalDate();
 				} catch (EntryNotFoundException e1) {
 					e1.printStackTrace();
 				}
-			}
-			
+			} 
 
 			updateRange(startDate, LocalDate.now());
 

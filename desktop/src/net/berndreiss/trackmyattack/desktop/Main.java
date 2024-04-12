@@ -2,7 +2,6 @@ package net.berndreiss.trackmyattack.desktop;
 
 import net.berndreiss.trackmyattack.GeoData.GeoData;
 import net.berndreiss.trackmyattack.data.core.DataModel;
-import net.berndreiss.trackmyattack.data.core.RemedyData;
 import net.berndreiss.trackmyattack.data.exceptions.NetworkException;
 import net.berndreiss.trackmyattack.data.network.Dropbox;
 
@@ -74,7 +73,6 @@ class Main {
 		} catch (IOException e) {
 			throw new NetworkException(e);
 		}
-		System.out.println(key);
 		return key;
 	}
 
