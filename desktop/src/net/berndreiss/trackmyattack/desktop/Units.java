@@ -16,7 +16,7 @@ public enum Units {
 	/**
 	 * The width of a label.
 	 */
-	LABEL_WIDTH(150), 
+	LABEL_WIDTH(200), 
 	/**
 	 * The space between boxes.
 	 */

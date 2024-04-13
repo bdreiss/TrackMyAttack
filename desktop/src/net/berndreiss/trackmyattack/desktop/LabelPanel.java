@@ -41,17 +41,17 @@ public class LabelPanel extends JPanel {
 
 		//add empty label for date row
 		add(new Label(), c);
-
+		
 		Iterator<String> it = data.getKeys();
-
+		
 		//add all keys as labels
 		while (it.hasNext()) {
 			c.gridy++;
 
 			JLabel label = new Label(it.next());
-			label.setMinimumSize(new Dimension(Units.DATA_ROW_BOX_WIDTH.value() * 10, Units.DATA_ROW_BOX_HEIGHT.value()));
-			label.setMaximumSize(new Dimension(Units.DATA_ROW_BOX_WIDTH.value() * 10, Units.DATA_ROW_BOX_HEIGHT.value()));
-			label.setPreferredSize(new Dimension(Units.DATA_ROW_BOX_WIDTH.value() * 10, Units.DATA_ROW_BOX_HEIGHT.value()));
+			label.setMinimumSize(new Dimension(Units.LABEL_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value()));
+			label.setMaximumSize(new Dimension(Units.LABEL_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value()));
+			label.setPreferredSize(new Dimension(Units.LABEL_WIDTH.value(), Units.DATA_ROW_BOX_HEIGHT.value()));
 
 			add(label, c);
 
