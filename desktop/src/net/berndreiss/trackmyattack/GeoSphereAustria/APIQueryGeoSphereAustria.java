@@ -15,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.berndreiss.trackmyattack.GeoData.APIQuery;
-import net.berndreiss.trackmyattack.GeoData.GeoData;
+import net.berndreiss.trackmyattack.GeoData.DataCompound;
 import net.berndreiss.trackmyattack.GeoData.GeoDataType;
 import net.berndreiss.trackmyattack.GeoData.GeoDatum;
 import net.berndreiss.trackmyattack.GeoData.Station;
@@ -37,7 +37,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 
 	private static List<Station> stations;
 
-	private GeoData geoData;
+	private DataCompound geoData;
 	private DataModel originalData;
 	
 	/**
@@ -49,7 +49,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 	}
 	
 	@Override
-	public void query(LocalDate startDate, LocalDate endDate, GeoData geoData, Category category) {
+	public void query(LocalDate startDate, LocalDate endDate, DataCompound geoData, Category category) {
 		
 		this.geoData = geoData;
 		this.originalData = geoData.getData();

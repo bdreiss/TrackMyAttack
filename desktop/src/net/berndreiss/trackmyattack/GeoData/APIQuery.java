@@ -19,6 +19,6 @@ public interface APIQuery {
 	 * @param geoData   AbstractDataModel in which data should be added
 	 * @param category  Category that is used for storing data
 	 */
-	void query(LocalDate startDate, LocalDate endDate, GeoData geoData, Category category);
+	void query(LocalDate startDate, LocalDate endDate, DataCompound geoData, Category category);
 
 }

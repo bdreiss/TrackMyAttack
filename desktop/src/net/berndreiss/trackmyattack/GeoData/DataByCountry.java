@@ -22,7 +22,7 @@ public class DataByCountry {
 	 * @param geoData AbstractDataModel in which data should be added
 	 * @param category Category being used to store data
 	 */
-	public static void getData(LocalDate startDate, LocalDate endDate, GeoData geoData, Category category) {
+	public static void getData(LocalDate startDate, LocalDate endDate, DataCompound geoData, Category category) {
 		// TODO: make queries for data that belongs together by country
 		apiQuery = getAPI(null);
 		apiQuery.query(startDate, endDate, geoData, category);

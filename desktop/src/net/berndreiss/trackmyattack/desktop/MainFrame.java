@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import net.berndreiss.trackmyattack.GeoData.GeoData;
+import net.berndreiss.trackmyattack.GeoData.DataCompound;
 import net.berndreiss.trackmyattack.data.core.DataModel;
 
 class MainFrame extends JFrame {
@@ -26,9 +26,11 @@ class MainFrame extends JFrame {
 	 * the data.
 	 */
 
-	public MainFrame(DataModel data, GeoData geoData) throws MalformedURLException {
+	public MainFrame(DataCompound dataCompound) throws MalformedURLException {
 		super("TrackMyAttack");
 
+		DataModel data = dataCompound.getData();
+		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		// dimension of ScrollPanel that holds the data
@@ -36,7 +38,7 @@ class MainFrame extends JFrame {
 		// height is defined by (items in (data + geoData + DATA_PANELS_OFFSET) *
 		// (height of data row)
 		
-		int scrollHeight = (data.getSize() + (geoData == null ? 0 : geoData.getSize()) + DATA_PANELS_OFFSET) * Units.DATA_ROW_BOX_HEIGHT.value();
+		int scrollHeight = (data.getSize() + (dataCompound == null ? 0 : dataCompound.getSize()) + DATA_PANELS_OFFSET) * Units.DATA_ROW_BOX_HEIGHT.value();
 		
 		Dimension scrollSize = new Dimension((int) (screenSize.width * SCREENSIZE_MODIFIER),
 				scrollHeight);
@@ -47,7 +49,7 @@ class MainFrame extends JFrame {
 
 		// Panel that holds all labels -> it is in a separate frame from data as not to
 		// move with scroll bar
-		LabelMainPanel labelMainPanel = new LabelMainPanel(data, geoData);
+		LabelMainPanel labelMainPanel = new LabelMainPanel(dataCompound);
 		labelMainPanel.setPreferredSize(new Dimension(Units.LABEL_WIDTH.value(), scrollHeight));
 
 		JScrollPane scrollPaneLabel = new JScrollPane(labelMainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
@@ -57,7 +59,7 @@ class MainFrame extends JFrame {
 		add(scrollPaneLabel);
 //		add(labelMainPanel);
 
-		DataMainPanel dataMainPanel = new DataMainPanel(data, geoData);
+		DataMainPanel dataMainPanel = new DataMainPanel(dataCompound);
 
 		JScrollPane scrollPane = new JScrollPane(dataMainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);

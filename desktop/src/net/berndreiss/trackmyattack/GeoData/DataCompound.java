@@ -27,7 +27,7 @@ import net.berndreiss.trackmyattack.data.util.DatumWithIntensity;
  * AbstractCategoryDataModel getting data about the weather (currently only supported for Austria).
  */
 
-public class GeoData extends AbstractData implements Serializable {
+public class DataCompound extends AbstractData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static String SAVEPATH;
@@ -75,7 +75,7 @@ public class GeoData extends AbstractData implements Serializable {
 	 * 
 	 * @param originalData
 	 */
-	public GeoData(DataModel originalData) {
+	public DataCompound(DataModel originalData) {
 		
 		data = new DataModel();
 
