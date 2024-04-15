@@ -1,6 +1,5 @@
 package net.berndreiss.trackmyattack.desktop;
 
-import net.berndreiss.trackmyattack.GeoData.DataCompound;
 import net.berndreiss.trackmyattack.data.core.DataModel;
 import net.berndreiss.trackmyattack.data.exceptions.NetworkException;
 import net.berndreiss.trackmyattack.data.network.Dropbox;
@@ -50,9 +49,9 @@ class Main {
 			e.printStackTrace();
 		}
 
-		DataCompound dataCompound = new DataCompound(data);
+		DataWrapper dataWrapper = new DataWrapper(data);
 
-		MainFrame frame = new MainFrame(dataCompound);
+		MainFrame frame = new MainFrame(dataWrapper);
 
 		frame.setVisible(true);
 

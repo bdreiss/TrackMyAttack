@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import net.berndreiss.trackmyattack.GeoData.DataCompound;
 import net.berndreiss.trackmyattack.data.core.CauseData;
 import net.berndreiss.trackmyattack.data.core.DataModel;
 import net.berndreiss.trackmyattack.data.core.RemedyData;
@@ -22,13 +21,11 @@ public class LabelMainPanel extends JPanel {
 
 	/**
 	 * Instantiates a new instance of LabelMainPanel.
-	 * 
-	 * @param data    the data model holding relevant data
-	 * @param geoData the geo data model holding data for the weather
+	 * @param dataWrapper wrapper including the data model and geo data
 	 */
-	public LabelMainPanel(DataCompound dataCompound) {
+	public LabelMainPanel(DataWrapper dataWrapper) {
 
-		DataModel data = dataCompound.getData();
+		DataModel data = dataWrapper.getData();
 		setLayout(new GridBagLayout());
 
 		setBorder(new EmptyBorder(16, 10, 24, 10));
@@ -38,8 +35,6 @@ public class LabelMainPanel extends JPanel {
 		c.gridx = 0;
 		c.gridy = 0;
 		
-//		c.fill = GridBagConstraints.VERTICAL;
-
 		// add CAUSES
 		LabelPanel causeLabels = new LabelPanel(new CauseData(data));
 		add(causeLabels, c);
@@ -56,7 +51,7 @@ public class LabelMainPanel extends JPanel {
 		c.gridy++;
 
 		//add GEODATA
-		LabelPanel geoLabels = new LabelPanel(new DataCompound(data));
+		LabelPanel geoLabels = new LabelPanel(new DataWrapper(data));
 		add(geoLabels, c);
 		c.gridy++;
 		

@@ -15,13 +15,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.berndreiss.trackmyattack.GeoData.APIQuery;
-import net.berndreiss.trackmyattack.GeoData.DataCompound;
 import net.berndreiss.trackmyattack.GeoData.GeoDataType;
 import net.berndreiss.trackmyattack.GeoData.GeoDatum;
 import net.berndreiss.trackmyattack.GeoData.Station;
 import net.berndreiss.trackmyattack.data.core.DataModel;
 import net.berndreiss.trackmyattack.data.enums.Category;
 import net.berndreiss.trackmyattack.data.util.Coordinate;
+import net.berndreiss.trackmyattack.desktop.DataWrapper;
 
 /**
  * Class implementing the APIQuery interface, containing methods for retrieving
@@ -37,7 +37,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 
 	private static List<Station> stations;
 
-	private DataCompound geoData;
+	private DataWrapper geoData;
 	private DataModel originalData;
 	
 	/**
@@ -49,7 +49,7 @@ public class APIQueryGeoSphereAustria implements APIQuery {
 	}
 	
 	@Override
-	public void query(LocalDate startDate, LocalDate endDate, DataCompound geoData, Category category) {
+	public void query(LocalDate startDate, LocalDate endDate, DataWrapper geoData, Category category) {
 		
 		this.geoData = geoData;
 		this.originalData = geoData.getData();

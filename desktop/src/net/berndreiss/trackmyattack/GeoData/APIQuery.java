@@ -3,6 +3,7 @@ package net.berndreiss.trackmyattack.GeoData;
 import java.time.LocalDate;
 
 import net.berndreiss.trackmyattack.data.enums.Category;
+import net.berndreiss.trackmyattack.desktop.DataWrapper;
 
 /**
  * This interface represents an APIQuery.
@@ -19,6 +20,6 @@ public interface APIQuery {
 	 * @param geoData   AbstractDataModel in which data should be added
 	 * @param category  Category that is used for storing data
 	 */
-	void query(LocalDate startDate, LocalDate endDate, DataCompound geoData, Category category);
+	void query(LocalDate startDate, LocalDate endDate, DataWrapper geoData, Category category);
 
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import net.berndreiss.trackmyattack.GeoSphereAustria.APIQueryGeoSphereAustria;
 import net.berndreiss.trackmyattack.data.enums.Category;
+import net.berndreiss.trackmyattack.desktop.DataWrapper;
 
 /**
  * Class mediating between coordinates and country APIs.
@@ -22,7 +23,7 @@ public class DataByCountry {
 	 * @param geoData AbstractDataModel in which data should be added
 	 * @param category Category being used to store data
 	 */
-	public static void getData(LocalDate startDate, LocalDate endDate, DataCompound geoData, Category category) {
+	public static void getData(LocalDate startDate, LocalDate endDate, DataWrapper geoData, Category category) {
 		// TODO: make queries for data that belongs together by country
 		apiQuery = getAPI(null);
 		apiQuery.query(startDate, endDate, geoData, category);

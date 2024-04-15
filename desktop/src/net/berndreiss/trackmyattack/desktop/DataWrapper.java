@@ -1,4 +1,4 @@
-package net.berndreiss.trackmyattack.GeoData;
+package net.berndreiss.trackmyattack.desktop;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import net.berndreiss.trackmyattack.GeoData.DataByCountry;
+import net.berndreiss.trackmyattack.GeoData.GeoDataType;
+import net.berndreiss.trackmyattack.GeoData.GeoDatum;
 import net.berndreiss.trackmyattack.data.core.AbstractData;
 import net.berndreiss.trackmyattack.data.core.DataModel;
 import net.berndreiss.trackmyattack.data.enums.Category;
@@ -27,7 +30,7 @@ import net.berndreiss.trackmyattack.data.util.DatumWithIntensity;
  * AbstractCategoryDataModel getting data about the weather (currently only supported for Austria).
  */
 
-public class DataCompound extends AbstractData implements Serializable {
+public class DataWrapper extends AbstractData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static String SAVEPATH;
@@ -75,7 +78,7 @@ public class DataCompound extends AbstractData implements Serializable {
 	 * 
 	 * @param originalData
 	 */
-	public DataCompound(DataModel originalData) {
+	public DataWrapper(DataModel originalData) {
 		
 		data = new DataModel();
 
