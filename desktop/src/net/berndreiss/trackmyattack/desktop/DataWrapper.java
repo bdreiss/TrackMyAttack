@@ -85,7 +85,7 @@ public class DataWrapper extends AbstractData implements Serializable {
 		data.firstDate = originalData.firstDate;
 		this.originalData = originalData;
 
-		if (SAVEPATH != null) {
+		if (SAVEPATH == null) {
 			SAVEPATH = originalData.getSaveFile().getAbsolutePath() + "Geo";
 			File saveFile = new File(SAVEPATH);
 
