@@ -23,7 +23,7 @@
 		<dependency>
 			<groupId>net.berndreiss.trackmyattack</groupId>
 			<artifactId>data</artifactId>
-			<version>1.0</version>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 </project>
