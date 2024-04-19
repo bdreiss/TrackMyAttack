@@ -2,7 +2,6 @@ package net.berndreiss.trackmyattack.desktop;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -32,277 +31,271 @@ import net.berndreiss.trackmyattack.data.util.DatumWithIntensity;
 
 public class DataWrapper extends AbstractData implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private static String SAVEPATH;
+    private static final long serialVersionUID = 1L;
+    private static String SAVEPATH;
 
-	private GeoDataType[] TYPES_TO_USE = { GeoDataType.TEMPERATURE_MAX, GeoDataType.TEMPERATURE_MEDIAN,
-			GeoDataType.TEMPERATURE_MIN, GeoDataType.VAPOR };
+    private final GeoDataType[] TYPES_TO_USE = {GeoDataType.TEMPERATURE_MAX, GeoDataType.TEMPERATURE_MEDIAN,
+            GeoDataType.TEMPERATURE_MIN, GeoDataType.VAPOR};
 
-	private DataModel originalData;
+    private final DataModel originalData;
 
-	/**
-	 * 
-	 * @param args
-	 * @throws TypeMismatchException
-	 */
-	public static void main(String[] args) throws TypeMismatchException {
-		DataModel data = new DataModel();
+    /**
+     * Testing this class
+     *
+     * @param args No arguments passed
+     * @throws TypeMismatchException no description
+     */
+    public static void main(String[] args) throws TypeMismatchException {
+        DataModel data = new DataModel();
 
-		class TestCase {
+        class TestCase {
 
-			public LocalDateTime date;
-			public Coordinate coords;
+            public final LocalDateTime date;
+            public final Coordinate coordinates;
 
-			public TestCase(LocalDateTime date, Double x, Double y) {
-				this.date = date;
-				this.coords = new Coordinate(x, y);
-			}
-		}
+            public TestCase(LocalDateTime date, Double x, Double y) {
+                this.date = date;
+                this.coordinates = new Coordinate(x, y);
+            }
+        }
 
-		TestCase[] testCases = { new TestCase(LocalDateTime.now(), 48.187028431591635, 16.313893863502347),//Wien Schönbrunn
-				new TestCase(LocalDateTime.now().minusDays(1), 48.187028431591635, 16.313893863502347),//Wien Schönbrunn
-				new TestCase(LocalDateTime.now().minusDays(2), 47.07678064842626, 15.42400131089504),//Graz
-				new TestCase(LocalDateTime.now().minusDays(3), 47.07678064842626, 15.42400131089504),//Graz
-				new TestCase(LocalDateTime.now().minusDays(4), 47.26349950302004, 11.386525823183192),//Innsbruck
-				new TestCase(LocalDateTime.now().minusDays(5), 47.26349950302004, 11.386525823183192),//Innsrbruck
-				new TestCase(LocalDateTime.now().minusDays(7), 47.26349950302004, 11.386525823183192), };//Innsbruck
+        TestCase[] testCases = {new TestCase(LocalDateTime.now(), 48.187028431591635, 16.313893863502347),//Wien Schönbrunn
+                new TestCase(LocalDateTime.now().minusDays(1), 48.187028431591635, 16.313893863502347),//Wien Schönbrunn
+                new TestCase(LocalDateTime.now().minusDays(2), 47.07678064842626, 15.42400131089504),//Graz
+                new TestCase(LocalDateTime.now().minusDays(3), 47.07678064842626, 15.42400131089504),//Graz
+                new TestCase(LocalDateTime.now().minusDays(4), 47.26349950302004, 11.386525823183192),//Innsbruck
+                new TestCase(LocalDateTime.now().minusDays(5), 47.26349950302004, 11.386525823183192),//Innsbruck
+                new TestCase(LocalDateTime.now().minusDays(7), 47.26349950302004, 11.386525823183192),};//Innsbruck
 
-		for (int i = 0; i < testCases.length; i++) {
-			data.addCause("test", testCases[i].date, testCases[i].coords);
-		}
+        for (TestCase testCase : testCases) {
+            data.addCause("test", testCase.date, testCase.coordinates);
+        }
 
 //		GeoData geoData = new GeoData(data);
-	}
+    }
 
-	/**
-	 * 
-	 * @param originalData
-	 */
-	public DataWrapper(DataModel originalData) {
-		
-		data = new DataModel();
+    /**
+     * Instantiates a new instance of DataWrapper.
+     *
+     * @param originalData An instance of DataModel inheriting data to get geological data for
+     */
+    public DataWrapper(DataModel originalData) {
 
-		data.firstDate = originalData.firstDate;
-		this.originalData = originalData;
+        data = new DataModel();
 
-		if (SAVEPATH == null) {
-			SAVEPATH = originalData.getSaveFile().getAbsolutePath() + "Geo";
-			File saveFile = new File(SAVEPATH);
+        this.originalData = originalData;
 
-			if (saveFile.exists())
-				load(saveFile);
+        if (SAVEPATH == null) {
+            SAVEPATH = originalData.getSaveFile().getAbsolutePath() + "Geo";
+            File saveFile = new File(SAVEPATH);
 
-		}
-		category = Category.CAUSE;
+            if (saveFile.exists())
+                load(saveFile);
 
-		update();
+        }
+        category = Category.CAUSE;
 
-	}
+        update();
 
-	/**
-	 * 
-	 */
-	public String print() {
-		return data.print();
-	}
+    }
 
-	private void load(File saveFile) {
+    /**
+     *
+     */
+    public String print() {
+        return data.print();
+    }
 
-		try {
-			FileInputStream fis = new FileInputStream(saveFile);
+    private void load(File saveFile) {
 
-			ObjectInputStream ois = new ObjectInputStream(fis);
+        try {
+            FileInputStream fis = new FileInputStream(saveFile);
 
-			data = (DataModel) ois.readObject();
+            ObjectInputStream ois = new ObjectInputStream(fis);
 
-			ois.close();
-			fis.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+            data = (DataModel) ois.readObject();
 
-		data.removeAilmentKey("Migraine");
-		// add Migraine data to the loading data model -> the original data for
-		// migraines has to be transferred
-		// since otherwise migraines can not be shown in the GeoDataPanel
-		data.addAilmentKey("Migraine");
+            ois.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-		try {
-			Iterator<Datum> it = originalData.getAilmentData("Migraine");
+        data.removeAilmentKey("Migraine");
+        // add Migraine data to the loading data model -> the original data for
+        // migraines has to be transferred
+        // since otherwise migraines can not be shown in the GeoDataPanel
+        data.addAilmentKey("Migraine");
 
-			while (it.hasNext()) {
-				DatumWithIntensity migraine = (DatumWithIntensity) it.next();
-				data.addAilment("Migraine", migraine.getIntensity(), migraine.getDate(), null);
-			}
+        try {
+            Iterator<Datum> it = originalData.getAilmentData("Migraine");
 
-		} catch (EntryNotFoundException e) {
-			e.printStackTrace();
-		} catch (TypeMismatchException e) {
-			e.printStackTrace();
-		}
-	}
+            while (it.hasNext()) {
+                DatumWithIntensity migraine = (DatumWithIntensity) it.next();
+                data.addAilment("Migraine", migraine.getIntensity(), migraine.getDate(), null);
+            }
 
-	private void update() {
+        } catch (EntryNotFoundException | TypeMismatchException e) {
+            e.printStackTrace();
+        }
+    }
 
-		// if there is no firstDate in the original data, there are no entries and the
-		// method returns
-		if (originalData.firstDate == null)
-			return;
+    private void update() {
 
-		LocalDate startDate = originalData.firstDate;
+        // if there is no firstDate in the original data, there are no entries and the
+        // method returns
+        if (originalData.firstDate == null)
+            return;
 
-		// if there are no entries for GeoData, start with the first date in the
-		// original data
-		if (data.firstDate == null) {
-			updateRange(startDate, LocalDate.now());
-		} else {
+        LocalDate startDate = originalData.firstDate;
 
-			// if the first date in GeoData is bigger than the start date in the original
-			// data, get GeoData for this span
-			if (data.firstDate.compareTo(startDate) > 0) {
-				updateRange(startDate, data.firstDate.minusDays(1));
-				startDate = data.firstDate;
-			}
+        // if there are no entries for GeoData, start with the first date in the
+        // original data
+        if (data.firstDate == null) {
+            updateRange(startDate, LocalDate.now());
+        } else {
 
-			Iterator<Datum> it;
+            // if the first date in GeoData is bigger than the start date in the original
+            // data, get GeoData for this span
+            if (data.firstDate.isAfter(startDate)) {
+                updateRange(startDate, data.firstDate.minusDays(1));
+                startDate = data.firstDate;
+            }
 
-			try {
-				it = data.getCauseData(GeoDataType.HUMIDITY.toString());
-				while (it.hasNext())
-					startDate = it.next().getDate().toLocalDate();
-			} catch (EntryNotFoundException e) {
-				data.addCauseKey(GeoDataType.HUMIDITY.toString(), false);
-				try {
-					it = data.getCauseData(GeoDataType.HUMIDITY.toString());
-					while (it.hasNext())
-						startDate = it.next().getDate().toLocalDate();
-				} catch (EntryNotFoundException e1) {
-					e1.printStackTrace();
-				}
-			} 
+            Iterator<Datum> it;
 
-			updateRange(startDate, LocalDate.now());
+            try {
+                it = data.getCauseData(GeoDataType.HUMIDITY.toString());
+                while (it.hasNext())
+                    startDate = it.next().getDate().toLocalDate();
+            } catch (EntryNotFoundException e) {
+                data.addCauseKey(GeoDataType.HUMIDITY.toString(), false);
+                try {
+                    it = data.getCauseData(GeoDataType.HUMIDITY.toString());
+                    while (it.hasNext())
+                        startDate = it.next().getDate().toLocalDate();
+                } catch (EntryNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+            }
 
-		}
+            updateRange(startDate, LocalDate.now());
 
-		if (SAVEPATH != null)
-			save();
-	}
-	
-	private void save() {
-		try {
-			FileOutputStream fos = new FileOutputStream(SAVEPATH);
+        }
 
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
+        if (SAVEPATH != null)
+            save();
+    }
 
-			oos.writeObject(data);
+    private void save() {
+        try {
+            FileOutputStream fos = new FileOutputStream(SAVEPATH);
 
-			oos.close();
-			fos.close();
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            oos.writeObject(data);
 
-	}
+            oos.close();
+            fos.close();
 
-	private void updateRange(LocalDate startDate, LocalDate finalDate) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		DataByCountry.getData(startDate, finalDate, this, category);
+    }
 
-	}
+    private void updateRange(LocalDate startDate, LocalDate finalDate) {
 
-	// TODO implement add methods so the whole category thing isn't necessary ->
-	// also adapt queries to take GeoData instead of GeoDataModel?
-	@Override
-	public void addKey(String key, boolean intensity) {
-	}
-	
-	@Override
-	public DataModel getData() {
-		return originalData;
-	}
+        DataByCountry.getData(startDate, finalDate, this, category);
 
-	@Override
-	public Iterator<Datum> getData(String key) throws EntryNotFoundException {
-		try {data.getCauseData(key);}
-		catch (EntryNotFoundException e){
-			data.addCauseKey(key, false);
-		}
-		return data.getCauseData(key);
-	}
+    }
 
-	@Override
-	public Iterator<Datum> getData(String key, LocalDate date) throws EntryNotFoundException {
-		return data.getCauseData(key, date);
-	}
+    // TODO implement add methods so the whole category thing isn't necessary ->
+    // also adapt queries to take GeoData instead of GeoDataModel?
+    @Override
+    public void addKey(String key, boolean intensity) {
+    }
 
-	@Override
-	public void addData(String key, Coordinate coordinates) throws TypeMismatchException {
-	}
+    @Override
+    public DataModel getData() {
+        return originalData;
+    }
 
-	@Override
-	public void addData(String key, Intensity intensity, Coordinate coordinates) throws TypeMismatchException {
-	}
+    @Override
+    public Iterator<Datum> getData(String key) throws EntryNotFoundException {
+        try {
+            data.getCauseData(key);
+        } catch (EntryNotFoundException e) {
+            data.addCauseKey(key, false);
+        }
+        return data.getCauseData(key);
+    }
 
-	@Override
-	public void removeEntry(String key, LocalDateTime date) {
-	}
+    @Override
+    public Iterator<Datum> getData(String key, LocalDate date) throws EntryNotFoundException {
+        return data.getCauseData(key, date);
+    }
 
-	@Override
-	public void removeKey(String key) {
-	}
+    @Override
+    public void addData(String key, Coordinate coordinates){
+    }
 
-	@Override
-	public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) throws TypeMismatchException {
-	}
+    @Override
+    public void addData(String key, Intensity intensity, Coordinate coordinates) {
+    }
 
-	@Override
-	public void editIntensity(String key, LocalDateTime date, Intensity intensity) throws TypeMismatchException {
-	}
+    @Override
+    public void removeEntry(String key, LocalDateTime date) {
+    }
 
-	@Override
-	public int getSize() {
-		return TYPES_TO_USE.length;
-	}
+    @Override
+    public void removeKey(String key) {
+    }
 
-	@Override
-	public float count(String key, LocalDate date) throws EntryNotFoundException {
-		Iterator<Datum> it = data.getCauseData(key, date);
+    @Override
+    public void editDate(String key, LocalDateTime dateOriginal, LocalDateTime dateNew) {
+    }
 
-		return it.hasNext() ? ((GeoDatum) it.next()).getValue() : 0;
-	}
+    @Override
+    public void editIntensity(String key, LocalDateTime date, Intensity intensity) {
+    }
 
-	@Override
-	public float getMedium(String key) throws EntryNotFoundException {
-		int days = 0;
+    @Override
+    public int getSize() {
+        return TYPES_TO_USE.length;
+    }
 
-		float total = 0;
-		Iterator<Datum> it = data.getCauseData(key);
+    @Override
+    public float count(String key, LocalDate date) throws EntryNotFoundException {
+        Iterator<Datum> it = data.getCauseData(key, date);
 
-		while (it.hasNext()) {
-			days++;
-			total += ((GeoDatum) it.next()).getValue();
-		}
+        return it.hasNext() ? ((GeoDatum) it.next()).getValue() : 0;
+    }
 
-		return days == 0 ? 0 : total / days;
+    @Override
+    public float getMedium(String key) throws EntryNotFoundException {
+        int days = 0;
 
-	}
+        float total = 0;
+        Iterator<Datum> it = data.getCauseData(key);
 
-	@Override
-	public Iterator<String> getKeys() {
-		ArrayList<String> keys = new ArrayList<>();
-		for (GeoDataType g : TYPES_TO_USE)
-			keys.add(g.toString());
+        while (it.hasNext()) {
+            days++;
+            total += ((GeoDatum) it.next()).getValue();
+        }
 
-		return keys.iterator();
-	}
+        return days == 0 ? 0 : total / days;
+
+    }
+
+    @Override
+    public Iterator<String> getKeys() {
+        ArrayList<String> keys = new ArrayList<>();
+        for (GeoDataType g : TYPES_TO_USE)
+            keys.add(g.toString());
+
+        return keys.iterator();
+    }
 
 
 }
