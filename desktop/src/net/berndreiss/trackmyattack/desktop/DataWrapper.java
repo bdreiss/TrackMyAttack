@@ -147,17 +147,17 @@ public class DataWrapper extends AbstractData implements Serializable {
         if (originalData.firstDate == null)
             return;
 
-        LocalDate startDate = originalData.firstDate;
+        LocalDate startDate = getFirstDate();
 
         // if there are no entries for GeoData, start with the first date in the
         // original data
-        if (data.firstDate == null) {
-            updateRange(startDate, LocalDate.now());
+        if (startDate == null) {
+            updateRange(originalData.firstDate, LocalDate.now());
         } else {
 
             // if the first date in GeoData is bigger than the start date in the original
             // data, get GeoData for this span
-            if (data.firstDate.isAfter(startDate)) {
+            if (originalData.firstDate.isAfter(startDate)) {
                 updateRange(startDate, data.firstDate.minusDays(1));
                 startDate = data.firstDate;
             }
