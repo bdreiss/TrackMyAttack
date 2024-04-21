@@ -51,7 +51,7 @@ public class LabelMainPanel extends JPanel {
 		c.gridy++;
 
 		//add GEODATA
-		LabelPanel geoLabels = new LabelPanel(new DataWrapper(data));
+		LabelPanel geoLabels = new LabelPanel(dataWrapper);
 		add(geoLabels, c);
 		c.gridy++;
 		
