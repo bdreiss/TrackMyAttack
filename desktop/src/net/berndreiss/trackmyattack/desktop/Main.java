@@ -49,9 +49,7 @@ class Main {
 			e.printStackTrace();
 		}
 
-		DataWrapper dataWrapper = new DataWrapper(data);
-
-		MainFrame frame = new MainFrame(dataWrapper);
+		MainFrame frame = new MainFrame(data);
 
 		frame.setVisible(true);
 

@@ -25,20 +25,20 @@ class MainFrame extends JFrame {
 	 * the data.
 	 */
 
-	public MainFrame(DataWrapper dataWrapper) throws MalformedURLException {
+	public MainFrame(DataModel data) throws MalformedURLException {
 		super("TrackMyAttack");
 
-		DataModel data = dataWrapper.getData();
-		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+		DataWrapper dataWrapper = new DataWrapper(data);
 
 		// dimension of ScrollPanel that holds the data
 		// width is defined by screenSize * SCREENSIZE_MODIFIER
 		// height is defined by (items in (data + geoData + DATA_PANELS_OFFSET) *
 		// (height of data row)
 		
-		int scrollHeight = (data.getSize() + (dataWrapper == null ? 0 : dataWrapper.getSize()) + DATA_PANELS_OFFSET) * Units.DATA_ROW_BOX_HEIGHT.value();
-		
+		int scrollHeight = (data.getSize() + dataWrapper.getSize() + DATA_PANELS_OFFSET) * Units.DATA_ROW_BOX_HEIGHT.value();
+
 		Dimension scrollSize = new Dimension((int) (screenSize.width * SCREENSIZE_MODIFIER),
 				scrollHeight);
 
