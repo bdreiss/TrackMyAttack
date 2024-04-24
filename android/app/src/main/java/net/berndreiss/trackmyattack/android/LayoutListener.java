@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Iterator;
+import java.util.concurrent.Callable;
 
 import net.berndreiss.trackmyattack.data.core.AbstractData;
 import net.berndreiss.trackmyattack.data.enums.Category;
@@ -32,15 +33,15 @@ public class LayoutListener implements View.OnClickListener {
     Context context;//context of main activity
     AbstractData data;
     FragmentManager fragmentManager;
-    LayoutListenerInterface layoutListenerInterface;//includes functions for getting data and returning to main activity
+    Runnable returnToActivityListener;//includes functions for getting data and returning to main activity
 
 
     private final ActivityResultLauncher<Intent> locationSettingsResultLauncher;
-    public LayoutListener(Context context, AbstractData data, FragmentManager fragmentManager, LayoutListenerInterface layoutListenerInterface, ActivityResultLauncher<Intent> locationSettingsResultLauncher){
+    public LayoutListener(Context context, AbstractData data, FragmentManager fragmentManager, Runnable returnToActivityListener, ActivityResultLauncher<Intent> locationSettingsResultLauncher){
         this.context = context;
         this.data = data;
         this.fragmentManager = fragmentManager;
-        this.layoutListenerInterface = layoutListenerInterface;
+        this.returnToActivityListener = returnToActivityListener;
         this.locationSettingsResultLauncher = locationSettingsResultLauncher;
     }
 
@@ -140,7 +141,7 @@ public class LayoutListener implements View.OnClickListener {
         linearLayout.addView(backButton);
 
         //set listener for button
-        backButton.setOnClickListener(view -> layoutListenerInterface.returnToActivity());
+        backButton.setOnClickListener(view -> returnToActivityListener.run());
 
     }
 }
