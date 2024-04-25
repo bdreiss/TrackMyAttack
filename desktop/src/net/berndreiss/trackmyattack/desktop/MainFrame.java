@@ -51,12 +51,12 @@ class MainFrame extends JFrame {
 		LabelMainPanel labelMainPanel = new LabelMainPanel(dataWrapper);
 		labelMainPanel.setPreferredSize(new Dimension(Units.LABEL_WIDTH.value(), scrollHeight));
 
+		// Put the panel in a scroll pane so that all the data lines up
 		JScrollPane scrollPaneLabel = new JScrollPane(labelMainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		scrollPaneLabel.setPreferredSize(new Dimension(Units.LABEL_WIDTH.value(), scrollHeight));
 		add(scrollPaneLabel);
-//		add(labelMainPanel);
 
 		DataMainPanel dataMainPanel = new DataMainPanel(dataWrapper);
 
